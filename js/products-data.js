@@ -145,7 +145,7 @@ const PRODUCTS = {
     symbol: '○',
     tagline: 'Recovery is a system. Not a streak.',
     pitch: 'SteadyCap is a recovery operating system — habits, medicines, journal triggers, craving forecasts, and a 5-phase SOS designed with clinical seriousness and human warmth.',
-    hook: 'When it matters, SteadyCap is already on your lock screen.',
+    hook: 'When it matters, SteadyCap is one tap from your home screen.',
     accent: '#c9652b',
     accent2: '#2f8e88',
     bg: '#1a110e',
