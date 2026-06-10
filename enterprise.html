@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#7b5fff"><title>Enterprise Demo — OS Portfolio</title>
+<style>body{font-family:-apple-system,system-ui,sans-serif;background:#0a0a0f;color:#e8e8f0;line-height:1.65;padding:24px;max-width:720px;margin:0 auto}
+a{color:#7b5fff}nav{margin-bottom:24px;font-size:14px}nav a{margin-right:12px;color:#888}
+h1{font-size:1.6rem;margin:20px 0 12px}h2{font-size:1.1rem;margin:18px 0 8px;color:#7b5fff}
+p,li{font-size:15px;color:#aaa;margin-bottom:8px}code{background:#1a1a24;padding:2px 6px;border-radius:4px}</style></head>
+<body><nav><a href="index.html">← Portfolio</a></nav><h1>Shamikh Ahmed OS Portfolio — Enterprise Demo Guide</h1>
+
+<p><strong>Goal:</strong> Repeatable 30-minute investor/enterprise walkthrough across all 6 apps — seed data via UI, no code edits.</p>
+
+<p><strong>Last verified:</strong> June 10, 2026 (Phase 3)</p>
+
+<p>---</p>
+
+<h2>Prerequisites (5 min)</h2>
+
+<p>1. Mac with Chrome or Safari; stable network for first PWA load.</p>
+<p>2. Clone portfolio at <code>/Users/shamikhahmed/Desktop/Projects/</code> (or use GitHub Pages live URLs).</p>
+<p>3. One-time Playwright browsers: <code>npx playwright install chromium</code> (in any app dir).</p>
+<p>4. Optional local serve (faster): from each app folder, <code>npx serve -l <port> .</code> (ports 8765–8770).</p>
+
+
+
+
+
+
+
+
+
+
+<p>---</p>
+
+<h2>30-minute demo script</h2>
+
+<h3>1. VaultOS (5 min) — Encrypted life OS</h3>
+
+<p>1. Open app → unlock with <strong>demo PIN <code>123456</code></strong> (or create vault, then load demo).</p>
+<p>2. <strong>Settings → Load Demo Data (fictional)</strong> — 5 regional profiles (PK/UK/UAE).</p>
+<p>3. Show <strong>Banks</strong>, <strong>Documents</strong>, <strong>Smart Import</strong> (offline parser default).</p>
+<p>4. <strong>Settings → About</strong> — Enterprise disclaimer, AES-256-GCM, v4.1.0.</p>
+<p>5. Mention optional LLM proxy (disabled by default for sensitive demos).</p>
+
+<h3>2. FitnessOS (5 min) — Smart Coach fitness</h3>
+
+<p>1. <strong>Settings → Profiles → Try Demo Mode</strong> — 35 workouts, PRs, body stats.</p>
+<p>2. Default nav: <strong>Dashboard → Workout → Smart Coach → Recovery → Settings</strong>.</p>
+<p>3. Open <strong>Smart Coach</strong> tab — rule-based coaching (not LLM).</p>
+<p>4. <strong>Recovery</strong> — readiness sliders; body map via Hub if pinned.</p>
+<p>5. Landing shows v4.5.1; offline PWA.</p>
+
+<h3>3. PrismOS (5 min) — 38 offline games</h3>
+
+<p>1. Complete welcome or skip if returning user.</p>
+<p>2. <strong>Profile → Load Demo XP Profile</strong> — Level 5+, 42 games, achievements.</p>
+<p>3. Launch <strong>Truth Bomb</strong> (Party) — pass-and-play, truth or bomb.</p>
+<p>4. Show <strong>Daily challenge</strong> on Arcade; fully offline.</p>
+<p>5. v4.0.0 · 38 games (grep-verified in <code>js/app.js</code>).</p>
+
+<h3>4. DisciplineOS (5 min) — Recovery OS</h3>
+
+<p>1. Complete onboarding or use existing profile.</p>
+<p>2. <strong>Profile → Load Demo Recovery Profile</strong> — habits, journal triggers, craving log.</p>
+<p>3. <strong>Journal</strong> — trigger chips (Stress, Night, etc.) save to localStorage.</p>
+<p>4. <strong>Recovery</strong> tab — TriggerEngine forecast card renders from patterns.</p>
+<p>5. <strong>SOS</strong> — 5-phase flow (no placeholders). Medical disclaimer in SECURITY.md.</p>
+
+<h3>5. StundsOS (5 min) — Wealth OS</h3>
+
+<p>1. <strong>Settings → Load Demo Holdings</strong> — PSX + Meezan ledger.</p>
+<p>2. Dashboard net worth, concentration insights.</p>
+<p>3. <strong>Settings → Zakat</strong> — nisab, 2.5% estimate, scholar disclaimer.</p>
+<p>4. <strong>IPO</strong> — subscribe → mark listed (record-keeping).</p>
+<p>5. Not investment advice — SECURITY.md.</p>
+
+<h3>6. DeePonyOS (5 min) — Child-safe collector</h3>
+
+<p>1. <strong>Settings → Load Demo Collection</strong> — 18 ponies G1–G5.</p>
+<p>2. Show catalog, generations, wishlist.</p>
+<p>3. Photos in <strong>IndexedDB</strong> (not cloud).</p>
+<p>4. COPPA-friendly statement in SECURITY.md; v2.2.0.</p>
+<p>5. Export backup demo.</p>
+
+<p>---</p>
+
+<h2>Seed data summary</h2>
+
+
+
+
+
+
+
+
+
+
+<p>---</p>
+
+<h2>FAQ (enterprise)</h2>
+
+<p><strong>Is data encrypted?</strong>  </p>
+<p>VaultOS: AES-256-GCM with PIN. Other apps: localStorage/IndexedDB on device — protect device passcode and exports.</p>
+
+<p><strong>Is there telemetry?</strong>  </p>
+<p>No analytics SDKs in any of the six apps.</p>
+
+<p><strong>Medical device?</strong>  </p>
+<p>No. DisciplineOS supports recovery workflows; SOS is not clinical care.</p>
+
+<p><strong>Investment advice?</strong>  </p>
+<p>No. StundsOS is a personal ledger; Zakat is estimate-only.</p>
+
+<p><strong>AI / LLM?</strong>  </p>
+<p>VaultOS optional LLM import via proxy. FitnessOS Smart Coach is rule-based. Others: no LLM.</p>
+
+<p><strong>Offline?</strong>  </p>
+<p>All six PWAs work offline after first load.</p>
+
+<p>---</p>
+
+<h2>Verification commands</h2>
+
+<p>``<code>bash</p>
+<h1>Portfolio root</h1>
+<p>node scripts/truth-audit.mjs</p>
+<p>node scripts/generate-doc-pages.mjs</p>
+<p>node scripts/sync-versions.mjs</p>
+
+<h1>Playwright per app (from app directory)</h1>
+<p>cd VaultOS && npx playwright test</p>
+<p>cd FitnessOS && npx playwright test</p>
+<h1>... etc.</h1>
+<p></code>``</p>
+
+<p>See <a href="./ENTERPRISE_CHECKLIST.md">ENTERPRISE_CHECKLIST.md</a> for sign-off items.</p>
+</body></html>
