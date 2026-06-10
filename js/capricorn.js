@@ -104,7 +104,7 @@
             `<div class="symbol">${p.symbol}</div>` +
             `<p class="eyebrow" style="margin-bottom:8px">${p.category}</p>` +
             `<h3>${p.name}</h3>` +
-            `<p>${p.pitch}</p>` +
+            `<p>${p.hook}</p>` +
             `<div class="spotlight-meta">${pills}</div>` +
             `<a href="${p.slug}.html" class="btn btn-ghost">Read the ${p.name} page →</a>` +
           `</div>` +

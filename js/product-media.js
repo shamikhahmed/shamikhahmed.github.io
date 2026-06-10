@@ -4,18 +4,37 @@ function productScreenshot(p, index) {
   return shots[index] || shots[0] || `assets/screenshots/${p.slug}.png`;
 }
 
-function deviceFrame(p, src, alt, caption) {
+function deviceFrame(p, src, alt, caption, variant) {
   const cap = caption ? `<figcaption class="device-caption">${caption}</figcaption>` : '';
+  const shellClass = variant ? `device-shell device-shell--${variant}` : 'device-shell';
+  const notch = variant === 'mac' ? '' : '<div class="device-notch" aria-hidden="true"></div>';
+  const dims = variant === 'ipad' ? 'width="520" height="720"'
+    : variant === 'mac' ? 'width="640" height="400"'
+    : 'width="390" height="844"';
   return (
-    `<figure class="device-frame" style="--p-accent:${p.accent}">` +
-      `<div class="device-shell">` +
-        `<div class="device-notch" aria-hidden="true"></div>` +
+    `<figure class="device-frame${variant ? ' device-frame--' + variant : ''}" style="--p-accent:${p.accent}">` +
+      `<div class="${shellClass}">` +
+        notch +
         `<div class="device-screen">` +
-          `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" width="390" height="844">` +
+          `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" ${dims}>` +
         `</div>` +
       `</div>` +
       cap +
     `</figure>`
+  );
+}
+
+function deviceShowcase(p) {
+  const d = p.devices || {};
+  const phone = d.phone || productScreenshot(p, 1);
+  const ipad = d.ipad || phone;
+  const mac = d.mac || phone;
+  return (
+    `<div class="device-showcase" role="region" aria-label="App on iPhone, iPad, and Mac">` +
+      deviceFrame(p, phone, `${p.name} on iPhone`, 'iPhone', null) +
+      deviceFrame(p, ipad, `${p.name} on iPad`, 'iPad', 'ipad') +
+      deviceFrame(p, mac, `${p.name} in Mac browser`, 'Mac browser', 'mac') +
+    `</div>`
   );
 }
 

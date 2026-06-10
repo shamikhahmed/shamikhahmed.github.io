@@ -4,6 +4,13 @@ function shotPaths(slug, n = 8) {
     i === 0 ? `assets/screenshots/${slug}.png` : `assets/screenshots/${slug}-${i + 1}.png`
   );
 }
+function deviceShotPaths(slug) {
+  return {
+    phone: `assets/screenshots/${slug}-2.png`,
+    ipad: `assets/screenshots/${slug}-ipad.png`,
+    mac: `assets/screenshots/${slug}-mac.png`,
+  };
+}
 
 const CAPRICORN = {
   name: 'Capricorn Systems',
@@ -58,15 +65,16 @@ const PRODUCTS = {
     highlights: ['AES-256-GCM', '120+ banks', 'Family vault', 'Zakat engine', 'Smart Import'],
     screenshot: 'assets/screenshots/vaultcap.png',
     screenshots: shotPaths('vaultcap'),
+    devices: deviceShotPaths('vaultcap'),
     screenshotAlts: [
       'VaultCap marketing landing page',
-      'VaultCap app home and vault shell',
-      'VaultCap net worth dashboard',
-      'VaultCap bank accounts view',
-      'VaultCap portfolio overview',
+      'VaultCap unlocked app shell',
+      'VaultCap finance dashboard',
+      'VaultCap Family Vault overview',
+      'VaultCap bank accounts',
       'VaultCap documents vault',
       'VaultCap Zakat calculator',
-      'VaultCap family profiles',
+      'VaultCap investments portfolio',
     ],
     ux: [{'step': '01', 'icon': '🌐', 'title': 'Open VaultCap', 'desc': 'Launch in Safari or Chrome — no account wall before you see anything.'}, {'step': '02', 'icon': '📲', 'title': 'Add to Home Screen', 'desc': 'Share → Add to Home Screen for a full-screen vault with your PIN.'}, {'step': '03', 'icon': '🔐', 'title': 'Unlock locally', 'desc': 'Your PIN decrypts data on-device. Nothing is sent to Capricorn servers.'}, {'step': '04', 'icon': '📊', 'title': 'Run your life OS', 'desc': 'Net worth, banks, documents, Zakat — daily finance without cloud sync.'}],
   },
@@ -115,6 +123,7 @@ const PRODUCTS = {
     highlights: ['300+ exercises', 'Body map', 'Smart Coach', 'Recovery', 'PR tracking'],
     screenshot: 'assets/screenshots/pulsecap.png',
     screenshots: shotPaths('pulsecap'),
+    devices: deviceShotPaths('pulsecap'),
     screenshotAlts: [
       'PulseCap kinetic training landing',
       'PulseCap dashboard home screen',
@@ -172,6 +181,7 @@ const PRODUCTS = {
     highlights: ['38 games', 'Pass & Play', 'Daily challenges', 'XP system', 'Offline audio'],
     screenshot: 'assets/screenshots/prismcap.png',
     screenshots: shotPaths('prismcap'),
+    devices: deviceShotPaths('prismcap'),
     screenshotAlts: [
       'PrismCap neon arcade landing',
       'PrismCap party game hub',
@@ -229,6 +239,7 @@ const PRODUCTS = {
     highlights: ['Trigger forecast', '5-phase SOS', 'Medicine tracker', 'Journal', 'Milestones'],
     screenshot: 'assets/screenshots/steadycap.png',
     screenshots: shotPaths('steadycap'),
+    devices: deviceShotPaths('steadycap'),
     screenshotAlts: [
       'SteadyCap recovery landing page',
       'SteadyCap daily dashboard',
@@ -286,6 +297,7 @@ const PRODUCTS = {
     highlights: ['PSX', 'Meezan funds', 'Zakat', 'IPO tracker', 'Net worth'],
     screenshot: 'assets/screenshots/ledgercap.png',
     screenshots: shotPaths('ledgercap'),
+    devices: deviceShotPaths('ledgercap'),
     screenshotAlts: [
       'LedgerCap wealth terminal landing',
       'LedgerCap PKR dashboard',
@@ -346,6 +358,7 @@ const PRODUCTS = {
     highlights: ['G1–G5', 'Photo shelves', 'Wishlists', 'Achievements', 'COPPA-safe'],
     screenshot: 'assets/screenshots/deeponycap.png',
     screenshots: shotPaths('deeponycap'),
+    devices: deviceShotPaths('deeponycap'),
     screenshotAlts: [
       'DeePonyCap collection landing',
       'DeePonyCap stable home screen',

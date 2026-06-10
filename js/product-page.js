@@ -68,7 +68,7 @@
           `<div class="highlight-row">${highlights}</div>` +
           `<div class="actions">` +
             `<a href="${p.url}" class="btn btn-product">Launch ${p.name} →</a>` +
-            `<a href="${p.pitchUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Investor deck</a>` +
+            `<a href="#pitch" class="btn btn-ghost">Investor pitch</a>` +
             `<a href="${p.privacyUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Privacy</a>` +
           `</div>` +
         `</div>` +
@@ -104,8 +104,9 @@
       `<section class="section product-strip" id="preview" ${accent}>` +
         `<div class="wrap reveal">` +
           `<p class="eyebrow" style="text-align:center">In the app</p>` +
-          `<h2 style="text-align:center;margin-bottom:8px">See ${p.name} on your phone</h2>` +
-          `<p class="lead" style="margin:0 auto 32px;text-align:center;max-width:560px">Eight real screenshots from the live PWA — landing, dashboard, and key features.</p>` +
+          `<h2 style="text-align:center;margin-bottom:8px">See ${p.name} in action</h2>` +
+          `<p class="lead" style="margin:0 auto 24px;text-align:center;max-width:560px">Eight distinct screens from the live PWA — no duplicates.</p>` +
+          (typeof deviceShowcase === 'function' ? deviceShowcase(p) : '') +
           screenshotGallery(p) +
         `</div>` +
       `</section>`,
@@ -124,7 +125,6 @@
         `<p class="eyebrow">The promise</p>` +
         `<h2>What changes after install</h2>` +
         `<p class="lead">${p.promise}</p>` +
-        `<p class="lead" style="margin-top:16px">${p.pitch}</p>` +
       `</div></section>`,
 
     featuresGrid: () =>
