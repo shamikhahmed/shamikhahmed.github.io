@@ -22,23 +22,36 @@ function deviceFrame(p, src, alt, caption) {
 function screenshotGallery(p) {
   const shots = p.screenshots || [productScreenshot(p, 0)];
   const alts = p.screenshotAlts || [];
-  if (shots.length <= 1) {
+  const count = shots.length;
+
+  if (count <= 1) {
     return deviceFrame(p, shots[0], alts[0] || `${p.name} app screenshot`, p.tagline);
   }
+
   const slides = shots.map((src, i) =>
     `<div class="gallery-slide${i === 0 ? ' is-active' : ''}" data-index="${i}">` +
-      deviceFrame(p, src, alts[i] || `${p.name} screenshot ${i + 1}`, i === 0 ? p.tagline : (p.screenshotAlts && p.screenshotAlts[i]) || '') +
+      deviceFrame(
+        p,
+        src,
+        alts[i] || `${p.name} screenshot ${i + 1}`,
+        alts[i] || (i === 0 ? p.tagline : '')
+      ) +
     `</div>`
   ).join('');
+
   const dots = shots.map((_, i) =>
-    `<button type="button" class="gallery-dot${i === 0 ? ' is-active' : ''}" data-index="${i}" aria-label="Screenshot ${i + 1}"></button>`
+    `<button type="button" class="gallery-dot${i === 0 ? ' is-active' : ''}" data-index="${i}" aria-label="Screenshot ${i + 1} of ${count}"></button>`
   ).join('');
+
   return (
-    `<div class="screenshot-gallery" data-slides="${shots.length}">` +
+    `<div class="screenshot-gallery screenshot-gallery--large" data-slides="${count}">` +
       `<div class="gallery-track">${slides}</div>` +
       `<div class="gallery-controls">` +
         `<button type="button" class="gallery-btn gallery-prev" aria-label="Previous screenshot">←</button>` +
-        `<div class="gallery-dots">${dots}</div>` +
+        `<div class="gallery-meta">` +
+          `<span class="gallery-counter"><span class="gallery-current">1</span> / ${count}</span>` +
+          `<div class="gallery-dots">${dots}</div>` +
+        `</div>` +
         `<button type="button" class="gallery-btn gallery-next" aria-label="Next screenshot">→</button>` +
       `</div>` +
     `</div>`
@@ -81,15 +94,37 @@ function initScreenshotGalleries() {
   document.querySelectorAll('.screenshot-gallery').forEach((gallery) => {
     const slides = gallery.querySelectorAll('.gallery-slide');
     const dots = gallery.querySelectorAll('.gallery-dot');
+    const counter = gallery.querySelector('.gallery-current');
     let idx = 0;
+
     const show = (n) => {
       idx = (n + slides.length) % slides.length;
       slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
       dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+      if (counter) counter.textContent = String(idx + 1);
     };
+
     gallery.querySelector('.gallery-prev')?.addEventListener('click', () => show(idx - 1));
     gallery.querySelector('.gallery-next')?.addEventListener('click', () => show(idx + 1));
     dots.forEach((d) => d.addEventListener('click', () => show(Number(d.dataset.index))));
+
+    let touchX = 0;
+    gallery.addEventListener('touchstart', (e) => {
+      touchX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    gallery.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].screenX - touchX;
+      if (Math.abs(dx) > 48) show(dx < 0 ? idx + 1 : idx - 1);
+    }, { passive: true });
+
+    if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let timer = setInterval(() => show(idx + 1), 5500);
+      gallery.addEventListener('mouseenter', () => clearInterval(timer));
+      gallery.addEventListener('mouseleave', () => {
+        timer = setInterval(() => show(idx + 1), 5500);
+      });
+      gallery.addEventListener('touchstart', () => clearInterval(timer), { passive: true });
+    }
   });
 }
 

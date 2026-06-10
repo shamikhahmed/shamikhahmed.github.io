@@ -1,4 +1,11 @@
-const CACHE = 'capricorn-v7';
+const CACHE = 'capricorn-v8';
+
+function shots(slug) {
+  return Array.from({ length: 8 }, (_, i) =>
+    i === 0 ? `./assets/screenshots/${slug}.png` : `./assets/screenshots/${slug}-${i + 1}.png`
+  );
+}
+
 const ASSETS = [
   './',
   './index.html',
@@ -19,18 +26,12 @@ const ASSETS = [
   './js/product-page.js',
   './js/capricorn.js',
   './assets/logo.svg',
-  './assets/screenshots/vaultcap.png',
-  './assets/screenshots/vaultcap-2.png',
-  './assets/screenshots/pulsecap.png',
-  './assets/screenshots/pulsecap-2.png',
-  './assets/screenshots/prismcap.png',
-  './assets/screenshots/prismcap-2.png',
-  './assets/screenshots/steadycap.png',
-  './assets/screenshots/steadycap-2.png',
-  './assets/screenshots/ledgercap.png',
-  './assets/screenshots/ledgercap-2.png',
-  './assets/screenshots/deeponycap.png',
-  './assets/screenshots/deeponycap-2.png',
+  ...shots('vaultcap'),
+  ...shots('pulsecap'),
+  ...shots('prismcap'),
+  ...shots('steadycap'),
+  ...shots('ledgercap'),
+  ...shots('deeponycap'),
   './manifest.json',
   './icon-192.png',
   './icon-512.png',

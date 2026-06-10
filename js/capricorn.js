@@ -92,15 +92,29 @@
   }
 
   if (typeof PRODUCTS !== 'undefined') {
+    const carousel = document.getElementById('screenshotCarousel');
+    if (carousel && typeof productScreenshot === 'function' && typeof deviceFrame === 'function') {
+      carousel.innerHTML = PRODUCTS_LIST.map((p, i) =>
+        `<a href="${p.slug}.html" class="carousel-card${i === 0 ? ' is-front' : ''}" style="--card-i:${i};--p-accent:${p.accent}">` +
+          deviceFrame(p, productScreenshot(p, 0), (p.screenshotAlts && p.screenshotAlts[0]) || p.name, '') +
+          `<span class="carousel-label">${p.name} · ${p.tagline}</span>` +
+        `</a>`
+      ).join('');
+      if (typeof initHomeCarousel === 'function') initHomeCarousel();
+    }
+
     const grid = document.getElementById('productsGrid');
     if (grid) {
       grid.innerHTML = PRODUCTS_LIST.map((p) =>
         `<a href="${p.slug}.html" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
-          `<div class="product-symbol">${p.symbol}</div>` +
-          `<div class="cat">${p.category} · v${p.ver}</div>` +
-          `<h3>${p.name}</h3>` +
-          `<p>${p.tagline}</p>` +
-          `<span class="link">Full ${p.name} page →</span>` +
+          (typeof productCardThumb === 'function' ? productCardThumb(p) : '') +
+          `<div class="product-card-body">` +
+            `<div class="product-symbol">${p.symbol}</div>` +
+            `<div class="cat">${p.category} · v${p.ver}</div>` +
+            `<h3>${p.name}</h3>` +
+            `<p>${p.tagline}</p>` +
+            `<span class="link">Full ${p.name} page →</span>` +
+          `</div>` +
         `</a>`
       ).join('');
     }
