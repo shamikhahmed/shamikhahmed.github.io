@@ -6,14 +6,60 @@
     }, { passive: true });
   }
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const reveals = document.querySelectorAll('.reveal');
-  if (reveals.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (reveals.length && !reducedMotion) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     reveals.forEach((el) => io.observe(el));
   } else {
     reveals.forEach((el) => el.classList.add('visible'));
+  }
+
+  window.initProductLayout = function (slug) {
+    if (slug === 'vaultcap') initVaultRail();
+    if (slug === 'pulsecap') initPulseStrip();
+  };
+
+  function initVaultRail() {
+    const links = document.querySelectorAll('.vault-rail-link');
+    const sections = Array.from(links)
+      .map((a) => document.getElementById(a.dataset.section))
+      .filter(Boolean);
+    if (!sections.length) return;
+
+    const setActive = (id) => {
+      links.forEach((a) => a.classList.toggle('is-active', a.dataset.section === id));
+    };
+
+    if (!reducedMotion) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+      sections.forEach((s) => io.observe(s));
+    }
+
+    links.forEach((a) => {
+      a.addEventListener('click', (ev) => {
+        const target = document.getElementById(a.dataset.section);
+        if (!target) return;
+        ev.preventDefault();
+        target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        setActive(a.dataset.section);
+      });
+    });
+
+    if (sections[0]) setActive(sections[0].id);
+  }
+
+  function initPulseStrip() {
+    const strip = document.querySelector('.feature-h-scroll');
+    if (!strip) return;
+    strip.setAttribute('tabindex', '0');
   }
 
   const canvas = document.getElementById('starfield');
@@ -49,7 +95,7 @@
     const grid = document.getElementById('productsGrid');
     if (grid) {
       grid.innerHTML = PRODUCTS_LIST.map((p) =>
-        `<a href="${p.slug}.html" class="product-card" style="--p-accent:${p.accent}">` +
+        `<a href="${p.slug}.html" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
           `<div class="product-symbol">${p.symbol}</div>` +
           `<div class="cat">${p.category} · v${p.ver}</div>` +
           `<h3>${p.name}</h3>` +
@@ -73,7 +119,7 @@
         const pills = (p.highlights || []).slice(0, 4).map(h =>
           `<span class="spotlight-pill">${h}</span>`
         ).join('');
-        return `<article class="spotlight${flip}" style="--p-accent:${p.accent}">` +
+        return `<article class="spotlight${flip}${p.light ? ' spotlight-light' : ''}" style="--p-accent:${p.accent}">` +
           `<div class="spotlight-card">` +
             `<div class="symbol">${p.symbol}</div>` +
             `<p class="eyebrow" style="margin-bottom:8px">${p.category}</p>` +
@@ -108,4 +154,7 @@
   if (legacyP && typeof PRODUCTS !== 'undefined' && PRODUCTS[legacyP]) {
     location.replace(legacyP + '.html');
   }
+
+  const layoutSlug = document.body.dataset.layoutReady || document.body.dataset.product;
+  if (layoutSlug) initProductLayout(layoutSlug);
 })();
