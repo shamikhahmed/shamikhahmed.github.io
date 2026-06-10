@@ -124,7 +124,7 @@ const APPS_DATA = {
     tagline: 'Every pony. One stable. Pure joy.',
     pitch: 'A child-safe MLP collection OS with generations G1–G5, wishlists, photo shelves, and bubble stats — playful enough for kids, powerful enough for collectors.',
     personality: 'Toy shelf wonderland — Fisher-Price meets collector catalog.',
-    aesthetic: 'Nunito 900 · pastel pink bubbles · 28px corners · bouncy FAB',
+    aesthetic: 'Baloo 2 + Nunito · pastel pink bubbles · floating pill nav · bouncy FAB',
     accent: '#ff6b9d',
     accent2: '#c4b5fd',
     bg: '#fff5f8',
