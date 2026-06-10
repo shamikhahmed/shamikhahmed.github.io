@@ -14,12 +14,12 @@ Visual expression: the **⬡ On-Device** seal on product pages and About screens
 
 | App | Personality | Aesthetic | Feels like |
 |-----|-------------|-----------|------------|
-| **VaultOS** | Swiss vault command center | Indigo glass, mono numerics | 1Password × private bank |
-| **FitnessOS** | Kinetic performance lab | Cyan gradients, athletic motion | Nike Training × Whoop |
-| **PrismOS** | Neon party arcade | Holographic purple/pink | Jackbox × Apple Arcade |
-| **DisciplineOS** | Clinical warmth | Orange + teal, breathing space | Recovery clinic × Headspace |
-| **StundsOS** | Terminal finance | Gold on charcoal, ticker density | Bloomberg × local brokerage |
-| **DeePonyOS** | Toy-shelf joy | Pastel pink, bouncy radii | Collector catalog × Fisher-Price |
+| **VaultCap** | Swiss vault command center | Indigo glass, mono numerics | 1Password × private bank |
+| **PulseCap** | Kinetic performance lab | Cyan gradients, athletic motion | Nike Training × Whoop |
+| **PrismCap** | Neon party arcade | Holographic purple/pink | Jackbox × Apple Arcade |
+| **SteadyCap** | Clinical warmth | Orange + teal, breathing space | Recovery clinic × Headspace |
+| **LedgerCap** | Terminal finance | Gold on charcoal, ticker density | Bloomberg × local brokerage |
+| **DeePonyCap** | Toy-shelf joy | Pastel pink, bouncy radii | Collector catalog × Fisher-Price |
 
 ## What must NOT be shared
 
