@@ -81,18 +81,14 @@
     mock: () =>
       `<section class="section product-strip" id="preview" ${accent}>` +
         `<div class="wrap reveal">` +
-          `<div class="product-mock">` +
-            `<div class="mock-bar"><span></span><span></span><span></span></div>` +
-            `<div class="mock-body">` +
-              `<p class="mock-label">${p.name}</p>` +
-              `<p class="mock-tagline">${p.tagline}</p>` +
-              `<div class="mock-blocks">` +
-                (p.highlights || []).slice(0, 4).map(h => `<div class="mock-block">${h}</div>`).join('') +
-              `</div>` +
-            `</div>` +
-          `</div>` +
+          `<p class="eyebrow" style="text-align:center">In the app</p>` +
+          `<h2 style="text-align:center;margin-bottom:8px">See ${p.name} on your phone</h2>` +
+          `<p class="lead" style="margin:0 auto 32px;text-align:center">Real screenshots from the live PWA — landing and home screen.</p>` +
+          screenshotGallery(p) +
         `</div>` +
       `</section>`,
+
+    experience: () => uxTimeline(p),
 
     problems: () =>
       `<section class="section" id="problem"><div class="wrap prose reveal">` +
@@ -184,7 +180,8 @@
 
   const RAIL = [
     { id: 'overview', label: 'Overview' },
-    { id: 'preview', label: 'Preview' },
+    { id: 'preview', label: 'Screenshots' },
+    { id: 'experience', label: 'Experience' },
     { id: 'problem', label: 'Problem' },
     { id: 'promise', label: 'Promise' },
     { id: 'features', label: 'Features' },
@@ -204,12 +201,12 @@
           `</nav>` +
         `</aside>` +
         `<div class="vault-main">` +
-          F.hero() + F.mock() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta() +
+          F.hero() + F.mock() + F.experience() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta() +
         `</div>` +
       `</div>`,
 
     pulsecap: () =>
-      F.hero() + F.mock() +
+      F.hero() + F.mock() + F.experience() +
       `<div class="pulse-diagonal" aria-hidden="true"></div>` +
       F.problems() + F.promise() + F.featuresH() +
       `<div class="pulse-diagonal pulse-diagonal--flip" aria-hidden="true"></div>` +
@@ -219,6 +216,7 @@
       `<div class="prism-scroll">` +
         `<div class="prism-panel">${F.hero()}</div>` +
         `<div class="prism-panel">${F.mock()}</div>` +
+        `<div class="prism-panel">${F.experience()}</div>` +
         `<div class="prism-panel">${F.problems()}</div>` +
         `<div class="prism-panel prism-panel--alt">${F.promise()}</div>` +
         `<div class="prism-panel">${F.featuresGrid()}</div>` +
@@ -231,12 +229,12 @@
 
     steadycap: () =>
       `<div class="steady-flow">` +
-        F.hero() + F.mock() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta() +
+        F.hero() + F.mock() + F.experience() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta() +
       `</div>`,
 
     ledgercap: () =>
       F.ticker() +
-      F.hero() + F.mock() + F.problems() + F.promise() +
+      F.hero() + F.mock() + F.experience() + F.problems() + F.promise() +
       `<section class="section ledger-features" id="features"><div class="wrap reveal">` +
         `<p class="eyebrow">Features</p>` +
         `<h2>Built to tempt install.</h2>` +
@@ -252,7 +250,7 @@
         `<div class="feature-card" style="--card-i:${i}"><h4>${f.t}</h4><p>${f.d}</p></div>`
       ).join('');
       return `<div class="deepony-flow">` +
-        F.hero() + F.mock() + F.problems() + F.promise() +
+        F.hero() + F.mock() + F.experience() + F.problems() + F.promise() +
         `<section class="section deepony-gradient-a" id="features"><div class="wrap reveal">` +
           `<p class="eyebrow">Features</p>` +
           `<h2>Built to tempt install.</h2>` +
@@ -271,7 +269,7 @@
   };
 
   const render = LAYOUTS[p.slug] || (() =>
-    F.hero() + F.mock() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta()
+    F.hero() + F.mock() + F.experience() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta()
   );
 
   root.innerHTML = render();
@@ -289,4 +287,10 @@
   }
 
   document.body.dataset.layoutReady = p.slug;
+
+  if (typeof initScreenshotGalleries === 'function') initScreenshotGalleries();
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    requestAnimationFrame(() => el.classList.add('visible'));
+  });
 })();
