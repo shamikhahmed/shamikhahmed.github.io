@@ -1,7 +1,21 @@
 # shamikhahmed.github.io
 
-Mobile-first portfolio hub for the OS family (VaultOS, FitnessOS, PrismOS, DisciplineOS, StundsOS, DeePonyOS).
+Portfolio website for Shamikh Ahmed's six OS apps.
 
-**Live:** https://shamikhahmed.github.io/
+## Site structure
 
-Built by Shamikh Ahmed · 2026
+| Page | Purpose |
+|------|---------|
+| [index.html](index.html) | Marketing home — animations, skills, Device Sovereignty, product grid |
+| [app.html?a=slug](app.html?a=vaultos) | Product detail — features, market position, **then** launch |
+| [enterprise.html](enterprise.html) | 30-min investor demo script |
+
+**Flow:** Home → tap product → read about it → **Launch** opens the live PWA.
+
+## Slugs
+
+`vaultos` · `fitnessos` · `prismos` · `disciplineos` · `stundssos` · `deeponyos`
+
+## Design identity
+
+See [DESIGN_IDENTITY.md](DESIGN_IDENTITY.md) — six different experiences, one shared rule (Device Sovereignty).
