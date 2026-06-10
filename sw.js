@@ -1,4 +1,4 @@
-const CACHE = 'capricorn-v4';
+const CACHE = 'capricorn-v5';
 const ASSETS = [
   './',
   './index.html',
