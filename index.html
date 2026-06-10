@@ -26,6 +26,7 @@
       Capricorn <em>Systems</em>
     </a>
     <div class="nav-links">
+      <a href="#screenshots">Screenshots</a>
       <a href="#products">Products</a>
       <a href="#spotlights">Deep dive</a>
       <a href="sovereignty.html">Sovereignty</a>
@@ -33,6 +34,7 @@
       <a href="solutions.html">Solutions</a>
       <a href="#products" class="nav-cta">Install apps</a>
     </div>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
   </nav>
 
   <main class="page">
@@ -42,9 +44,10 @@
       <h1>Software that lives on your device — <span class="grad">not in our cloud.</span></h1>
       <p class="lead">Six premium applications for finance, performance, play, recovery, wealth, and collection. Each built like its own company. United by one rule: your data stays yours.</p>
       <div class="hero-actions">
-        <a href="#products" class="btn btn-primary">Explore products →</a>
-        <a href="sovereignty.html" class="btn btn-ghost">Device Sovereignty</a>
+        <a href="#screenshots" class="btn btn-primary">See the apps →</a>
+        <a href="#products" class="btn btn-ghost">Explore products</a>
       </div>
+      <div class="hero-carousel" id="screenshotCarousel" aria-label="App screenshots"></div>
       <div class="constellation" aria-hidden="true">
         <span class="star-node"></span><span class="star-node"></span><span class="star-node"></span>
         <span class="star-node"></span><span class="star-node"></span><span class="star-node"></span>
@@ -61,6 +64,29 @@
           <div class="stat-item"><strong>100%</strong><span>Offline-capable after first load</span></div>
           <div class="stat-item"><strong>1</strong><span>Rule: Device Sovereignty on every product</span></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section section-alt reveal" id="screenshots">
+      <div class="wrap">
+        <p class="eyebrow">Real product UI</p>
+        <h2>Six apps. Six distinct worlds.</h2>
+        <p class="lead" style="margin-top:16px">Captured from the live PWAs on iPhone — every product has its own typography, motion, and color system. Tap any screenshot for the full product page.</p>
+        <div class="screenshot-grid" id="screenshotGalleryGrid"></div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="ux">
+      <div class="wrap">
+        <p class="eyebrow">User experience</p>
+        <h2>Install once. Own forever.</h2>
+        <p class="lead" style="margin-top:16px">The same journey across every Capricorn product — open in the browser, pin to your home screen, use offline. No signup funnel. No cloud lock-in.</p>
+        <ol class="ux-timeline ux-timeline--global">
+          <li class="ux-step"><div class="ux-step-marker"><span class="ux-icon">🌐</span><span class="ux-num">01</span></div><div class="ux-step-body"><h3>Open in Safari or Chrome</h3><p>Every app loads as a full progressive web app — try before you install.</p></div></li>
+          <li class="ux-step"><div class="ux-step-marker"><span class="ux-icon">📲</span><span class="ux-num">02</span></div><div class="ux-step-body"><h3>Add to Home Screen</h3><p>Share → Add to Home Screen on iPhone, or Install app on Android. Full-screen, icon on your lock screen.</p></div></li>
+          <li class="ux-step"><div class="ux-step-marker"><span class="ux-icon">✈️</span><span class="ux-num">03</span></div><div class="ux-step-body"><h3>Works offline</h3><p>After the first load, your vault, workouts, games, and ledger keep working without Wi‑Fi.</p></div></li>
+          <li class="ux-step"><div class="ux-step-marker"><span class="ux-icon">🔒</span><span class="ux-num">04</span></div><div class="ux-step-body"><h3>Your data stays yours</h3><p>Encrypted on-device storage. Capricorn never sees your finances, journal, or collection.</p></div></li>
+        </ol>
       </div>
     </section>
 
