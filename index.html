@@ -3,190 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="Shamikh Ahmed builds six personal operating systems — vault, fitness, games, recovery, wealth, and collection. Each app feels different. One rule: your data stays on your device.">
-  <meta name="theme-color" content="#050508">
+  <meta name="description" content="Capricorn Systems builds premium personal software that lives on your device — VaultCap, PulseCap, PrismCap, SteadyCap, LedgerCap, and DeePonyCap.">
+  <meta name="theme-color" content="#0a0e17">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Shamikh OS">
+  <meta name="apple-mobile-web-app-title" content="Capricorn">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon-192.png" sizes="192x192">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="css/site.css">
-  <title>Shamikh Ahmed — Six Operating Systems</title>
+  <link rel="stylesheet" href="css/capricorn.css">
+  <title>Capricorn Systems — Software on your device</title>
 </head>
 <body>
-  <canvas id="canvas-bg" aria-hidden="true"></canvas>
+  <canvas id="starfield" aria-hidden="true"></canvas>
 
-  <nav class="site-nav" id="siteNav">
-    <a href="index.html" class="nav-logo">Shamikh <span>OS</span></a>
+  <nav class="nav" id="siteNav">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/logo.svg" alt="" width="28" height="28">
+      Capricorn <em>Systems</em>
+    </a>
     <div class="nav-links">
       <a href="#products">Products</a>
-      <a href="#philosophy">Philosophy</a>
-      <a href="#developer">Developer</a>
-      <a href="enterprise.html">Enterprise</a>
-      <a href="#products" class="nav-cta">Explore apps</a>
+      <a href="sovereignty.html">Sovereignty</a>
+      <a href="about.html">About</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="#products" class="nav-cta">Install apps</a>
     </div>
   </nav>
 
   <main class="page">
     <section class="hero">
-      <div class="hero-floats" aria-hidden="true">
-        <div class="float-chip">🔐 Zero cloud</div>
-        <div class="float-chip">💪 Smart Coach</div>
-        <div class="float-chip">🎮 38 games offline</div>
-      </div>
-      <p class="hero-eyebrow">Six apps · six experiences · one builder</p>
-      <h1>
-        Not six templates.
-        <span class="grad">Six operating systems.</span>
-      </h1>
-      <p class="hero-lead">Each product looks, moves, and feels like it was built by a different team — because your vault shouldn't feel like your fitness app. The only thing they share is sovereignty: your data never leaves your device.</p>
+      <img src="assets/logo.svg" alt="Capricorn Systems" class="hero-logo" width="64" height="64">
+      <p class="eyebrow">Capricorn Systems</p>
+      <h1>Software that lives on your device — <span class="grad">not in our cloud.</span></h1>
+      <p class="lead">Six premium applications for finance, performance, play, recovery, wealth, and collection. Each built like its own company. United by one rule: your data stays yours.</p>
       <div class="hero-actions">
-        <a href="#products" class="btn btn-primary">Meet the products →</a>
-        <a href="enterprise.html" class="btn btn-ghost">Enterprise demo</a>
+        <a href="#products" class="btn btn-primary">Explore products →</a>
+        <a href="sovereignty.html" class="btn btn-ghost">Device Sovereignty</a>
       </div>
-      <div class="stats-row">
-        <div class="stat-item"><b>6</b><span>Distinct OS apps</span></div>
-        <div class="stat-item"><b>0</b><span>Backend servers</span></div>
-        <div class="stat-item"><b>1</b><span>Shared rule</span></div>
+      <div class="constellation" aria-hidden="true">
+        <span class="star-node"></span><span class="star-node"></span><span class="star-node"></span>
+        <span class="star-node"></span><span class="star-node"></span><span class="star-node"></span>
       </div>
-    </section>
-
-    <section class="section reveal" id="philosophy">
-      <p class="section-tag">The one similarity</p>
-      <h2>Device Sovereignty</h2>
-      <p class="section-lead">Everything else is intentionally different — typography, motion, color, density, personality. The single thread that ties the family together:</p>
-      <div class="sovereignty" id="sovereigntyBlock"></div>
     </section>
 
     <section class="section reveal" id="products">
-      <p class="section-tag">Product suite</p>
-      <h2>Pick a product.<br>Learn first. Launch when ready.</h2>
-      <p class="section-lead">Tap any card for features, market positioning, and tech — then launch the live app when you want.</p>
-      <div class="products-grid" id="productsGrid"></div>
+      <div class="wrap">
+        <p class="eyebrow">Product constellation</p>
+        <h2>Six worlds. Six installs.<br>One sky.</h2>
+        <p class="lead" style="margin-top:16px">Every Capricorn product looks and feels distinct — because your vault should never feel like your fitness app. Tap a product for the full story, then install when you're ready.</p>
+        <div class="products-grid" id="productsGrid" style="margin-top:48px"></div>
+      </div>
     </section>
 
-    <section class="section reveal" id="different">
-      <p class="section-tag">Why they feel different</p>
-      <h2>Same skeleton? Never here.</h2>
-      <p class="section-lead">Every OS has its own design language — built for its domain, not copy-pasted.</p>
-      <div class="diff-grid" id="diffGrid"></div>
+    <section class="section reveal" style="background:rgba(201,162,39,0.03);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow">The one rule</p>
+        <h2>Device Sovereignty</h2>
+        <p class="lead" style="margin:16px auto 0">The only thing our products share. Everything else — typography, motion, color — is intentionally different.</p>
+        <div class="sov-grid" id="sovereigntyBlock"></div>
+        <a href="sovereignty.html" class="btn btn-ghost" style="margin-top:32px">Read the manifesto →</a>
+      </div>
     </section>
 
-    <section class="section reveal" id="developer">
-      <p class="section-tag">Builder</p>
-      <h2>Shamikh Ahmed</h2>
-      <div class="dev-card" id="devCard"></div>
-      <div class="skills-grid" id="skillsGrid" style="margin-top:28px"></div>
+    <section class="section reveal">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow">Install</p>
+        <h2>Made for your lock screen.</h2>
+        <p class="lead" style="margin:16px auto 0">Every Capricorn app is a Progressive Web App. Open in Safari or Chrome, then Add to Home Screen — full-screen, offline-capable, no App Store gatekeeping required.</p>
+        <div class="feature-grid" style="margin-top:40px;text-align:left">
+          <div class="feature-card"><h4>iPhone & iPad</h4><p>Safari → Share → Add to Home Screen. Works like a native app with safe-area support.</p></div>
+          <div class="feature-card"><h4>Android</h4><p>Chrome → menu → Install app. Offline after first load.</p></div>
+          <div class="feature-card"><h4>Mac browser</h4><p>Chrome or Safari — dock it, use it daily. No phantom notch padding on desktop.</p></div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    © 2026 Shamikh Ahmed · Personal OS Portfolio<br>
-    <a href="https://github.com/shamikhahmed" target="_blank" rel="noopener">GitHub</a> ·
-    <a href="enterprise.html">Enterprise</a> ·
-    PWA · Capacitor · TestFlight ready
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="sovereignty.html">Sovereignty</a>
+      <a href="https://github.com/shamikhahmed" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p>© 2026 Capricorn Systems. Built by Shamikh Ahmed.</p>
   </footer>
 
-  <script src="js/apps-data.js"></script>
-  <script>
-    /* Particle network */
-    (function() {
-      const c = document.getElementById('canvas-bg');
-      const ctx = c.getContext('2d');
-      let W, H, pts = [];
-      function resize() {
-        W = c.width = window.innerWidth;
-        H = c.height = window.innerHeight;
-        pts = [];
-        const n = Math.min(80, Math.floor(W * H / 12000));
-        for (let i = 0; i < n; i++) {
-          pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35, r: Math.random() * 1.8 + 0.5 });
-        }
-      }
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        pts.forEach(p => {
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0 || p.x > W) p.vx *= -1;
-          if (p.y < 0 || p.y > H) p.vy *= -1;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0,213,255,0.5)';
-          ctx.fill();
-        });
-        for (let i = 0; i < pts.length; i++) {
-          for (let j = i + 1; j < pts.length; j++) {
-            const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            if (d < 120) {
-              ctx.beginPath();
-              ctx.moveTo(pts[i].x, pts[i].y);
-              ctx.lineTo(pts[j].x, pts[j].y);
-              ctx.strokeStyle = 'rgba(123,95,255,' + (1 - d / 120) * 0.25 + ')';
-              ctx.lineWidth = 0.6;
-              ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(draw);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-      draw();
-    })();
-
-    /* Nav scroll */
-    const nav = document.getElementById('siteNav');
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
-
-    /* Scroll reveal */
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-    /* Sovereignty */
-    document.getElementById('sovereigntyBlock').innerHTML =
-      '<h3>' + DEVICE_SOVEREIGNTY.title + '</h3>' +
-      '<p class="sovereignty-sub">' + DEVICE_SOVEREIGNTY.subtitle + '</p>' +
-      '<ul class="sov-list">' + DEVICE_SOVEREIGNTY.points.map(p => '<li>' + p + '</li>').join('') + '</ul>';
-
-    /* Products — link to detail page, NOT direct app */
-    document.getElementById('productsGrid').innerHTML = APPS_LIST.map(a => `
-      <a class="product-card" href="app.html?a=${a.slug}" style="--pc-accent:${a.accent}">
-        <div class="product-emoji">${a.emoji}</div>
-        <div class="product-name">${a.name}</div>
-        <div class="product-tag">${a.tagline}</div>
-        <div class="product-meta">
-          <span class="product-ver">v${a.ver}</span>
-          <span class="product-explore">Explore →</span>
-        </div>
-      </a>`).join('');
-
-    /* Differentiation cards */
-    const diffs = APPS_LIST.map(a => ({
-      title: a.name + ' — ' + a.personality.split('—')[0].trim(),
-      body: a.aesthetic + '. ' + a.vsMarket.split('.')[0] + '.',
-    }));
-    document.getElementById('diffGrid').innerHTML = diffs.map(d =>
-      '<div class="diff-card"><h4>' + d.title + '</h4><p>' + d.body + '</p></div>'
-    ).join('');
-
-    /* Developer */
-    document.getElementById('devCard').innerHTML =
-      '<div class="dev-avatar">⚡</div>' +
-      '<div><div class="dev-name">' + DEVELOPER.name + '</div>' +
-      '<div class="dev-roles">' + DEVELOPER.roles.join(' · ') + '</div>' +
-      '<p class="dev-bio">' + DEVELOPER.bio + '</p></div>';
-
-    document.getElementById('skillsGrid').innerHTML = DEVELOPER.skills.map(s =>
-      '<div class="skill-block"><h4>' + s.cat + '</h4><div class="skill-tags">' +
-      s.items.map(i => '<span class="skill-tag">' + i + '</span>').join('') +
-      '</div></div>'
-    ).join('');
-
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=2').catch(() => {});
-  </script>
+  <script src="js/products-data.js"></script>
+  <script src="js/capricorn.js"></script>
 </body>
 </html>

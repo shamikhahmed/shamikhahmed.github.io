@@ -2,90 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050508">
-  <link rel="icon" href="icon-192.png">
-  <link rel="stylesheet" href="css/site.css">
-  <title>Product — Shamikh OS</title>
-</head>
-<body>
-  <nav class="site-nav scrolled" id="siteNav">
-    <a href="index.html" class="nav-logo">Shamikh <span>OS</span></a>
-    <div class="nav-links">
-      <a href="index.html#products">All products</a>
-      <a href="enterprise.html">Enterprise</a>
-    </div>
-  </nav>
-
-  <div class="app-page" id="appPage">
-    <header class="app-hero" id="appHero"></header>
-    <div class="app-content" id="appContent"></div>
-  </div>
-
-  <footer class="site-footer">
-    <a href="index.html">← Back to portfolio</a><br>
-    © 2026 Shamikh Ahmed
-  </footer>
-
-  <script src="js/apps-data.js"></script>
+  <meta http-equiv="refresh" content="0;url=product.html">
+  <script src="js/products-data.js"></script>
   <script>
-    const slug = (new URLSearchParams(location.search).get('a') || 'vaultos').toLowerCase();
-    const app = APPS_DATA[slug];
-
-    if (!app) {
-      document.body.innerHTML = '<div style="padding:100px 24px;text-align:center"><h1>App not found</h1><a href="index.html">← Portfolio</a></div>';
-    } else {
-      document.title = app.name + ' — Shamikh OS';
-      document.querySelector('meta[name="theme-color"]').content = app.bg;
-
-      const page = document.getElementById('appPage');
-      if (app.dark === false) page.classList.add('light');
-
-      document.documentElement.style.setProperty('--app-accent', app.accent);
-      document.getElementById('appHero').style.setProperty('--app-accent', app.accent);
-      document.getElementById('appHero').innerHTML =
-        '<div class="app-hero-bg"></div>' +
-        '<a href="index.html#products" class="app-back">← All products</a>' +
-        '<div class="app-hero-emoji">' + app.emoji + '</div>' +
-        '<h1>' + app.name + '</h1>' +
-        '<p class="app-hero-tag">' + app.pitch + '</p>' +
-        '<div class="app-hero-actions">' +
-          '<a href="' + app.url + '" class="btn btn-primary app-launch" rel="noopener">Launch ' + app.name + ' →</a>' +
-          '<a href="' + app.pitchUrl + '" class="btn btn-ghost" target="_blank" rel="noopener">Investor pitch</a>' +
-        '</div>' +
-        '<span class="personality-pill">' + app.personality + '</span>';
-
-      document.getElementById('appContent').innerHTML =
-        '<div class="app-block"><h2>What it does</h2><p style="font-size:17px;line-height:1.65;color:var(--dim)">' + app.tagline + '</p>' +
-        '<div class="mock-ui" aria-hidden="true">' + app.emoji + '</div></div>' +
-
-        '<div class="app-block"><h2>Key capabilities</h2>' +
-        '<ul class="feature-list">' + app.highlights.map(h => '<li>' + h + '</li>').join('') + '</ul></div>' +
-
-        '<div class="app-block"><h2>How it stands out</h2>' +
-        '<div class="vs-box">' + app.vsMarket + '</div></div>' +
-
-        '<div class="app-block"><h2>Built for</h2>' +
-        '<p style="color:var(--dim);font-size:16px">' + app.audience + '</p></div>' +
-
-        '<div class="app-block"><h2>Technology</h2>' +
-        '<div class="tech-row">' + app.tech.map(t => '<span class="tech-pill">' + t + '</span>').join('') + '</div>' +
-        '<p style="margin-top:14px;font-size:13px;color:var(--dim)">v' + app.ver + ' · ' + app.modules + ' modules · <span style="color:var(--app-accent,' + app.accent + ')">⬡ Device Sovereignty</span></p></div>' +
-
-        '<div class="app-block" style="text-align:center;padding:32px 0">' +
-        '<p style="font-size:15px;color:var(--dim);margin-bottom:20px">Ready to use it? Opens the live PWA — add to Home Screen for the full experience.</p>' +
-        '<a href="' + app.url + '" class="btn btn-primary app-launch" style="font-size:17px;padding:18px 36px" rel="noopener">Open ' + app.name + ' →</a>' +
-        '</div>' +
-
-        '<div class="app-links-row">' +
-        '<a href="' + app.pitchUrl + '" target="_blank" rel="noopener">📊 Pitch deck</a>' +
-        '<a href="' + app.privacyUrl + '" target="_blank" rel="noopener">🔒 Privacy</a>' +
-        '<a href="' + app.github + '" target="_blank" rel="noopener">GitHub</a>' +
-        '<a href="enterprise.html">🏢 Enterprise demo</a>' +
-        '</div>';
-    }
-
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=2').catch(() => {});
+    var q = new URLSearchParams(location.search);
+    var a = q.get('a') || q.get('p') || 'vaultcap';
+    if (typeof LEGACY_SLUG_MAP !== 'undefined' && LEGACY_SLUG_MAP[a]) a = LEGACY_SLUG_MAP[a];
+    location.replace('product.html?p=' + a);
   </script>
-</body>
+  <title>Redirecting…</title>
+</head>
+<body><p><a href="product.html">Continue to product page</a></p></body>
 </html>

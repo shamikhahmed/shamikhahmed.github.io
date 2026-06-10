@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e17">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/capricorn.css">
+  <title>Product — Capricorn Systems</title>
+</head>
+<body>
+  <nav class="nav scrolled" id="siteNav">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/logo.svg" alt="" width="28" height="28">
+      Capricorn <em>Systems</em>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#products">Products</a>
+      <a href="sovereignty.html">Sovereignty</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <main class="page" id="productPage"></main>
+
+  <div class="install-bar" id="installBar" hidden>
+    <div>
+      <p id="installTitle">Install</p>
+      <span>Add to Home Screen for the full experience</span>
+    </div>
+    <a href="#" class="btn btn-product" id="installLaunch">Launch →</a>
+  </div>
+
+  <footer class="footer">
+    <a href="index.html#products">← All products</a>
+    <p style="margin-top:12px">© 2026 Capricorn Systems</p>
+  </footer>
+
+  <script src="js/products-data.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      let slug = (params.get('p') || params.get('a') || 'vaultcap').toLowerCase();
+      if (LEGACY_SLUG_MAP[slug]) slug = LEGACY_SLUG_MAP[slug];
+      const p = PRODUCTS[slug];
+
+      if (!p) {
+        document.getElementById('productPage').innerHTML = '<div class="wrap" style="padding:120px 24px;text-align:center"><h1>Product not found</h1><a href="index.html">← Home</a></div>';
+        return;
+      }
+
+      document.title = p.name + ' — Capricorn Systems';
+      document.querySelector('meta[name="theme-color"]').content = p.bg;
+      document.documentElement.style.setProperty('--p-accent', p.accent);
+      if (p.light) document.body.style.background = '#f8f6f3';
+
+      const features = p.features.map(f =>
+        `<div class="feature-card"><h4>${f.t}</h4><p>${f.d}</p></div>`
+      ).join('');
+
+      const vs = p.vs.map(v =>
+        `<tr><td>${v.name}</td><td>${v.note}</td></tr>`
+      ).join('');
+
+      const faq = p.faqs.map(f =>
+        `<details><summary>${f.q}</summary><p>${f.a}</p></details>`
+      ).join('');
+
+      const personas = p.personas.map(x => `<span class="persona">${x}</span>`).join('');
+
+      document.getElementById('productPage').innerHTML =
+        `<section class="product-hero" style="--p-accent:${p.accent}">` +
+          `<div class="wrap">` +
+            `<p class="eyebrow">${p.category} · v${p.ver}</p>` +
+            `<div class="symbol">${p.symbol}</div>` +
+            `<h1>${p.name}</h1>` +
+            `<p class="hook">${p.hook}</p>` +
+            `<div class="actions">` +
+              `<a href="${p.url}" class="btn btn-product">Launch ${p.name} →</a>` +
+              `<a href="${p.pitchUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Investor deck</a>` +
+            `</div>` +
+          `</div>` +
+        `</section>` +
+
+        `<section class="section"><div class="wrap prose reveal">` +
+          `<p class="eyebrow">The problem</p>` +
+          `<h2>Why ${p.name} exists</h2>` +
+          p.problems.map(x => `<p>• ${x}</p>`).join('') +
+        `</div></section>` +
+
+        `<section class="section" style="background:var(--card)"><div class="wrap reveal">` +
+          `<p class="eyebrow">The promise</p>` +
+          `<h2>What changes after install</h2>` +
+          `<p class="lead">${p.promise}</p>` +
+          `<p class="lead" style="margin-top:16px">${p.pitch}</p>` +
+        `</div></section>` +
+
+        `<section class="section"><div class="wrap reveal">` +
+          `<p class="eyebrow">Features</p>` +
+          `<h2>Built to tempt install.</h2>` +
+          `<div class="feature-grid">${features}</div>` +
+        `</div></section>` +
+
+        `<section class="section"><div class="wrap reveal">` +
+          `<p class="eyebrow">Differentiation</p>` +
+          `<h2>Not another template app.</h2>` +
+          `<table class="vs-table"><thead><tr><th>Alternative</th><th>Why ${p.name}</th></tr></thead><tbody>${vs}</tbody></table>` +
+        `</div></section>` +
+
+        `<section class="section"><div class="wrap reveal">` +
+          `<p class="eyebrow">Audience</p>` +
+          `<h2>Who it's for</h2>` +
+          `<div class="personas">${personas}</div>` +
+        `</div></section>` +
+
+        `<section class="section"><div class="wrap reveal faq">` +
+          `<p class="eyebrow">FAQ</p>` +
+          `<h2>Before you install</h2>` +
+          faq +
+        `</div></section>` +
+
+        `<section class="section" style="text-align:center"><div class="wrap reveal">` +
+          `<h2>Ready?</h2>` +
+          `<p class="lead" style="margin:16px auto 28px">Open ${p.name}, add it to your home screen, and own it.</p>` +
+          `<a href="${p.url}" class="btn btn-product">Launch ${p.name} →</a>` +
+          `<p style="margin-top:20px;font-size:13px;color:var(--dim)"><a href="${p.privacyUrl}" target="_blank" rel="noopener">Privacy</a> · <a href="${p.github}" target="_blank" rel="noopener">Source</a></p>` +
+        `</div></section>`;
+
+      const bar = document.getElementById('installBar');
+      const launch = document.getElementById('installLaunch');
+      document.getElementById('installTitle').textContent = 'Install ' + p.name;
+      launch.href = p.url;
+      launch.textContent = 'Launch ' + p.name + ' →';
+      bar.hidden = false;
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        requestAnimationFrame(() => el.classList.add('visible'));
+      });
+    })();
+  </script>
+  <script src="js/capricorn.js"></script>
+</body>
+</html>

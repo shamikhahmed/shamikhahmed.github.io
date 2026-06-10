@@ -1,11 +1,16 @@
-const CACHE = 'os-portfolio-v2';
+const CACHE = 'capricorn-v1';
 const ASSETS = [
   './',
   './index.html',
+  './product.html',
+  './about.html',
+  './sovereignty.html',
+  './solutions.html',
   './app.html',
-  './enterprise.html',
-  './css/site.css',
-  './js/apps-data.js',
+  './css/capricorn.css',
+  './js/products-data.js',
+  './js/capricorn.js',
+  './assets/logo.svg',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
