@@ -1,4 +1,4 @@
-const CACHE = 'capricorn-v6';
+const CACHE = 'capricorn-v7';
 const ASSETS = [
   './',
   './index.html',
@@ -34,6 +34,7 @@ const ASSETS = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './icon-1024.png',
 ];
 
 self.addEventListener('install', e => {

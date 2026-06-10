@@ -96,49 +96,13 @@
     if (grid) {
       grid.innerHTML = PRODUCTS_LIST.map((p) =>
         `<a href="${p.slug}.html" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
-          (typeof productCardThumb === 'function' ? productCardThumb(p) : '') +
-          `<div class="product-card-body">` +
-            `<div class="product-symbol">${p.symbol}</div>` +
-            `<div class="cat">${p.category} · v${p.ver}</div>` +
-            `<h3>${p.name}</h3>` +
-            `<p>${p.tagline}</p>` +
-            `<span class="link">Full ${p.name} page →</span>` +
-          `</div>` +
+          `<div class="product-symbol">${p.symbol}</div>` +
+          `<div class="cat">${p.category} · v${p.ver}</div>` +
+          `<h3>${p.name}</h3>` +
+          `<p>${p.tagline}</p>` +
+          `<span class="link">Full ${p.name} page →</span>` +
         `</a>`
       ).join('');
-    }
-
-    const carousel = document.getElementById('screenshotCarousel');
-    if (carousel) {
-      carousel.innerHTML = PRODUCTS_LIST.map((p, i) => {
-        const src = typeof productScreenshot === 'function' ? productScreenshot(p, 0) : `assets/screenshots/${p.slug}.png`;
-        const alt = (p.screenshotAlts && p.screenshotAlts[0]) || `${p.name} app screenshot`;
-        return (
-          `<a href="${p.slug}.html" class="carousel-card${i === 0 ? ' is-front' : ''}" style="--p-accent:${p.accent};--card-i:${i}">` +
-            `<div class="device-shell device-shell--sm">` +
-              `<div class="device-notch" aria-hidden="true"></div>` +
-              `<div class="device-screen"><img src="${src}" alt="${alt}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async"></div>` +
-            `</div>` +
-            `<span class="carousel-label">${p.name}</span>` +
-          `</a>`
-        );
-      }).join('');
-    }
-
-    const galleryGrid = document.getElementById('screenshotGalleryGrid');
-    if (galleryGrid) {
-      galleryGrid.innerHTML = PRODUCTS_LIST.map((p) => {
-        const src = typeof productScreenshot === 'function' ? productScreenshot(p, 0) : `assets/screenshots/${p.slug}.png`;
-        const alt = (p.screenshotAlts && p.screenshotAlts[0]) || `${p.name} screenshot`;
-        return (
-          `<a href="${p.slug}.html" class="gallery-tile" style="--p-accent:${p.accent}">` +
-            `<div class="gallery-tile-frame">` +
-              `<img src="${src}" alt="${alt}" loading="lazy" decoding="async">` +
-            `</div>` +
-            `<div class="gallery-tile-meta"><strong>${p.name}</strong><span>${p.tagline}</span></div>` +
-          `</a>`
-        );
-      }).join('');
     }
 
     const footerNav = document.getElementById('productNavFooter');
@@ -164,10 +128,10 @@
             `<div class="spotlight-meta">${pills}</div>` +
             `<a href="${p.slug}.html" class="btn btn-ghost">Read the ${p.name} page →</a>` +
           `</div>` +
-          `<div class="spotlight-visual spotlight-visual--shot">` +
-            (typeof deviceFrame === 'function'
-              ? deviceFrame(p, typeof productScreenshot === 'function' ? productScreenshot(p, 0) : `assets/screenshots/${p.slug}.png`, (p.screenshotAlts && p.screenshotAlts[0]) || p.name, '')
-              : `<p class="label">${p.name}</p>`) +
+          `<div class="spotlight-visual">` +
+            `<div class="bar"></div><div class="bar"></div><div class="bar"></div>` +
+            `<p class="label">${p.name}</p>` +
+            `<p style="font-size:14px;color:var(--dim);line-height:1.55">${p.hook}</p>` +
           `</div>` +
         `</article>`;
       }).join('');
@@ -194,7 +158,5 @@
   const layoutSlug = document.body.dataset.layoutReady || document.body.dataset.product;
   if (layoutSlug) initProductLayout(layoutSlug);
 
-  if (typeof initScreenshotGalleries === 'function') initScreenshotGalleries();
-  if (typeof initHomeCarousel === 'function') initHomeCarousel();
   if (typeof initMobileNav === 'function') initMobileNav();
 })();
