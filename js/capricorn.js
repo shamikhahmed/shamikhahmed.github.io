@@ -18,49 +18,9 @@
     reveals.forEach((el) => el.classList.add('visible'));
   }
 
-  window.initProductLayout = function (slug) {
-    if (slug === 'vaultcap') initVaultRail();
-    if (slug === 'pulsecap') initPulseStrip();
+  window.initProductLayout = function () {
+    if (typeof initProductRail === 'function') initProductRail();
   };
-
-  function initVaultRail() {
-    const links = document.querySelectorAll('.vault-rail-link');
-    const sections = Array.from(links)
-      .map((a) => document.getElementById(a.dataset.section))
-      .filter(Boolean);
-    if (!sections.length) return;
-
-    const setActive = (id) => {
-      links.forEach((a) => a.classList.toggle('is-active', a.dataset.section === id));
-    };
-
-    if (!reducedMotion) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
-      sections.forEach((s) => io.observe(s));
-    }
-
-    links.forEach((a) => {
-      a.addEventListener('click', (ev) => {
-        const target = document.getElementById(a.dataset.section);
-        if (!target) return;
-        ev.preventDefault();
-        target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
-        setActive(a.dataset.section);
-      });
-    });
-
-    if (sections[0]) setActive(sections[0].id);
-  }
-
-  function initPulseStrip() {
-    const strip = document.querySelector('.feature-h-scroll');
-    if (!strip) return;
-    strip.setAttribute('tabindex', '0');
-  }
 
   const canvas = document.getElementById('starfield');
   if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

@@ -24,16 +24,12 @@
     document.documentElement.style.setProperty('--text', p.text || '#4a1942');
     document.documentElement.style.setProperty('--dim', p.textDim || '#831843');
   }
-  document.body.classList.add('layout-' + p.slug);
+  document.body.classList.add('layout-' + p.slug, 'layout-product');
 
   const accent = `style="--p-accent:${p.accent}"`;
 
   const features = p.features.map(f =>
     `<div class="feature-card"><h4>${f.t}</h4><p>${f.d}</p></div>`
-  ).join('');
-
-  const featuresH = p.features.map((f, i) =>
-    `<article class="feature-card feature-h-card" style="--card-i:${i}"><h4>${f.t}</h4><p>${f.d}</p></article>`
   ).join('');
 
   const vs = p.vs.map(v =>
@@ -77,6 +73,17 @@
           `</div>` +
         `</div>` +
       `</section>`,
+
+    nameStory: () =>
+      p.nameStory ? (
+        `<section class="section section-alt" id="name" ${accent}>` +
+          `<div class="wrap reveal">` +
+            `<p class="eyebrow">Why this name</p>` +
+            `<h2>Why ${p.name}?</h2>` +
+            `<p class="lead name-story">${p.nameStory}</p>` +
+          `</div>` +
+        `</section>`
+      ) : '',
 
     pitch: () =>
       `<section class="section section-alt" id="pitch" ${accent}>` +
@@ -128,23 +135,25 @@
         `<div class="feature-grid">${features}</div>` +
       `</div></section>`,
 
-    featuresH: () =>
-      `<section class="section pulse-features" id="features" ${accent}>` +
-        `<div class="wrap reveal">` +
-          `<p class="eyebrow">Features</p>` +
-          `<h2>Built to tempt install.</h2>` +
-          `<p class="lead" style="margin-top:12px">Swipe the strip — every capability runs on your device.</p>` +
+    featuresTable: () =>
+      `<section class="section ledger-features" id="features"><div class="wrap reveal">` +
+        `<p class="eyebrow">Features</p>` +
+        `<h2>Built to tempt install.</h2>` +
+        `<p class="lead" style="margin-top:12px">Every capability runs on your device. No account wall. No sync tax.</p>` +
+        `<div class="ledger-table-wrap">` +
+          `<table class="feature-table"><thead><tr><th>Capability</th><th>Detail</th></tr></thead><tbody>` +
+            p.features.map(f => `<tr><td>${f.t}</td><td>${f.d}</td></tr>`).join('') +
+          `</tbody></table>` +
         `</div>` +
-        `<div class="feature-h-scroll" role="region" aria-label="Feature carousel">` +
-          `<div class="feature-h-track">${featuresH}</div>` +
-        `</div>` +
-      `</section>`,
+      `</div></section>`,
 
     vs: () =>
       `<section class="section section-alt" id="compare"><div class="wrap reveal">` +
         `<p class="eyebrow">Differentiation</p>` +
         `<h2>Not another template app.</h2>` +
-        `<table class="vs-table"><thead><tr><th>Alternative</th><th>Why ${p.name}</th></tr></thead><tbody>${vs}</tbody></table>` +
+        `<div class="table-wrap">` +
+          `<table class="vs-table"><thead><tr><th>Alternative</th><th>Why ${p.name}</th></tr></thead><tbody>${vs}</tbody></table>` +
+        `</div>` +
       `</div></section>`,
 
     vsDense: () =>
@@ -195,6 +204,7 @@
 
   const RAIL = [
     { id: 'overview', label: 'Overview' },
+    { id: 'name', label: 'The name' },
     { id: 'pitch', label: 'Pitch' },
     { id: 'preview', label: 'Screenshots' },
     { id: 'experience', label: 'Experience' },
@@ -206,89 +216,30 @@
     { id: 'faq', label: 'FAQ' },
     { id: 'related', label: 'Related' },
     { id: 'install', label: 'Install' },
-  ];
+  ].filter((r) => r.id !== 'name' || p.nameStory);
 
-  const LAYOUTS = {
-    vaultcap: () =>
-      `<div class="vault-shell">` +
-        `<aside class="vault-rail" aria-label="Page sections">` +
-          `<nav class="vault-rail-nav">` +
-            RAIL.map(r => `<a href="#${r.id}" class="vault-rail-link" data-section="${r.id}">${r.label}</a>`).join('') +
-          `</nav>` +
-        `</aside>` +
-        `<div class="vault-main">` +
-          F.hero() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta() +
-        `</div>` +
-      `</div>`,
+  function shell(mainHtml) {
+    return `<div class="product-shell">` +
+      `<aside class="product-rail" aria-label="Page sections">` +
+        `<nav class="product-rail-nav">` +
+          RAIL.map(r => `<a href="#${r.id}" class="product-rail-link" data-section="${r.id}">${r.label}</a>`).join('') +
+        `</nav>` +
+      `</aside>` +
+      `<div class="product-main">${mainHtml}</div>` +
+    `</div>`;
+  }
 
-    pulsecap: () =>
-      F.hero() + F.pitch() + F.mock() + F.experience() +
-      `<div class="pulse-diagonal" aria-hidden="true"></div>` +
-      F.problems() + F.promise() + F.featuresH() +
-      `<div class="pulse-diagonal pulse-diagonal--flip" aria-hidden="true"></div>` +
-      F.vs() + F.audience() + F.faq() + F.related() + F.cta(),
+  const standard = () =>
+    F.hero() + F.nameStory() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() +
+    F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta();
 
-    prismcap: () =>
-      `<div class="prism-scroll">` +
-        `<div class="prism-panel">${F.hero()}</div>` +
-        `<div class="prism-panel prism-panel--alt">${F.pitch()}</div>` +
-        `<div class="prism-panel">${F.mock()}</div>` +
-        `<div class="prism-panel">${F.experience()}</div>` +
-        `<div class="prism-panel">${F.problems()}</div>` +
-        `<div class="prism-panel prism-panel--alt">${F.promise()}</div>` +
-        `<div class="prism-panel">${F.featuresGrid()}</div>` +
-        `<div class="prism-panel prism-panel--alt">${F.vs()}</div>` +
-        `<div class="prism-panel">${F.audience()}</div>` +
-        `<div class="prism-panel prism-panel--alt">${F.faq()}</div>` +
-        `<div class="prism-panel">${F.related()}</div>` +
-        `<div class="prism-panel prism-panel--cta">${F.cta()}</div>` +
-      `</div>`,
+  const ledger = () =>
+    F.hero() + F.nameStory() + F.pitch() + F.ticker() + F.mock() + F.experience() + F.problems() + F.promise() +
+    F.featuresTable() + F.vsDense() + F.audience() + F.faq() + F.related() + F.cta();
 
-    steadycap: () =>
-      `<div class="steady-flow">` +
-        F.hero() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta() +
-      `</div>`,
-
-    ledgercap: () =>
-      F.hero() + F.pitch() + F.ticker() + F.mock() + F.experience() + F.problems() + F.promise() +
-      `<section class="section ledger-features" id="features"><div class="wrap reveal">` +
-        `<p class="eyebrow">Features</p>` +
-        `<h2>Built to tempt install.</h2>` +
-        `<p class="lead" style="margin-top:12px">Every capability runs on your device. No account wall. No sync tax.</p>` +
-        `<table class="feature-table"><thead><tr><th>Capability</th><th>Detail</th></tr></thead><tbody>` +
-          p.features.map(f => `<tr><td>${f.t}</td><td>${f.d}</td></tr>`).join('') +
-        `</tbody></table>` +
-      `</div></section>` +
-      F.vsDense() + F.audience() + F.faq() + F.related() + F.cta(),
-
-    deeponycap: () => {
-      const bubbleFeatures = p.features.map((f, i) =>
-        `<div class="feature-card" style="--card-i:${i}"><h4>${f.t}</h4><p>${f.d}</p></div>`
-      ).join('');
-      return `<div class="deepony-flow">` +
-        F.hero() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() +
-        `<section class="section deepony-gradient-a" id="features"><div class="wrap reveal">` +
-          `<p class="eyebrow">Features</p>` +
-          `<h2>Built to tempt install.</h2>` +
-          `<p class="lead" style="margin-top:12px">Every capability runs on your device. No account wall. No sync tax.</p>` +
-          `<div class="feature-grid deepony-bubbles">${bubbleFeatures}</div>` +
-        `</div></section>` +
-        F.vs() +
-        `<section class="section deepony-gradient-b" id="audience"><div class="wrap reveal">` +
-          `<p class="eyebrow">Audience</p>` +
-          `<h2>Who it's for</h2>` +
-          `<div class="personas deepony-personas">${personas}</div>` +
-        `</div></section>` +
-        F.faq() + F.related() + F.cta() +
-      `</div>`;
-    },
-  };
-
-  const render = LAYOUTS[p.slug] || (() =>
-    F.hero() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() + F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta()
+  root.innerHTML = shell(
+    p.slug === 'ledgercap' ? ledger() : standard()
   );
-
-  root.innerHTML = render();
 
   const bar = document.getElementById('installBar');
   if (bar) {
@@ -309,4 +260,41 @@
   document.querySelectorAll('.reveal').forEach(el => {
     requestAnimationFrame(() => el.classList.add('visible'));
   });
+
+  initProductRail();
 })();
+
+function initProductRail() {
+  const links = document.querySelectorAll('.product-rail-link');
+  const sections = Array.from(links)
+    .map((a) => document.getElementById(a.dataset.section))
+    .filter(Boolean);
+  if (!sections.length) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const setActive = (id) => {
+    links.forEach((a) => a.classList.toggle('is-active', a.dataset.section === id));
+  };
+
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    }, { rootMargin: '-28% 0px -58% 0px', threshold: 0 });
+    sections.forEach((s) => io.observe(s));
+  }
+
+  links.forEach((a) => {
+    a.addEventListener('click', (ev) => {
+      const target = document.getElementById(a.dataset.section);
+      if (!target) return;
+      ev.preventDefault();
+      target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      setActive(a.dataset.section);
+    });
+  });
+
+  if (sections[0]) setActive(sections[0].id);
+}
