@@ -1,7 +1,13 @@
-const CACHE = 'capricorn-v2';
+const CACHE = 'capricorn-v3';
 const ASSETS = [
   './',
   './index.html',
+  './vaultcap.html',
+  './pulsecap.html',
+  './prismcap.html',
+  './steadycap.html',
+  './ledgercap.html',
+  './deeponycap.html',
   './product.html',
   './about.html',
   './sovereignty.html',
@@ -9,6 +15,7 @@ const ASSETS = [
   './app.html',
   './css/capricorn.css',
   './js/products-data.js',
+  './js/product-page.js',
   './js/capricorn.js',
   './assets/logo.svg',
   './manifest.json',

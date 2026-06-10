@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0;url=product.html">
   <script src="js/products-data.js"></script>
   <script>
     var q = new URLSearchParams(location.search);
-    var a = q.get('a') || q.get('p') || 'vaultcap';
+    var a = (q.get('a') || q.get('p') || 'vaultcap').toLowerCase();
     if (typeof LEGACY_SLUG_MAP !== 'undefined' && LEGACY_SLUG_MAP[a]) a = LEGACY_SLUG_MAP[a];
-    location.replace('product.html?p=' + a);
+    location.replace(a + '.html');
   </script>
   <title>Redirecting…</title>
 </head>
-<body><p><a href="product.html">Continue to product page</a></p></body>
+<body><p><a href="vaultcap.html">Continue to product page</a></p></body>
 </html>

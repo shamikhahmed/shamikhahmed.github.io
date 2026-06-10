@@ -45,17 +45,51 @@
     window.addEventListener('resize', resize, { passive: true });
   }
 
-  const grid = document.getElementById('productsGrid');
-  if (grid && typeof PRODUCTS !== 'undefined') {
-    grid.innerHTML = PRODUCTS_LIST.map((p) =>
-      `<a href="product.html?p=${p.slug}" class="product-card" style="--p-accent:${p.accent}">` +
-        `<div class="product-symbol">${p.symbol}</div>` +
-        `<div class="cat">${p.category}</div>` +
-        `<h3>${p.name}</h3>` +
-        `<p>${p.tagline}</p>` +
-        `<span class="link">Explore ${p.name} →</span>` +
-      `</a>`
-    ).join('');
+  if (typeof PRODUCTS !== 'undefined') {
+    const grid = document.getElementById('productsGrid');
+    if (grid) {
+      grid.innerHTML = PRODUCTS_LIST.map((p) =>
+        `<a href="${p.slug}.html" class="product-card" style="--p-accent:${p.accent}">` +
+          `<div class="product-symbol">${p.symbol}</div>` +
+          `<div class="cat">${p.category} · v${p.ver}</div>` +
+          `<h3>${p.name}</h3>` +
+          `<p>${p.tagline}</p>` +
+          `<span class="link">Full ${p.name} page →</span>` +
+        `</a>`
+      ).join('');
+    }
+
+    const footerNav = document.getElementById('productNavFooter');
+    if (footerNav) {
+      footerNav.innerHTML = PRODUCTS_LIST.map((p) =>
+        `<a href="${p.slug}.html">${p.name}</a>`
+      ).join('');
+    }
+
+    const spotlights = document.getElementById('spotlightList');
+    if (spotlights) {
+      spotlights.innerHTML = PRODUCTS_LIST.map((p, i) => {
+        const flip = i % 2 === 1 ? ' flip' : '';
+        const pills = (p.highlights || []).slice(0, 4).map(h =>
+          `<span class="spotlight-pill">${h}</span>`
+        ).join('');
+        return `<article class="spotlight${flip}" style="--p-accent:${p.accent}">` +
+          `<div class="spotlight-card">` +
+            `<div class="symbol">${p.symbol}</div>` +
+            `<p class="eyebrow" style="margin-bottom:8px">${p.category}</p>` +
+            `<h3>${p.name}</h3>` +
+            `<p>${p.pitch}</p>` +
+            `<div class="spotlight-meta">${pills}</div>` +
+            `<a href="${p.slug}.html" class="btn btn-ghost">Read the ${p.name} page →</a>` +
+          `</div>` +
+          `<div class="spotlight-visual">` +
+            `<div class="bar"></div><div class="bar"></div><div class="bar"></div>` +
+            `<p class="label">${p.name}</p>` +
+            `<p style="font-size:14px;color:var(--dim);line-height:1.55">${p.hook}</p>` +
+          `</div>` +
+        `</article>`;
+      }).join('');
+    }
   }
 
   const sov = document.getElementById('sovereigntyBlock');
@@ -67,6 +101,11 @@
 
   const legacy = new URLSearchParams(location.search).get('a');
   if (legacy && typeof LEGACY_SLUG_MAP !== 'undefined' && LEGACY_SLUG_MAP[legacy]) {
-    location.replace('product.html?p=' + LEGACY_SLUG_MAP[legacy]);
+    location.replace(LEGACY_SLUG_MAP[legacy] + '.html');
+  }
+
+  const legacyP = new URLSearchParams(location.search).get('p');
+  if (legacyP && typeof PRODUCTS !== 'undefined' && PRODUCTS[legacyP]) {
+    location.replace(legacyP + '.html');
   }
 })();

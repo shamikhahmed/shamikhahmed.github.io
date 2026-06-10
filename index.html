@@ -11,6 +11,9 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/capricorn.css">
   <title>Capricorn Systems — Software on your device</title>
 </head>
@@ -19,11 +22,12 @@
 
   <nav class="nav" id="siteNav">
     <a href="index.html" class="nav-brand">
-      <img src="assets/logo.svg" alt="" width="28" height="28">
+      <img src="assets/logo.svg" alt="" width="42" height="42">
       Capricorn <em>Systems</em>
     </a>
     <div class="nav-links">
       <a href="#products">Products</a>
+      <a href="#spotlights">Deep dive</a>
       <a href="sovereignty.html">Sovereignty</a>
       <a href="about.html">About</a>
       <a href="solutions.html">Solutions</a>
@@ -33,7 +37,7 @@
 
   <main class="page">
     <section class="hero">
-      <img src="assets/logo.svg" alt="Capricorn Systems" class="hero-logo" width="64" height="64">
+      <img src="assets/logo.svg" alt="Capricorn Systems" class="hero-logo" width="140" height="140">
       <p class="eyebrow">Capricorn Systems</p>
       <h1>Software that lives on your device — <span class="grad">not in our cloud.</span></h1>
       <p class="lead">Six premium applications for finance, performance, play, recovery, wealth, and collection. Each built like its own company. United by one rule: your data stays yours.</p>
@@ -47,12 +51,49 @@
       </div>
     </section>
 
+    <section class="section section-tight section-alt reveal">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow">By the numbers</p>
+        <h2>Six installs. Zero subscriptions required.</h2>
+        <div class="stats-bar">
+          <div class="stat-item"><strong>6</strong><span>Premium products — each with its own visual world</span></div>
+          <div class="stat-item"><strong>0</strong><span>Mandatory cloud accounts across the constellation</span></div>
+          <div class="stat-item"><strong>100%</strong><span>Offline-capable after first load</span></div>
+          <div class="stat-item"><strong>1</strong><span>Rule: Device Sovereignty on every product</span></div>
+        </div>
+      </div>
+    </section>
+
     <section class="section reveal" id="products">
       <div class="wrap">
         <p class="eyebrow">Product constellation</p>
         <h2>Six worlds. Six installs.<br>One sky.</h2>
-        <p class="lead" style="margin-top:16px">Every Capricorn product looks and feels distinct — because your vault should never feel like your fitness app. Tap a product for the full story, then install when you're ready.</p>
+        <p class="lead" style="margin-top:16px">Every Capricorn product looks and feels distinct — because your vault should never feel like your fitness app. Each product has its own dedicated page. Tap through, then install when you're ready.</p>
         <div class="products-grid" id="productsGrid" style="margin-top:48px"></div>
+        <div class="product-nav-footer" id="productNavFooter"></div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="spotlights">
+      <div class="wrap">
+        <p class="eyebrow">Product deep dives</p>
+        <h2>Meet each Capricorn product.</h2>
+        <p class="lead" style="margin-top:16px">Long-form pages for every app — problems, promises, features, and install paths. No generic landing template reused six times.</p>
+        <div class="spotlight-list" id="spotlightList"></div>
+      </div>
+    </section>
+
+    <section class="section section-alt reveal">
+      <div class="wrap">
+        <p class="eyebrow">How we build</p>
+        <h2>Enterprise discipline.<br>Personal software warmth.</h2>
+        <p class="lead" style="margin-top:16px">Capricorn products are progressive web apps with Playwright smoke tests, security docs, and Capacitor paths to the App Store — without turning your life into someone else's dataset.</p>
+        <div class="principles-grid">
+          <div class="principle-card"><h4>Distinct identity per product</h4><p>VaultCap feels like a Swiss vault. PulseCap feels kinetic. PrismCap feels like an arcade. Same company, six different design languages.</p></div>
+          <div class="principle-card"><h4>Offline by default</h4><p>Your vault, workouts, games, and ledgers load once and keep working on planes, trains, and spotty Wi‑Fi.</p></div>
+          <div class="principle-card"><h4>No rent-seeking cloud</h4><p>We don't need your data to exist. Capricorn makes software you install — not software that installs surveillance on you.</p></div>
+          <div class="principle-card"><h4>Built for real lives</h4><p>Multinational finance, diaspora wealth, recovery journeys, party nights, and kids' collections — not Silicon Valley defaults.</p></div>
+        </div>
       </div>
     </section>
 
@@ -68,20 +109,44 @@
 
     <section class="section reveal">
       <div class="wrap" style="text-align:center">
+        <p class="eyebrow">Founder</p>
+        <h2>Built by Shamikh Ahmed.</h2>
+        <p class="lead" style="margin:16px auto 0;max-width:680px">Capricorn Systems is a company-first portfolio — six operating-system-grade apps for problems that cloud apps keep getting wrong. Founder & CEO Shamikh Ahmed ships each product with the same standard: your device, your data, your call.</p>
+        <a href="about.html" class="btn btn-ghost" style="margin-top:28px">About Capricorn →</a>
+      </div>
+    </section>
+
+    <section class="section section-alt reveal">
+      <div class="wrap" style="text-align:center">
         <p class="eyebrow">Install</p>
         <h2>Made for your lock screen.</h2>
         <p class="lead" style="margin:16px auto 0">Every Capricorn app is a Progressive Web App. Open in Safari or Chrome, then Add to Home Screen — full-screen, offline-capable, no App Store gatekeeping required.</p>
         <div class="feature-grid" style="margin-top:40px;text-align:left">
           <div class="feature-card"><h4>iPhone & iPad</h4><p>Safari → Share → Add to Home Screen. Works like a native app with safe-area support.</p></div>
           <div class="feature-card"><h4>Android</h4><p>Chrome → menu → Install app. Offline after first load.</p></div>
-          <div class="feature-card"><h4>Mac browser</h4><p>Chrome or Safari — dock it, use it daily. No phantom notch padding on desktop.</p></div>
+          <div class="feature-card"><h4>Mac browser</h4><p>Chrome or Safari — dock it, use it daily. Desktop layouts tuned for wide screens.</p></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="wrap" style="text-align:center">
+        <p class="eyebrow">Solutions</p>
+        <h2>Demos for teams & investors.</h2>
+        <p class="lead" style="margin:16px auto 28px">Thirty-minute walkthrough scripts, enterprise checklists, and B2B positioning — without compromising the consumer privacy story.</p>
+        <a href="solutions.html" class="btn btn-primary">View solutions →</a>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="footer-links">
+      <a href="vaultcap.html">VaultCap</a>
+      <a href="pulsecap.html">PulseCap</a>
+      <a href="prismcap.html">PrismCap</a>
+      <a href="steadycap.html">SteadyCap</a>
+      <a href="ledgercap.html">LedgerCap</a>
+      <a href="deeponycap.html">DeePonyCap</a>
       <a href="about.html">About</a>
       <a href="solutions.html">Solutions</a>
       <a href="sovereignty.html">Sovereignty</a>
