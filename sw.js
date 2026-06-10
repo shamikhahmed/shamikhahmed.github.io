@@ -1,4 +1,4 @@
-const CACHE = 'capricorn-v8';
+const CACHE = 'capricorn-v9';
 
 function shots(slug) {
   return Array.from({ length: 8 }, (_, i) =>

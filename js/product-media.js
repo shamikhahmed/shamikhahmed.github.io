@@ -132,14 +132,37 @@ function initHomeCarousel() {
   const track = document.getElementById('screenshotCarousel');
   if (!track || typeof PRODUCTS_LIST === 'undefined') return;
   const cards = track.querySelectorAll('.carousel-card');
-  if (cards.length < 2) return;
+  const dots = track.querySelectorAll('.carousel-dot');
+  if (cards.length < 1) return;
+
   let i = 0;
-  const rotate = () => {
+  let timer = null;
+
+  const show = (n) => {
+    i = (n + cards.length) % cards.length;
     cards.forEach((c, j) => c.classList.toggle('is-front', j === i));
-    i = (i + 1) % cards.length;
+    dots.forEach((d, j) => d.classList.toggle('is-active', j === i));
   };
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    setInterval(rotate, 4500);
+
+  dots.forEach((d) => {
+    d.addEventListener('click', (e) => {
+      e.stopPropagation();
+      show(Number(d.dataset.index));
+      if (timer) clearInterval(timer);
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        timer = setInterval(() => show(i + 1), 5000);
+      }
+    });
+  });
+
+  show(0);
+
+  if (cards.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    timer = setInterval(() => show(i + 1), 5000);
+    track.addEventListener('mouseenter', () => { if (timer) clearInterval(timer); });
+    track.addEventListener('mouseleave', () => {
+      timer = setInterval(() => show(i + 1), 5000);
+    });
   }
 }
 

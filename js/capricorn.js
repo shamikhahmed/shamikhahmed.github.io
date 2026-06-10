@@ -94,12 +94,18 @@
   if (typeof PRODUCTS !== 'undefined') {
     const carousel = document.getElementById('screenshotCarousel');
     if (carousel && typeof productScreenshot === 'function' && typeof deviceFrame === 'function') {
-      carousel.innerHTML = PRODUCTS_LIST.map((p, i) =>
-        `<a href="${p.slug}.html" class="carousel-card${i === 0 ? ' is-front' : ''}" style="--card-i:${i};--p-accent:${p.accent}">` +
-          deviceFrame(p, productScreenshot(p, 0), (p.screenshotAlts && p.screenshotAlts[0]) || p.name, '') +
-          `<span class="carousel-label">${p.name} · ${p.tagline}</span>` +
-        `</a>`
-      ).join('');
+      carousel.innerHTML =
+        PRODUCTS_LIST.map((p, i) =>
+          `<a href="${p.slug}.html" class="carousel-card${i === 0 ? ' is-front' : ''}" data-index="${i}" style="--p-accent:${p.accent}">` +
+            deviceFrame(p, productScreenshot(p, 0), (p.screenshotAlts && p.screenshotAlts[0]) || p.name, '') +
+            `<span class="carousel-label">${p.name} · ${p.tagline}</span>` +
+          `</a>`
+        ).join('') +
+        `<div class="carousel-dots" aria-hidden="true">` +
+          PRODUCTS_LIST.map((_, i) =>
+            `<button type="button" class="carousel-dot${i === 0 ? ' is-active' : ''}" data-index="${i}" aria-label="Show product ${i + 1}"></button>`
+          ).join('') +
+        `</div>`;
       if (typeof initHomeCarousel === 'function') initHomeCarousel();
     }
 
@@ -142,10 +148,14 @@
             `<div class="spotlight-meta">${pills}</div>` +
             `<a href="${p.slug}.html" class="btn btn-ghost">Read the ${p.name} page →</a>` +
           `</div>` +
-          `<div class="spotlight-visual">` +
-            `<div class="bar"></div><div class="bar"></div><div class="bar"></div>` +
-            `<p class="label">${p.name}</p>` +
-            `<p style="font-size:14px;color:var(--dim);line-height:1.55">${p.hook}</p>` +
+          `<div class="spotlight-visual spotlight-visual--shot">` +
+            (typeof deviceFrame === 'function'
+              ? deviceFrame(p, productScreenshot(p, 1), (p.screenshotAlts && p.screenshotAlts[1]) || `${p.name} dashboard`, '')
+              : '') +
+            `<div class="spotlight-visual-caption">` +
+              `<strong>${p.name}</strong>` +
+              `<span>${p.hook}</span>` +
+            `</div>` +
           `</div>` +
         `</article>`;
       }).join('');

@@ -19,23 +19,60 @@
     </a>
     <div class="nav-links">
       <a href="index.html#products">Products</a>
+      <a href="index.html#spotlights">Deep dive</a>
       <a href="sovereignty.html">Sovereignty</a>
       <a href="solutions.html">Solutions</a>
     </div>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
   </nav>
 
   <main class="page">
     <section class="section" style="padding-top:calc(120px + var(--safe-t))">
-      <div class="wrap prose reveal visible">
+      <div class="wrap reveal visible">
         <p class="eyebrow">About</p>
-        <h1>Capricorn Systems</h1>
-        <p class="lead" style="margin:20px 0 32px">Capricorn is my star — this company is built to shine on its own. We make premium personal software that lives on your device, not in our cloud.</p>
+        <h1 style="font-size:clamp(2.2rem,5vw,3.5rem)">Capricorn Systems</h1>
+        <p class="lead" style="margin:20px 0 32px;max-width:720px">Capricorn is my star — this company is built to shine on its own. We make premium personal software that lives on your device, not in our cloud.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt reveal">
+      <div class="wrap">
+        <div class="stats-bar">
+          <div class="stat-item"><strong>6</strong><span>Premium products — each with its own visual world and investor deck</span></div>
+          <div class="stat-item"><strong>0</strong><span>Mandatory cloud accounts across the constellation</span></div>
+          <div class="stat-item"><strong>100%</strong><span>Offline-capable PWAs after first load</span></div>
+          <div class="stat-item"><strong>1</strong><span>Rule: Device Sovereignty on every product</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="wrap prose">
+        <h2>What we build</h2>
         <p>Most apps today are rented experiences: your data on their servers, your habits in their models, your privacy in their terms. Capricorn Systems builds the opposite — six operating-system-grade applications, each with its own visual identity, each engineered for offline sovereignty.</p>
         <p>From encrypted finance to party arcade games, from recovery systems to Pakistani wealth ledgers, every product is designed to feel like it came from a different world-class team. The only thread is Device Sovereignty.</p>
-        <div class="feature-card" style="margin-top:40px">
+      </div>
+    </section>
+
+    <section class="section section-alt reveal">
+      <div class="wrap">
+        <p class="eyebrow">The constellation</p>
+        <h2>Six products. One company.</h2>
+        <div class="products-grid" id="aboutProductsGrid" style="margin-top:40px"></div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="feature-card" style="max-width:640px;margin:0 auto;padding:36px">
           <p class="eyebrow" style="margin-bottom:8px">Leadership</p>
-          <h3 style="font-family:var(--display);margin-bottom:4px">Shamikh Ahmed</h3>
-          <p style="color:var(--dim);font-size:14px">Founder & CEO, Capricorn Systems</p>
+          <h3 style="font-family:var(--display);font-size:1.75rem;margin-bottom:8px">Shamikh Ahmed</h3>
+          <p style="color:var(--dim);font-size:15px;line-height:1.6;margin-bottom:20px">Founder & CEO, Capricorn Systems. Ships each product with the same standard: your device, your data, your call.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="index.html#products" class="btn btn-primary">Explore products →</a>
+            <a href="sovereignty.html" class="btn btn-ghost">Device Sovereignty</a>
+            <a href="https://github.com/shamikhahmed" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
+          </div>
         </div>
       </div>
     </section>
@@ -45,6 +82,26 @@
     <a href="index.html">← Home</a>
     <p style="margin-top:12px">© 2026 Capricorn Systems</p>
   </footer>
+  <script src="js/products-data.js"></script>
+  <script src="js/product-media.js"></script>
+  <script>
+    (function () {
+      const grid = document.getElementById('aboutProductsGrid');
+      if (!grid || typeof PRODUCTS_LIST === 'undefined') return;
+      grid.innerHTML = PRODUCTS_LIST.map((p) =>
+        `<a href="${p.slug}.html" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
+          (typeof productCardThumb === 'function' ? productCardThumb(p) : '') +
+          `<div class="product-card-body">` +
+            `<div class="product-symbol">${p.symbol}</div>` +
+            `<div class="cat">${p.category}</div>` +
+            `<h3>${p.name}</h3>` +
+            `<p>${p.tagline}</p>` +
+            `<span class="link">View page →</span>` +
+          `</div>` +
+        `</a>`
+      ).join('');
+    })();
+  </script>
   <script src="js/capricorn.js"></script>
 </body>
 </html>

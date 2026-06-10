@@ -250,8 +250,7 @@
       `</div>`,
 
     ledgercap: () =>
-      F.ticker() +
-      F.hero() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() +
+      F.hero() + F.pitch() + F.ticker() + F.mock() + F.experience() + F.problems() + F.promise() +
       `<section class="section ledger-features" id="features"><div class="wrap reveal">` +
         `<p class="eyebrow">Features</p>` +
         `<h2>Built to tempt install.</h2>` +
