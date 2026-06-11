@@ -11,18 +11,11 @@ Canonical screenshot store for [shamikhahmed.github.io](https://shamikhahmed.git
 | `{slug}-ipad.png` | iPad frame |
 | `{slug}-mac.png` | Mac frame |
 
-## Current slugs (Capricorn)
+## Current slugs (all 8 Cap apps)
 
-`vaultcap`, `pulsecap`, `prismcap`, `steadycap`, `ledgercap`, `deeponycap` — 9 files each (60 total).
+`vaultcap`, `pulsecap`, `prismcap`, `steadycap`, `ledgercap`, `deeponycap`, `scentcap`, `auracap` — 11 files each (88 total).
 
-## Standalone apps (add when ready)
-
-| Slug | App |
-|------|-----|
-| `scentcap` | ScentCap — fragrance wardrobe PWA |
-| `auracap` | AuraCap — Apple ecosystem studio |
-
-Expected set per slug: 11 files (hero + 7 gallery + ipad + mac), same pattern as above.
+Capricorn six use 9 gallery files (`-2` … `-8` + ipad + mac). ScentCap and AuraCap include `-9.png` as an extra gallery frame.
 
 ## Regenerate
 
