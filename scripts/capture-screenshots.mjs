@@ -217,43 +217,38 @@ const APPS = [
     landing: `${BASE}/ScentCap/landing.html`,
     setupUrl: `${BASE}/ScentCap/`,
     setup: async (page) => {
-      await page.goto(`${BASE}/ScentCap/onboarding`, { waitUntil: 'networkidle', timeout: 90000 });
-      const demo = page.getByRole('button', { name: /Explore with sample wardrobe/i });
-      await demo.click({ timeout: 15000 });
-      await page.waitForURL(/\/ScentCap\/?$/, { timeout: 30000 }).catch(() => {});
-      await page.getByText(/demo wardrobe/i).waitFor({ timeout: 15000 }).catch(() => {});
+      await page.getByRole('button', { name: /Explore with sample wardrobe/i }).click({ timeout: 20000 });
+      await page.getByText(/demo wardrobe/i).waitFor({ timeout: 20000 }).catch(() => {});
       await waitMs(page, 2500);
     },
     navs: [
-      { route: '/collection' },
-      { route: '/advisor' },
-      { route: '/layering' },
-      { route: '/calendar' },
-      { route: '/analytics' },
-      { route: '/settings' },
+      { link: 'Wardrobe' },
+      { link: 'Advisor' },
+      { link: 'Layer' },
+      { link: 'Calendar' },
+      { link: 'Settings' },
+      { link: 'Today' },
     ],
-    deviceRoute: '/',
+    deviceLink: 'Today',
   },
   {
     slug: 'auracap',
     landing: `${BASE}/AuraCap/landing.html`,
     setupUrl: `${BASE}/AuraCap/`,
     setup: async (page) => {
-      await page.goto(`${BASE}/AuraCap/`, { waitUntil: 'networkidle', timeout: 90000 });
-      await page.getByRole('button', { name: /Try with sample wardrobe/i }).click({ timeout: 15000 });
-      await page.getByText(/demo/i).waitFor({ timeout: 15000 }).catch(() => {});
-      await page.getByText('Aura Score').waitFor({ timeout: 15000 }).catch(() => {});
+      await page.getByRole('button', { name: /Try with sample wardrobe/i }).click({ timeout: 20000 });
+      await page.getByText('Aura Score').waitFor({ timeout: 20000 }).catch(() => {});
       await waitMs(page, 2500);
     },
     navs: [
-      { route: '/dna' },
-      { route: '/import' },
-      { route: '/apps' },
-      { route: '/organizer' },
-      { route: '/designer' },
-      { route: '/wallpaper' },
+      { link: 'Digital DNA' },
+      { link: 'Import Apps' },
+      { link: 'App Library' },
+      { link: 'Smart Organizer' },
+      { link: 'AI Designer' },
+      { link: 'Wallpapers' },
     ],
-    deviceRoute: '/dashboard',
+    deviceLink: 'Dashboard',
   },
 ];
 
@@ -333,7 +328,10 @@ for (const app of APPS) {
 
   for (let i = 0; i < app.navs.length; i++) {
     const step = app.navs[i];
-    if (step.route) {
+    if (step.link) {
+      await page.getByRole('link', { name: step.link }).first().click({ timeout: 15000 }).catch(() => {});
+      await waitMs(page, 2200);
+    } else if (step.route) {
       await page.goto(`${app.setupUrl.replace(/\/$/, '')}${step.route}`, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
       await waitMs(page, 2200);
     } else {
@@ -353,7 +351,10 @@ for (const app of APPS) {
   }
 
   await captureDevices(page, app.slug, async () => {
-    if (app.deviceRoute) {
+    if (app.deviceLink) {
+      await page.getByRole('link', { name: app.deviceLink }).first().click({ timeout: 15000 }).catch(() => {});
+      await waitMs(page, 1500);
+    } else if (app.deviceRoute) {
       await page.goto(`${app.setupUrl.replace(/\/$/, '')}${app.deviceRoute}`, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
       await waitMs(page, 1500);
     } else {
