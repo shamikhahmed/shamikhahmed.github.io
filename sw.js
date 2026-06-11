@@ -1,4 +1,4 @@
-const CACHE = 'capricorn-v13';
+const CACHE = 'capricorn-v14';
 
 function deviceShots(slug) {
   return [`./assets/screenshots/${slug}-ipad.png`, `./assets/screenshots/${slug}-mac.png`];
@@ -19,6 +19,8 @@ const ASSETS = [
   './steadycap.html',
   './ledgercap.html',
   './deeponycap.html',
+  './scentcap.html',
+  './auracap.html',
   './product.html',
   './about.html',
   './sovereignty.html',
@@ -36,12 +38,16 @@ const ASSETS = [
   ...shots('steadycap'),
   ...shots('ledgercap'),
   ...shots('deeponycap'),
+  ...shots('scentcap'),
+  ...shots('auracap'),
   ...deviceShots('vaultcap'),
   ...deviceShots('pulsecap'),
   ...deviceShots('prismcap'),
   ...deviceShots('steadycap'),
   ...deviceShots('ledgercap'),
   ...deviceShots('deeponycap'),
+  ...deviceShots('scentcap'),
+  ...deviceShots('auracap'),
   './manifest.json',
   './icon-192.png',
   './icon-512.png',

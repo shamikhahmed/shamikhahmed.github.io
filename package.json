@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/shamikhahmed/shamikhahmed.github.io/issues"
   },
-  "homepage": "https://github.com/shamikhahmed/shamikhahmed.github.io#readme"
+  "homepage": "https://github.com/shamikhahmed/shamikhahmed.github.io#readme",
+  "devDependencies": {
+    "sharp": "^0.35.0"
+  }
 }

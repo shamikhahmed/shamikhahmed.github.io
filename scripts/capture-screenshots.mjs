@@ -212,6 +212,49 @@ const APPS = [
     ],
     deviceNav: "Nav.go('stable')",
   },
+  {
+    slug: 'scentcap',
+    landing: `${BASE}/ScentCap/landing.html`,
+    setupUrl: `${BASE}/ScentCap/`,
+    setup: async (page) => {
+      await page.goto(`${BASE}/ScentCap/onboarding`, { waitUntil: 'networkidle', timeout: 90000 });
+      const demo = page.getByRole('button', { name: /Explore with sample wardrobe/i });
+      await demo.click({ timeout: 15000 });
+      await page.waitForURL(/\/ScentCap\/?$/, { timeout: 30000 }).catch(() => {});
+      await page.getByText(/demo wardrobe/i).waitFor({ timeout: 15000 }).catch(() => {});
+      await waitMs(page, 2500);
+    },
+    navs: [
+      { route: '/collection' },
+      { route: '/advisor' },
+      { route: '/layering' },
+      { route: '/calendar' },
+      { route: '/analytics' },
+      { route: '/settings' },
+    ],
+    deviceRoute: '/',
+  },
+  {
+    slug: 'auracap',
+    landing: `${BASE}/AuraCap/landing.html`,
+    setupUrl: `${BASE}/AuraCap/`,
+    setup: async (page) => {
+      await page.goto(`${BASE}/AuraCap/`, { waitUntil: 'networkidle', timeout: 90000 });
+      await page.getByRole('button', { name: /Try with sample wardrobe/i }).click({ timeout: 15000 });
+      await page.getByText(/demo/i).waitFor({ timeout: 15000 }).catch(() => {});
+      await page.getByText('Aura Score').waitFor({ timeout: 15000 }).catch(() => {});
+      await waitMs(page, 2500);
+    },
+    navs: [
+      { route: '/dna' },
+      { route: '/import' },
+      { route: '/apps' },
+      { route: '/organizer' },
+      { route: '/designer' },
+      { route: '/wallpaper' },
+    ],
+    deviceRoute: '/dashboard',
+  },
 ];
 
 async function captureDevices(page, slug, navFn) {
@@ -231,7 +274,7 @@ async function captureDevices(page, slug, navFn) {
 }
 
 function checkDedup() {
-  const slugs = ['vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap'];
+  const slugs = ['vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'auracap'];
   let failed = false;
   for (const slug of slugs) {
     const names = readdirSync(OUT)
@@ -290,14 +333,19 @@ for (const app of APPS) {
 
   for (let i = 0; i < app.navs.length; i++) {
     const step = app.navs[i];
-    await runNav(page, step.expr, step.screen);
-    if (step.scroll) {
-      await page.evaluate((y) => {
-        const active = document.querySelector('.screen.active');
-        if (active) active.scrollTop = y;
-        else window.scrollTo(0, y);
-      }, step.scroll);
-      await waitMs(page, 600);
+    if (step.route) {
+      await page.goto(`${app.setupUrl.replace(/\/$/, '')}${step.route}`, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
+      await waitMs(page, 2200);
+    } else {
+      await runNav(page, step.expr, step.screen);
+      if (step.scroll) {
+        await page.evaluate((y) => {
+          const active = document.querySelector('.screen.active');
+          if (active) active.scrollTop = y;
+          else window.scrollTo(0, y);
+        }, step.scroll);
+        await waitMs(page, 600);
+      }
     }
     const file = path.join(OUT, `${app.slug}-${i + 3}.png`);
     await page.screenshot({ path: file });
@@ -305,8 +353,13 @@ for (const app of APPS) {
   }
 
   await captureDevices(page, app.slug, async () => {
-    await page.evaluate((expr) => { eval(expr); }, app.deviceNav);
-    await waitMs(page, 1500);
+    if (app.deviceRoute) {
+      await page.goto(`${app.setupUrl.replace(/\/$/, '')}${app.deviceRoute}`, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
+      await waitMs(page, 1500);
+    } else {
+      await page.evaluate((expr) => { eval(expr); }, app.deviceNav);
+      await waitMs(page, 1500);
+    }
   });
 
   await page.close();
