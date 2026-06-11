@@ -1,21 +1,30 @@
 # shamikhahmed.github.io
 
-Portfolio website for Shamikh Ahmed's six OS apps.
+Capricorn Systems hub — marketing site for six Cap apps.
 
 ## Site structure
 
 | Page | Purpose |
 |------|---------|
-| [index.html](index.html) | Marketing home — animations, skills, Device Sovereignty, product grid |
-| [app.html?a=slug](app.html?a=vaultos) | Product detail — features, market position, **then** launch |
-| [enterprise.html](enterprise.html) | 30-min investor demo script |
+| [index.html](index.html) | Marketing home — product grid, Device Sovereignty |
+| [app.html?a=slug](app.html) | Product detail → **Launch** opens live PWA |
+| [enterprise.html](enterprise.html) | Investor walkthrough |
 
-**Flow:** Home → tap product → read about it → **Launch** opens the live PWA.
+**Flow:** Home → product → read → **Launch** → GitHub Pages PWA.
 
 ## Slugs
 
-`vaultos` · `fitnessos` · `prismos` · `disciplineos` · `stundssos` · `deeponyos`
+`vaultcap` · `pulsecap` · `prismcap` · `steadycap` · `ledgercap` · `deeponycap`
 
-## Design identity
+## Design & assets
 
-See [DESIGN_IDENTITY.md](DESIGN_IDENTITY.md) — six different experiences, one shared rule (Device Sovereignty).
+- [docs/DESIGN_IDENTITY.md](docs/DESIGN_IDENTITY.md) — six experiences, one rule (on-device data)
+- [assets/screenshots/README.md](assets/screenshots/README.md) — marketing screenshot naming
+
+## Screenshots
+
+```bash
+node scripts/capture-screenshots.mjs
+```
+
+Output: `assets/screenshots/` (canonical — do not duplicate in app repos).
