@@ -1,5 +1,7 @@
 import { chromium } from 'playwright';
+import { readdirSync, readFileSync } from 'fs';
 import { mkdir } from 'fs/promises';
+import { createHash } from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,28 +13,102 @@ async function waitMs(page, ms) {
   await page.waitForTimeout(ms);
 }
 
-async function vaultUnlock(page) {
-  await page.goto(`${BASE}/VaultCap/`, { waitUntil: 'networkidle', timeout: 90000 });
-  await waitMs(page, 2500);
-  await page.evaluate(() => {
-    if (typeof VaultProfiles !== 'undefined') VaultProfiles.switch('demo');
-  });
-  await waitMs(page, 1500);
-  const pin = page.locator('input[type="password"], input[inputmode="numeric"]').first();
-  if (await pin.isVisible({ timeout: 5000 }).catch(() => false)) {
-    await pin.fill('123456');
-    await page.keyboard.press('Enter');
+async function enterVaultPin(page) {
+  for (const digit of '123456') {
+    const padBtn = page.locator('#pgLock button, .pin-key, [data-pin]').filter({ hasText: new RegExp(`^${digit}$`) }).first();
+    if (await padBtn.isVisible({ timeout: 800 }).catch(() => false)) {
+      await padBtn.click();
+      await waitMs(page, 120);
+      continue;
+    }
+    const pin = page.locator('input[type="password"], input[inputmode="numeric"]').first();
+    if (await pin.isVisible({ timeout: 1500 }).catch(() => false)) {
+      await pin.fill('123456');
+      await page.keyboard.press('Enter');
+      break;
+    }
   }
-  await page.waitForFunction(() => document.getElementById('pg-dashboard')?.classList.contains('on'), { timeout: 15000 }).catch(() => {});
+}
+
+async function vaultEnsureUnlocked(page) {
+  await page.evaluate(() => {
+    if (typeof Modal !== 'undefined') Modal.close();
+    if (typeof R !== 'undefined' && typeof R.unlock === 'function') R.unlock();
+    const app = document.getElementById('app');
+    if (app && getComputedStyle(app).display === 'none') app.style.display = 'flex';
+    const fab = document.getElementById('fab');
+    if (fab) fab.style.display = 'flex';
+    ['pgLock', 'pgHome', 'pgOnboard', 'pgProfilePicker'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  });
+  await page.waitForFunction(() => {
+    const app = document.getElementById('app');
+    return app && getComputedStyle(app).display !== 'none';
+  }, { timeout: 20000 }).catch(() => {});
+  await waitMs(page, 1800);
+}
+
+async function vaultUnlock(page) {
+  await page.goto(`${BASE}/VaultCap/`, { waitUntil: 'domcontentloaded', timeout: 90000 });
+  await page.evaluate(() => {
+    localStorage.setItem('vo_active_profile', 'demo');
+    localStorage.setItem('vo_used_demo', '1');
+    localStorage.removeItem('vo_demo_guide_pending');
+  });
+  await page.reload({ waitUntil: 'networkidle', timeout: 90000 });
   await waitMs(page, 2000);
+  await enterVaultPin(page);
+  await vaultEnsureUnlocked(page);
 }
 
 async function vaultNav(page, pg) {
   await page.evaluate((p) => {
     if (typeof R !== 'undefined') R.goto(p, true);
+    const el = document.getElementById('pg-' + p);
+    if (el) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }
   }, pg);
-  await page.waitForFunction((p) => document.getElementById('pg-' + p)?.classList.contains('on'), pg, { timeout: 10000 }).catch(() => {});
+  await page.waitForFunction((p) => {
+    const el = document.getElementById('pg-' + p);
+    return el?.classList.contains('on') && getComputedStyle(el).opacity !== '0';
+  }, pg, { timeout: 12000 }).catch(() => {});
+  await waitMs(page, 2800);
+}
+
+async function runNav(page, expr, screenId) {
+  await page.evaluate((e) => { eval(e); }, expr);
+  if (screenId) {
+    await page.waitForFunction((id) => {
+      const el = document.getElementById(id);
+      return el?.classList.contains('active');
+    }, screenId, { timeout: 10000 }).catch(() => {});
+  }
   await waitMs(page, 2200);
+}
+
+async function prismSetup(page) {
+  await page.evaluate(() => {
+    localStorage.setItem('po5', JSON.stringify({
+      p: { name: 'Player', av: '🎮', xp: 420, lvl: 3 },
+      c: { haptic: false, sfx: false, music: false, theme: 'neon' },
+      a: {},
+    }));
+    localStorage.setItem('po5_device', 'iphone15');
+    localStorage.setItem('po5s', '1');
+    if (typeof DevSel !== 'undefined' && DevSel.pickModel) DevSel.pickModel('iphone15');
+    ['device-sel', 'welcome', 'loader'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'none'; el.classList.add('out'); }
+    });
+    if (typeof Nav !== 'undefined') Nav.go('home');
+    if (typeof UI !== 'undefined' && UI.home) UI.home();
+  });
+  await page.waitForFunction(() => document.getElementById('home-screen')?.classList.contains('active'), { timeout: 12000 }).catch(() => {});
+  await waitMs(page, 2500);
 }
 
 const APPS = [
@@ -42,13 +118,13 @@ const APPS = [
       await vaultUnlock(page);
       const shots = [
         { file: 'vaultcap.png', fn: async () => { await page.goto(`${BASE}/VaultCap/landing.html`, { waitUntil: 'networkidle' }); } },
-        { file: 'vaultcap-2.png', fn: async () => { await vaultUnlock(page); } },
-        { file: 'vaultcap-3.png', fn: async () => { await vaultNav(page, 'dashboard'); } },
-        { file: 'vaultcap-4.png', fn: async () => { await vaultNav(page, 'family'); } },
-        { file: 'vaultcap-5.png', fn: async () => { await vaultNav(page, 'banks'); } },
-        { file: 'vaultcap-6.png', fn: async () => { await vaultNav(page, 'documents'); } },
-        { file: 'vaultcap-7.png', fn: async () => { await vaultNav(page, 'zakat'); } },
-        { file: 'vaultcap-8.png', fn: async () => { await vaultNav(page, 'investments'); } },
+        { file: 'vaultcap-2.png', fn: async () => { await vaultUnlock(page); await vaultNav(page, 'dashboard'); } },
+        { file: 'vaultcap-3.png', fn: async () => { await vaultNav(page, 'family'); } },
+        { file: 'vaultcap-4.png', fn: async () => { await vaultNav(page, 'banks'); } },
+        { file: 'vaultcap-5.png', fn: async () => { await vaultNav(page, 'documents'); } },
+        { file: 'vaultcap-6.png', fn: async () => { await vaultNav(page, 'zakat'); } },
+        { file: 'vaultcap-7.png', fn: async () => { await vaultNav(page, 'investments'); } },
+        { file: 'vaultcap-8.png', fn: async () => { await vaultNav(page, 'cards'); } },
       ];
       for (const s of shots) {
         await s.fn();
@@ -66,31 +142,28 @@ const APPS = [
       await page.evaluate(() => { if (typeof loadDemoMode === 'function') loadDemoMode(); });
       await waitMs(page, 2000);
     },
-    navs: ["go('workout')", "go('nutrition')", "go('recovery')", "go('bodymap')", "go('progress')", "go('profiles')"],
+    navs: [
+      { expr: "go('workout')", screen: null },
+      { expr: "go('nutrition')", screen: null },
+      { expr: "go('recovery')", screen: null },
+      { expr: "go('bodymap')", screen: null },
+      { expr: "go('progress')", screen: null },
+      { expr: "go('profiles')", screen: null },
+    ],
     deviceNav: "go('dashboard')",
   },
   {
     slug: 'prismcap',
     setupUrl: `${BASE}/PrismCap/`,
     landing: `${BASE}/PrismCap/landing.html`,
-    setup: async (page) => {
-      await page.evaluate(() => {
-        localStorage.setItem('po5', JSON.stringify({ p: { name: 'Player', av: '🎮', xp: 420, lvl: 3 }, c: { haptic: false, sfx: false, music: false, theme: 'neon' }, a: {} }));
-        localStorage.setItem('po5_device', 'iphone15');
-        if (typeof DevSel !== 'undefined' && DevSel._pick) DevSel._pick('iphone15');
-        ['device-sel', 'welcome', 'loader'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-        if (typeof Nav !== 'undefined') Nav.go('home');
-        if (typeof UI !== 'undefined' && UI.home) UI.home();
-      });
-      await waitMs(page, 2500);
-    },
+    setup: prismSetup,
     navs: [
-      "Nav.go('library')",
-      "Nav.go('arcade')",
-      "Nav.go('dashboard')",
-      "Nav.go('profile')",
-      "Nav.go('home')",
-      { nav: "Nav.go('arcade')", scroll: 500 },
+      { expr: "Nav.go('library')", screen: 'library-screen' },
+      { expr: "Nav.go('arcade')", screen: 'arcade-screen' },
+      { expr: "Nav.go('dashboard')", screen: 'dashboard-screen' },
+      { expr: "Nav.go('profile')", screen: 'profile-screen' },
+      { expr: "Nav.go('home')", screen: 'home-screen' },
+      { expr: "Nav.go('library')", screen: 'library-screen', scroll: 480 },
     ],
     deviceNav: "Nav.go('home')",
   },
@@ -99,7 +172,14 @@ const APPS = [
     setupUrl: `${BASE}/SteadyCap/?demo=1`,
     landing: `${BASE}/SteadyCap/landing.html`,
     setup: async (page) => { await waitMs(page, 3500); },
-    navs: ["Navigation.go('recovery')", "Navigation.go('emergency')", "Navigation.go('knowledge')", "Navigation.go('journal')", "Navigation.go('profile')", "Navigation.go('dashboard')"],
+    navs: [
+      { expr: "Navigation.go('recovery')", screen: 'screen-recovery' },
+      { expr: "Navigation.go('emergency')", screen: 'screen-emergency' },
+      { expr: "Navigation.go('knowledge')", screen: 'screen-knowledge' },
+      { expr: "Navigation.go('journal')", screen: 'screen-journal' },
+      { expr: "Navigation.go('profile')", screen: 'screen-profile' },
+      { expr: "Navigation.go('journal')", screen: 'screen-journal', scroll: 420 },
+    ],
     deviceNav: "Navigation.go('dashboard')",
   },
   {
@@ -108,12 +188,12 @@ const APPS = [
     landing: `${BASE}/LedgerCap/landing.html`,
     setup: async (page) => { await waitMs(page, 3500); },
     navs: [
-      "Navigation.go('portfolio')",
-      "Navigation.go('transactions')",
-      "Navigation.go('income')",
-      "Navigation.go('settings')",
-      { nav: "Navigation.go('portfolio')", scroll: 420 },
-      { nav: "Navigation.go('transactions')", scroll: 360 },
+      { expr: "Navigation.go('portfolio')", screen: 'screen-portfolio' },
+      { expr: "Navigation.go('transactions')", screen: 'screen-transactions' },
+      { expr: "Navigation.go('income')", screen: 'screen-income' },
+      { expr: "Navigation.go('settings')", screen: 'screen-settings' },
+      { expr: "Navigation.go('portfolio')", screen: 'screen-portfolio', scroll: 420 },
+      { expr: "Navigation.go('transactions')", screen: 'screen-transactions', scroll: 360 },
     ],
     deviceNav: "Navigation.go('dashboard')",
   },
@@ -122,7 +202,14 @@ const APPS = [
     setupUrl: `${BASE}/DeePonyCap/?demo=1`,
     landing: `${BASE}/DeePonyCap/landing.html`,
     setup: async (page) => { await waitMs(page, 3500); },
-    navs: ["Nav.go('collection')", "Nav.go('wishlist')", "Nav.go('shelves')", "Nav.go('stats')", "Nav.go('settings')", "Nav.go('stable')"],
+    navs: [
+      { expr: "Nav.go('collection')", screen: null },
+      { expr: "Nav.go('wishlist')", screen: null },
+      { expr: "Nav.go('shelves')", screen: null },
+      { expr: "Nav.go('stats')", screen: null },
+      { expr: "Nav.go('settings')", screen: null },
+      { expr: "Nav.go('stable')", screen: null },
+    ],
     deviceNav: "Nav.go('stable')",
   },
 ];
@@ -138,9 +225,35 @@ async function captureDevices(page, slug, navFn) {
     await waitMs(page, 1200);
     const file = path.join(OUT, `${slug}-${v.suffix}.png`);
     await page.screenshot({ path: file });
-    console.log('OK', file);
+    console.log('OK', path.basename(file));
   }
   await page.setViewportSize({ width: 390, height: 844 });
+}
+
+function checkDedup() {
+  const slugs = ['vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap'];
+  let failed = false;
+  for (const slug of slugs) {
+    const names = readdirSync(OUT)
+      .filter((f) => f.startsWith(slug) && f.endsWith('.png'))
+      .sort();
+    const hashes = new Map();
+    for (const name of names) {
+      const buf = readFileSync(path.join(OUT, name));
+      const hash = createHash('md5').update(buf).digest('hex');
+      if (hashes.has(hash)) {
+        console.error(`DUPLICATE ${slug}: ${name} === ${hashes.get(hash)} (${hash})`);
+        failed = true;
+      } else {
+        hashes.set(hash, name);
+      }
+    }
+  }
+  if (failed) {
+    console.error('\nScreenshot dedup FAILED — fix navigation before commit.');
+    process.exit(1);
+  }
+  console.log('Screenshot dedup check passed (exit 0).');
 }
 
 await mkdir(OUT, { recursive: true });
@@ -177,10 +290,8 @@ for (const app of APPS) {
 
   for (let i = 0; i < app.navs.length; i++) {
     const step = app.navs[i];
-    const expr = typeof step === 'string' ? step : step.nav;
-    await page.evaluate((e) => { eval(e); }, expr);
-    await waitMs(page, 2200);
-    if (typeof step === 'object' && step.scroll) {
+    await runNav(page, step.expr, step.screen);
+    if (step.scroll) {
       await page.evaluate((y) => {
         const active = document.querySelector('.screen.active');
         if (active) active.scrollTop = y;
@@ -203,3 +314,4 @@ for (const app of APPS) {
 
 await browser.close();
 console.log('Done');
+checkDedup();

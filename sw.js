@@ -1,4 +1,4 @@
-const CACHE = 'capricorn-v11';
+const CACHE = 'capricorn-v13';
 
 function deviceShots(slug) {
   return [`./assets/screenshots/${slug}-ipad.png`, `./assets/screenshots/${slug}-mac.png`];

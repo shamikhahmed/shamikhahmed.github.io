@@ -36,6 +36,7 @@ const PRODUCTS = {
     bg: '#070b14',
     url: 'https://shamikhahmed.github.io/VaultCap/',
     pitchUrl: 'https://shamikhahmed.github.io/VaultCap/pitch.html',
+    presentationUrl: 'https://shamikhahmed.github.io/VaultCap/presentation.html',
     privacyUrl: 'https://shamikhahmed.github.io/VaultCap/privacy.html',
     github: 'https://github.com/shamikhahmed/VaultCap',
     problems: [
@@ -94,6 +95,7 @@ const PRODUCTS = {
     bg: '#0a0a0f',
     url: 'https://shamikhahmed.github.io/PulseCap/',
     pitchUrl: 'https://shamikhahmed.github.io/PulseCap/pitch.html',
+    presentationUrl: 'https://shamikhahmed.github.io/PulseCap/presentation.html',
     privacyUrl: 'https://shamikhahmed.github.io/PulseCap/privacy.html',
     github: 'https://github.com/shamikhahmed/PulseCap',
     problems: [
@@ -152,6 +154,7 @@ const PRODUCTS = {
     bg: '#0a0014',
     url: 'https://shamikhahmed.github.io/PrismCap/',
     pitchUrl: 'https://shamikhahmed.github.io/PrismCap/pitch.html',
+    presentationUrl: 'https://shamikhahmed.github.io/PrismCap/presentation.html',
     privacyUrl: 'https://shamikhahmed.github.io/PrismCap/privacy.html',
     github: 'https://github.com/shamikhahmed/PrismCap',
     problems: [
@@ -210,6 +213,7 @@ const PRODUCTS = {
     bg: '#1a110e',
     url: 'https://shamikhahmed.github.io/SteadyCap/',
     pitchUrl: 'https://shamikhahmed.github.io/SteadyCap/pitch.html',
+    presentationUrl: 'https://shamikhahmed.github.io/SteadyCap/presentation.html',
     privacyUrl: 'https://shamikhahmed.github.io/SteadyCap/privacy.html',
     github: 'https://github.com/shamikhahmed/SteadyCap',
     problems: [
@@ -268,6 +272,7 @@ const PRODUCTS = {
     bg: '#0b0e11',
     url: 'https://shamikhahmed.github.io/LedgerCap/',
     pitchUrl: 'https://shamikhahmed.github.io/LedgerCap/pitch.html',
+    presentationUrl: 'https://shamikhahmed.github.io/LedgerCap/presentation.html',
     privacyUrl: 'https://shamikhahmed.github.io/LedgerCap/privacy.html',
     github: 'https://github.com/shamikhahmed/LedgerCap',
     problems: [
@@ -329,6 +334,7 @@ const PRODUCTS = {
     light: true,
     url: 'https://shamikhahmed.github.io/DeePonyCap/',
     pitchUrl: 'https://shamikhahmed.github.io/DeePonyCap/pitch.html',
+    presentationUrl: 'https://shamikhahmed.github.io/DeePonyCap/presentation.html',
     privacyUrl: 'https://shamikhahmed.github.io/DeePonyCap/privacy.html',
     github: 'https://github.com/shamikhahmed/DeePonyCap',
     problems: [

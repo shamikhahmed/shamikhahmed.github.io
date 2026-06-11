@@ -90,12 +90,20 @@
         `<div class="wrap reveal">` +
           `<p class="eyebrow">Investor pitch</p>` +
           `<h2>The ${p.name} deck</h2>` +
-          `<p class="lead" style="margin-top:12px">Scroll the full investor presentation inline — or open fullscreen for a boardroom walkthrough.</p>` +
-          `<div class="pitch-embed">` +
+          `<p class="lead" style="margin-top:12px">Scroll the investor presentation inline — pitch deck for quick reads, full presentation for boardroom walkthrough.</p>` +
+          `<div class="pitch-tabs" role="tablist" aria-label="Deck format">` +
+            `<button type="button" class="pitch-tab is-active" role="tab" aria-selected="true" data-pitch-tab="pitch">Pitch Deck</button>` +
+            `<button type="button" class="pitch-tab" role="tab" aria-selected="false" data-pitch-tab="presentation">Full Presentation</button>` +
+          `</div>` +
+          `<div class="pitch-embed" data-pitch-panel="pitch">` +
             `<iframe src="${p.pitchUrl}" title="${p.name} investor pitch deck" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` +
           `</div>` +
+          `<div class="pitch-embed hidden" data-pitch-panel="presentation" hidden>` +
+            `<iframe data-src="${p.presentationUrl}" title="${p.name} full presentation" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` +
+          `</div>` +
           `<p class="pitch-embed-actions">` +
-            `<a href="${p.pitchUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Open deck fullscreen →</a>` +
+            `<a href="${p.pitchUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Open pitch fullscreen →</a>` +
+            `<a href="${p.presentationUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Open presentation fullscreen →</a>` +
           `</p>` +
         `</div>` +
       `</section>`,
@@ -262,7 +270,34 @@
   });
 
   initProductRail();
+  initPitchTabs();
 })();
+
+function initPitchTabs() {
+  const tabs = document.querySelectorAll('[data-pitch-tab]');
+  const panels = document.querySelectorAll('[data-pitch-panel]');
+  if (!tabs.length || !panels.length) return;
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.pitchTab;
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        const on = panel.dataset.pitchPanel === target;
+        panel.classList.toggle('hidden', !on);
+        panel.hidden = !on;
+        if (on) {
+          const iframe = panel.querySelector('iframe[data-src]');
+          if (iframe && !iframe.src) iframe.src = iframe.dataset.src;
+        }
+      });
+    });
+  });
+}
 
 function initProductRail() {
   const links = document.querySelectorAll('.product-rail-link');
