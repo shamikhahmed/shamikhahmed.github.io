@@ -852,7 +852,9 @@ body.layout-deeponycap .pitch-embed {
 
 .hero-carousel {
   position: relative;
-  min-height: 460px;
+  /* sized by the in-flow front card — fixed min-heights undershot
+     portrait device frames and bled into the next section */
+  min-height: 0;
   padding-bottom: 36px;
   margin: 40px auto 0;
   max-width: 320px;
@@ -877,6 +879,7 @@ body.layout-deeponycap .pitch-embed {
   pointer-events: none;
 }
 .carousel-card.is-front {
+  position: relative;
   opacity: 1;
   visibility: visible;
   transform: scale(1) translateY(0);
@@ -962,7 +965,7 @@ body.layout-deeponycap .pitch-embed {
   .hero .lead { margin-bottom: 20px; font-size: 1rem; }
   .hero-actions { gap: 10px; }
   .hero-actions .btn { padding: 12px 20px; font-size: 13px; }
-  .hero-carousel { min-height: 300px; margin-top: 28px; padding-bottom: 32px; max-width: 280px; }
+  .hero-carousel { margin-top: 28px; padding-bottom: 32px; max-width: 280px; }
   .constellation { margin-top: 20px; }
   .product-hero { padding: calc(88px + var(--safe-t)) 20px 48px; }
   .spotlight-list { gap: 48px; margin-top: 32px; }
@@ -987,7 +990,7 @@ body.layout-deeponycap .pitch-embed {
 
 @media (max-width: 430px) {
   .hero { padding-bottom: 28px; }
-  .hero-carousel { min-height: 268px; max-width: 240px; }
+  .hero-carousel { max-width: 240px; }
   .constellation { display: none; }
   h2 { font-size: clamp(1.45rem, 6vw, 2rem); }
 }
@@ -1168,7 +1171,7 @@ body.layout-deeponycap.layout-product .name-story {
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .hero-carousel { max-width: 360px; min-height: 400px; }
+  .hero-carousel { max-width: 360px; }
   .pitch-tabs { flex-direction: row; }
   .pitch-tab { min-height: 44px; }
   .pitch-embed iframe { height: min(65vh, 520px); min-height: 400px; }

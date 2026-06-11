@@ -5,6 +5,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="description" content="Capricorn Systems builds premium personal software that lives on your device — eight Cap apps: six Capricorn products plus ScentCap and AuraCap.">
   <meta name="theme-color" content="#0a0e17">
+  <link rel="canonical" href="https://shamikhahmed.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Capricorn Systems">
+  <meta property="og:title" content="Capricorn Systems — Software on your device">
+  <meta property="og:description" content="Eight premium offline-first apps. Encrypted vault, performance OS, party games, recovery, wealth ledger, and more — your data stays yours.">
+  <meta property="og:url" content="https://shamikhahmed.github.io/">
+  <meta property="og:image" content="https://shamikhahmed.github.io/icon-1024.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Capricorn Systems — Software on your device">
+  <meta name="twitter:description" content="Eight premium offline-first apps. Your device, your data, your call.">
+  <meta name="twitter:image" content="https://shamikhahmed.github.io/icon-1024.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Capricorn Systems",
+    "url": "https://shamikhahmed.github.io/",
+    "logo": "https://shamikhahmed.github.io/icon-1024.png",
+    "founder": { "@type": "Person", "name": "Shamikh Ahmed" },
+    "description": "Capricorn Systems builds premium offline-first personal software — encrypted vault, performance training, party games, recovery, and wealth tools that keep data on your device."
+  }
+  </script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Capricorn">
@@ -13,11 +35,14 @@
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/capricorn.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="css/capricorn-core.css?v=1">
+  <link rel="stylesheet" href="css/capricorn.css?v=16">
   <title>Capricorn Systems — Software on your device</title>
 </head>
 <body>
+  <a href="#products" class="cap-skip-link">Skip to products</a>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
   <nav class="nav" id="siteNav">
@@ -40,11 +65,11 @@
     <section class="hero">
       <img src="assets/logo.svg" alt="Capricorn Systems" class="hero-logo" width="140" height="140">
       <p class="eyebrow hero-brand">Capricorn Systems</p>
-      <h1>Software that lives on your device — <span class="grad">not in our cloud.</span></h1>
+      <h1>Software that lives on your device — <span class="grad cap-gradient-text">not in our cloud.</span></h1>
       <p class="lead">Eight premium Cap apps — six Capricorn products for finance, performance, play, recovery, wealth, and collection, plus ScentCap and AuraCap. Each built like its own company. United by one rule: your data stays yours.</p>
       <div class="hero-actions">
-        <a href="#products" class="btn btn-primary">Explore products →</a>
-        <a href="sovereignty.html" class="btn btn-ghost">Device Sovereignty</a>
+        <a href="#products" class="btn btn-primary cap-magnetic">Explore products →</a>
+        <a href="sovereignty.html" class="btn btn-ghost cap-magnetic">Device Sovereignty</a>
       </div>
       <div class="hero-carousel" id="screenshotCarousel" aria-label="Product screenshot carousel"></div>
       <div class="constellation" aria-hidden="true">
@@ -58,10 +83,10 @@
         <p class="eyebrow">By the numbers</p>
         <h2>Eight installs. Zero subscriptions required.</h2>
         <div class="stats-bar">
-          <div class="stat-item"><strong>8</strong><span>Premium Cap apps — each with its own visual world</span></div>
-          <div class="stat-item"><strong>0</strong><span>Mandatory cloud accounts across the constellation</span></div>
-          <div class="stat-item"><strong>100%</strong><span>Offline-capable after first load</span></div>
-          <div class="stat-item"><strong>1</strong><span>Rule: Device Sovereignty on every product</span></div>
+          <div class="stat-item cap-reveal"><strong data-count-to="8">8</strong><span>Premium Cap apps — each with its own visual world</span></div>
+          <div class="stat-item cap-reveal"><strong data-count-to="0">0</strong><span>Mandatory cloud accounts across the constellation</span></div>
+          <div class="stat-item cap-reveal"><strong data-count-to="100" data-count-suffix="%">100%</strong><span>Offline-capable after first load</span></div>
+          <div class="stat-item cap-reveal"><strong data-count-to="1">1</strong><span>Rule: Device Sovereignty on every product</span></div>
         </div>
       </div>
     </section>
@@ -105,10 +130,10 @@
         <h2>Enterprise discipline.<br>Personal software warmth.</h2>
         <p class="lead" style="margin-top:16px">Capricorn products are progressive web apps with Playwright smoke tests, security docs, and Capacitor paths to the App Store — without turning your life into someone else's dataset.</p>
         <div class="principles-grid">
-          <div class="principle-card"><h4>Distinct identity per product</h4><p>VaultCap feels like a Swiss vault. PulseCap feels kinetic. PrismCap feels like an arcade. Eight Cap apps, eight different design languages.</p></div>
-          <div class="principle-card"><h4>Offline by default</h4><p>Your vault, workouts, games, and ledgers load once and keep working on planes, trains, and spotty Wi‑Fi.</p></div>
-          <div class="principle-card"><h4>No rent-seeking cloud</h4><p>We don't need your data to exist. Capricorn makes software you install — not software that installs surveillance on you.</p></div>
-          <div class="principle-card"><h4>Built for real lives</h4><p>Multinational finance, diaspora wealth, recovery journeys, party nights, and kids' collections — not Silicon Valley defaults.</p></div>
+          <div class="principle-card cap-reveal" data-cap-tilt="4"><h4>Distinct identity per product</h4><p>VaultCap feels like a Swiss vault. PulseCap feels kinetic. PrismCap feels like an arcade. Eight Cap apps, eight different design languages.</p></div>
+          <div class="principle-card cap-reveal" data-cap-tilt="4"><h4>Offline by default</h4><p>Your vault, workouts, games, and ledgers load once and keep working on planes, trains, and spotty Wi‑Fi.</p></div>
+          <div class="principle-card cap-reveal" data-cap-tilt="4"><h4>No rent-seeking cloud</h4><p>We don't need your data to exist. Capricorn makes software you install — not software that installs surveillance on you.</p></div>
+          <div class="principle-card cap-reveal" data-cap-tilt="4"><h4>Built for real lives</h4><p>Multinational finance, diaspora wealth, recovery journeys, party nights, and kids' collections — not Silicon Valley defaults.</p></div>
         </div>
       </div>
     </section>
@@ -176,5 +201,7 @@
   <script src="js/products-data.js"></script>
   <script src="js/product-media.js"></script>
   <script src="js/capricorn.js"></script>
+  <script src="js/capricorn-motion.js" defer></script>
+  <script src="js/capricorn-hero.js" defer></script>
 </body>
 </html>

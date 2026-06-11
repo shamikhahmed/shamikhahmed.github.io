@@ -22,33 +22,35 @@
     if (typeof initProductRail === 'function') initProductRail();
   };
 
-  const canvas = document.getElementById('starfield');
-  if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      stars = Array.from({ length: Math.min(120, Math.floor(canvas.width * canvas.height / 12000)) }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.2 + 0.3,
-        a: Math.random() * 0.5 + 0.2,
-      }));
-    }
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach((s) => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(244, 240, 232, ${s.a})`;
-        ctx.fill();
+  /* Starfield is rendered by js/capricorn-hero.js (WebGL, pauses offscreen). */
+
+  /* Count-up stats — animate [data-count-to] when revealed */
+  const counters = document.querySelectorAll('[data-count-to]');
+  if (counters.length && !reducedMotion && 'IntersectionObserver' in window) {
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        const el = e.target;
+        const to = parseFloat(el.dataset.countTo);
+        const suffix = el.dataset.countSuffix || '';
+        const dur = 1200;
+        const t0 = performance.now();
+        (function tick(now) {
+          const p = Math.min((now - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 4);
+          el.textContent = Math.round(to * eased) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
       });
-      requestAnimationFrame(draw);
-    }
-    resize();
-    draw();
-    window.addEventListener('resize', resize, { passive: true });
+    }, { threshold: 0.6 });
+    counters.forEach((el) => cio.observe(el));
+  }
+
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
   }
 
   if (typeof PRODUCTS !== 'undefined') {
