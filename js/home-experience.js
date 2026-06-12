@@ -132,7 +132,7 @@ if (!reduced && window.Lenis && gsap) {
     if (!running) return;
     const t = clock.getElapsedTime();
     mat.uniforms.uTime.value = t;
-    px += (tx - px) * 0.03; py += (ty - py) * 0.03;
+    px += (tx - px) * 0.06; py += (ty - py) * 0.06;
     galaxyPts.rotation.y = t * 0.045 + prog * 1.6;
     galaxyPts.rotation.x = 0.42 + prog * 0.5 + py * 0.05;
     camera.position.z = 7.5 + prog * 3.2;
@@ -274,7 +274,7 @@ if (!reduced && window.Lenis && gsap) {
   const ring = document.querySelector('.cursor-ring');
   if (!dot || !ring) return;
   const setDot = { x: gsap.quickTo(dot, 'x', { duration: 0.08 }), y: gsap.quickTo(dot, 'y', { duration: 0.08 }) };
-  const setRing = { x: gsap.quickTo(ring, 'x', { duration: 0.32, ease: 'power3' }), y: gsap.quickTo(ring, 'y', { duration: 0.32, ease: 'power3' }) };
+  const setRing = { x: gsap.quickTo(ring, 'x', { duration: 0.12, ease: 'power2.out' }), y: gsap.quickTo(ring, 'y', { duration: 0.12, ease: 'power2.out' }) };
   addEventListener('pointermove', (e) => {
     document.body.classList.add('has-cursor'); // stays hidden until the pointer actually moves
     setDot.x(e.clientX - 3); setDot.y(e.clientY - 3);

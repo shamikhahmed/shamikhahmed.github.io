@@ -38,7 +38,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="css/capricorn-core.css?v=2">
-  <link rel="stylesheet" href="css/home.css?v=1">
+  <link rel="stylesheet" href="css/home.css?v=3">
   <title>Capricorn Systems — Software on your device</title>
 </head>
 <body data-page="home">
@@ -61,7 +61,13 @@
       <a href="solutions.html">Solutions</a>
       <a href="#products" class="nav-cta">Install apps</a>
     </div>
-    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="18" height="13" viewBox="0 0 18 13" fill="none" aria-hidden="true">
+        <rect width="18" height="1.5" rx="1" fill="currentColor"/>
+        <rect x="2" y="5.75" width="16" height="1.5" rx="1" fill="currentColor"/>
+        <rect x="4" y="11.5" width="14" height="1.5" rx="1" fill="currentColor"/>
+      </svg>
+    </button>
   </nav>
 
   <main>
@@ -70,22 +76,22 @@
       <video class="hero-video" muted loop playsinline preload="none" aria-hidden="true">
         <source src="assets/video/hero-loop.mp4" type="video/mp4">
       </video>
-      <p class="hero-eyebrow"><span class="pulse"></span>Capricorn Systems · Est. on your home screen</p>
+      <p class="hero-eyebrow"><span class="pulse"></span>Capricorn Systems · Your device. Your rules.</p>
       <h1>
         <span class="hl"><span>Software that lives</span></span>
         <span class="hl"><span>on your device —</span></span>
         <span class="hl"><span class="gold">not in our cloud.</span></span>
       </h1>
-      <p class="lead">Eight premium Cap apps for finance, performance, play, recovery, wealth, and collection. Each built like its own company. United by one rule: your data stays yours.</p>
+      <p class="lead">Eight apps built like separate product studios — each with its own identity, its own design language, its own world. The only thing they share: your data never leaves your phone.</p>
       <div class="hero-actions">
         <a href="#products" class="btn btn-primary cap-magnetic" data-cursor>Explore the constellation →</a>
         <a href="sovereignty.html" class="btn btn-ghost cap-magnetic" data-cursor>Device Sovereignty</a>
       </div>
       <div class="hero-meta">
         <span><b>8</b> apps</span>
-        <span><b>0</b> accounts required</span>
+        <span><b>0</b> accounts needed</span>
         <span><b>100%</b> offline-capable</span>
-        <span><b>PWA</b> · iOS · Mac</span>
+        <span><b>PWA</b> · iOS · Android · Mac</span>
       </div>
       <div class="scroll-cue" aria-hidden="true"></div>
     </section>
@@ -112,12 +118,12 @@
     <section class="section" id="numbers">
       <div class="wrap" data-reveal>
         <p class="eyebrow">By the numbers</p>
-        <h2>Eight installs.<br>Zero subscriptions required.</h2>
+        <h2>Eight apps.<br>One principle. Zero cloud.</h2>
         <div class="stats-row">
-          <div class="stat"><strong data-count="8">8</strong><span>Premium Cap apps — each with its own visual world</span></div>
-          <div class="stat"><strong data-count="38">38</strong><span>Offline games in PrismCap alone</span></div>
-          <div class="stat"><strong data-count="100" data-count-suffix="%">100%</strong><span>Offline-capable after first load</span></div>
-          <div class="stat"><strong data-count="1">1</strong><span>Rule shared by every product: Device Sovereignty</span></div>
+          <div class="stat"><strong data-count="8">8</strong><span>Apps across finance, health, gaming, and lifestyle — no email required to use any of them</span></div>
+          <div class="stat"><strong data-count="38">38</strong><span>Offline party and skill games in PrismCap — no Wi-Fi, no accounts, no ads</span></div>
+          <div class="stat"><strong data-count="100" data-count-suffix="%">100%</strong><span>Every Cap app works without a network connection after the first visit</span></div>
+          <div class="stat"><strong data-count="1">1</strong><span>Non-negotiable: your data stays on your hardware, permanently</span></div>
         </div>
       </div>
     </section>
@@ -127,7 +133,7 @@
       <div class="wrap showcase-head" data-reveal>
         <p class="eyebrow">Product constellation</p>
         <h2>Eight worlds. One sky.</h2>
-        <p class="lead" style="margin-top:16px">Your vault should never feel like your fitness app. Scroll through the constellation — every product has its own visual world and a dedicated page.</p>
+        <p class="lead" style="margin-top:16px">A vault shouldn't feel like a gym. A game night app shouldn't feel like accounting software. Each Cap app has its own identity, its own design language, and its own rules — connected only by the one they share.</p>
       </div>
       <div class="showcase-viewport">
         <div class="showcase-track" id="showcaseTrack"><!-- built from PRODUCTS_LIST --></div>
@@ -138,12 +144,12 @@
     <section class="section paper-section" id="principles">
       <div class="wrap" data-reveal>
         <p class="eyebrow">How we build</p>
-        <h2>Enterprise discipline.<br>Personal software warmth.</h2>
+        <h2>Built to obsessive standards.<br>Designed for your actual life.</h2>
         <div class="principles">
-          <div class="principle" data-cap-tilt="3"><span class="idx">01</span><h3>Distinct identity per product</h3><p>VaultCap feels like a Swiss vault. PulseCap feels kinetic. PrismCap feels like an arcade. Eight Cap apps, eight design languages.</p></div>
-          <div class="principle" data-cap-tilt="3"><span class="idx">02</span><h3>Offline by default</h3><p>Your vault, workouts, games, and ledgers load once and keep working on planes, trains, and spotty Wi‑Fi.</p></div>
-          <div class="principle" data-cap-tilt="3"><span class="idx">03</span><h3>No rent-seeking cloud</h3><p>We don't need your data to exist. Capricorn makes software you install — not software that installs surveillance on you.</p></div>
-          <div class="principle" data-cap-tilt="3"><span class="idx">04</span><h3>Built for real lives</h3><p>Multinational finance, diaspora wealth, recovery journeys, party nights, and kids' collections — not Silicon Valley defaults.</p></div>
+          <div class="principle" data-cap-tilt="3"><span class="idx">01</span><h3>Distinct identity per product</h3><p>VaultCap is a Swiss vault. PulseCap is kinetic chrome. PrismCap is an arcade cabinet. Each Cap app is its own design universe — not a reskinned template.</p></div>
+          <div class="principle" data-cap-tilt="3"><span class="idx">02</span><h3>Offline without compromise</h3><p>Your vault, workouts, games, and ledger work on planes, trains, basements, and dead zones. First load once — own it forever.</p></div>
+          <div class="principle" data-cap-tilt="3"><span class="idx">03</span><h3>No rent-seeking cloud</h3><p>We don't need your data to exist. Capricorn makes software you install — not software that installs a data pipeline into your life.</p></div>
+          <div class="principle" data-cap-tilt="3"><span class="idx">04</span><h3>Built for real lives</h3><p>Multinational finance, diaspora wealth, recovery journeys, game nights, and fragrance collections — designed for actual humans, not Silicon Valley defaults.</p></div>
         </div>
       </div>
     </section>
@@ -152,10 +158,10 @@
     <section class="section manifesto" id="manifesto">
       <div class="wrap">
         <p class="eyebrow" data-reveal>The one rule</p>
-        <span class="mline"><span>Your vault. Your body.</span></span>
-        <span class="mline"><span>Your games. Your wealth.</span></span>
-        <span class="mline"><span class="gold">One rule: Device Sovereignty.</span></span>
-        <p class="lead" data-reveal style="margin-inline:auto">The only thing our products share. Everything else — typography, motion, color — is intentionally different.</p>
+        <span class="mline"><span>Your vault. Your workout.</span></span>
+        <span class="mline"><span>Your games. Your money.</span></span>
+        <span class="mline"><span class="gold">Your phone. Your call.</span></span>
+        <p class="lead" data-reveal style="margin-inline:auto">Device Sovereignty — the only principle all eight Cap apps share. Typography, motion, color, purpose: intentionally different. This one thing: non-negotiable.</p>
         <a href="sovereignty.html" class="btn btn-ghost cap-magnetic" data-cursor>Read the manifesto →</a>
       </div>
     </section>
@@ -164,12 +170,12 @@
     <section class="section" id="install">
       <div class="wrap" data-reveal>
         <p class="eyebrow">Install once. Own forever.</p>
-        <h2>Built to live on your home screen.</h2>
+        <h2>One install. Works like a native app.</h2>
         <div class="steps">
-          <div class="step"><h3>Open in your browser</h3><p>Every app loads as a full progressive web app — try before you install.</p></div>
-          <div class="step"><h3>Add to Home Screen</h3><p>Share → Add to Home Screen on iPhone, or Install app on Android and desktop Chrome.</p></div>
-          <div class="step"><h3>Works offline</h3><p>After the first load, your vault, workouts, games, and ledger keep working without Wi‑Fi.</p></div>
-          <div class="step"><h3>Your data stays yours</h3><p>Encrypted on-device storage. Capricorn never sees your finances, journal, or collection.</p></div>
+          <div class="step"><h3>Open in your browser</h3><p>Browse to any Cap app — it works immediately, no download wall, no account prompt before you see anything.</p></div>
+          <div class="step"><h3>Add to Home Screen</h3><p>Share → Add to Home Screen on iPhone. Install App on Android or Chrome desktop. Takes five seconds.</p></div>
+          <div class="step"><h3>Works without Wi‑Fi</h3><p>After one load, every Cap app runs offline. Planes, basements, dead zones — your data is already there.</p></div>
+          <div class="step"><h3>You own the data</h3><p>Encrypted on-device. Capricorn has no server that stores your finances, training logs, or collection.</p></div>
         </div>
       </div>
     </section>
@@ -179,7 +185,7 @@
       <div class="wrap" data-reveal>
         <p class="eyebrow">Founder</p>
         <h2>Built by Shamikh Ahmed.<br>Owned by you.</h2>
-        <p class="lead">Capricorn Systems is a company-first portfolio — operating-system-grade Cap apps for problems that cloud apps keep getting wrong. Your device, your data, your call.</p>
+        <p class="lead">Capricorn is a one-person company building software to own-grade standards. Eight products, eight product studios — solving problems the big platforms keep getting wrong. Your device. Your data. No negotiation.</p>
         <div class="hero-actions">
           <a href="#products" class="btn btn-primary cap-magnetic" data-cursor>Install the apps →</a>
           <a href="solutions.html" class="btn btn-ghost cap-magnetic" data-cursor>Demos for teams & investors</a>
