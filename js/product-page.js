@@ -48,7 +48,7 @@
     .slice(0, 3)
     .map(x =>
       `<a href="${x.slug}.html" class="related-card" style="--p-accent:${x.accent}">` +
-        `<span class="product-symbol">${x.symbol}</span>` +
+        `<span class="product-symbol"><img src="assets/marks/${x.slug}.svg" alt="" width="34" height="34" loading="lazy"></span>` +
         `<strong>${x.name}</strong>` +
         `<span>${x.tagline}</span>` +
       `</a>`
@@ -61,8 +61,8 @@
     hero: () =>
       `<section class="product-hero" id="overview" ${accent}>` +
         `<div class="wrap">` +
-          `<p class="eyebrow">${p.category} · v${p.ver}</p>` +
-          `<div class="symbol">${p.symbol}</div>` +
+          `<p class="eyebrow">${p.category}${p.ver ? ' · v' + p.ver : ''}</p>` +
+          `<div class="symbol"><img src="assets/marks/${p.slug}.svg" alt="" width="72" height="72"></div>` +
           `<h1>${p.name}</h1>` +
           `<p class="hook">${p.hook}</p>` +
           `<div class="highlight-row">${highlights}</div>` +
@@ -265,9 +265,9 @@
 
   if (typeof initScreenshotGalleries === 'function') initScreenshotGalleries();
 
-  document.querySelectorAll('.reveal').forEach(el => {
-    requestAnimationFrame(() => el.classList.add('visible'));
-  });
+  // Scroll reveals are handled by the IntersectionObserver in capricorn.js
+  // (it runs after this script and picks up the freshly rendered .reveal
+  // elements). The old rAF force-visible here defeated them entirely.
 
   initProductRail();
   initPitchTabs();

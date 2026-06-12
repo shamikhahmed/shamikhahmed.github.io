@@ -1529,3 +1529,22 @@ html:has(body.layout-prismcap) {
   .layout-deeponycap .deepony-bubbles.reveal.visible .feature-card { animation: none; }
   .layout-pulsecap .feature-h-scroll { scroll-snap-type: none; }
 }
+
+/* ── iPhone polish (2026-06) ──
+   Real-device fixes: deck iframes are scroll traps on iOS so small
+   screens get fullscreen links instead; tables scroll horizontally
+   inside their wraps; tap targets and stacked CTAs sized for thumbs. */
+@media (max-width: 640px) {
+  .layout-product .product-hero { padding-top: calc(96px + var(--safe-t)); }
+  .layout-product .product-hero h1 { font-size: clamp(2.1rem, 11vw, 2.9rem); }
+  .layout-product .product-hero .actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .layout-product .product-hero .actions .btn { width: 100%; justify-content: center; min-height: 50px; }
+  .pitch-tabs, .pitch-embed { display: none !important; }
+  .pitch-embed-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .pitch-embed-actions .btn { width: 100%; justify-content: center; min-height: 50px; }
+  .table-wrap, .ledger-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .vs-table td, .vs-table th, .feature-table td, .feature-table th { font-size: 13px; padding: 10px 12px; }
+  .feature-grid, .related-grid { grid-template-columns: 1fr; }
+  .product-rail-nav { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .product-hero .symbol img { width: 60px; height: 60px; }
+}
