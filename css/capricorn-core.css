@@ -182,13 +182,14 @@
   border: 0;
 }
 
-/* Touch targets — interactive elements never below 44px hit area */
-:where(button, a.cap-btn, [role="button"], input[type="checkbox"], input[type="radio"]) {
+/* Touch targets — 44px minimum hit area.
+   Opt-in (.cap-btn / .cap-touch / form toggles) rather than every <button>:
+   a blanket rule inflates small visual controls like carousel dots. Tiny
+   controls should add .cap-touch or grow their hit area with padding. */
+:where(.cap-btn, .cap-touch, [role="button"], input[type="checkbox"], input[type="radio"]) {
   min-height: var(--cap-touch-target);
   min-width: var(--cap-touch-target);
 }
-/* Inline text links are exempt */
-:where(p, li, td, span) > a { min-height: 0; min-width: 0; }
 
 /* Selection */
 ::selection { background: var(--cap-accent); color: var(--cap-accent-contrast); }
