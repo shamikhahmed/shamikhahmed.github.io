@@ -3,59 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050508">
-  <link rel="icon" href="icon-192.png">
-  <link rel="stylesheet" href="css/site.css">
-  <title>Enterprise Demo — Shamikh OS</title>
-  <meta name="description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta name="theme-color" content="#0a0e17">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Investor Walkthrough — Capricorn Systems</title>
+  <meta name="description" content="30-minute investor demo guide for all eight Cap apps. Launch live apps with seed data, follow the demo script, and verify with Playwright.">
   <link rel="canonical" href="https://shamikhahmed.github.io/enterprise.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Capricorn Systems">
-  <meta property="og:title" content="Enterprise Demo — Shamikh OS">
-  <meta property="og:description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta property="og:title" content="Investor Walkthrough — Capricorn Systems">
+  <meta property="og:description" content="30-minute investor demo guide for all eight Cap apps. Launch live apps with seed data, follow the demo script, and verify with Playwright.">
   <meta property="og:url" content="https://shamikhahmed.github.io/enterprise.html">
   <meta property="og:image" content="https://shamikhahmed.github.io/icon-1024.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Enterprise Demo — Shamikh OS">
-  <meta name="twitter:description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta name="twitter:title" content="Investor Walkthrough — Capricorn Systems">
+  <meta name="twitter:description" content="30-minute investor demo for all eight Cap apps.">
   <meta name="twitter:image" content="https://shamikhahmed.github.io/icon-1024.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="css/capricorn-core.css?v=2">
+  <link rel="stylesheet" href="css/capricorn.css?v=3">
   <style>
     .ent-wrap { max-width: 760px; margin: 0 auto; padding: calc(90px + var(--safe-t)) 24px 80px; }
-    .ent-wrap h1 { font-family: var(--display); font-size: clamp(28px, 5vw, 40px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
-    .ent-wrap h2 { font-family: var(--display); font-size: 20px; font-weight: 800; color: var(--cyan); margin: 36px 0 14px; }
-    .ent-wrap h3 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; }
-    .ent-wrap p, .ent-wrap li { font-size: 15px; color: var(--dim); line-height: 1.65; margin-bottom: 10px; }
+    .ent-wrap h1 { font-family: var(--display); font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; color: var(--text); }
+    .ent-wrap h2 { font-family: var(--display); font-size: 20px; font-weight: 800; color: var(--accent); margin: 36px 0 14px; }
+    .ent-wrap h3 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; color: var(--text); }
+    .ent-wrap p, .ent-wrap li { font-size: 15px; color: var(--text-dim); line-height: 1.65; margin-bottom: 10px; }
     .ent-wrap ol { padding-left: 20px; margin-bottom: 16px; }
     .ent-wrap li { margin-bottom: 6px; }
-    .ent-wrap code { font-family: var(--mono); font-size: 12px; background: var(--card); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text); }
-    .ent-wrap a { color: var(--cyan); }
-    .ent-meta { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-bottom: 28px; }
+    .ent-wrap code { font-family: var(--mono); font-size: 12px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text); }
+    .ent-wrap a { color: var(--accent); text-decoration: none; }
+    .ent-wrap a:hover { text-decoration: underline; }
+    .ent-meta { font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin-bottom: 28px; opacity: 0.6; }
     .ent-app-grid { display: grid; gap: 12px; margin: 20px 0; }
     .ent-app-row {
       display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
-      padding: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
+      padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px;
+      transition: border-color 0.2s;
     }
+    .ent-app-row:hover { border-color: var(--accent); }
     .ent-app-row span:first-child { font-size: 28px; }
-    .ent-app-row strong { display: block; font-size: 15px; margin-bottom: 2px; }
-    .ent-app-row small { font-size: 12px; color: var(--dim); }
-    .ent-app-row .btn { padding: 10px 16px; font-size: 13px; }
-    .faq-item { padding: 16px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; }
+    .ent-app-row strong { display: block; font-size: 15px; margin-bottom: 2px; color: var(--text); }
+    .ent-app-row small { font-size: 12px; color: var(--text-dim); }
+    .ent-app-row .ent-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ent-btn-ghost {
+      display: inline-flex; align-items: center; padding: 8px 14px; font-size: 13px; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); text-decoration: none;
+      background: transparent; cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .ent-btn-ghost:hover { border-color: var(--accent); color: var(--text); }
+    .ent-btn-primary {
+      display: inline-flex; align-items: center; padding: 8px 14px; font-size: 13px; font-weight: 600;
+      border-radius: 8px; background: var(--accent); color: #0a0e17; text-decoration: none;
+      border: none; cursor: pointer; transition: opacity .2s;
+    }
+    .ent-btn-primary:hover { opacity: 0.88; }
+    .faq-item { padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; }
     .faq-item strong { display: block; color: var(--text); margin-bottom: 6px; font-size: 14px; }
+    .faq-item p { margin: 0; }
+    .ent-footer { border-top: 1px solid var(--border); margin-top: 60px; padding-top: 24px; font-size: 14px; color: var(--text-dim); }
+    .ent-footer a { color: var(--accent); }
+    @media (max-width: 480px) {
+      .ent-app-row { grid-template-columns: auto 1fr; }
+      .ent-app-row .ent-btns { grid-column: 1 / -1; }
+    }
   </style>
 </head>
 <body>
-  <nav class="site-nav scrolled">
-    <a href="index.html" class="nav-logo">Shamikh <span>OS</span></a>
+  <a href="#main" class="cap-skip-link">Skip to content</a>
+
+  <nav class="nav scrolled" id="siteNav" aria-label="Main">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/logo.svg" alt="" width="38" height="38">
+      Capricorn <em>Systems</em>
+    </a>
     <div class="nav-links">
       <a href="index.html#products">Products</a>
-      <a href="index.html">Portfolio</a>
+      <a href="sovereignty.html">Sovereignty</a>
+      <a href="about.html">About</a>
     </div>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="18" height="13" viewBox="0 0 18 13" fill="none" aria-hidden="true">
+        <rect width="18" height="1.5" rx="1" fill="currentColor"/>
+        <rect x="2" y="5.75" width="16" height="1.5" rx="1" fill="currentColor"/>
+        <rect x="4" y="11.5" width="14" height="1.5" rx="1" fill="currentColor"/>
+      </svg>
+    </button>
   </nav>
 
-  <div class="ent-wrap">
-    <p class="ent-meta">Enterprise · Last verified June 2026</p>
+  <main id="main" class="ent-wrap">
+    <p class="ent-meta">Capricorn Systems · Investor walkthrough · June 2026</p>
     <h1>30-minute investor walkthrough</h1>
-    <p>Repeatable demo across all six OS apps. Each product has its own personality — explore the <a href="index.html#products">product pages</a> first, then launch live apps with seed data below.</p>
+    <p>Repeatable demo across all eight Cap apps. Each product has its own personality — explore the <a href="index.html#products">product pages</a> first, then launch live apps with seed data below.</p>
 
     <h2>Before you start (5 min)</h2>
     <ol>
@@ -74,7 +115,7 @@
     <ol>
       <li>Launch → demo PIN <code>123456</code> or create vault + Load Demo.</li>
       <li>Banks, Documents, Smart Import (offline default).</li>
-      <li>Settings → About — AES-256-GCM, v4.1.0.</li>
+      <li>Settings → About — AES-256-GCM.</li>
     </ol>
 
     <h3>2. PulseCap (5 min)</h3>
@@ -107,34 +148,48 @@
       <li>Catalog, wishlist, IndexedDB photos, COPPA statement.</li>
     </ol>
 
+    <h3>7. ScentCap (3 min)</h3>
+    <ol>
+      <li>Add a fragrance from the catalog; set a wear log entry.</li>
+      <li>Analytics tab — wear frequency, seasonal breakdown.</li>
+    </ol>
+
+    <h3>8. AuraCap (3 min)</h3>
+    <ol>
+      <li>Import Apple Health export or use demo data.</li>
+      <li>Show Apple ecosystem insights dashboard.</li>
+    </ol>
+
     <h2>FAQ</h2>
-    <div class="faq-item"><strong>Is data encrypted?</strong> VaultCap: AES-256-GCM. Others: localStorage/IndexedDB — protect device passcode.</div>
-    <div class="faq-item"><strong>Telemetry?</strong> No analytics SDKs in any app.</div>
-    <div class="faq-item"><strong>Medical device?</strong> No. SteadyCap SOS is not clinical care.</div>
-    <div class="faq-item"><strong>Investment advice?</strong> No. LedgerCap is a personal ledger.</div>
-    <div class="faq-item"><strong>AI?</strong> VaultCap optional LLM import. PulseCap Smart Coach is rule-based.</div>
-    <div class="faq-item"><strong>Offline?</strong> All six PWAs work offline after first load — the one shared rule: <a href="index.html#philosophy">Device Sovereignty</a>.</div>
+    <div class="faq-item"><strong>Is data encrypted?</strong><p>VaultCap: AES-256-GCM. Others: localStorage/IndexedDB — protect with device passcode.</p></div>
+    <div class="faq-item"><strong>Telemetry?</strong><p>No analytics SDKs in any app. Zero data leaves the device.</p></div>
+    <div class="faq-item"><strong>Medical device?</strong><p>No. SteadyCap SOS is not clinical care.</p></div>
+    <div class="faq-item"><strong>Investment advice?</strong><p>No. LedgerCap is a personal ledger.</p></div>
+    <div class="faq-item"><strong>AI?</strong><p>VaultCap optional LLM import. PulseCap Smart Coach is rule-based.</p></div>
+    <div class="faq-item"><strong>Offline?</strong><p>All eight PWAs work offline after first load — Device Sovereignty is the one shared rule.</p></div>
 
     <h2>Verification</h2>
     <p><code>node scripts/truth-audit.mjs</code> · <code>npx playwright test</code> per app</p>
-  </div>
 
-  <footer class="site-footer">
-    <a href="index.html">← Portfolio home</a><br>© 2026 Shamikh Ahmed
-  </footer>
+    <div class="ent-footer">
+      <a href="index.html">← Back to Capricorn Systems</a> &nbsp;·&nbsp; © 2026 Shamikh Ahmed
+    </div>
+  </main>
 
   <script src="js/apps-data.js"></script>
+  <script src="js/product-media.js"></script>
   <script>
-    document.getElementById('entApps').innerHTML = APPS_LIST.map(a => `
+    const list = typeof APPS_LIST !== 'undefined' ? APPS_LIST : [];
+    document.getElementById('entApps').innerHTML = list.map(a => `
       <div class="ent-app-row">
-        <span>${a.emoji}</span>
+        <span aria-hidden="true">${a.emoji}</span>
         <div><strong>${a.name}</strong><small>${a.tagline}</small></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a href="app.html?a=${a.slug}" class="btn btn-ghost">Info</a>
-          <a href="${a.url}" class="btn btn-primary app-launch" rel="noopener">Launch</a>
+        <div class="ent-btns">
+          <a href="${a.slug ? a.slug + '.html' : '#'}" class="ent-btn-ghost">Info</a>
+          <a href="${a.url}" class="ent-btn-primary" rel="noopener" target="_blank">Launch ↗</a>
         </div>
       </div>`).join('');
   </script>
-  <script src="js/capricorn-motion.js" defer></script>
+  <script src="js/capricorn.js" defer></script>
 </body>
 </html>
