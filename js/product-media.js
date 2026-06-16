@@ -188,17 +188,28 @@ function initHomeCarousel() {
 function initMobileNav() {
   const btn = document.getElementById('navToggle');
   const links = document.querySelector('.nav-links');
+  const nav = document.getElementById('siteNav');
   if (!btn || !links) return;
+
+  const close = () => {
+    links.classList.remove('is-open');
+    nav?.classList.remove('nav-open');
+    document.body.classList.remove('nav-menu-open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Open menu');
+  };
+
   btn.addEventListener('click', () => {
-    const open = links.classList.toggle('is-open');
+    const open = !links.classList.contains('is-open');
+    links.classList.toggle('is-open', open);
+    nav?.classList.toggle('nav-open', open);
+    document.body.classList.toggle('nav-menu-open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    btn.textContent = open ? '✕' : '☰';
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   });
-  links.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => {
-      links.classList.remove('is-open');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.textContent = '☰';
-    });
+
+  links.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
   });
 }

@@ -1,7 +1,7 @@
 {
   "name": "shamikhahmed.github.io",
-  "version": "1.0.0",
-  "description": "Portfolio website for Shamikh Ahmed's six OS apps.",
+  "version": "1.1.0",
+  "description": "Capricorn Systems hub — marketing site for eight Cap apps.",
   "main": "sw.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

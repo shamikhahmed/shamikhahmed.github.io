@@ -159,6 +159,20 @@ if (!reduced && window.Lenis && gsap) {
   v.load();
 })();
 
+/* ════════ First-run welcome banner ════════ */
+(function welcome() {
+  const banner = document.getElementById('hubWelcome');
+  const dismiss = document.getElementById('hubWelcomeDismiss');
+  if (!banner || !dismiss) return;
+  const KEY = 'capricorn-hub-welcome-v1';
+  if (localStorage.getItem(KEY)) return;
+  banner.hidden = false;
+  dismiss.addEventListener('click', () => {
+    banner.hidden = true;
+    localStorage.setItem(KEY, '1');
+  });
+})();
+
 /* ════════ GSAP storytelling ════════ */
 (function story() {
   if (!gsap) return;

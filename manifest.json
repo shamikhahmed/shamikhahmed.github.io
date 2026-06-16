@@ -1,7 +1,7 @@
 {
   "name": "Capricorn Systems",
   "short_name": "Capricorn",
-  "description": "Software that lives on your device — not in our cloud. Six premium Capricorn apps.",
+  "description": "Software that lives on your device — not in our cloud. Eight premium Cap apps.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0e17",
