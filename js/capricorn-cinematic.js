@@ -3,26 +3,91 @@
 
 'use strict';
 /**
- * Capricorn Cinematic — GSAP 3 screen transitions, stagger reveals, nav hooks.
+ * Capricorn Cinematic — GSAP 3 screen transitions, dashboard 3D widgets, nav hooks.
  * Pairs with CapricornScene (WebGL) + CapricornMotion. Degrades without GSAP.
  */
 const CapCinematic = (() => {
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const g = () => window.gsap;
-  let installed = false;
   let running = false;
+  let moTimer = 0;
+
+  const WIDGET_SEL = [
+    '.cap-stagger > *',
+    '.stat-pill', '.glass-tile', '.glass-card', '.glass-premium',
+    '.card', '.card-press', '.wear-card', '.hero-stat', '.stat-card', '.stile',
+    '.home-stats > *', '.os-card', '.mod-tile', '.glass', '.feat', '.pill',
+    '.grid2 > *', '.grid3 > *', '.stat-row', '.home-header', '.home-hero',
+    '.section-label', '.page-title', '.score-ring', '.badge-live',
+    '[data-cap-stagger]', '[data-cap-tilt]',
+  ].join(', ');
 
   function registerGsap() {
     if (g() && window.ScrollTrigger) g().registerPlugin(window.ScrollTrigger);
+  }
+
+  function activeRoot() {
+    return (
+      document.querySelector('.screen.active') ||
+      document.getElementById('view')?.querySelector('.screen') ||
+      document.querySelector('main') ||
+      document.getElementById('app') ||
+      document.body
+    );
   }
 
   function revealFallback(els) {
     els.forEach((el) => el.classList.add('is-visible'));
   }
 
+  function clearAnimatedFlags(root) {
+    root.querySelectorAll('[data-cap-animated]').forEach((el) => {
+      delete el.dataset.capAnimated;
+    });
+  }
+
+  function animateDashboard(root) {
+    if (!root || reduced() || !g()) return;
+    const items = [...root.querySelectorAll(WIDGET_SEL)].filter(
+      (el) => !el.dataset.capAnimated && el.offsetParent !== null && el.getBoundingClientRect().height > 0,
+    );
+    if (!items.length) return;
+    items.forEach((el) => { el.dataset.capAnimated = '1'; });
+
+    g().fromTo(
+      items,
+      {
+        opacity: 0,
+        y: 28,
+        rotateX: 10,
+        scale: 0.96,
+        transformPerspective: 1000,
+        transformOrigin: '50% 80%',
+      },
+      {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        duration: 0.58,
+        stagger: { amount: 0.45, from: 'start' },
+        ease: 'power3.out',
+        clearProps: 'transform,filter',
+      },
+    );
+  }
+
+  function staggerContent(root) {
+    animateDashboard(root);
+  }
+
   function refresh() {
+    const root = activeRoot();
+    if (window.CapricornMotion && window.CapricornMotion.init) {
+      window.CapricornMotion.init();
+    }
+
     const reveals = document.querySelectorAll('.cap-reveal:not(.is-visible)');
-    const root = document.querySelector('.screen.active') || document.getElementById('view') || document.body;
 
     if (!reveals.length) {
       staggerContent(root);
@@ -51,28 +116,17 @@ const CapCinematic = (() => {
     staggerContent(root);
   }
 
-  function staggerContent(root) {
-    if (!root || reduced() || !g()) return;
-    const items = root.querySelectorAll(
-      '.cap-stagger > *, .stat-pill, .glass-tile, .card, .wear-card, .hero-stat, [data-cap-stagger]',
-    );
-    if (!items.length) return;
-    g().fromTo(
-      items,
-      { opacity: 0, y: 16, scale: 0.98 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.48, stagger: 0.04, ease: 'power2.out', clearProps: 'transform' },
-    );
-  }
-
   function transitionScreens(prev, next) {
     if (!next) return;
     if (reduced() || !g()) {
+      if (next) clearAnimatedFlags(next);
       refresh();
       return;
     }
     if (running) g().killTweensOf([prev, next].filter(Boolean));
     running = true;
 
+    clearAnimatedFlags(next);
     const gs = g();
     gs.set(next, { opacity: 0, y: 22, scale: 0.988, filter: 'blur(8px)', transformOrigin: '50% 40%' });
     next.style.pointerEvents = 'none';
@@ -100,11 +154,13 @@ const CapCinematic = (() => {
       return;
     }
     if (reduced() || !g()) {
+      clearAnimatedFlags(newDiv);
       refresh();
       return;
     }
     if (running) g().killTweensOf([oldDiv, newDiv].filter(Boolean));
     running = true;
+    clearAnimatedFlags(newDiv);
 
     const gs = g();
     gs.set(newDiv, { opacity: 0, x: 28, scale: 0.985, filter: 'blur(6px)' });
@@ -126,6 +182,8 @@ const CapCinematic = (() => {
   function initScrollStory() {
     if (reduced() || !g() || !window.ScrollTrigger) return;
     g().utils.toArray('.cap-scroll-reveal, [data-cap-scroll]').forEach((el) => {
+      if (el.dataset.capScrollBound) return;
+      el.dataset.capScrollBound = '1';
       g().fromTo(
         el,
         { opacity: 0, y: 40 },
@@ -143,7 +201,7 @@ const CapCinematic = (() => {
   function initScrollProgress() {
     const bar = document.querySelector('.cap-scroll-progress');
     if (!bar || reduced()) return;
-    const scroller = document.querySelector('main') || document.documentElement;
+    const scroller = document.querySelector('main') || document.querySelector('.screen.active') || document.documentElement;
     function update() {
       const el = scroller === document.documentElement ? document.documentElement : scroller;
       const max = el.scrollHeight - el.clientHeight;
@@ -152,6 +210,24 @@ const CapCinematic = (() => {
     }
     (scroller === document.documentElement ? window : scroller).addEventListener('scroll', update, { passive: true });
     update();
+  }
+
+  function initMutationObserver() {
+    const targets = ['#app', '#view', '#root', 'main'].map((s) => document.querySelector(s)).filter(Boolean);
+    if (!targets.length || !('MutationObserver' in window)) return;
+
+    const observer = new MutationObserver(() => {
+      clearTimeout(moTimer);
+      moTimer = setTimeout(() => {
+        const root = activeRoot();
+        if (root) clearAnimatedFlags(root);
+        refresh();
+      }, 60);
+    });
+
+    targets.forEach((t) => {
+      observer.observe(t, { childList: true, subtree: true, characterData: false });
+    });
   }
 
   function patchNavigation() {
@@ -212,15 +288,19 @@ const CapCinematic = (() => {
     schedulePatchNavigation();
     initScrollProgress();
     initScrollStory();
+    initMutationObserver();
 
     if (opts.scene !== false && window.CapricornScene) {
       const sel = opts.canvas || '#cap-scene, #mist-canvas, .cap-scene-canvas';
       const canvas = document.querySelector(sel);
-      if (canvas) CapricornScene.init({ canvas, ...(opts.sceneOpts || {}) });
+      if (canvas) {
+        CapricornScene.init({ canvas, ...(opts.sceneOpts || {}) });
+        document.body.classList.add('cap-has-scene');
+      }
     }
 
-    if (window.CapricornMotion && CapricornMotion.init) {
-      CapricornMotion.init(opts.motionOpts || {});
+    if (window.CapricornMotion && window.CapricornMotion.init) {
+      window.CapricornMotion.init();
     }
 
     const active = document.querySelector('.screen.active');
@@ -230,12 +310,13 @@ const CapCinematic = (() => {
     refresh();
   }
 
-  return { init, refresh, transitionScreens, transitionViewSwap, patchNavigation };
+  return { init, refresh, transitionScreens, transitionViewSwap, patchNavigation, animateDashboard };
 })();
 
 window.CapCinematic = CapCinematic;
-if (!window.CapMotion) window.CapMotion = { refresh: () => CapCinematic.refresh() };
-else if (!window.CapMotion.refresh) window.CapMotion.refresh = () => CapCinematic.refresh();
+window.CapMotion = {
+  refresh: () => CapCinematic.refresh(),
+};
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => CapCinematic.init());
