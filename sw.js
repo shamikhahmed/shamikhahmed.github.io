@@ -1,4 +1,4 @@
-const CACHE = 'capricorn-v20';
+const CACHE = 'capricorn-v21';
 
 function deviceShots(slug) {
   return [`./assets/screenshots/${slug}-ipad.png`, `./assets/screenshots/${slug}-mac.png`];
@@ -62,6 +62,14 @@ const ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './icon-1024.png',
+  './js/capricorn-scene.js',
+  './js/capricorn-premium-nav.js',
+  './js/capricorn-cinematic.js',
+  './js/capricorn-deck.js',
+  './js/capricorn-deck-pro.js',
+  './js/capricorn-pitch.js',
+  './privacy.html',
+  './changelog.html',
 ];
 
 self.addEventListener('install', e => {
