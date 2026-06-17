@@ -217,19 +217,20 @@ const APPS = [
     landing: `${BASE}/ScentCap/landing.html`,
     setupUrl: `${BASE}/ScentCap/`,
     setup: async (page) => {
-      await page.getByRole('button', { name: /Explore with sample wardrobe/i }).click({ timeout: 20000 });
-      await page.getByText(/demo wardrobe/i).waitFor({ timeout: 20000 }).catch(() => {});
+      await page.goto(`${BASE}/ScentCap/onboarding`, { waitUntil: 'networkidle', timeout: 90000 });
+      await page.getByRole('button', { name: /Try demo collection/i }).click({ timeout: 20000 });
+      await page.getByText(/demo wardrobe/i).waitFor({ timeout: 25000 }).catch(() => {});
       await waitMs(page, 2500);
     },
     navs: [
-      { link: 'Wardrobe' },
-      { link: 'Advisor' },
-      { link: 'Layer' },
-      { link: 'Calendar' },
-      { link: 'Settings' },
-      { link: 'Today' },
+      { route: '/collection' },
+      { route: '/advisor' },
+      { route: '/layering' },
+      { route: '/calendar' },
+      { route: '/analytics' },
+      { route: '/' },
     ],
-    deviceLink: 'Today',
+    deviceRoute: '/',
   },
   {
     slug: 'auracap',
@@ -241,14 +242,14 @@ const APPS = [
       await waitMs(page, 2500);
     },
     navs: [
-      { link: 'Digital DNA' },
-      { link: 'Import Apps' },
-      { link: 'App Library' },
-      { link: 'Smart Organizer' },
-      { link: 'AI Designer' },
-      { link: 'Wallpapers' },
+      { route: '/apps' },
+      { route: '/dna' },
+      { route: '/import' },
+      { route: '/organizer' },
+      { route: '/wallpaper' },
+      { route: '/dashboard' },
     ],
-    deviceLink: 'Dashboard',
+    deviceRoute: '/dashboard',
   },
 ];
 
