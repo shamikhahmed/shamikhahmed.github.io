@@ -26,6 +26,7 @@
   <meta name="twitter:image" content="https://shamikhahmed.github.io/icon-1024.png">
 </head>
 <body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
   <nav class="nav scrolled" id="siteNav">
     <a href="index.html" class="nav-brand">
       <img src="assets/logo.svg" alt="" width="42" height="42">
@@ -118,5 +119,13 @@
   </script>
   <script src="js/capricorn.js"></script>
   <script src="js/capricorn-motion.js" defer></script>
+
+  <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/capricorn-scene.js"></script>
+  <script src="js/capricorn-cinematic.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',function(){if(window.CapCinematic)CapCinematic.init({canvas:'#cap-scene'});});</script>
 </body>
 </html>

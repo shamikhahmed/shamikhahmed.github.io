@@ -155,9 +155,6 @@ const CapCinematic = (() => {
   }
 
   function patchNavigation() {
-    if (installed) return;
-    installed = true;
-
     if (window.Navigation && typeof Navigation.go === 'function' && !Navigation.go.__cap) {
       const orig = Navigation.go;
       Navigation.go = function capGo(...args) {
@@ -169,7 +166,12 @@ const CapCinematic = (() => {
       Navigation.go.__cap = true;
     }
 
-    if (typeof window.go === 'function' && !window.go.__cap) {
+    if (
+      typeof window.go === 'function' &&
+      !window.go.__cap &&
+      !window.go.__capPro &&
+      document.getElementById('view')
+    ) {
       const origGo = window.go;
       window.go = function capPulseGo(id, data) {
         const view = document.getElementById('view');
@@ -194,9 +196,20 @@ const CapCinematic = (() => {
     }
   }
 
+  function schedulePatchNavigation() {
+    patchNavigation();
+    window.addEventListener('load', patchNavigation);
+    let tries = 0;
+    const retry = setInterval(() => {
+      patchNavigation();
+      tries += 1;
+      if (tries >= 30) clearInterval(retry);
+    }, 100);
+  }
+
   function init(opts = {}) {
     registerGsap();
-    patchNavigation();
+    schedulePatchNavigation();
     initScrollProgress();
     initScrollStory();
 

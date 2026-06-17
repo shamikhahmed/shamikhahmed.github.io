@@ -13,6 +13,7 @@ const CapDeck = (() => {
   function init(opts = {}) {
     const deck = document.getElementById('deck') || document.querySelector('[data-cap-deck]');
     if (!deck) return null;
+    if (deck.dataset.capDeck === 'pro') return null;
 
     const slides = [...deck.querySelectorAll('.slide')];
     if (!slides.length) return null;
