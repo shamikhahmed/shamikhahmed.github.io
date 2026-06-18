@@ -3,17 +3,28 @@
 
 /* ════════════════════════════════════════════════════════════════
    Capricorn Design System — motion runtime (no deps)
-   Drives reveals, kinetic type, parallax, ripples, 3D tilt, magnetic hover.
+   App shells (data-cap-app): instant reveals only — no RAF / tilt / parallax.
+   Marketing surfaces: full motion when not in app-fast mode.
    ════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
+  function isAppShell() {
+    return document.body && document.body.getAttribute('data-cap-app') === '1';
+  }
+
+  function revealInstant(selector) {
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.classList.add('is-visible');
+    });
+  }
+
   function observeVisible(selector, visibleClass) {
     var nodes = document.querySelectorAll(selector);
     if (!nodes.length) return;
-    if (reduced || !('IntersectionObserver' in window)) {
+    if (isAppShell() || reduced || !('IntersectionObserver' in window)) {
       nodes.forEach(function (el) { el.classList.add(visibleClass); });
       return;
     }
@@ -23,7 +34,7 @@
         e.target.classList.add(visibleClass);
         io.unobserve(e.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
     nodes.forEach(function (el, i) {
       if (!el.style.getPropertyValue('--cap-stagger-i')) {
         var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : i;
@@ -34,6 +45,7 @@
   }
 
   function bindRipples() {
+    if (isAppShell()) return;
     document.querySelectorAll('[data-cap-ripple], .cap-ripple-host').forEach(function (host) {
       if (host.dataset.capRippleBound) return;
       host.dataset.capRippleBound = '1';
@@ -53,7 +65,7 @@
   }
 
   function bindMagnetic() {
-    if (reduced || !finePointer) return;
+    if (isAppShell() || reduced || !finePointer) return;
     document.querySelectorAll('.cap-magnetic').forEach(function (el) {
       if (el.dataset.capMagneticBound) return;
       el.dataset.capMagneticBound = '1';
@@ -71,7 +83,7 @@
   }
 
   function bindTilt() {
-    if (reduced || !finePointer) return;
+    if (isAppShell() || reduced || !finePointer) return;
     document.querySelectorAll('[data-cap-tilt]').forEach(function (el) {
       if (el.dataset.capTiltBound) return;
       el.dataset.capTiltBound = '1';
@@ -88,7 +100,7 @@
   }
 
   function bindHero3d() {
-    if (reduced || !finePointer) return;
+    if (isAppShell() || reduced || !finePointer) return;
     document.querySelectorAll('.cap-hero-3d').forEach(function (wrap) {
       if (wrap.dataset.capHero3dBound) return;
       wrap.dataset.capHero3dBound = '1';
@@ -108,6 +120,7 @@
   }
 
   function initScrollProgress() {
+    if (isAppShell()) return;
     var progress = document.querySelector('.cap-scroll-progress');
     if (!progress || reduced) return;
     function updateScroll() {
@@ -119,22 +132,33 @@
   }
 
   function initParallax() {
-    if (reduced) return;
+    if (isAppShell() || reduced) return;
     var parallax = document.querySelectorAll('[data-cap-parallax]');
     if (!parallax.length) return;
-    function parallaxFrame() {
+    var ticking = false;
+    function updateParallax() {
       parallax.forEach(function (el) {
         var factor = parseFloat(el.dataset.capParallaxDepth || el.getAttribute('data-cap-parallax-depth') || '1') * 0.12;
         var rect = el.getBoundingClientRect();
         var center = rect.top + rect.height * 0.5 - innerHeight * 0.5;
         el.style.setProperty('--cap-parallax-y', String(-center * factor * 0.08));
       });
-      requestAnimationFrame(parallaxFrame);
+      ticking = false;
     }
-    requestAnimationFrame(parallaxFrame);
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateParallax);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateParallax();
   }
 
   function init() {
+    if (isAppShell()) {
+      revealInstant('.cap-reveal, .cap-reveal-scale, .cap-reveal-lines, .cap-kinetic, .cap-stagger, .cap-stagger > *');
+      return;
+    }
     observeVisible('.cap-reveal, .cap-reveal-scale, .cap-reveal-lines', 'is-visible');
     observeVisible('.cap-kinetic', 'is-visible');
     observeVisible('.cap-stagger', 'is-visible');
@@ -149,10 +173,17 @@
   window.CapricornMotion = {
     init: init,
     refresh: function () {
+      if (isAppShell()) {
+        revealInstant('.cap-reveal:not(.is-visible), .cap-reveal-scale:not(.is-visible), .cap-kinetic:not(.is-visible)');
+        return;
+      }
       init();
-      if (window.CapCinematic && window.CapCinematic.refresh) window.CapCinematic.refresh();
     },
   };
 
-  init();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
