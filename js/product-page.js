@@ -14,7 +14,7 @@
     return;
   }
 
-  document.title = p.name + ' — Capricorn Systems';
+  document.title = p.name + ' — ' + p.tagline + ' · Capricorn Systems';
   const theme = document.querySelector('meta[name="theme-color"]');
   if (theme) theme.content = p.bg;
   document.documentElement.style.setProperty('--p-accent', p.accent);
@@ -206,6 +206,36 @@
         `</p>` +
       `</div></section>`,
 
+    pricing: () => {
+      if (!p.pricing) return '';
+      const pr = p.pricing;
+      const freeRows = (pr.free || []).map(f => `<li>✓ ${f}</li>`).join('');
+      const proRows = (pr.pro || []).map(f => `<li>✓ ${f}</li>`).join('');
+      const isOneTime = pr.model === 'one-time';
+      const priceLabel = isOneTime ? pr.price + ' one-time' : pr.price + '/mo';
+      const proLabel = isOneTime ? 'Unlock' : 'Go Pro';
+      return `<section class="section section-alt" id="pricing" ${accent}>` +
+        `<div class="wrap reveal">` +
+          `<p class="eyebrow">Pricing</p>` +
+          `<h2>Simple, honest pricing.</h2>` +
+          `<p class="lead" style="margin-top:12px">Your data stays on your device whether you pay or not. Pro unlocks the full experience.</p>` +
+          `<div class="pricing-grid">` +
+            `<div class="pricing-card">` +
+              `<div class="pricing-header"><h3>Free</h3><p class="pricing-price">$0 <span>forever</span></p></div>` +
+              `<ul class="pricing-list">${freeRows}</ul>` +
+              `<a href="${p.url}" class="btn btn-ghost">Launch free →</a>` +
+            `</div>` +
+            `<div class="pricing-card pricing-card--pro" style="border-color:${p.accent}">` +
+              `<div class="pricing-header"><h3>${proLabel}</h3><p class="pricing-price">${priceLabel}</p></div>` +
+              `<ul class="pricing-list">${proRows}</ul>` +
+              `<a href="${p.url}?upgrade=1" class="btn btn-product">Get Pro — ${priceLabel} →</a>` +
+              `<p style="font-size:12px;margin-top:8px;color:var(--dim)">Payment coming soon — join the waitlist in-app</p>` +
+            `</div>` +
+          `</div>` +
+        `</div>` +
+      `</section>`;
+    },
+
     ticker: () =>
       `<div class="ledger-ticker" aria-hidden="true"><div class="ticker-track">${ticker}</div></div>`,
   };
@@ -220,11 +250,16 @@
     { id: 'promise', label: 'Promise' },
     { id: 'features', label: 'Features' },
     { id: 'compare', label: 'Compare' },
+    { id: 'pricing', label: 'Pricing' },
     { id: 'audience', label: 'Audience' },
     { id: 'faq', label: 'FAQ' },
     { id: 'related', label: 'Related' },
     { id: 'install', label: 'Install' },
-  ].filter((r) => r.id !== 'name' || p.nameStory);
+  ].filter((r) => {
+    if (r.id === 'name') return !!p.nameStory;
+    if (r.id === 'pricing') return !!p.pricing;
+    return true;
+  });
 
   function shell(mainHtml) {
     return `<div class="product-shell">` +
@@ -239,15 +274,39 @@
 
   const standard = () =>
     F.hero() + F.nameStory() + F.pitch() + F.mock() + F.experience() + F.problems() + F.promise() +
-    F.featuresGrid() + F.vs() + F.audience() + F.faq() + F.related() + F.cta();
+    F.featuresGrid() + F.vs() + F.pricing() + F.audience() + F.faq() + F.related() + F.cta();
 
   const ledger = () =>
     F.hero() + F.nameStory() + F.pitch() + F.ticker() + F.mock() + F.experience() + F.problems() + F.promise() +
-    F.featuresTable() + F.vsDense() + F.audience() + F.faq() + F.related() + F.cta();
+    F.featuresTable() + F.vsDense() + F.pricing() + F.audience() + F.faq() + F.related() + F.cta();
 
   root.innerHTML = shell(
     p.slug === 'ledgercap' ? ledger() : standard()
   );
+
+  // JSON-LD SoftwareApplication per product
+  (function () {
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: p.name,
+      description: p.pitch,
+      url: p.url,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'iOS, Android, Web',
+      offers: p.pricing ? {
+        '@type': 'Offer',
+        price: (p.pricing.basePrice || '0'),
+        priceCurrency: 'USD',
+        description: 'Free tier available. ' + (p.pricing.price ? 'Pro: ' + p.pricing.price + (p.pricing.model === 'one-time' ? ' one-time.' : '/mo.') : '')
+      } : { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      author: { '@type': 'Organization', name: 'Capricorn Systems', url: 'https://shamikhahmed.github.io/' }
+    };
+    const s = document.createElement('script');
+    s.type = 'application/ld+json';
+    s.textContent = JSON.stringify(ld);
+    document.head.appendChild(s);
+  })();
 
   const bar = document.getElementById('installBar');
   if (bar) {

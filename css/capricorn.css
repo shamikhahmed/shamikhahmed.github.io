@@ -1549,6 +1549,77 @@ html:has(body.layout-prismcap) {
   .layout-pulsecap .feature-h-scroll { scroll-snap-type: none; }
 }
 
+/* ── Pricing grid ── */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+  align-items: start;
+}
+.pricing-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pricing-card--pro {
+  border-width: 2px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+}
+.pricing-card--pro::before {
+  content: 'PRO';
+  position: absolute;
+  top: -12px;
+  left: 28px;
+  background: var(--p-accent, var(--gold));
+  color: #000;
+  font: 700 11px/1 var(--mono, monospace);
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.pricing-header h3 {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.pricing-price {
+  font-family: var(--mono, monospace);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--p-accent, var(--gold));
+  margin: 0;
+}
+.pricing-price span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--dim);
+}
+.pricing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pricing-list li {
+  font-size: 14px;
+  color: var(--dim);
+  line-height: 1.4;
+}
+.pricing-list li::first-letter { color: var(--p-accent, var(--gold)); }
+@media (max-width: 640px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .pricing-price { font-size: 1.6rem; }
+}
+
 /* ── iPhone polish (2026-06) ──
    Real-device fixes: deck iframes are scroll traps on iOS so small
    screens get fullscreen links instead; tables scroll horizontally
