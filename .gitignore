@@ -1,3 +1,9 @@
 node_modules/
 package-lock.json
 scripts/_capture.mjs
+
+# Environment / secrets — never commit
+.env
+.env.*
+!.env.example
+!.env.*.example
