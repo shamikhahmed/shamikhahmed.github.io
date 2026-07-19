@@ -1,3 +1,6 @@
+## Beauty deep trio 2 — 2026-07-20
+- Catalog: DeePonyCap 3.7.0 · ScentCap 1.4.0 · AuraCap 5.3.0
+
 ## Beauty deep trio — 2026-07-20
 - Catalog: SteadyCap 2.4.0 · LedgerCap 3.56.0 · MasteryCap 42.2.0
 
