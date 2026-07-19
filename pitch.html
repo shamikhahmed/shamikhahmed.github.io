@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e17">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <title>Pitch — Capricorn Systems</title>
+  <meta name="description" content="Capricorn Systems pitch: Device Sovereignty, thirteen Cap apps, live demos on GitHub Pages.">
+  <link rel="canonical" href="https://shamikhahmed.github.io/pitch.html">
+  <meta property="og:title" content="Pitch — Capricorn Systems">
+  <meta property="og:description" content="Thirteen Caps. Offline-first. Your device, your data.">
+  <meta property="og:url" content="https://shamikhahmed.github.io/pitch.html">
+  <meta property="og:image" content="https://shamikhahmed.github.io/icon-1024.png">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/capricorn-core.css?v=1">
+  <link rel="stylesheet" href="css/capricorn.css?v=17">
+  <style>
+    .pitch-hero {
+      min-height: 88vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: calc(120px + var(--safe-t)) 24px 48px; position: relative;
+      background:
+        radial-gradient(900px 480px at 85% -10%, rgba(201,162,39,.18), transparent 55%),
+        radial-gradient(700px 420px at 10% 40%, rgba(80,120,160,.12), transparent 50%),
+        #0a0e17;
+    }
+    .pitch-hero .wrap { max-width: 980px; margin: 0 auto; width: 100%; }
+    .pitch-brand { font-family: var(--display); font-size: clamp(2.6rem, 7vw, 4.6rem); font-weight: 800; letter-spacing: -.04em; line-height: .95; margin: 0 0 18px; }
+    .pitch-brand em { font-style: normal; color: var(--accent); }
+    .pitch-line { font-size: clamp(1.05rem, 2.2vw, 1.35rem); color: var(--text-dim); max-width: 28rem; line-height: 1.5; margin-bottom: 28px; }
+    .pitch-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .pitch-cta a { display: inline-flex; align-items: center; padding: 14px 18px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: .95rem; }
+    .pitch-cta .go { background: var(--accent); color: #120e04; }
+    .pitch-cta .ghost { border: 1px solid rgba(255,255,255,.18); color: var(--text); }
+    .pitch-sec { padding: 64px 24px; }
+    .pitch-sec .wrap { max-width: 980px; margin: 0 auto; }
+    .pitch-sec h2 { font-family: var(--display); font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 10px; }
+    .pitch-sec p { color: var(--text-dim); max-width: 40rem; line-height: 1.6; }
+    .pitch-qr {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; margin-top: 28px;
+    }
+    .pitch-qr a {
+      text-align: center; text-decoration: none; color: var(--text-dim); font-size: 12px; font-family: var(--mono);
+      padding: 12px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.02);
+    }
+    .pitch-qr img { width: 100%; aspect-ratio: 1; object-fit: contain; margin-bottom: 8px; border-radius: 8px; background: #fff; }
+    .pitch-qr strong { display: block; color: var(--text); font-family: Inter, sans-serif; font-size: 13px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+<nav class="nav" id="siteNav" aria-label="Main">
+  <a href="index.html" class="nav-brand"><img src="assets/logo.svg" alt="" width="38" height="38"> Capricorn <em>Systems</em></a>
+  <div class="nav-links">
+    <a href="investor.html">Investor pack</a>
+    <a href="enterprise.html">Walkthrough</a>
+    <a href="about.html">About</a>
+    <a href="index.html#products">Products</a>
+  </div>
+  <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><svg width="18" height="13" viewBox="0 0 18 13" fill="none" aria-hidden="true"><rect width="18" height="1.5" rx="1" fill="currentColor"/><rect x="2" y="5.75" width="16" height="1.5" rx="1" fill="currentColor"/><rect x="4" y="11.5" width="14" height="1.5" rx="1" fill="currentColor"/></svg></button>
+</nav>
+
+<header class="pitch-hero">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:14px">Capricorn Systems · Pitch</p>
+    <h1 class="pitch-brand">Capricorn <em>Systems</em></h1>
+    <p class="pitch-line">Software that lives on your device. Thirteen Caps. Zero mandatory cloud rent.</p>
+    <div class="pitch-cta">
+      <a class="go" href="index.html">Enter hub</a>
+      <a class="ghost" href="investor.html">One-pager</a>
+      <a class="ghost" href="VaultCap/?demo=1">Vault demo</a>
+      <a class="ghost" href="enterprise.html">Live script</a>
+    </div>
+  </div>
+</header>
+
+<section class="pitch-sec section-alt">
+  <div class="wrap">
+    <h2>Device Sovereignty</h2>
+    <p>Apps install via Add to Home Screen, keep working offline, and keep user data on-device by default. Smart Coach is rules-based. Real LLM features only with user keys — never fake AI marketing.</p>
+  </div>
+</section>
+
+<section class="pitch-sec">
+  <div class="wrap">
+    <h2>Scan a Cap</h2>
+    <p>Capricorn-framed QRs for flagships (more in each app pitch folder).</p>
+    <div class="pitch-qr">
+      <a href="VaultCap/?demo=1"><img src="assets/investor/qr-vaultcap.png" alt="VaultCap QR"><strong>VaultCap</strong>demo</a>
+      <a href="PulseCap/?demo=1"><img src="assets/investor/qr-pulsecap.png" alt="PulseCap QR"><strong>PulseCap</strong>demo</a>
+      <a href="PrismCap/"><img src="assets/investor/qr-prismcap.png" alt="PrismCap QR"><strong>PrismCap</strong>39 games</a>
+      <a href="SteadyCap/?demo=1"><img src="assets/investor/qr-steadycap.png" alt="SteadyCap QR"><strong>SteadyCap</strong>demo</a>
+      <a href="investor.html"><img src="assets/investor/qr-hub.png" alt="Hub QR"><strong>Investor pack</strong>hub</a>
+    </div>
+  </div>
+</section>
+
+<section class="pitch-sec section-alt">
+  <div class="wrap">
+    <h2>Portfolio ready</h2>
+    <p>No funding ask on this surface. Caps are a coherent product family with live GitHub Pages demos for diligence and acquisition conversations.</p>
+    <div class="pitch-cta" style="margin-top:22px">
+      <a class="go" href="investor.html">Open investor pack</a>
+      <a class="ghost" href="about.html">About Capricorn</a>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:32px 24px 48px;text-align:center;color:var(--text-dim);font-size:13px">
+  © 2026 Capricorn Systems · <a href="privacy.html" style="color:var(--accent)">Privacy</a> · <a href="terms.html" style="color:var(--accent)">Terms</a>
+</footer>
+<script src="js/capricorn.js" defer></script>
+</body>
+</html>

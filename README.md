@@ -1,6 +1,8 @@
 # shamikhahmed.github.io
 
-**Live Capricorn OS:** 0.11.8
+**Live Capricorn OS:** 0.11.9
+
+**Investor pack:** [investor.html](investor.html) · [pitch.html](pitch.html) · [enterprise.html](enterprise.html)
 
 Capricorn Systems hub — marketing site for six Cap apps.
 

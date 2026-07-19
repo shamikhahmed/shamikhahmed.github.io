@@ -1,3 +1,6 @@
+## 0.11.9 — 2026-07-19
+- Investor pack: pitch.html, investor.html, DEMO-SCRIPT, REHEARSAL, ONE-PAGER, screenshot/QR kit; enterprise walkthrough → 13 Caps
+
 ## 0.11.8 — 2026-07-19
 - Museum pad: Cap versions synced; Prism 4.3.5 play-smoke; Soul/Car/Travel/Idea live pads
 
