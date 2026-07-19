@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e17">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/capricorn-core.css?v=1">
+  <link rel="stylesheet" href="css/capricorn.css?v=17">
+  <title>Privacy — Capricorn Systems</title>
+  <meta name="description" content="Capricorn Systems privacy posture: device-first Caps, no mandatory accounts, no analytics on Cap PWAs.">
+  <link rel="canonical" href="https://shamikhahmed.github.io/privacy.html">
+</head>
+<body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+  <nav class="nav scrolled" id="siteNav">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/logo.svg" alt="" width="42" height="42">
+      Capricorn <em>Systems</em>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="sovereignty.html">Sovereignty</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="section" style="padding-top:calc(120px + var(--safe-t))">
+      <div class="wrap">
+        <p class="eyebrow">Legal</p>
+        <h1 style="font-size:clamp(2rem,4vw,3rem)">Privacy</h1>
+        <p class="lead" style="margin:16px 0 28px;max-width:680px">Capricorn Systems builds offline-first Cap apps. This page is the company truth — not a cookie banner cosplay.</p>
+        <p style="font-size:13px;opacity:.55">Last updated: 19 July 2026</p>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="wrap prose">
+        <h2>What we collect on Cap PWAs</h2>
+        <p><strong>Nothing by default.</strong> VaultCap, PulseCap, PrismCap, SteadyCap, LedgerCap, DeePonyCap, ScentCap, AuraCap, MasteryCap, SoulCap (and siblings) keep data on your device (localStorage / IndexedDB). No Capricorn account wall. No Capricorn analytics SDK in those PWAs.</p>
+        <h2>This marketing site</h2>
+        <p>The Capricorn hub (this domain) is a static GitHub Pages site. It does not require login. Browser may send normal web logs to GitHub Pages infrastructure; Capricorn Systems does not run a first-party tracker on these pages.</p>
+        <h2>Demos</h2>
+        <p>Try Demo links open sample data locally in your browser. Demo PIN is <strong>123456</strong> where a PIN is required. Demo data is not your real life — and is not uploaded to Capricorn servers.</p>
+        <h2>Optional third parties</h2>
+        <p>Some Caps may optionally call services you choose (for example market pulse workers, or LLM APIs with <em>your</em> keys). Those calls leave your device only when you turn them on.</p>
+        <h2>Contact</h2>
+        <p>Questions: open an issue on the relevant Cap GitHub repo, or reach Shamikh Ahmed via Connect links on the hub.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" style="padding:40px 24px;text-align:center;opacity:.7;font-size:13px">
+    <a href="terms.html">Terms</a> · <a href="about.html">About</a> · <a href="index.html">Home</a>
+  </footer>
+</body>
+</html>
