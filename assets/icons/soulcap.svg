@@ -1,16 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1a1538"/>
-      <stop offset="100%" stop-color="#0f0f1a"/>
-    </linearGradient>
-    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#a78bfa"/>
-      <stop offset="100%" stop-color="#7c6ff7"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <path d="M256 388 C168 320 128 272 128 216 C128 168 168 132 216 132 C240 132 256 148 256 148 C256 148 272 132 296 132 C344 132 384 168 384 216 C384 272 344 320 256 388 Z" fill="url(#glow)"/>
-  <circle cx="256" cy="210" r="42" fill="none" stroke="#e9e4ff" stroke-width="10" opacity=".85"/>
-  <path d="M236 210 C236 196 244 186 256 186 C268 186 276 196 276 210 C276 224 256 244 256 244 C256 244 236 224 236 210 Z" fill="#e9e4ff" opacity=".9"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <path d="M24 40 C14 32 10 26 10 19.5 C10 14.5 14 11 19 11 C21.5 11 23.5 12.5 24 12.5 C24.5 12.5 26.5 11 29 11 C34 11 38 14.5 38 19.5 C38 26 34 32 24 40 Z" stroke="#7C6FF7" stroke-width="2.6" stroke-linejoin="round"/>
+  <circle cx="24" cy="20" r="4.2" stroke="#A78BFA" stroke-width="2.2"/>
+  <path d="M24 17.5 C24 17.5 22.2 19.2 22.2 21 C22.2 22.2 23 23 24 23 C25 23 25.8 22.2 25.8 21 C25.8 19.2 24 17.5 24 17.5 Z" fill="#F4F0E8"/>
 </svg>
