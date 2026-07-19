@@ -1,4 +1,4 @@
-import{A as Hi,S as Cl}from"./index-Dbtiivdl.js";/**
+import{A as Hi,S as Cl}from"./index-CBGUGrek.js";/**
  * @license
  * Copyright 2010-2026 Three.js Authors
  * SPDX-License-Identifier: MIT
