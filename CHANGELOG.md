@@ -8,7 +8,8 @@
 - SoulCap hub rsync: demo always skips onboarding
 
 ## 0.11.10 — 2026-07-19
-- Honesty: Cap versions synced to live VERSION.json (Vault 5.1.11, Pulse 6.2.4, Prism 4.3.7 / 39 games, Scent 1.3.2, Aura 5.2.2, Mastery 42.1.1, Travel 0.2.3, …)
+- Honesty: Cap versions synced to live VERSION.json (Vault 5.1.11, Pulse 6.2.4, Prism 4.3.7 / 39 games, Scent 1.3.2, Aura 5.2.2, Mastery 42.1.1, Travel 0.2.4 passport UI, …)
+- TravelCap **0.2.4** hub mirror: passport burgundy + gold foil TravelOS export.
 - Investor/demo pack: Vault PIN 123456 marked Vault-only; MasteryCap demo via Settings (no blind `?demo=1`); enterprise Info links stop 404ing for mastery/soul/idea/travel/car
 - IdeaCap FAQ: Local AI → Smart Assistant
 
