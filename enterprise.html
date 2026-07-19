@@ -70,8 +70,9 @@
   <h2>Before you start (2 min)</h2>
   <ol>
     <li>Chrome or Safari · pre-warm Vault / Pulse / Prism / Steady once online.</li>
-    <li>Vault demo PIN <code>123456</code> · other Caps mostly <code>?demo=1</code>.</li>
+    <li>VaultCap: <code>?demo=1</code> then Vault-only PIN <code>123456</code>. Other Caps with demo seeds use <code>?demo=1</code> (no shared PIN).</li>
     <li>Honesty: Smart Coach = rules. AI only for real LLM / Whisper key paths.</li>
+    <li>MasteryCap: open live app → Settings → Enter demo mode (no <code>?demo=1</code>).</li>
   </ol>
 
   <h2>Core path (flagships)</h2>
@@ -103,15 +104,17 @@
 <script>
 (function () {
   var order = ['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','ideacap','soulcap','carcap'];
-  var demos = { vaultcap:1, pulsecap:1, prismcap:1, steadycap:1, ledgercap:1, deeponycap:1, scentcap:1, auracap:1, masterycap:1, soulcap:1, carcap:1 };
+  var demos = { vaultcap:1, pulsecap:1, prismcap:1, steadycap:1, ledgercap:1, deeponycap:1, scentcap:1, auracap:1, soulcap:1, carcap:1 };
+  var infoPages = { vaultcap:1, pulsecap:1, prismcap:1, steadycap:1, ledgercap:1, deeponycap:1, scentcap:1, auracap:1 };
   var el = document.getElementById('entApps');
   if (!el || typeof PRODUCTS === 'undefined') return;
   el.innerHTML = order.map(function (slug) {
     var p = PRODUCTS[slug]; if (!p) return '';
     var live = (p.url || '#') + (demos[slug] ? '?demo=1' : '');
-    var info = (p.slug || slug) + '.html';
+    var info = infoPages[slug] ? ((p.slug || slug) + '.html') : (p.url || p.github || '#');
+    var infoLabel = infoPages[slug] ? 'Info' : 'Open';
     return '<div class="ent-app-row"><div><strong>' + p.name + '</strong><small>' + p.tagline + '</small></div><div class="ent-btns">' +
-      (PRODUCTS[slug] ? '<a class="ent-btn-ghost" href="' + info + '">Info</a>' : '') +
+      '<a class="ent-btn-ghost" href="' + info + '"' + (infoPages[slug] ? '' : ' target="_blank" rel="noopener"') + '>' + infoLabel + '</a>' +
       '<a class="ent-btn-primary" href="' + live + '" target="_blank" rel="noopener">Launch ↗</a></div></div>';
   }).join('');
 })();

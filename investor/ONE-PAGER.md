@@ -32,7 +32,7 @@ Most consumer apps rent user data and break without servers. Caps are install-on
 | DeePonyCap | Collection OS | [Open](https://shamikhahmed.github.io/DeePonyCap/?demo=1) |
 | ScentCap | Fragrance wardrobe | [Open](https://shamikhahmed.github.io/ScentCap/?demo=1) |
 | AuraCap | Digital DNA / ecosystem | [Open](https://shamikhahmed.github.io/AuraCap/?demo=1) |
-| MasteryCap | School / mastery | [Open](https://shamikhahmed.github.io/MasteryCap/?demo=1) |
+| MasteryCap | School / mastery | [Open](https://shamikhahmed.github.io/MasteryCap/) (Settings → Enter demo mode) |
 | TravelCap | Trip OS | [Open](https://shamikhahmed.github.io/TravelCap/) |
 | IdeaCap | Idea capture | [Open](https://shamikhahmed.github.io/IdeaCap/) |
 | SoulCap | Clinical-path companion | [Open](https://shamikhahmed.github.io/SoulCap/?demo=1) |
@@ -48,7 +48,7 @@ Hub OS: Capricorn OS on GitHub Pages (Cap Store shell).
 - Playwright smoke / Prism **39-game** play-smoke gate  
 - Honest labeling: Smart Coach ≠ LLM unless keys wired  
 - VaultCap: AES-256-GCM  
-- Demos: `?demo=1` (Vault PIN **123456**)
+- Demos: most Caps use `?demo=1`. **Vault-only PIN `123456`** after VaultCap `?demo=1`. MasteryCap: Settings → Enter demo mode (no query param).
 
 ---
 

@@ -14,7 +14,7 @@ Hard rule: say **Smart Coach / Smart Assistant** for rules engines. Say **AI** o
 
 1. Chrome or Safari · airplane toggle ready to prove offline.  
 2. Hub open + Cap Store / OS unlocked if showing NEXT shell.  
-3. Pre-warm: Vault / Pulse / Prism / Steady with `?demo=1` (Vault PIN **123456**).  
+3. Pre-warm: Vault / Pulse / Prism / Steady with `?demo=1`. **Vault-only PIN `123456`** (other Caps do not use this PIN).  
 4. Print or second screen: this script + [REHEARSAL.md](./REHEARSAL.md).
 
 ---
@@ -35,7 +35,7 @@ Optional: open https://shamikhahmed.github.io/pitch.html for constellation view 
 
 ## 2. VaultCap (2 min) — sovereignty proof
 
-**Open:** https://shamikhahmed.github.io/VaultCap/?demo=1 · PIN **123456**
+**Open:** https://shamikhahmed.github.io/VaultCap/?demo=1 · Vault-only PIN **123456**
 
 Show: banks / documents open offline after unlock · Settings About → AES-256-GCM.  
 Line: data never phones home.
@@ -74,6 +74,7 @@ Show: journal / readiness · SOS as **tools, not clinical care**.
 |-----|-----|------|
 | LedgerCap | `…/LedgerCap/?demo=1` | PKR holdings · Zakat estimate **not advice** |
 | SoulCap | `…/SoulCap/?demo=1` | Clinical-path consent · local journals |
+| MasteryCap | `…/MasteryCap/` | Settings → **Enter demo mode** (no `?demo=1`) |
 | TravelCap | `…/TravelCap/` | Trips on-device · flight API optional / manual |
 | CarCap | `…/CarCap/?demo=1` | Garage CRUD · export |
 

@@ -11,10 +11,12 @@ Use before every live walkthrough. Tick on paper or Notes.
 
 ## Demo seeds
 
-- [ ] VaultCap `?demo=1` · PIN **123456** unlocks  
+- [ ] VaultCap `?demo=1` · Vault-only PIN **123456** unlocks (PIN is not shared with other Caps)  
 - [ ] PulseCap `?demo=1` shows workouts / Coach  
 - [ ] PrismCap registry shows **39** games  
 - [ ] SteadyCap `?demo=1` has recovery profile  
+- [ ] MasteryCap: Settings → Enter demo mode (do **not** rely on `?demo=1`)  
+- [ ] SoulCap `?demo=1` seeds clinical-path check-in (live Pages)  
 
 ## Language (honesty)
 

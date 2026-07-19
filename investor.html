@@ -80,7 +80,7 @@
     <li>Flagships + Travel / Idea / Soul / Car all live under the hub.</li>
     <li>PrismCap: <strong>39</strong> games · Playwright launch + play-smoke gate.</li>
     <li>Honest product language: Smart Coach / Smart Assistant unless a real LLM path exists.</li>
-    <li>VaultCap: AES-256-GCM · demos via <code>?demo=1</code> (Vault PIN <code>123456</code>).</li>
+    <li>VaultCap: AES-256-GCM · <code>?demo=1</code> then Vault-only PIN <code>123456</code> (not used by other Caps).</li>
   </ul>
 
   <h2>Constellation</h2>
@@ -113,10 +113,14 @@
   var grid=document.getElementById('invGrid');
   if(!grid||typeof PRODUCTS==='undefined')return;
   var order=['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','ideacap','soulcap','carcap'];
+  var demoSlugs={vaultcap:1,pulsecap:1,prismcap:1,steadycap:1,ledgercap:1,deeponycap:1,scentcap:1,auracap:1,soulcap:1,carcap:1};
   grid.innerHTML=order.map(function(slug){
     var p=PRODUCTS[slug]; if(!p)return'';
-    var demo=(p.url||'#')+(slug==='vaultcap'||slug==='pulsecap'||slug==='steadycap'||slug==='soulcap'||slug==='carcap'||slug==='ledgercap'||slug==='deeponycap'||slug==='scentcap'||slug==='auracap'||slug==='masterycap'||slug==='prismcap'?'?demo=1':'');
-    return '<div class="inv-card"><strong>'+p.name+'</strong><span>'+p.tagline+'</span><div style="margin-top:10px"><a href="'+demo+'" target="_blank" rel="noopener">Live demo ↗</a></div></div>';
+    var href=p.url||'#';
+    var label='Open ↗';
+    if(demoSlugs[slug]){ href=href+(href.indexOf('?')>=0?'&':'?')+'demo=1'; label='Live demo ↗'; }
+    else if(slug==='masterycap'){ label='Open · Settings → demo'; }
+    return '<div class="inv-card"><strong>'+p.name+'</strong><span>'+p.tagline+'</span><div style="margin-top:10px"><a href="'+href+'" target="_blank" rel="noopener">'+label+'</a></div></div>';
   }).join('');
 })();
 </script>
