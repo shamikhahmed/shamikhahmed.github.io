@@ -602,6 +602,7 @@ html,body{
     <div class="ob-sub">I'm Soul. I've been waiting for you.</div>
     <div class="ob-spacer"></div>
     <button class="ob-btn" onclick="obNext(2)">Begin</button>
+    <button class="ob-btn" type="button" onclick="obSkip()" style="margin-top:12px;background:transparent;border:1px solid var(--sep);color:var(--l2)">Skip →</button>
   </div>
   <div class="ob-step" id="ob-2">
     <div class="ob-heading">What brought you here?</div>
@@ -1125,7 +1126,7 @@ if (DEMO) {
   }
 }
 
-if (DEMO && !state.onboarded) {
+if (DEMO) {
   state.name = state.name || 'Demo';
   state.consented = true;
   state.onboarded = true;
@@ -1153,9 +1154,10 @@ function crisisTier(text) {
   return CRISIS_HARD.some((kw) => lower.includes(kw)) ? 3 : 0;
 }
 
-// Init — re-consent if onboarded without clinical consent
-if (state.onboarded && state.consented) {
+// Init — demo always skips onboarding UI (even with half localStorage state)
+if (DEMO || (state.onboarded && state.consented)) {
   document.getElementById('onboarding').classList.add('hidden');
+  if (DEMO) document.getElementById('app').style.display = 'flex';
   if (state.name) setName(state.name);
 } else if (state.onboarded && !state.consented) {
   document.getElementById('app').style.display = 'none';
@@ -1190,6 +1192,13 @@ function obAcceptConsent() {
 function obNext(n) {
   document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
   document.getElementById('ob-' + n).classList.add('active');
+}
+
+function obSkip() {
+  if (DEMO) return;
+  if (state.consented && state.name) { startApp(); return; }
+  if (state.consented) { obNext(4); return; }
+  obNext(3);
 }
 
 let obReason = '';
@@ -1727,7 +1736,7 @@ if ('serviceWorker' in navigator) {
 // Boot paint — journals + stats from localStorage (not static HTML)
 refreshProfileMeta();
 refreshMuseumUI();
-if (DEMO && state.onboarded && state.consented) {
+if (DEMO) {
   document.getElementById('onboarding').classList.add('hidden');
   const app = document.getElementById('app');
   app.style.display = 'flex';

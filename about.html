@@ -33,8 +33,7 @@
       Capricorn <em>Systems</em>
     </a>
     <div class="nav-links">
-      <a href="index.html#apps">Apps</a>
-      <a href="index.html#products">Products</a>
+      <a href="index.html">Cap Store</a>
       <a href="pitch.html">Pitch</a>
       <a href="investor.html">Investor</a>
       <a href="sovereignty.html">Sovereignty</a>
@@ -87,7 +86,7 @@
           <h3 style="font-family:var(--display);font-size:1.75rem;margin-bottom:8px">Shamikh Ahmed</h3>
           <p style="color:var(--dim);font-size:15px;line-height:1.6;margin-bottom:20px">Founder & CEO, Capricorn Systems. Ships each product with the same standard: your device, your data, your call.</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <a href="index.html#products" class="btn btn-primary">Explore products →</a>
+            <a href="index.html" class="btn btn-primary">Open Cap Store →</a>
             <a href="sovereignty.html" class="btn btn-ghost">Device Sovereignty</a>
             <a href="https://github.com/shamikhahmed" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
           </div>
@@ -107,14 +106,14 @@
       const grid = document.getElementById('aboutProductsGrid');
       if (!grid || typeof PRODUCTS_LIST === 'undefined') return;
       grid.innerHTML = PRODUCTS_LIST.map((p) =>
-        `<a href="${p.slug}.html" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
+        `<a href="${p.url || (p.slug + '.html')}" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
           (typeof productCardThumb === 'function' ? productCardThumb(p) : '') +
           `<div class="product-card-body">` +
             `<div class="product-symbol">${p.symbol}</div>` +
             `<div class="cat">${p.category}</div>` +
             `<h3>${p.name}</h3>` +
             `<p>${p.tagline}</p>` +
-            `<span class="link">View page →</span>` +
+            `<span class="link">Open Cap →</span>` +
           `</div>` +
         `</a>`
       ).join('');

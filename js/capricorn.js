@@ -54,11 +54,12 @@
   }
 
   if (typeof PRODUCTS !== 'undefined') {
+    const productHref = (p) => p.url || (p.slug + '.html');
     const carousel = document.getElementById('screenshotCarousel');
     if (carousel && typeof productScreenshot === 'function' && typeof deviceFrame === 'function') {
       carousel.innerHTML =
         PRODUCTS_LIST.map((p, i) =>
-          `<a href="${p.slug}.html" class="carousel-card${i === 0 ? ' is-front' : ''}" data-index="${i}" style="--p-accent:${p.accent}">` +
+          `<a href="${productHref(p)}" class="carousel-card${i === 0 ? ' is-front' : ''}" data-index="${i}" style="--p-accent:${p.accent}">` +
             deviceFrame(p, productScreenshot(p, 0), (p.screenshotAlts && p.screenshotAlts[0]) || p.name, '') +
             `<span class="carousel-label">${p.name} · ${p.tagline}</span>` +
           `</a>`
@@ -74,14 +75,14 @@
     const grid = document.getElementById('productsGrid');
     if (grid) {
       grid.innerHTML = PRODUCTS_LIST.map((p) =>
-        `<a href="${p.slug}.html" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
+        `<a href="${productHref(p)}" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
           (typeof productCardThumb === 'function' ? productCardThumb(p) : '') +
           `<div class="product-card-body">` +
             `<div class="product-symbol">${p.symbol}</div>` +
             `<div class="cat">${p.category} · v${p.ver}</div>` +
             `<h3>${p.name}</h3>` +
             `<p>${p.tagline}</p>` +
-            `<span class="link">Full ${p.name} page →</span>` +
+            `<span class="link">Open Cap →</span>` +
           `</div>` +
         `</a>`
       ).join('');
@@ -90,7 +91,7 @@
     const footerNav = document.getElementById('productNavFooter');
     if (footerNav) {
       footerNav.innerHTML = PRODUCTS_LIST.map((p) =>
-        `<a href="${p.slug}.html">${p.name}</a>`
+        `<a href="${productHref(p)}">${p.name}</a>`
       ).join('');
     }
 
@@ -108,7 +109,7 @@
             `<h3>${p.name}</h3>` +
             `<p>${p.hook}</p>` +
             `<div class="spotlight-meta">${pills}</div>` +
-            `<a href="${p.slug}.html" class="btn btn-ghost">Read the ${p.name} page →</a>` +
+            `<a href="${productHref(p)}" class="btn btn-ghost">Open ${p.name} →</a>` +
           `</div>` +
           `<div class="spotlight-visual spotlight-visual--shot">` +
             (typeof deviceFrame === 'function'
