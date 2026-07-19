@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#051a33">
+<title>TravelCap — Capricorn Systems</title>
+<style>
+  :root { --bg:#051a33; --text:#f4f7fb; --muted:#8ba3c0; --acc:#38bdf8; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(1200px 600px at 20% -10%,#0b3a66 0%,var(--bg) 55%);color:var(--text);min-height:100vh;padding:48px 24px}
+  .wrap{max-width:720px;margin:0 auto}
+  .badge{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.03em;margin-bottom:12px}
+  .sub{color:var(--muted);font-size:1.05rem;line-height:1.55;max-width:38rem;margin-bottom:28px}
+  .shot{width:min(280px,70vw);border-radius:28px;border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 60px rgba(0,0,0,.45);margin:8px 0 28px;display:block}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+  a.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:600;font-size:.95rem}
+  .primary{background:var(--acc);color:#041525}
+  .secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.14)}
+  .honest{border:1px solid rgba(201,162,39,.35);background:rgba(201,162,39,.08);border-radius:14px;padding:16px 18px;color:#e8d9a8;font-size:.92rem;line-height:1.5;margin-bottom:24px}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:.85em}
+  footer{margin-top:40px;font-size:.8rem;color:var(--muted)}
+  footer a{color:var(--acc)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">Capricorn Systems · Travel OS</div>
+    <h1>TravelCap</h1>
+    <p class="sub">Trips, packing, flights, hotels, budget, passport intel, and Smart Assistant — local-first Next.js app.</p>
+    <img class="shot" src="../assets/screenshots/travelcap.png" width="280" height="606" alt="TravelCap screenshot" decoding="async">
+    <div class="honest">
+      <strong>Honesty.</strong> Full web demo export is still blocked (dynamic trip routes + server API). Source is private for now.
+      Run locally: <code>git clone</code> → <code>npm i</code> → <code>npm run dev</code>. This page is the hub surface until static export ships.
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://github.com/shamikhahmed/TravelCap">View on GitHub</a>
+      <a class="btn secondary" href="https://shamikhahmed.github.io/">← Capricorn OS</a>
+    </div>
+    <footer>© 2026 Capricorn Systems · <a href="https://shamikhahmed.github.io/">hub</a></footer>
+  </div>
+</body>
+</html>

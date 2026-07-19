@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CarCap — Screen Gallery</title>
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --surface: #141418;
+      --border: #2a2a32;
+      --text: #f4f4f6;
+      --muted: #9a9aa8;
+      --accent: #ff6b4a;
+      --accent-dim: rgba(255, 107, 74, 0.15);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 12, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+    }
+    h1 { margin: 0 0 4px; font-size: 1.35rem; font-weight: 650; }
+    .sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+    main { padding: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    a.card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      color: inherit;
+      text-decoration: none;
+      transition: border-color 0.15s ease;
+    }
+    a.card:hover { border-color: var(--accent); background: var(--accent-dim); }
+    .name { font-weight: 650; margin-bottom: 4px; }
+    .route { color: var(--muted); font-family: ui-monospace, monospace; font-size: 0.75rem; }
+    .note {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      max-width: 520px;
+    }
+    code { background: var(--surface); padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CarCap — Screen Gallery</h1>
+    <p class="sub">v0.1.0 · live demo links + captured PNGs from <code>npm run gallery</code>.</p>
+  </header>
+  <main>
+    <div class="grid" id="grid"></div>
+    <p class="note">
+      Open with a local server (<code>npm start</code>). Screens load with <code>?demo=1</code>.
+      Captured shots live under <code>docs/screenshots/gallery/</code>.
+    </p>
+  </main>
+  <script>
+    const screens = [
+      { name: 'Today', tab: 'today', shot: 'docs/screenshots/gallery/mobile-01-today.png' },
+      { name: 'Garage', tab: 'garage', shot: 'docs/screenshots/gallery/mobile-02-garage.png' },
+      { name: 'Service', tab: 'service' },
+      { name: 'Fuel', tab: 'fuel' },
+      { name: 'Docs', tab: 'docs' },
+      { name: 'Settings', tab: 'settings' }
+    ];
+    const grid = document.getElementById('grid');
+    grid.innerHTML = screens.map((s) =>
+      '<a class="card" href="./index.html?demo=1&tab=' + s.tab + '" target="_blank" rel="noopener">' +
+        (s.shot ? '<img src="' + s.shot + '" alt="' + s.name + '" loading="lazy" style="width:100%;border-radius:8px;margin-bottom:8px;border:1px solid var(--border)">' : '') +
+        '<div class="name">' + s.name + '</div>' +
+        '<div class="route">?demo=1&amp;tab=' + s.tab + '</div>' +
+      '</a>'
+    ).join('');
+  </script>
+</body>
+</html>
