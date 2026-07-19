@@ -1,4 +1,4 @@
-import{A as Hi,S as Cl}from"./index-MofYPl8X.js";/**
+import{A as Hi,S as Cl}from"./index-BO61XZWP.js";/**
  * @license
  * Copyright 2010-2026 Three.js Authors
  * SPDX-License-Identifier: MIT
