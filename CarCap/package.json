@@ -1,0 +1,18 @@
+{
+  "name": "carcap",
+  "version": "0.1.1",
+  "private": true,
+  "description": "CarCap — vehicle garage, service, fuel & docs. Offline PWA by Capricorn Systems.",
+  "scripts": {
+    "start": "npx --yes serve . -p 8790",
+    "serve": "python3 -m http.server 8790",
+    "check": "node --check js/storage.js && node --check js/app.js && node --check sw.js",
+    "test:e2e": "playwright test",
+    "gallery": "node scripts/gallery.cjs",
+    "gallery:view": "python3 -m http.server 8790",
+    "verify": "npm run check && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  }
+}

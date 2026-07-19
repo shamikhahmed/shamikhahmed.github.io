@@ -376,6 +376,30 @@ const S = {
 
   clearDemo() {
     this.reset();
+  },
+
+  /* ── Backup ── */
+  exportBlob() {
+    return JSON.parse(JSON.stringify(this.d));
+  },
+
+  importBlob(data) {
+    if (!data || typeof data !== 'object') throw new Error('Invalid backup file');
+    if (!Array.isArray(data.vehicles) || !Array.isArray(data.services) ||
+        !Array.isArray(data.fuel) || !Array.isArray(data.docs)) {
+      throw new Error('Not a CarCap backup');
+    }
+    this.d = {
+      vehicles: data.vehicles,
+      activeVehicleId: data.activeVehicleId || (data.vehicles[0] && data.vehicles[0].id) || null,
+      services: data.services,
+      fuel: data.fuel,
+      docs: data.docs,
+      settings: Object.assign({ demo: false, units: 'metric' }, data.settings || {}),
+      meta: Object.assign({ onboarded: false, created: new Date().toISOString() }, data.meta || {})
+    };
+    if (this.d.vehicles.length) this.d.meta.onboarded = true;
+    this.save();
   }
 };
 

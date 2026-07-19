@@ -1,10 +1,11 @@
 'use strict';
 
-window.APP_VERSION = '0.1.0';
+window.APP_VERSION = '0.1.1';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
+const SW_CACHE = 'carcap-v2';
 
 /* ── Utils ── */
 function esc(s) {
@@ -53,8 +54,9 @@ function closeModal() {
   root.innerHTML = '';
 }
 
-function openModal(title, bodyHtml, onMount) {
+function openModal(title, bodyHtml, onMount, opts) {
   const root = document.getElementById('modal-root');
+  const dismissible = !(opts && opts.noDismiss);
   root.innerHTML =
     '<div class="modal-backdrop" id="modal-backdrop">' +
       '<div class="modal-sheet" role="dialog" aria-modal="true" aria-label="' + esc(title) + '">' +
@@ -63,9 +65,11 @@ function openModal(title, bodyHtml, onMount) {
       '</div>' +
     '</div>';
   const backdrop = document.getElementById('modal-backdrop');
-  backdrop.addEventListener('click', (e) => {
-    if (e.target === backdrop) closeModal();
-  });
+  if (dismissible) {
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+  }
   if (typeof onMount === 'function') onMount();
 }
 
@@ -284,7 +288,7 @@ function renderFuel() {
           '</div>' +
         '</div>'
       ).join('')
-    : '<div class="empty"><strong>No fuel entries</strong>Log fills with odometer for L/100 estimates.</div>';
+    : '<div class="empty"><strong>No fuel entries</strong>Log fills with odometer. Avg L/100 needs at least two full-tank fills with rising odometer.</div>';
 
   return (
     '<div class="screen">' +
@@ -326,12 +330,12 @@ function renderDocs() {
           '</div>' +
         '</div>'
       ).join('')
-    : '<div class="empty"><strong>Docs wallet empty</strong>Title, insurance, registration notes — text only for now.</div>';
+    : '<div class="empty"><strong>Docs wallet empty</strong>Text &amp; expiry meta only — no photo uploads yet. Title, insurance, registration notes stay on this device.</div>';
 
   return (
     '<div class="screen">' +
       '<h1 class="page-title">Docs</h1>' +
-      '<p class="page-sub">' + esc(S.vehicleLabel(v)) + ' · text &amp; meta</p>' +
+      '<p class="page-sub">' + esc(S.vehicleLabel(v)) + ' · text wallet (no photos yet)</p>' +
       vehiclePickerHtml(v.id) +
       cards +
       '<button type="button" class="btn btn-primary btn-block" data-action="add-doc">Add document</button>' +
@@ -355,10 +359,13 @@ function renderSettings() {
       '</div>' +
       '<div class="card">' +
         '<div class="card-title">Data</div>' +
-        '<div class="card-meta">Everything stays in this browser (localStorage). No account, no cloud.</div>' +
+        '<div class="card-meta">Everything stays in this browser (localStorage key <code>carcap_v1</code>). No account, no cloud.</div>' +
         '<div class="btn-row">' +
+          '<button type="button" class="btn btn-primary" data-action="export">Export JSON</button>' +
+          '<button type="button" class="btn" data-action="import-pick">Import JSON</button>' +
           '<button type="button" class="btn btn-danger" data-action="reset">Reset all data</button>' +
         '</div>' +
+        '<input type="file" id="import-file" accept="application/json,.json" hidden>' +
       '</div>' +
       '<div class="card">' +
         '<div class="card-title">Install</div>' +
@@ -366,7 +373,7 @@ function renderSettings() {
       '</div>' +
       '<div class="card">' +
         '<div class="card-title">About</div>' +
-        '<div class="card-meta">CarCap by Capricorn Systems · Cap family · SW carcap-v1</div>' +
+        '<div class="card-meta">CarCap by Capricorn Systems · Cap family · SW ' + esc(SW_CACHE) + '</div>' +
       '</div>' +
     '</div>'
   );
@@ -381,11 +388,17 @@ const SCREENS = {
   settings: renderSettings
 };
 
+function tabQuery(tab) {
+  const params = new URLSearchParams(location.search);
+  params.set('tab', tab);
+  return '?' + params.toString();
+}
+
 function go(tab) {
   if (TABS.indexOf(tab) < 0) tab = 'today';
   currentTab = tab;
   try {
-    history.replaceState(null, '', '?tab=' + tab);
+    history.replaceState(null, '', tabQuery(tab));
   } catch (e) { /* ignore */ }
   document.querySelectorAll('.tab-btn').forEach((btn) => {
     const on = btn.getAttribute('data-tab') === tab;
@@ -396,6 +409,62 @@ function go(tab) {
   document.getElementById('content').innerHTML = SCREENS[tab]();
   window.scrollTo(0, 0);
   document.getElementById('content').scrollTop = 0;
+}
+
+function showFirstRunSheet() {
+  openModal('Welcome to CarCap',
+    '<p class="first-run-copy">Offline garage for service, fuel, and docs. Data stays on this device — no account.</p>' +
+    '<div class="btn-row" style="margin-top:4px">' +
+      '<button type="button" class="btn btn-primary" data-action="first-add">Add car</button>' +
+      '<button type="button" class="btn" data-action="demo">Try demo</button>' +
+    '</div>',
+    null,
+    { noDismiss: true }
+  );
+}
+
+function exportJson() {
+  try {
+    const blob = new Blob([JSON.stringify(S.exportBlob(), null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'CarCap-backup-' + todayISO() + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Backup exported');
+  } catch (err) {
+    toast('Export failed');
+  }
+}
+
+function importJson(input) {
+  const file = input && input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(String(reader.result || ''));
+      if (!confirm('Import this backup? It replaces all CarCap data on this device.')) {
+        input.value = '';
+        return;
+      }
+      S.importBlob(data);
+      toast('Backup imported');
+      closeModal();
+      go(currentTab);
+    } catch (err) {
+      toast(err && err.message ? err.message : 'Invalid backup file');
+    }
+    input.value = '';
+  };
+  reader.onerror = () => {
+    toast('Could not read file');
+    input.value = '';
+  };
+  reader.readAsText(file);
 }
 
 /* ── Forms / modals ── */
@@ -622,14 +691,25 @@ function onClick(e) {
 
   const action = t.getAttribute('data-action');
   if (action === 'add-vehicle') modalVehicle(null);
+  else if (action === 'first-add') {
+    closeModal();
+    go('garage');
+    modalVehicle(null);
+  }
   else if (action === 'add-service') modalService();
   else if (action === 'add-fuel') modalFuel();
   else if (action === 'add-doc') modalDoc();
+  else if (action === 'export') exportJson();
+  else if (action === 'import-pick') {
+    const input = document.getElementById('import-file');
+    if (input) input.click();
+  }
   else if (action === 'demo') {
     if (S.vehicles().length && !S.isDemo()) {
       if (!confirm('Load demo? This replaces your current CarCap data on this device.')) return;
     }
     S.loadDemo();
+    closeModal();
     toast('Demo loaded');
     go('today');
   } else if (action === 'clear-demo' || action === 'reset') {
@@ -638,11 +718,16 @@ function onClick(e) {
     S.reset();
     toast('Data cleared');
     go('today');
+    if (!S.d.meta.onboarded) showFirstRunSheet();
   }
 }
 
 function syncOnline() {
   document.body.classList.toggle('is-offline', !navigator.onLine);
+}
+
+function onChange(e) {
+  if (e.target && e.target.id === 'import-file') importJson(e.target);
 }
 
 function boot() {
@@ -657,14 +742,19 @@ function boot() {
   if (TABS.indexOf(tab) < 0) tab = 'today';
 
   document.addEventListener('click', onClick);
+  document.addEventListener('change', onChange);
   window.addEventListener('online', syncOnline);
   window.addEventListener('offline', syncOnline);
   syncOnline();
 
   go(tab);
 
+  if (!S.d.meta.onboarded && params.get('demo') !== '1') {
+    showFirstRunSheet();
+  }
+
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js?v=carcap-v1').catch(() => {});
+    navigator.serviceWorker.register('./sw.js?v=' + SW_CACHE).catch(() => {});
   }
 }
 

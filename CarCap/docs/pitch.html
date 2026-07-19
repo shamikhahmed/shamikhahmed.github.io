@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0c">
+<title>CarCap — Cap Store Pitch</title>
+<style>
+  :root{--bg:#0a0a0c;--text:#f5f5f7;--muted:#8e8e96;--acc:#ff6b4a;--gold:#c9a227}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(900px 500px at 10% -10%,rgba(255,107,74,.18) 0%,var(--bg) 55%);color:var(--text);min-height:100vh;padding:48px 24px}
+  .wrap{max-width:720px;margin:0 auto}
+  .badge{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:16px}
+  h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.03em;margin-bottom:12px}
+  .sub{color:var(--muted);font-size:1.05rem;line-height:1.55;max-width:38rem;margin-bottom:22px}
+  .honest{border:1px solid rgba(201,162,39,.35);background:rgba(201,162,39,.08);border-radius:14px;padding:16px 18px;color:#e8d9a8;font-size:.92rem;line-height:1.5;margin:20px 0}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
+  a.btn{display:inline-flex;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:600}
+  .primary{background:var(--acc);color:#1a0a06}
+  .secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.14)}
+  footer{margin-top:40px;font-size:.8rem;color:var(--muted)}
+  footer a{color:var(--acc)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">Capricorn Systems · Cap Store</div>
+    <h1>CarCap</h1>
+    <p class="sub">Offline vehicle garage — service history, fuel/odometer, L/100 from full tanks, and a text docs wallet. Installable PWA. Data stays on your device.</p>
+    <div class="honest">
+      <strong>Honesty.</strong> Live product is this Pages PWA (<code>localStorage</code>). Docs are text &amp; expiry meta only — no photo wallet yet. No AI / LLM features; reminders are rule-based dates you set.
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="../?demo=1">Try Demo</a>
+      <a class="btn secondary" href="../">Open PWA</a>
+      <a class="btn secondary" href="https://shamikhahmed.github.io/">← Hub</a>
+    </div>
+    <footer>© 2026 Capricorn Systems · v0.1.1 · <a href="https://shamikhahmed.github.io/CarCap/">shamikhahmed.github.io/CarCap</a></footer>
+  </div>
+</body>
+</html>

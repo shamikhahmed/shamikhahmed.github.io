@@ -1,0 +1,31 @@
+{
+  "app": "CarCap",
+  "version": "0.1.0",
+  "generated": "2026-07-19T00:44:07.439Z",
+  "shots": [
+    {
+      "file": "desktop-01-today.png",
+      "label": "Today",
+      "route": "?demo=1&tab=today",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-02-garage.png",
+      "label": "Garage",
+      "route": "?demo=1&tab=garage",
+      "viewport": "desktop"
+    },
+    {
+      "file": "mobile-01-today.png",
+      "label": "Today",
+      "route": "?demo=1&tab=today",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-02-garage.png",
+      "label": "Garage",
+      "route": "?demo=1&tab=garage",
+      "viewport": "mobile"
+    }
+  ]
+}

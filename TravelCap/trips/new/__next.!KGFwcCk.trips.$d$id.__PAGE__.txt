@@ -2,5 +2,5 @@
 2:I[37221,["4286","static/chunks/4286-705bf3212f2b1796.js","7490","static/chunks/7490-e18adf731975d5e5.js","8983","static/chunks/8983-5b80876ec182e9c9.js","5684","static/chunks/5684-12c81ab0c1230afe.js","9017","static/chunks/9017-19f5705f616f287a.js","8500","static/chunks/8500-f62a38ff68ab7f42.js","9428","static/chunks/9428-eee9a4406ea6e8b4.js","2814","static/chunks/2814-7c0bdd1f08ef4b02.js","5830","static/chunks/app/(app)/trips/%5Bid%5D/page-156abb148ae34a48.js"],"TripDetailClient"]
 3:I[90484,[],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"tripId":"new"}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"u9OgH7lWOwncoQGSlQ792"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"tripId":"new"}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"kPw_L0rqppI8pXVyRaNeX"}
 5:null
