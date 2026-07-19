@@ -1,5 +1,5 @@
 :HL["/TravelCap/_next/static/media/7b89a4fd5e90ede0-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/TravelCap/_next/static/media/9cf9c6e84ed13b5e-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/TravelCap/_next/static/css/481eed4db770912f.css","style"]
-:HL["/TravelCap/_next/static/css/a726638c6ceec6d9.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(app)","param":null,"prefetchHints":0,"slots":{"children":{"name":"flights","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"lQ3L46bp7hcatATzM1slC"}
+:HL["/TravelCap/_next/static/css/599335f1c8bbc60c.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(app)","param":null,"prefetchHints":0,"slots":{"children":{"name":"flights","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"moSl4i_9AfHoG1Y8Ibr_U"}

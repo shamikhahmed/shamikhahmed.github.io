@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
-2:I[53523,["9457","static/chunks/9457-f3045515a75250a5.js","7490","static/chunks/7490-e18adf731975d5e5.js","3060","static/chunks/3060-1ff4a47fcbe0c6b3.js","2780","static/chunks/2780-656f63d37f68cade.js","9017","static/chunks/9017-19f5705f616f287a.js","5356","static/chunks/5356-ef9641af18d9d498.js","3997","static/chunks/3997-fd5b7b2592e6bdfa.js","5409","static/chunks/5409-e14b3ec4c42947e9.js","1401","static/chunks/1401-61bf6d2bb3659d6d.js","122","static/chunks/122-822e24bd52df44ba.js","5322","static/chunks/5322-a3ae00962be804ff.js","8655","static/chunks/app/(app)/flights/page-b3f6deafb38a45aa.js"],"TransitPageClient"]
-3:I[90484,[],"OutletBoundary"]
-4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"lQ3L46bp7hcatATzM1slC"}
+2:"$Sreact.suspense"
+3:I[53523,["9457","static/chunks/9457-f3045515a75250a5.js","7490","static/chunks/7490-e18adf731975d5e5.js","3060","static/chunks/3060-1ff4a47fcbe0c6b3.js","2780","static/chunks/2780-656f63d37f68cade.js","9017","static/chunks/9017-19f5705f616f287a.js","5356","static/chunks/5356-ef9641af18d9d498.js","8500","static/chunks/8500-f62a38ff68ab7f42.js","3997","static/chunks/3997-fd5b7b2592e6bdfa.js","5409","static/chunks/5409-e14b3ec4c42947e9.js","1401","static/chunks/1401-61bf6d2bb3659d6d.js","122","static/chunks/122-822e24bd52df44ba.js","5322","static/chunks/5322-e3b7905c9dbfbe0e.js","8655","static/chunks/app/(app)/flights/page-49d1dd3406464e92.js"],"TransitPageClient"]
+4:I[90484,[],"OutletBoundary"]
+0:{"rsc":["$","$1","c",{"children":[["$","$2",null,{"fallback":["$","div",null,{"className":"p-6 text-sm text-muted-foreground","children":"Loading transit…"}],"children":["$","$L3",null,{}]}],null,["$","$L4",null,{"children":["$","$2",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"moSl4i_9AfHoG1Y8Ibr_U"}
 5:null
