@@ -1,11 +1,11 @@
 'use strict';
 
-window.APP_VERSION = '0.1.1';
+window.APP_VERSION = '0.2.0';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
-const SW_CACHE = 'carcap-v2';
+const SW_CACHE = 'carcap-v3';
 
 /* ── Utils ── */
 function esc(s) {
@@ -344,10 +344,19 @@ function renderDocs() {
 }
 
 function renderSettings() {
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
   return (
     '<div class="screen">' +
       '<h1 class="page-title">Settings</h1>' +
       '<p class="page-sub">CarCap v' + esc(window.APP_VERSION) + ' · offline PWA</p>' +
+      '<div class="card">' +
+        '<div class="card-title">Appearance</div>' +
+        '<div class="card-meta">Service booklet — light paper or dark ink.</div>' +
+        '<div class="btn-row">' +
+          '<button type="button" class="btn' + (theme === 'light' ? ' btn-primary' : '') + '" data-action="theme-light">Light</button>' +
+          '<button type="button" class="btn' + (theme !== 'light' ? ' btn-primary' : '') + '" data-action="theme-dark">Dark</button>' +
+        '</div>' +
+      '</div>' +
       '<div class="card">' +
         '<div class="card-title">Demo mode</div>' +
         '<div class="card-meta">Seeds one Toyota Corolla with sample service, fuel, and docs. Replaces current local data.</div>' +
@@ -690,6 +699,15 @@ function onClick(e) {
   }
 
   const action = t.getAttribute('data-action');
+  if (action === 'theme-light' || action === 'theme-dark') {
+    const mode = action === 'theme-light' ? 'light' : 'dark';
+    try { localStorage.setItem('carcap-theme', mode); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', mode);
+    const meta = document.getElementById('themeColorMeta') || document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', mode === 'light' ? '#f4f0e8' : '#0c0b09');
+    go('settings');
+    return;
+  }
   if (action === 'add-vehicle') modalVehicle(null);
   else if (action === 'first-add') {
     closeModal();
@@ -732,6 +750,13 @@ function onChange(e) {
 
 function boot() {
   S.init();
+  setTimeout(() => {
+    const splash = document.getElementById('car-splash');
+    if (splash) {
+      splash.classList.add('hide');
+      setTimeout(() => splash.remove(), 500);
+    }
+  }, 1200);
 
   const params = new URLSearchParams(location.search);
   if (params.get('demo') === '1') {

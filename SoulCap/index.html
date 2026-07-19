@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<meta name="theme-color" content="#000000"/>
+<meta name="theme-color" content="#0E0D0C" id="themeColorMeta"/>
+<meta name="color-scheme" content="dark light"/>
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('soulcap-theme');
+    if(t!=='light'&&t!=='dark') t=(matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+    document.documentElement.setAttribute('data-theme',t);
+    var m=document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute('content', t==='light'?'#F4F0EA':'#0E0D0C');
+  }catch(e){}
+})();
+</script>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="SoulCap"/>
@@ -17,29 +29,45 @@
 button,textarea,input{font-family:inherit;cursor:pointer;}
 
 :root{
-  --bg:#000000;
-  --bg2:#1C1C1E;
-  --bg3:#2C2C2E;
-  --bg4:#3A3A3C;
-  --l1:#FFFFFF;
-  --l2:rgba(235,235,245,0.6);
-  --l3:rgba(235,235,245,0.3);
-  --l4:rgba(235,235,245,0.16);
-  --sep:rgba(84,84,88,0.65);
-  --sep2:rgba(84,84,88,0.36);
-  --acc:#7D7AFF;
-  --acc-bg:rgba(125,122,255,0.14);
-  --purple:#BF5AF2;
-  --green:#30D158;
-  --orange:#FF9F0A;
-  --red:#FF453A;
-  --teal:#5AC8FA;
-  --blue:#0A84FF;
+  --bg:#0E0D0C;
+  --bg2:#1A1816;
+  --bg3:#24211E;
+  --bg4:#2E2A26;
+  --l1:#F4F0EA;
+  --l2:rgba(244,240,234,0.62);
+  --l3:rgba(244,240,234,0.38);
+  --l4:rgba(244,240,234,0.18);
+  --sep:rgba(160,140,120,0.28);
+  --sep2:rgba(160,140,120,0.16);
+  --acc:#8B9A7A;
+  --acc-bg:rgba(139,154,122,0.16);
+  --purple:#8A7A90;
+  --green:#5A8F72;
+  --orange:#C4A35A;
+  --red:#C45B4E;
+  --teal:#6A9A9A;
+  --blue:#6A849A;
   --sat:env(safe-area-inset-top,0px);
   --sab:env(safe-area-inset-bottom,0px);
   --tab-h:49px;
   --spring:cubic-bezier(0.32,0.72,0,1);
   --ease:cubic-bezier(0.25,0.46,0.45,0.94);
+  --font-display:Georgia,'Times New Roman',serif;
+}
+
+html[data-theme="light"]{
+  --bg:#F4F0EA;
+  --bg2:#FFFBF5;
+  --bg3:#EBE5DC;
+  --bg4:#E0D8CC;
+  --l1:#1C1810;
+  --l2:rgba(28,24,16,0.62);
+  --l3:rgba(28,24,16,0.4);
+  --l4:rgba(28,24,16,0.18);
+  --sep:rgba(90,70,40,0.14);
+  --sep2:rgba(90,70,40,0.08);
+  --acc:#5A6B4E;
+  --acc-bg:rgba(90,107,78,0.12);
 }
 
 html,body{
@@ -80,21 +108,40 @@ html,body{
 
 /* Orb */
 @keyframes breathe{
-  0%,100%{transform:scale(1);box-shadow:0 0 36px rgba(125,122,255,0.52),0 0 72px rgba(125,122,255,0.22),0 0 140px rgba(125,122,255,0.1);}
-  50%{transform:scale(1.065);box-shadow:0 0 52px rgba(125,122,255,0.68),0 0 100px rgba(125,122,255,0.32),0 0 180px rgba(125,122,255,0.14);}
+  0%,100%{transform:scale(1);opacity:0.9}
+  50%{transform:scale(1.04);opacity:1}
 }
 .ob-orb,.orb,.soul-orb-sm,.typing-orb-ball,.panic-orb{
   background:
-    radial-gradient(circle at 32% 27%, rgba(255,255,255,0.46) 0%, transparent 36%),
-    radial-gradient(circle at 68% 73%, rgba(191,90,242,0.62) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 50%, #9B98FF 0%, #5E5CE6 38%, #3730A3 72%, #1E1860 100%);
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.2) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, #8B9A7A 0%, #5A6B4E 55%, #2A3024 100%);
+  box-shadow:none !important;
 }
 .ob-orb{
-  width:100px;height:100px;border-radius:50%;flex-shrink:0;
-  box-shadow:0 0 36px rgba(125,122,255,0.52),0 0 72px rgba(125,122,255,0.22);
+  width:88px;height:88px;border-radius:50%;flex-shrink:0;
+  border:1px solid color-mix(in srgb, var(--acc) 40%, transparent);
   animation:breathe 5s ease-in-out infinite;
 }
-.ob-heading{font-size:34px;font-weight:700;letter-spacing:-0.5px;text-align:center;line-height:1.15;margin-top:36px;color:var(--l1);}
+.ob-heading{font-size:32px;font-weight:700;letter-spacing:-0.4px;text-align:center;line-height:1.15;margin-top:36px;color:var(--l1);font-family:var(--font-display);}
+
+/* Quiet journal splash (first paint gate) */
+.soul-splash{
+  position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:var(--bg);transition:opacity .45s ease,visibility .45s;
+}
+.soul-splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.soul-splash__book{
+  width:min(48vw,150px);aspect-ratio:3/4;position:relative;border-radius:4px 10px 10px 4px;
+  background:linear-gradient(160deg,var(--bg3),var(--bg2));
+  border:1px solid var(--sep);box-shadow:0 14px 36px rgba(0,0,0,.35);
+}
+.soul-splash__book::before{
+  content:'';position:absolute;inset:12% 10% 14% 14%;border:1px solid color-mix(in srgb,var(--acc) 35%,transparent);
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 10px,color-mix(in srgb,var(--l3) 40%,transparent) 10px,color-mix(in srgb,var(--l3) 40%,transparent) 11px);
+}
+.soul-splash__book::after{content:'';position:absolute;left:0;top:8%;bottom:8%;width:6px;background:var(--acc);border-radius:0 2px 2px 0}
+.soul-splash__title{font-family:var(--font-display);font-size:1.75rem;color:var(--l1)}
+.soul-splash__tag{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--l3)}
 .ob-sub{font-size:17px;color:var(--l2);text-align:center;margin-top:10px;line-height:1.55;max-width:300px;font-weight:400;}
 .ob-spacer{flex:1;}
 .ob-pills{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:28px;}
@@ -593,13 +640,18 @@ html,body{
 </style>
 </head>
 <body>
+<div id="soul-splash" class="soul-splash" role="status" aria-label="SoulCap loading">
+  <div class="soul-splash__book" aria-hidden="true"></div>
+  <div class="soul-splash__title">SoulCap</div>
+  <div class="soul-splash__tag">Quiet journal · private</div>
+</div>
 
 <!-- ══ ONBOARDING ══ -->
 <div id="onboarding">
   <div class="ob-step active" id="ob-1">
     <div class="ob-orb"></div>
     <div class="ob-heading">Hello.</div>
-    <div class="ob-sub">I'm Soul. I've been waiting for you.</div>
+    <div class="ob-sub">A quiet journal. Private on this device.</div>
     <div class="ob-spacer"></div>
     <button class="ob-btn" onclick="obNext(2)">Begin</button>
     <button class="ob-btn" type="button" onclick="obSkip()" style="margin-top:12px;background:transparent;border:1px solid var(--sep);color:var(--l2)">Skip →</button>
@@ -962,6 +1014,14 @@ html,body{
     <div class="profile-section">
       <div class="profile-section-title">Settings</div>
       <div class="profile-group">
+        <button type="button" class="profile-row" onclick="setSoulTheme('light')">
+          <span class="profile-row-label">Appearance — Light</span>
+          <span class="profile-row-val" id="theme-light-val">›</span>
+        </button>
+        <button type="button" class="profile-row" onclick="setSoulTheme('dark')">
+          <span class="profile-row-label">Appearance — Dark</span>
+          <span class="profile-row-val" id="theme-dark-val">›</span>
+        </button>
         <button type="button" class="profile-row" id="notif-row" onclick="toggleNotifs()">
           <span class="profile-row-label">Check-in reminder</span>
           <span class="profile-row-val" id="notif-val">Off ›</span>
@@ -1730,8 +1790,31 @@ window.addEventListener('appinstalled', () => showToast('SoulCap installed ✓')
 // Service Worker
 if ('serviceWorker' in navigator) {
   const p = location.hostname === 'localhost' ? '/sw.js' : '/SoulCap/sw.js';
-  navigator.serviceWorker.register(p + '?v=023').catch(() => {});
+  navigator.serviceWorker.register(p + '?v=030').catch(() => {});
 }
+
+function setSoulTheme(mode) {
+  const t = mode === 'light' ? 'light' : 'dark';
+  try { localStorage.setItem('soulcap-theme', t); } catch (e) {}
+  document.documentElement.setAttribute('data-theme', t);
+  const m = document.getElementById('themeColorMeta') || document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute('content', t === 'light' ? '#F4F0EA' : '#0E0D0C');
+  const lv = document.getElementById('theme-light-val');
+  const dv = document.getElementById('theme-dark-val');
+  if (lv) lv.textContent = t === 'light' ? 'On' : '›';
+  if (dv) dv.textContent = t === 'dark' ? 'On' : '›';
+}
+setTimeout(() => {
+  const s = document.getElementById('soul-splash');
+  if (s) { s.classList.add('hide'); setTimeout(() => s.remove(), 500); }
+}, 1300);
+try {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const lv = document.getElementById('theme-light-val');
+  const dv = document.getElementById('theme-dark-val');
+  if (lv) lv.textContent = cur === 'light' ? 'On' : '›';
+  if (dv) dv.textContent = cur === 'dark' ? 'On' : '›';
+} catch (e) {}
 
 // Boot paint — journals + stats from localStorage (not static HTML)
 refreshProfileMeta();

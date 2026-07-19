@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'carcap-v2';
+const CACHE = 'carcap-v3';
 const ASSETS = [
   './',
   './index.html',

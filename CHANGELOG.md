@@ -1,3 +1,6 @@
+## Beauty deep trio 3 — 2026-07-20
+- Catalog: IdeaCap 1.1.0 · SoulCap 0.3.0 · CarCap 0.2.0
+
 ## Beauty deep trio 2 — 2026-07-20
 - Catalog: DeePonyCap 3.7.0 · ScentCap 1.4.0 · AuraCap 5.3.0
 

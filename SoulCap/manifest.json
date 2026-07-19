@@ -1,13 +1,13 @@
 {
   "name": "SoulCap",
   "short_name": "SoulCap",
-  "description": "Clinician-supported wellness companion (clinical path — not a medical device)",
+  "description": "Clinician-supported wellness companion (clinical path \u2014 not a medical device)",
   "start_url": "/SoulCap/",
   "scope": "/SoulCap/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f0f1a",
-  "theme_color": "#7c6ff7",
+  "background_color": "#0E0D0C",
+  "theme_color": "#0E0D0C",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -35,6 +35,9 @@
     }
   ],
   "screenshots": [],
-  "categories": ["health", "lifestyle"],
+  "categories": [
+    "health",
+    "lifestyle"
+  ],
   "lang": "en"
 }

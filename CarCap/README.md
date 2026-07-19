@@ -2,9 +2,9 @@
 
 Offline-first vehicle PWA — garage, service log, fuel/odometer, and a text docs wallet (meta only).
 
-**Version:** 0.1.1 · **SW cache:** `carcap-v2` · Capricorn Systems (Cap family)
+**Version:** 0.2.0 · **SW cache:** `carcap-v3` · Capricorn Systems (Cap family)
 
-## Features (v0.1.1)
+## Features (v0.2.0)
 
 - **Garage** — make / model / year / plate (+ optional nickname)
 - **Service** — log type, date, odometer, cost, notes, reminder date
@@ -43,7 +43,7 @@ Vanilla JS · no framework · no bundler · `localStorage` via `S` helper · dar
 | `css/app.css` | UI |
 | `js/storage.js` | `S` + demo seed |
 | `js/app.js` | Screens + modals |
-| `sw.js` | Cache `carcap-v2` |
+| `sw.js` | Cache `carcap-v3` |
 | `manifest.json` | PWA manifest |
 | `VERSION.json` | Version truth |
 | `screen-gallery.html` | Screen index (captures later) |
@@ -54,7 +54,7 @@ Settings → **Load demo**, or open `/?demo=1`. Seeds one 2019 Toyota Corolla wi
 
 ## Privacy
 
-All data stays in the browser. No accounts, no cloud sync in v0.1.1. Docs are text/meta + expiry only — no photo wallet yet.
+All data stays in the browser. No accounts, no cloud sync in v0.2.0. Docs are text/meta + expiry only — no photo wallet yet.
 
 ## License
 
