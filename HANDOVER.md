@@ -1,3 +1,5 @@
+**Hub OS:** 0.11.8
+
 # shamikhahmed.github.io — Handover
 
 > Read this + `ROADMAP.md` + `~/Capricorn-Brain/01 Projects/shamikhahmed.github.io.md` before working here.

@@ -165,7 +165,7 @@ const PRODUCTS = {
     ],
     promise: 'Install once and you have 39 games — XP, achievements, pass-and-play, all of it works in airplane mode.',
     features: [
-      { t: '38 game engines', d: 'Deduction, reflex, strategy, party games — each one built from scratch with its own feel.' },
+      { t: '39 game engines', d: 'Deduction, reflex, strategy, party games — each one built from scratch with its own feel.' },
       { t: 'Pass & Play', d: 'Built for the couch: pass the phone, reveal roles, betray your friends. All locally.' },
       { t: 'Daily challenges', d: 'New challenges every day — no server needed, no notification spam.' },
       { t: 'XP + achievements', d: 'Level up and earn achievements. All of it stays on your phone.' },
@@ -383,7 +383,7 @@ const PRODUCTS = {
     slug: 'scentcap',
     name: 'ScentCap',
     category: 'Lifestyle',
-    ver: '4.3.4',
+    ver: '4.3.5',
     symbol: '◌',
     tagline: 'Your wardrobe. Finally organized.',
     pitch: 'ScentCap is a fragrance operating system — catalog bottles, log wears, layer with intention, and get daily picks shaped by weather and occasion. Warm, private, offline.',

@@ -1,3 +1,6 @@
+## 0.11.8 — 2026-07-19
+- Museum pad: Cap versions synced; Prism 4.3.5 play-smoke; Soul/Car/Travel/Idea live pads
+
 # Changelog
 
 ## [0.10.1] - 2026-07-10
