@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#000000"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="SoulCap"/>
+<meta name="description" content="Clinician-supported wellness companion (clinical path — not a medical device). See CLINICAL.md + SAFETY.md."/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png"/>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg"/>
+<title>SoulCap Clinical Path</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+button,textarea,input{font-family:inherit;cursor:pointer;}
+
+:root{
+  --bg:#000000;
+  --bg2:#1C1C1E;
+  --bg3:#2C2C2E;
+  --bg4:#3A3A3C;
+  --l1:#FFFFFF;
+  --l2:rgba(235,235,245,0.6);
+  --l3:rgba(235,235,245,0.3);
+  --l4:rgba(235,235,245,0.16);
+  --sep:rgba(84,84,88,0.65);
+  --sep2:rgba(84,84,88,0.36);
+  --acc:#7D7AFF;
+  --acc-bg:rgba(125,122,255,0.14);
+  --purple:#BF5AF2;
+  --green:#30D158;
+  --orange:#FF9F0A;
+  --red:#FF453A;
+  --teal:#5AC8FA;
+  --blue:#0A84FF;
+  --sat:env(safe-area-inset-top,0px);
+  --sab:env(safe-area-inset-bottom,0px);
+  --tab-h:49px;
+  --spring:cubic-bezier(0.32,0.72,0,1);
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94);
+}
+
+html,body{
+  height:100%;background:var(--bg);color:var(--l1);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Helvetica Neue',Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow:hidden;user-select:none;-webkit-user-select:none;
+}
+
+#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;overflow:hidden;}
+
+/* ── SCREEN CONTAINER ── */
+#screens{position:relative;flex:1;overflow:hidden;}
+
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.24s var(--ease);
+}
+.screen.active{opacity:1;pointer-events:auto;}
+
+#screen-today,#screen-you{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#screen-today::-webkit-scrollbar,#screen-you::-webkit-scrollbar{display:none;}
+#screen-soul{overflow:hidden;}
+
+/* ── ONBOARDING ── */
+#onboarding{
+  position:fixed;inset:0;background:var(--bg);z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(56px + var(--sat)) 28px calc(40px + var(--sab));
+}
+#onboarding.hidden{display:none;}
+
+@keyframes obIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+.ob-step{display:none;flex-direction:column;align-items:center;width:100%;animation:obIn 0.44s var(--spring);}
+.ob-step.active{display:flex;}
+
+/* Orb */
+@keyframes breathe{
+  0%,100%{transform:scale(1);box-shadow:0 0 36px rgba(125,122,255,0.52),0 0 72px rgba(125,122,255,0.22),0 0 140px rgba(125,122,255,0.1);}
+  50%{transform:scale(1.065);box-shadow:0 0 52px rgba(125,122,255,0.68),0 0 100px rgba(125,122,255,0.32),0 0 180px rgba(125,122,255,0.14);}
+}
+.ob-orb,.orb,.soul-orb-sm,.typing-orb-ball,.panic-orb{
+  background:
+    radial-gradient(circle at 32% 27%, rgba(255,255,255,0.46) 0%, transparent 36%),
+    radial-gradient(circle at 68% 73%, rgba(191,90,242,0.62) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, #9B98FF 0%, #5E5CE6 38%, #3730A3 72%, #1E1860 100%);
+}
+.ob-orb{
+  width:100px;height:100px;border-radius:50%;flex-shrink:0;
+  box-shadow:0 0 36px rgba(125,122,255,0.52),0 0 72px rgba(125,122,255,0.22);
+  animation:breathe 5s ease-in-out infinite;
+}
+.ob-heading{font-size:34px;font-weight:700;letter-spacing:-0.5px;text-align:center;line-height:1.15;margin-top:36px;color:var(--l1);}
+.ob-sub{font-size:17px;color:var(--l2);text-align:center;margin-top:10px;line-height:1.55;max-width:300px;font-weight:400;}
+.ob-spacer{flex:1;}
+.ob-pills{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:28px;}
+.ob-pill{
+  background:var(--bg2);border:none;border-radius:14px;
+  padding:17px 18px;font-size:17px;color:var(--l1);text-align:left;font-weight:400;
+  transition:background 0.12s,transform 0.1s var(--spring);
+}
+.ob-pill:active{background:var(--bg3);transform:scale(0.98);}
+.ob-pill.sel{background:var(--acc-bg);color:var(--acc);}
+.ob-name-input{
+  width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--sep);
+  color:var(--l1);font-size:36px;font-weight:600;text-align:center;outline:none;
+  padding:14px 0;margin-top:36px;letter-spacing:-0.6px;
+  transition:border-color 0.2s;
+}
+.ob-name-input:focus{border-color:var(--acc);}
+.ob-name-input::placeholder{color:var(--l4);}
+.ob-btn{
+  width:100%;padding:17px;background:var(--acc);border:none;border-radius:14px;
+  color:var(--l1);font-size:17px;font-weight:600;margin-top:20px;letter-spacing:-0.2px;
+  transition:opacity 0.15s,transform 0.1s;
+}
+.ob-btn:active{opacity:0.84;transform:scale(0.98);}
+.ob-btn.ghost{background:transparent;color:var(--l3);margin-top:8px;}
+.ob-notice{background:var(--bg2);border-radius:16px;padding:20px;margin-top:20px;width:100%;}
+.ob-notice p{font-size:15px;color:var(--l1);line-height:1.65;font-weight:500;}
+.ob-notice small{display:block;font-size:13px;color:var(--l2);margin-top:8px;line-height:1.55;}
+
+/* ── TAB BAR ── */
+.tab-bar{
+  height:calc(var(--tab-h) + var(--sab));padding-bottom:var(--sab);
+  background:rgba(0,0,0,0.86);
+  backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);
+  border-top:0.5px solid rgba(255,255,255,0.08);
+  display:flex;flex-shrink:0;position:relative;z-index:10;
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;border:none;background:none;color:var(--l3);
+  font-size:10px;font-weight:500;letter-spacing:0.1px;padding:0;
+  transition:color 0.18s;
+}
+.tab.active{color:var(--acc);}
+.tab svg{width:22px;height:22px;transition:transform 0.22s var(--spring);}
+.tab.active svg{transform:scale(1.1);}
+.tab-label{font-size:10px;margin-top:1px;}
+
+/* ── TODAY SCREEN ── */
+.today-top{padding:calc(var(--sat) + 24px) 20px 0;}
+.today-greeting{font-size:15px;color:var(--l2);font-weight:400;margin-bottom:3px;}
+.today-name{font-size:34px;font-weight:700;letter-spacing:-0.5px;color:var(--l1);line-height:1.1;}
+.today-context{font-size:15px;color:var(--l2);margin-top:8px;line-height:1.55;font-weight:400;}
+
+/* ORB */
+.orb-center{display:flex;flex-direction:column;align-items:center;padding:44px 24px 32px;}
+.orb{
+  width:120px;height:120px;border-radius:50%;
+  box-shadow:
+    0 0 0 1px rgba(125,122,255,0.14),
+    0 0 36px rgba(125,122,255,0.52),
+    0 0 72px rgba(125,122,255,0.26),
+    0 0 140px rgba(125,122,255,0.1);
+  animation:breathe 5s ease-in-out infinite;
+  cursor:pointer;
+  transition:transform 0.18s var(--spring);
+}
+.orb:active{transform:scale(0.91)!important;animation-play-state:paused;}
+.orb-question{font-size:17px;color:var(--l1);text-align:center;margin-top:22px;line-height:1.55;font-weight:400;max-width:280px;font-style:italic;}
+.orb-hint{font-size:13px;color:var(--l3);margin-top:6px;text-align:center;}
+
+/* STATS */
+.today-stats{display:flex;margin:0 20px;background:var(--bg2);border-radius:16px;overflow:hidden;}
+.stat{flex:1;padding:15px 10px;text-align:center;}
+.stat+.stat{border-left:0.5px solid var(--sep2);}
+.stat-val{font-size:22px;font-weight:700;color:var(--l1);font-variant-numeric:tabular-nums;letter-spacing:-0.3px;}
+.stat-label{font-size:11px;color:var(--l3);margin-top:3px;font-weight:400;}
+
+/* SECTIONS */
+.today-section{padding:28px 20px 0;}
+.today-section-title{font-size:22px;font-weight:700;letter-spacing:-0.35px;color:var(--l1);margin-bottom:14px;}
+
+/* CARDS */
+.today-card{
+  background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:8px;
+  cursor:pointer;border:none;width:100%;text-align:left;
+  transition:background 0.12s,transform 0.12s var(--spring);
+  display:block;
+}
+.today-card:active{background:var(--bg3);transform:scale(0.985);}
+.tc-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.tc-label{font-size:12px;font-weight:600;color:var(--acc);letter-spacing:0.2px;margin-bottom:5px;}
+.tc-title{font-size:16px;font-weight:600;color:var(--l1);line-height:1.4;}
+.tc-sub{font-size:14px;color:var(--l2);margin-top:4px;line-height:1.5;font-weight:400;}
+.tc-arrow{color:var(--l3);font-size:22px;font-weight:300;line-height:1;margin-top:1px;flex-shrink:0;}
+
+/* HABITS */
+.habit-row{display:flex;gap:6px;justify-content:space-between;}
+.habit-ring-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  transition:transform 0.15s var(--spring);
+}
+.habit-ring-wrap:active{transform:scale(0.9);}
+.habit-ring{width:56px;height:56px;display:flex;align-items:center;justify-content:center;position:relative;}
+.habit-ring svg{width:56px;height:56px;transform:rotate(-90deg);position:absolute;inset:0;}
+.habit-ring-icon{font-size:20px;z-index:1;}
+.habit-ring-label{font-size:10px;color:var(--l3);font-weight:500;text-align:center;max-width:58px;line-height:1.2;}
+
+/* INSIGHT */
+.today-insight{margin:0 20px;background:var(--bg2);border-radius:16px;padding:18px;}
+.ti-label{font-size:12px;font-weight:600;color:var(--purple);letter-spacing:0.2px;margin-bottom:10px;}
+.ti-text{font-size:15px;color:var(--l1);line-height:1.65;font-weight:400;}
+.ti-source{font-size:12px;color:var(--l3);margin-top:10px;}
+
+/* GROUND BUTTON */
+.ground-btn{
+  margin:12px 20px 40px;background:var(--bg2);border:none;border-radius:16px;
+  padding:16px 18px;display:flex;align-items:center;gap:14px;
+  width:calc(100% - 40px);
+  transition:background 0.12s,transform 0.1s;
+}
+.ground-btn:active{background:var(--bg3);transform:scale(0.985);}
+.ground-btn-icon{font-size:24px;flex-shrink:0;}
+.gbt{font-size:16px;font-weight:500;color:var(--l1);text-align:left;}
+.gbs{font-size:13px;color:var(--l2);margin-top:2px;text-align:left;font-weight:400;}
+
+/* ── CHECK-IN ── */
+.ci-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:500;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform 0.44s var(--spring);
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
+.ci-overlay.open{transform:translateY(0);}
+.ci-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;flex-shrink:0;}
+.ci-close{
+  background:var(--bg2);border:none;border-radius:50%;
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  color:var(--l2);font-size:15px;
+  transition:background 0.12s;
+}
+.ci-close:active{background:var(--bg3);}
+.ci-progress{display:flex;gap:5px;align-items:center;}
+.ci-dot{width:6px;height:6px;border-radius:50%;background:var(--bg4);transition:all 0.24s var(--spring);}
+.ci-dot.done{background:var(--acc);}
+.ci-dot.active{width:20px;border-radius:3px;background:var(--acc);}
+
+.ci-body{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+.ci-step{
+  position:absolute;inset:0;padding:20px 24px 0;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transform:translateX(30px);
+  transition:opacity 0.3s var(--spring),transform 0.3s var(--spring);
+}
+.ci-step.active{opacity:1;pointer-events:auto;transform:none;}
+.ci-q{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--l1);line-height:1.2;margin-bottom:32px;}
+.ci-emotions{display:flex;flex-wrap:wrap;gap:10px;}
+.ci-em{
+  background:var(--bg2);border:none;border-radius:22px;
+  padding:11px 18px;font-size:15px;font-weight:500;color:var(--l1);
+  display:flex;align-items:center;gap:8px;
+  transition:background 0.12s,transform 0.12s var(--spring),color 0.12s;
+}
+.ci-em:active{transform:scale(0.94);}
+.ci-em.sel{background:var(--acc-bg);color:var(--acc);}
+.ci-em-icon{font-size:17px;}
+.ci-scale{display:flex;flex-direction:column;}
+.ci-scale-btn{
+  padding:17px 0;border:none;border-bottom:0.5px solid var(--sep2);
+  background:none;display:flex;align-items:center;justify-content:space-between;
+  width:100%;text-align:left;
+  transition:opacity 0.1s;
+}
+.ci-scale-btn:first-child{border-top:0.5px solid var(--sep2);}
+.ci-scale-btn:active{opacity:0.55;}
+.ci-scale-btn.sel .csb-label{color:var(--acc);}
+.ci-scale-btn.sel .csb-check{opacity:1;color:var(--acc);}
+.csb-label{font-size:17px;font-weight:400;color:var(--l1);}
+.csb-check{opacity:0;font-size:17px;transition:opacity 0.15s;}
+.ci-free{
+  width:100%;background:transparent;border:none;color:var(--l1);
+  font-size:19px;font-weight:400;outline:none;resize:none;min-height:140px;line-height:1.55;
+}
+.ci-free::placeholder{color:var(--l4);}
+.ci-footer{padding:16px 24px;flex-shrink:0;}
+.ci-next{
+  width:100%;padding:17px;background:var(--acc);border:none;border-radius:14px;
+  color:var(--l1);font-size:17px;font-weight:600;letter-spacing:-0.2px;
+  transition:opacity 0.15s,transform 0.1s;
+}
+.ci-next:active{opacity:0.84;transform:scale(0.98);}
+
+/* ── SOUL CHAT ── */
+.soul-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(var(--sat) + 12px) 20px 14px;
+  flex-shrink:0;border-bottom:0.5px solid var(--sep2);
+  background:rgba(0,0,0,0.72);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.soul-presence{display:flex;align-items:center;gap:10px;}
+.soul-orb-sm{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  box-shadow:0 0 14px rgba(125,122,255,0.5);
+  animation:breathe 5s ease-in-out infinite;
+}
+.soul-name{font-size:17px;font-weight:600;color:var(--l1);}
+.soul-status{font-size:12px;color:var(--green);margin-top:1px;display:flex;align-items:center;gap:5px;}
+.soul-status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);}
+.soul-action{background:none;border:none;color:var(--l3);font-size:15px;font-weight:400;padding:8px 0;}
+.soul-action:active{opacity:0.55;}
+
+.messages{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:22px 0 10px;display:flex;flex-direction:column;gap:20px;
+}
+.messages::-webkit-scrollbar{display:none;}
+
+.msg-ai{padding:0 22px;align-self:flex-start;max-width:100%;}
+.msg-ai-text{font-size:17px;color:var(--l1);line-height:1.6;font-weight:400;}
+.msg-ai-time{font-size:11px;color:var(--l3);margin-top:6px;}
+
+.msg-anchor{
+  margin:0 22px 4px;padding:10px 14px;
+  background:rgba(125,122,255,0.08);border-left:2px solid var(--acc);
+  border-radius:0 10px 10px 0;
+}
+.msg-anchor-text{font-size:12px;color:rgba(165,162,255,0.85);font-style:italic;line-height:1.5;}
+
+.msg-user{padding:0 20px;align-self:flex-end;max-width:82%;}
+.msg-user-bubble{
+  background:var(--acc);border-radius:20px 20px 6px 20px;
+  padding:12px 16px;font-size:16px;color:var(--l1);line-height:1.5;
+}
+.msg-user-time{font-size:11px;color:var(--l3);margin-top:5px;text-align:right;}
+
+.typing-wrap{padding:0 22px 8px;min-height:28px;}
+.typing-dots{display:none;gap:5px;align-items:center;height:20px;}
+.typing-dots.visible{display:flex;}
+.td{width:7px;height:7px;border-radius:50%;background:var(--l3);animation:tdBounce 1.1s ease-in-out infinite;}
+.td:nth-child(2){animation-delay:.14s;}
+.td:nth-child(3){animation-delay:.28s;}
+@keyframes tdBounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+
+.chat-bar{
+  display:flex;align-items:flex-end;gap:10px;
+  padding:10px 16px calc(10px + var(--sab));
+  background:rgba(0,0,0,0.86);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:0.5px solid var(--sep2);flex-shrink:0;
+}
+.chat-input{
+  flex:1;background:var(--bg2);border:none;border-radius:20px;
+  padding:11px 16px;color:var(--l1);font-size:16px;resize:none;
+  outline:none;max-height:120px;min-height:44px;line-height:1.45;
+}
+.chat-input::placeholder{color:var(--l3);}
+.send-btn{
+  width:36px;height:36px;border-radius:50%;border:none;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:var(--acc);
+  transition:transform 0.15s var(--spring),opacity 0.18s;
+  opacity:0;pointer-events:none;margin-bottom:4px;
+}
+.send-btn.visible{opacity:1;pointer-events:auto;}
+.send-btn:active{transform:scale(0.86);}
+.send-btn svg{width:16px;height:16px;fill:white;}
+
+/* ── YOU SCREEN ── */
+.you-header{
+  padding:calc(var(--sat) + 24px) 20px 0;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.you-title{font-size:34px;font-weight:700;letter-spacing:-0.5px;color:var(--l1);}
+.you-profile-btn{
+  width:36px;height:36px;border-radius:50%;background:var(--bg2);border:none;
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;
+  transition:background 0.12s;
+}
+.you-profile-btn:active{background:var(--bg3);}
+
+.soul-letter{margin:20px 20px 0;background:var(--bg2);border-radius:16px;padding:20px;}
+.sl-from{font-size:12px;font-weight:600;color:var(--acc);letter-spacing:0.2px;margin-bottom:12px;}
+.sl-body{font-size:15px;color:var(--l1);line-height:1.75;font-weight:400;}
+.sl-date{font-size:12px;color:var(--l3);margin-top:12px;}
+
+.you-section{padding:28px 20px 0;}
+.you-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.you-section-title{font-size:22px;font-weight:700;letter-spacing:-0.35px;color:var(--l1);}
+.you-new-btn{
+  background:var(--acc-bg);border:none;border-radius:10px;
+  padding:7px 14px;color:var(--acc);font-size:15px;font-weight:600;
+  transition:opacity 0.12s;
+}
+.you-new-btn:active{opacity:0.65;}
+
+.journal-entry{
+  background:var(--bg2);border-radius:14px;
+  padding:16px 18px;margin-bottom:8px;
+  border:none;width:100%;text-align:left;display:block;
+  transition:background 0.12s,transform 0.12s var(--spring);
+}
+.journal-entry:active{background:var(--bg3);transform:scale(0.985);}
+.je-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.je-date{font-size:12px;color:var(--l3);}
+.je-mood{font-size:15px;}
+.je-title{font-size:16px;font-weight:600;color:var(--l1);margin-bottom:4px;}
+.je-preview{font-size:14px;color:var(--l2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+.pattern-card{background:var(--bg2);border-radius:14px;padding:16px 18px;margin-bottom:8px;}
+.pc-type{font-size:12px;font-weight:600;color:var(--purple);letter-spacing:0.2px;margin-bottom:8px;}
+.pc-text{font-size:15px;color:var(--l1);line-height:1.6;}
+.pc-confidence{font-size:12px;color:var(--l3);margin-top:6px;}
+
+/* ── PANIC ── */
+.panic-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:800;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform 0.44s var(--spring);
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
+.panic-overlay.open{transform:translateY(0);}
+.panic-close{align-self:flex-end;background:none;border:none;padding:20px 24px;color:var(--l2);font-size:15px;}
+.panic-close:active{opacity:0.55;}
+.panic-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px;text-align:center;}
+.panic-orb{
+  width:100px;height:100px;border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 27%, rgba(255,200,200,0.5) 0%, transparent 36%),
+    radial-gradient(ellipse at 50% 50%, #FF8080 0%, var(--red) 44%, #6b1010 100%);
+  box-shadow:0 0 36px rgba(255,69,58,0.48),0 0 72px rgba(255,69,58,0.2);
+  animation:breathe 5s ease-in-out infinite;margin-bottom:32px;
+}
+.panic-title{font-size:30px;font-weight:700;letter-spacing:-0.5px;color:var(--l1);margin-bottom:10px;}
+.panic-sub{font-size:17px;color:var(--l2);line-height:1.6;max-width:300px;font-weight:400;}
+.panic-988{margin-top:28px;font-size:14px;color:var(--red);font-weight:500;padding:14px 24px;background:rgba(255,69,58,0.08);border-radius:14px;}
+.panic-choices{display:flex;gap:10px;padding:24px;flex-shrink:0;}
+.panic-choice{
+  flex:1;background:var(--bg2);border:none;border-radius:16px;
+  padding:18px 12px;text-align:center;
+  transition:background 0.12s,transform 0.12s var(--spring);
+}
+.panic-choice:active{background:var(--bg3);transform:scale(0.95);}
+.panic-choice-icon{font-size:28px;margin-bottom:8px;}
+.panic-choice-label{font-size:14px;font-weight:600;color:var(--l1);}
+.panic-choice-sub{font-size:12px;color:var(--l2);margin-top:3px;}
+
+/* ── GROUNDING ── */
+.ground-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:900;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform 0.44s var(--spring);
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
+.ground-overlay.open{transform:translateY(0);}
+.ground-close{align-self:flex-end;background:none;border:none;padding:20px 24px;color:var(--l2);font-size:15px;}
+.ground-close:active{opacity:0.55;}
+.ground-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px;text-align:center;}
+.ground-step-label{font-size:13px;font-weight:600;color:var(--acc);letter-spacing:0.3px;margin-bottom:20px;}
+.ground-step-text{font-size:28px;font-weight:700;letter-spacing:-0.4px;color:var(--l1);line-height:1.25;max-width:300px;}
+.ground-hint{font-size:17px;color:var(--l2);margin-top:18px;line-height:1.6;max-width:280px;font-weight:400;}
+.ground-progress{display:flex;gap:6px;margin-top:44px;}
+.gp-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);transition:background 0.25s,transform 0.25s;}
+.gp-dot.done{background:var(--acc);}
+.gp-dot.active{background:var(--l1);transform:scale(1.3);}
+.ground-footer{padding:20px 24px;flex-shrink:0;}
+.ground-next{
+  width:100%;padding:17px;background:var(--bg2);border:none;border-radius:14px;
+  color:var(--l1);font-size:17px;font-weight:600;
+  transition:background 0.12s,transform 0.1s;
+}
+.ground-next:active{background:var(--bg3);transform:scale(0.98);}
+
+/* ── PROFILE ── */
+.profile-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:700;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform 0.44s var(--spring);
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
+.profile-overlay.open{transform:translateY(0);}
+.profile-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;flex-shrink:0;}
+.profile-back{background:none;border:none;color:var(--acc);font-size:17px;font-weight:400;padding:8px 0;}
+.profile-back:active{opacity:0.55;}
+.profile-title{font-size:17px;font-weight:600;color:var(--l1);}
+.profile-body{flex:1;overflow-y:auto;padding:0 24px 40px;}
+.profile-body::-webkit-scrollbar{display:none;}
+.profile-avatar{
+  width:68px;height:68px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#9B98FF,#3730A3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin:8px 0 14px;
+}
+.profile-name{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--l1);}
+.profile-since{font-size:13px;color:var(--l3);margin-top:4px;}
+.profile-soul-line{font-size:15px;color:var(--l2);margin-top:18px;line-height:1.65;font-style:italic;padding:16px;background:var(--bg2);border-radius:14px;}
+.profile-section{margin-top:28px;}
+.profile-section-title{font-size:13px;font-weight:600;color:var(--l3);letter-spacing:0.2px;text-transform:uppercase;margin-bottom:8px;}
+.profile-group{background:var(--bg2);border-radius:14px;overflow:hidden;}
+.profile-row{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:0.5px solid var(--sep2);cursor:pointer;border:none;background:none;width:100%;text-align:left;}
+.profile-row:last-child{border-bottom:none;}
+.profile-row:active{background:var(--bg3);}
+.profile-row-label{font-size:17px;color:var(--l1);font-weight:400;}
+.profile-row-val{font-size:15px;color:var(--l3);}
+.profile-delete{width:100%;margin-top:16px;padding:15px;background:var(--bg2);border:none;border-radius:14px;color:var(--red);font-size:17px;font-weight:400;}
+.profile-delete:active{background:var(--bg3);}
+
+/* ── COMPOSE ── */
+.compose-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:600;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform 0.44s var(--spring);
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
+.compose-overlay.open{transform:translateY(0);}
+.compose-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;flex-shrink:0;}
+.compose-cancel{background:none;border:none;color:var(--l2);font-size:17px;font-weight:400;}
+.compose-cancel:active{opacity:0.55;}
+.compose-save{background:var(--acc);border:none;border-radius:10px;color:var(--l1);font-size:15px;font-weight:600;padding:8px 16px;transition:opacity 0.12s;}
+.compose-save:active{opacity:0.8;}
+.compose-date{padding:0 24px 12px;font-size:14px;color:var(--l3);}
+.compose-area{flex:1;background:transparent;border:none;color:var(--l1);font-size:19px;line-height:1.65;padding:0 24px;resize:none;outline:none;font-weight:400;}
+.compose-area::placeholder{color:var(--l4);}
+
+/* ── READ ── */
+.read-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:600;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform 0.44s var(--spring);
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
+.read-overlay.open{transform:translateY(0);}
+.read-nav{display:flex;align-items:center;padding:16px 24px;flex-shrink:0;}
+.read-back{background:none;border:none;color:var(--acc);font-size:17px;font-weight:400;}
+.read-back:active{opacity:0.55;}
+.read-body{flex:1;overflow-y:auto;padding:20px 24px 40px;}
+.read-body::-webkit-scrollbar{display:none;}
+.read-date{font-size:13px;color:var(--l3);margin-bottom:10px;}
+.read-title{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--l1);margin-bottom:18px;line-height:1.2;}
+.read-text{font-size:17px;color:var(--l1);line-height:1.75;font-weight:400;}
+.read-reflection{margin-top:32px;padding:16px;background:var(--bg2);border-radius:14px;}
+.read-ref-label{font-size:12px;font-weight:600;color:var(--acc);letter-spacing:0.2px;margin-bottom:8px;}
+.read-ref-text{font-size:14px;color:var(--l2);line-height:1.65;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:calc(var(--tab-h) + var(--sab) + 24px);
+  left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--bg3);color:var(--l1);padding:10px 20px;border-radius:22px;
+  font-size:14px;font-weight:500;opacity:0;
+  transition:opacity 0.2s,transform 0.2s var(--spring);
+  z-index:9999;white-space:nowrap;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── INSTALL BANNER ── */
+#install-banner{
+  display:none;position:fixed;
+  bottom:calc(var(--tab-h) + var(--sab) + 16px);
+  left:16px;right:16px;background:var(--bg2);
+  border-radius:20px;padding:16px 18px;z-index:500;
+  box-shadow:0 8px 40px rgba(0,0,0,0.7);
+  align-items:center;gap:14px;
+}
+#install-banner.show{display:flex;}
+.ib-icon{font-size:32px;flex-shrink:0;}
+.ib-t{font-size:15px;font-weight:600;color:var(--l1);}
+.ib-s{font-size:13px;color:var(--l2);margin-top:2px;}
+.ib-actions{margin-left:auto;display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+.ib-install{background:var(--acc);border:none;border-radius:10px;padding:8px 14px;color:var(--l1);font-size:13px;font-weight:600;white-space:nowrap;}
+.ib-dismiss{background:none;border:none;color:var(--l3);font-size:12px;}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+
+/* Clinical path */
+.ob-consent{width:100%;margin-top:20px;text-align:left;font-size:14px;color:var(--l2);line-height:1.45;}
+.ob-consent label{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:12px;background:var(--bg2);border:1px solid var(--sep2);}
+.ob-consent input{margin-top:3px;accent-color:var(--acc);}
+.clinical-banner{margin:12px 16px 0;padding:10px 12px;border-radius:12px;background:rgba(125,122,255,.12);border:1px solid rgba(125,122,255,.28);font-size:12px;color:var(--l2);line-height:1.4;}
+.clinic-fab{position:fixed;right:16px;bottom:calc(70px + var(--sab));z-index:40;padding:10px 14px;border-radius:999px;border:none;background:var(--acc);color:#fff;font-size:12px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.clinic-overlay{position:fixed;inset:0;z-index:900;background:var(--bg);transform:translateY(100%);transition:transform .32s var(--spring);display:flex;flex-direction:column;max-width:430px;margin:0 auto;}
+.clinic-overlay.open{transform:translateY(0);}
+.clinic-nav{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + var(--sat)) 16px 12px;border-bottom:1px solid var(--sep2);}
+.clinic-body{flex:1;overflow:auto;padding:16px;padding-bottom:calc(24px + var(--sab));}
+.clinic-card{background:var(--bg2);border:1px solid var(--sep2);border-radius:14px;padding:14px;margin-bottom:12px;}
+.clinic-card h3{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--l1);}
+.clinic-card textarea,.clinic-card input{width:100%;background:var(--bg3);border:1px solid var(--sep);border-radius:10px;color:var(--l1);padding:10px;font-size:14px;resize:vertical;min-height:88px;}
+.clinic-card button{margin-top:10px;width:100%;padding:11px;border:none;border-radius:12px;background:var(--acc);color:#fff;font-weight:600;font-size:14px;}
+.clinic-audit{font-size:12px;color:var(--l2);line-height:1.45;max-height:180px;overflow:auto;font-family:ui-monospace,Menlo,monospace;}
+.clinic-note{font-size:13px;padding:10px 0;border-bottom:1px solid var(--sep2);color:var(--l1);}
+.clinic-note time{display:block;font-size:11px;color:var(--l3);margin-bottom:4px;}
+.crisis-banner{display:none;margin:8px 12px;padding:12px;border-radius:12px;background:rgba(255,69,58,.12);border:1px solid rgba(255,69,58,.35);color:#ff8a80;font-size:13px;line-height:1.45;}
+.crisis-banner.show{display:block;}
+</style>
+</head>
+<body>
+
+<!-- ══ ONBOARDING ══ -->
+<div id="onboarding">
+  <div class="ob-step active" id="ob-1">
+    <div class="ob-orb"></div>
+    <div class="ob-heading">Hello.</div>
+    <div class="ob-sub">I'm Soul. I've been waiting for you.</div>
+    <div class="ob-spacer"></div>
+    <button class="ob-btn" onclick="obNext(2)">Begin</button>
+  </div>
+  <div class="ob-step" id="ob-2">
+    <div class="ob-heading">What brought you here?</div>
+    <div class="ob-pills">
+      <button class="ob-pill" onclick="obSelectReason(this)">I'm going through something hard</button>
+      <button class="ob-pill" onclick="obSelectReason(this)">I want to understand myself better</button>
+      <button class="ob-pill" onclick="obSelectReason(this)">I need someone to talk to</button>
+      <button class="ob-pill" onclick="obSelectReason(this)">I feel anxious or overwhelmed</button>
+      <button class="ob-pill" onclick="obSelectReason(this)">I want to grow</button>
+    </div>
+  </div>
+  <div class="ob-step" id="ob-3">
+    <div class="ob-heading">Clinical path consent</div>
+    <div class="ob-notice">
+      <p>SoulCap is a clinician-supported wellness companion — not a medical device, not therapy, not diagnosis.</p>
+      <small>In crisis: call/text <strong>988</strong> (US), text HOME to 741741, or local emergency. See CLINICAL.md + SAFETY.md.</small>
+    </div>
+    <div class="ob-consent">
+      <label>
+        <input type="checkbox" id="ob-consent-check"/>
+        <span>I understand SoulCap is not clinical care or crisis counseling, and I consent to on-device check-ins / companion chat for wellness support.</span>
+      </label>
+    </div>
+    <div class="ob-spacer"></div>
+    <button class="ob-btn" id="ob-consent-btn" onclick="obAcceptConsent()" style="opacity:0.35;pointer-events:none">I understand &amp; consent</button>
+  </div>
+  <div class="ob-step" id="ob-4">
+    <div class="ob-orb" id="ob-name-orb"></div>
+    <div class="ob-heading" id="ob-name-heading">What should I call you?</div>
+    <input class="ob-name-input" id="ob-name" type="text" placeholder="Your name"
+      autocomplete="given-name" spellcheck="false"
+      oninput="onNameInput()" onkeydown="if(event.key==='Enter')obSubmitName()"/>
+    <div class="ob-spacer"></div>
+    <button class="ob-btn" id="ob-name-btn" onclick="obSubmitName()" style="opacity:0.35;pointer-events:none">Continue</button>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+
+  <div id="screens">
+
+    <!-- TODAY -->
+    <div id="screen-today" class="screen active">
+      <div class="clinical-banner" id="clinical-banner">Clinical path · wellness companion · not a medical device · 988 if in crisis</div>
+      <div class="today-top">
+        <div class="today-greeting" id="today-greeting">Good morning</div>
+        <div class="today-name" id="today-name"></div>
+        <div class="today-context" id="today-context">Tap the orb when you're ready to check in.</div>
+      </div>
+
+      <div class="orb-center">
+        <div class="orb" id="home-orb" onclick="openCheckIn()"></div>
+        <div class="orb-question" id="today-question">"What's the first thing you noticed this morning?"</div>
+        <div class="orb-hint">Tap to check in</div>
+      </div>
+
+      <div class="today-stats">
+        <div class="stat"><div class="stat-val" id="stat-streak">—</div><div class="stat-label">Day streak</div></div>
+        <div class="stat"><div class="stat-val" id="stat-yesterday">—</div><div class="stat-label">Yesterday</div></div>
+        <div class="stat"><div class="stat-val" id="stat-week">—</div><div class="stat-label">This week</div></div>
+      </div>
+
+      <div class="today-section">
+        <div class="today-section-title">Today</div>
+        <button class="today-card" onclick="goTab('soul')">
+          <div class="tc-row">
+            <div>
+              <div class="tc-label">Soul</div>
+              <div class="tc-title">Rules-based companion chat</div>
+              <div class="tc-sub">Not a live AI model on this Pages build.</div>
+            </div>
+            <div class="tc-arrow">›</div>
+          </div>
+        </button>
+        <button class="today-card" onclick="openCheckIn()">
+          <div class="tc-row">
+            <div>
+              <div class="tc-label">Daily check-in</div>
+              <div class="tc-title">A moment for yourself.</div>
+              <div class="tc-sub">Takes 30 seconds. Your profile updates quietly.</div>
+            </div>
+            <div class="tc-arrow">›</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="today-section">
+        <div class="today-section-title">Habits</div>
+        <div class="habit-row">
+          <div class="habit-ring-wrap" onclick="toggleHabit(this,0)">
+            <div class="habit-ring">
+              <svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="rgba(48,209,88,0.15)" stroke-width="4"/><circle cx="28" cy="28" r="24" fill="none" stroke="#30D158" stroke-width="4" stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round" class="h-arc" id="h0" style="transition:stroke-dashoffset 0.55s var(--spring)"/></svg>
+              <span class="habit-ring-icon">🚶</span>
+            </div>
+            <div class="habit-ring-label">Walk</div>
+          </div>
+          <div class="habit-ring-wrap" onclick="toggleHabit(this,1)">
+            <div class="habit-ring">
+              <svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="rgba(10,132,255,0.15)" stroke-width="4"/><circle cx="28" cy="28" r="24" fill="none" stroke="#0A84FF" stroke-width="4" stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round" class="h-arc" id="h1" style="transition:stroke-dashoffset 0.55s var(--spring)"/></svg>
+              <span class="habit-ring-icon">📖</span>
+            </div>
+            <div class="habit-ring-label">Read</div>
+          </div>
+          <div class="habit-ring-wrap" onclick="toggleHabit(this,2)">
+            <div class="habit-ring">
+              <svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="rgba(191,90,242,0.15)" stroke-width="4"/><circle cx="28" cy="28" r="24" fill="none" stroke="#BF5AF2" stroke-width="4" stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round" class="h-arc" id="h2" style="transition:stroke-dashoffset 0.55s var(--spring)"/></svg>
+              <span class="habit-ring-icon">🧘</span>
+            </div>
+            <div class="habit-ring-label">Breathe</div>
+          </div>
+          <div class="habit-ring-wrap" onclick="toggleHabit(this,3)">
+            <div class="habit-ring">
+              <svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,159,10,0.15)" stroke-width="4"/><circle cx="28" cy="28" r="24" fill="none" stroke="#FF9F0A" stroke-width="4" stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round" class="h-arc" id="h3" style="transition:stroke-dashoffset 0.55s var(--spring)"/></svg>
+              <span class="habit-ring-icon">💧</span>
+            </div>
+            <div class="habit-ring-label">Hydrate</div>
+          </div>
+          <div class="habit-ring-wrap" onclick="toggleHabit(this,4)">
+            <div class="habit-ring">
+              <svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="rgba(125,122,255,0.15)" stroke-width="4"/><circle cx="28" cy="28" r="24" fill="none" stroke="#7D7AFF" stroke-width="4" stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round" class="h-arc" id="h4" style="transition:stroke-dashoffset 0.55s var(--spring)"/></svg>
+              <span class="habit-ring-icon">✍️</span>
+            </div>
+            <div class="habit-ring-label">Journal</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="today-section" style="padding-bottom:16px;">
+        <div class="today-section-title">Companion note</div>
+        <div class="today-insight">
+          <div class="ti-label">On-device</div>
+          <div class="ti-text">Check in when you can. Reflections here are rules-based — not a clinician and not a live AI model on this Pages build.</div>
+          <div class="ti-source">— Smart Companion · clinical path</div>
+        </div>
+      </div>
+
+      <button class="ground-btn" onclick="openPanic()">
+        <span class="ground-btn-icon">🫂</span>
+        <div>
+          <div class="gbt">Need grounding?</div>
+          <div class="gbs">Breathing, visualization, and crisis support</div>
+        </div>
+      </button>
+    </div>
+
+    <!-- SOUL -->
+    <div id="screen-soul" class="screen">
+      <div class="soul-header">
+        <div class="soul-presence">
+          <div class="soul-orb-sm"></div>
+          <div>
+            <div class="soul-name">Soul</div>
+            <div class="soul-status"><span class="soul-status-dot"></span>Present · clinical path</div>
+          </div>
+        </div>
+        <button class="soul-action" onclick="clearChat()">Clear</button>
+      </div>
+      <div class="crisis-banner" id="crisis-banner">Crisis language detected. Companion paused. Call/text <strong>988</strong> · text HOME to <strong>741741</strong> · or open Panic for grounding.</div>
+      <div class="messages" id="messages">
+        <div class="msg-ai">
+          <div class="msg-ai-text">How are you feeling right now?<br/>You can share anything — I'm listening.</div>
+          <div class="msg-ai-time">Just now</div>
+        </div>
+      </div>
+      <div class="typing-wrap"><div class="typing-dots" id="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>
+      <div class="chat-bar">
+        <textarea class="chat-input" id="chat-input" placeholder="Say anything." rows="1"
+          oninput="onChatInput(this)"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- YOU -->
+    <div id="screen-you" class="screen">
+      <div class="you-header">
+        <div class="you-title">You</div>
+        <button class="you-profile-btn" onclick="openProfile()">👤</button>
+      </div>
+      <div class="soul-letter" id="soul-letter">
+        <div class="sl-from" id="sl-from">Soul's reflection</div>
+        <div class="sl-body" id="sl-body">Check in to unlock weekly reflections from your on-device data.</div>
+        <div class="sl-date" id="sl-date"></div>
+      </div>
+      <div class="you-section">
+        <div class="you-section-head">
+          <div class="you-section-title">Journal</div>
+          <button class="you-new-btn" onclick="openCompose()">+ New</button>
+        </div>
+        <div id="journal-list"></div>
+      </div>
+      <div class="you-section" style="padding-bottom:40px;">
+        <div class="you-section-head"><div class="you-section-title">Patterns</div></div>
+        <div id="patterns-list">
+          <div class="pattern-card">
+            <div class="pc-type">On-device</div>
+            <div class="pc-text">Check in to unlock</div>
+            <div class="pc-confidence">Needs local check-in data</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end #screens -->
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab active" id="tab-today" onclick="goTab('today')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+      <span class="tab-label">Today</span>
+    </button>
+    <button class="tab" id="tab-soul" onclick="goTab('soul')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>
+        <path d="M12 3c2.4 2.4 2.4 6.6 0 9M12 3c-2.4 2.4-2.4 6.6 0 9"/>
+      </svg>
+      <span class="tab-label">Soul</span>
+    </button>
+    <button class="tab" id="tab-you" onclick="goTab('you')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span class="tab-label">You</span>
+    </button>
+  </div>
+
+</div><!-- end #app -->
+
+<!-- CHECK-IN -->
+<div class="ci-overlay" id="ci-overlay">
+  <div class="ci-nav">
+    <button class="ci-close" onclick="closeCheckIn()">✕</button>
+    <div class="ci-progress">
+      <div class="ci-dot active" id="ci-p0"></div>
+      <div class="ci-dot" id="ci-p1"></div>
+      <div class="ci-dot" id="ci-p2"></div>
+      <div class="ci-dot" id="ci-p3"></div>
+    </div>
+    <div style="width:32px"></div>
+  </div>
+  <div class="ci-body">
+    <div class="ci-step active" id="ci-s0">
+      <div class="ci-q">How are you feeling right now?</div>
+      <div class="ci-emotions">
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">😢</span>Sad</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">😟</span>Worried</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">😤</span>Frustrated</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">😐</span>Neutral</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">😌</span>Calm</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">🙂</span>Good</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">😊</span>Happy</button>
+        <button class="ci-em" onclick="ciSelect(this,'mood')"><span class="ci-em-icon">🤩</span>Amazing</button>
+      </div>
+    </div>
+    <div class="ci-step" id="ci-s1">
+      <div class="ci-q">How's your energy today?</div>
+      <div class="ci-scale">
+        <button class="ci-scale-btn" onclick="ciSelect(this,'energy')"><span class="csb-label">Running on empty</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'energy')"><span class="csb-label">Low, but present</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'energy')"><span class="csb-label">Somewhere in the middle</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'energy')"><span class="csb-label">Mostly good</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'energy')"><span class="csb-label">Energized and clear</span><span class="csb-check">✓</span></button>
+      </div>
+    </div>
+    <div class="ci-step" id="ci-s2">
+      <div class="ci-q">How grounded do you feel?</div>
+      <div class="ci-scale">
+        <button class="ci-scale-btn" onclick="ciSelect(this,'ground')"><span class="csb-label">Scattered and overwhelmed</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'ground')"><span class="csb-label">A bit unsettled</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'ground')"><span class="csb-label">Okay, getting there</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'ground')"><span class="csb-label">Mostly steady</span><span class="csb-check">✓</span></button>
+        <button class="ci-scale-btn" onclick="ciSelect(this,'ground')"><span class="csb-label">Rooted and clear</span><span class="csb-check">✓</span></button>
+      </div>
+    </div>
+    <div class="ci-step" id="ci-s3">
+      <div class="ci-q">Anything on your mind?</div>
+      <textarea class="ci-free" id="ci-free" placeholder="Optional — write freely." rows="4"></textarea>
+    </div>
+  </div>
+  <div class="ci-footer">
+    <button class="ci-next" id="ci-next-btn" onclick="ciNext()">Continue</button>
+  </div>
+</div>
+
+<!-- PANIC -->
+<div class="panic-overlay" id="panic-overlay">
+  <button class="panic-close" onclick="closePanic()">Close</button>
+  <div class="panic-main">
+    <div class="panic-orb"></div>
+    <div class="panic-title">I'm right here.</div>
+    <div class="panic-sub">You are not alone. Let's slow things down together. What would help most?</div>
+    <div class="panic-988">If you're in danger: Call or text 988</div>
+  </div>
+  <div class="panic-choices">
+    <div class="panic-choice" onclick="startGrounding('54321')">
+      <div class="panic-choice-icon">👁</div>
+      <div class="panic-choice-label">Ground me</div>
+      <div class="panic-choice-sub">5-4-3-2-1</div>
+    </div>
+    <div class="panic-choice" onclick="startGrounding('breathing')">
+      <div class="panic-choice-icon">💨</div>
+      <div class="panic-choice-label">Breathe</div>
+      <div class="panic-choice-sub">Box breathing</div>
+    </div>
+    <div class="panic-choice" onclick="closePanicGoChat()">
+      <div class="panic-choice-icon">💬</div>
+      <div class="panic-choice-label">Just talk</div>
+      <div class="panic-choice-sub">Open Soul</div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUNDING -->
+<div class="ground-overlay" id="ground-overlay">
+  <button class="ground-close" onclick="closeGrounding()">Close</button>
+  <div class="ground-body">
+    <div class="ground-step-label" id="g-label"></div>
+    <div class="ground-step-text" id="g-text"></div>
+    <div class="ground-hint" id="g-hint"></div>
+    <div class="ground-progress" id="g-progress"></div>
+  </div>
+  <div class="ground-footer">
+    <button class="ground-next" id="g-next" onclick="groundNext()">Next</button>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="profile-overlay" id="profile-overlay">
+  <div class="profile-nav">
+    <button class="profile-back" onclick="closeProfile()">← Back</button>
+    <div class="profile-title">Profile</div>
+    <div style="width:60px"></div>
+  </div>
+  <div class="profile-body">
+    <div class="profile-avatar">🌙</div>
+    <div class="profile-name" id="profile-name-display">Guest</div>
+    <div class="profile-since" id="profile-since">On-device companion · local only</div>
+    <div class="profile-soul-line" id="soul-sees">Smart Companion — rules-based reflections, not a live LLM.</div>
+    <div class="profile-section">
+      <div class="profile-section-title">On this device</div>
+      <div class="profile-group">
+        <div class="profile-row">
+          <span class="profile-row-label">Journal entries</span>
+          <span class="profile-row-val" id="profile-journal-count">0</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-row-label">Audit events</span>
+          <span class="profile-row-val" id="profile-audit-count">0</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-section">
+      <div class="profile-section-title">Settings</div>
+      <div class="profile-group">
+        <button type="button" class="profile-row" id="notif-row" onclick="toggleNotifs()">
+          <span class="profile-row-label">Check-in reminder</span>
+          <span class="profile-row-val" id="notif-val">Off ›</span>
+        </button>
+        <button type="button" class="profile-row" onclick="openPrivacy()">
+          <span class="profile-row-label">Data &amp; Privacy</span>
+          <span class="profile-row-val">On device ›</span>
+        </button>
+      </div>
+    </div>
+    <div class="profile-section">
+      <div class="profile-section-title">Open on phone</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 0 4px">
+        <img src="assets/qr-soulcap.png" width="128" height="128" alt="QR — open SoulCap" style="border-radius:12px;border:2px solid #c9a227;background:#fffaf3;padding:6px" decoding="async">
+        <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.45">Scan · Capricorn Systems</span>
+      </div>
+    </div>
+    <button type="button" class="profile-delete" onclick="deleteAllData()">Delete all my data</button>
+  </div>
+</div>
+
+<!-- PRIVACY SHEET -->
+<div class="clinic-overlay" id="privacy-overlay" aria-label="Data and privacy">
+  <div class="clinic-nav">
+    <strong>Data &amp; Privacy</strong>
+    <button type="button" class="soul-action" onclick="closePrivacy()">Close</button>
+  </div>
+  <div class="clinic-body">
+    <p class="clinical-banner" style="margin:0 0 12px">Everything below stays in this browser’s localStorage. No cloud account. Nest API is not wired.</p>
+    <div class="clinic-card">
+      <h3>Stored on this device</h3>
+      <ul style="margin:8px 0 0 18px;line-height:1.6;font-size:.9rem;opacity:.85" id="privacy-keys"></ul>
+    </div>
+    <div class="clinic-card">
+      <h3>Companion honesty</h3>
+      <p style="font-size:.9rem;opacity:.85;line-height:1.5">Chat replies are a rules-based Smart Companion with keyword safety rails — not a live AI model on this Pages build.</p>
+    </div>
+    <button type="button" class="profile-delete" style="margin-top:8px" onclick="deleteAllData()">Delete all local data</button>
+  </div>
+</div>
+
+<!-- COMPOSE -->
+<div class="compose-overlay" id="compose-overlay">
+  <div class="compose-nav">
+    <button class="compose-cancel" onclick="closeCompose()">Cancel</button>
+    <button class="compose-save" onclick="saveEntry()">Save</button>
+  </div>
+  <div class="compose-date" id="compose-date"></div>
+  <textarea class="compose-area" id="compose-area" placeholder="What's on your mind?"></textarea>
+</div>
+
+<!-- READ -->
+<div class="read-overlay" id="read-overlay">
+  <div class="read-nav">
+    <button class="read-back" onclick="closeRead()">← Journal</button>
+  </div>
+  <div class="read-body">
+    <div class="read-date" id="read-date"></div>
+    <div class="read-title" id="read-title"></div>
+    <div class="read-text" id="read-text"></div>
+    <div class="read-reflection">
+      <div class="read-ref-label">Soul's reflection</div>
+      <div class="read-ref-text" id="read-ref"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<button type="button" class="clinic-fab" id="clinic-fab" onclick="openClinic()">Clinician</button>
+<div class="clinic-overlay" id="clinic-overlay" aria-label="Clinician panel">
+  <div class="clinic-nav">
+    <strong>Clinician panel</strong>
+    <button type="button" class="soul-action" onclick="closeClinic()">Close</button>
+  </div>
+  <div class="clinic-body">
+    <p class="clinical-banner" style="margin:0 0 12px">Wellness notes only · not EHR / not a medical record unless your practice makes it one</p>
+    <div class="clinic-card">
+      <h3>Consent status</h3>
+      <div id="clinic-consent">Loading…</div>
+    </div>
+    <div class="clinic-card">
+      <h3>Session note</h3>
+      <textarea id="clinic-note-body" placeholder="Session observations (local device)…"></textarea>
+      <button type="button" onclick="saveClinicNote()">Save note</button>
+    </div>
+    <div class="clinic-card">
+      <h3>Notes</h3>
+      <div id="clinic-notes"></div>
+    </div>
+    <div class="clinic-card">
+      <h3>Safety / audit log</h3>
+      <div class="clinic-audit" id="clinic-audit"></div>
+    </div>
+  </div>
+</div>
+
+<div id="install-banner" role="complementary">
+  <div class="ib-icon">📲</div>
+  <div><div class="ib-t">Add to Home Screen</div><div class="ib-s">Install for the full experience</div></div>
+  <div class="ib-actions">
+    <button class="ib-install" id="install-btn">Install</button>
+    <button class="ib-dismiss" onclick="dismissInstall()">Not now</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const SAMPLE_JOURNALS = [
+  {title:'Feeling more settled lately',mood:'😌',date:'Today',text:"I've been noticing that mornings feel lighter. There's still the usual noise but I'm not as caught in it as I used to be. Maybe the check-ins are helping.",ref:"There's something shifting in how you describe mornings. A month ago it was the hardest part of the day."},
+  {title:'Hard day at work',mood:'😟',date:'Yesterday · 9:42 PM',text:"Everything felt like too much today. The meeting went badly and I couldn't shake the feeling that I said the wrong thing. Companion helped me get perspective.",ref:"You came here instead of isolating. That's worth noticing."},
+  {title:'Small win',mood:'😊',date:'2 days ago',text:"Actually finished the project I'd been avoiding for two weeks. Felt good. Need to remember this feeling when the next hard thing comes up.",ref:"You named this a win before I could. That's new."},
+];
+
+function daysAgoIso(n, hour) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  d.setHours(hour || 9, 12, 0, 0);
+  return d.toISOString();
+}
+
+const SAMPLE_CHECKINS = [
+  { at: daysAgoIso(0, 8), mood: '😌Calm', energy: 'Mostly good', sleep: 'Mostly steady', note: 'Demo: morning check-in' },
+  { at: daysAgoIso(1, 21), mood: '😟Worried', energy: 'Low, but present', sleep: 'A bit unsettled', note: 'Demo: rough evening' },
+  { at: daysAgoIso(2, 10), mood: '😊Happy', energy: 'Energized and clear', sleep: 'Rooted and clear', note: 'Demo: small win day' },
+  { at: daysAgoIso(3, 19), mood: '😐Neutral', energy: 'Somewhere in the middle', sleep: 'Okay, getting there', note: '' },
+  { at: daysAgoIso(5, 9), mood: '🙂Good', energy: 'Mostly good', sleep: 'Mostly steady', note: 'Demo: walking helped' },
+];
+
+const DEMO = new URLSearchParams(location.search).get('demo') === '1'
+  || sessionStorage.getItem('sc_demo') === '1';
+if (DEMO) sessionStorage.setItem('sc_demo', '1');
+
+const hadHabitsKey = localStorage.getItem('sc_habits') != null;
+
+const state = {
+  name: localStorage.getItem('sc_name') || '',
+  onboarded: localStorage.getItem('sc_onboarded') === '1',
+  consented: localStorage.getItem('sc_consent_v1') === '1',
+  memberId: localStorage.getItem('sc_member_id') || ('m_' + Math.random().toString(36).slice(2, 10)),
+  habits: JSON.parse(localStorage.getItem('sc_habits') || '[false,false,false,false,false]'),
+  journals: JSON.parse(localStorage.getItem('sc_journals') || 'null') || (DEMO ? SAMPLE_JOURNALS.slice() : []),
+  clinicNotes: JSON.parse(localStorage.getItem('sc_clinic_notes') || '[]'),
+  audit: JSON.parse(localStorage.getItem('sc_audit') || '[]'),
+  checkIns: JSON.parse(localStorage.getItem('sc_checkins') || '[]'),
+  notifs: localStorage.getItem('sc_notif_reminder') === '1',
+  ciStep: 0,
+  groundStep: 0,
+  groundFlow: null,
+};
+localStorage.setItem('sc_member_id', state.memberId);
+
+if (DEMO) {
+  if (!state.checkIns.length) {
+    state.checkIns = SAMPLE_CHECKINS.slice();
+    localStorage.setItem('sc_checkins', JSON.stringify(state.checkIns));
+  }
+  if (!hadHabitsKey) {
+    state.habits = [true, true, false, true, false];
+    localStorage.setItem('sc_habits', JSON.stringify(state.habits));
+  }
+}
+
+if (DEMO && !state.onboarded) {
+  state.name = state.name || 'Demo';
+  state.consented = true;
+  state.onboarded = true;
+  localStorage.setItem('sc_name', state.name);
+  localStorage.setItem('sc_onboarded', '1');
+  localStorage.setItem('sc_consent_v1', '1');
+  localStorage.setItem('sc_journals', JSON.stringify(state.journals));
+  localStorage.setItem('sc_habits', JSON.stringify(state.habits));
+}
+
+const CRISIS_HARD = [
+  'kill myself', 'end my life', 'want to die', 'suicide', 'suicidal',
+  'hurt myself', 'cut myself', 'overdose', 'not worth living',
+  "don't want to be here", 'no reason to live', 'everyone would be better without me',
+];
+
+function audit(action, resource, metadata) {
+  state.audit.unshift({ at: new Date().toISOString(), action, resource, metadata: metadata || {} });
+  if (state.audit.length > 100) state.audit.length = 100;
+  localStorage.setItem('sc_audit', JSON.stringify(state.audit));
+}
+
+function crisisTier(text) {
+  const lower = String(text || '').toLowerCase();
+  return CRISIS_HARD.some((kw) => lower.includes(kw)) ? 3 : 0;
+}
+
+// Init — re-consent if onboarded without clinical consent
+if (state.onboarded && state.consented) {
+  document.getElementById('onboarding').classList.add('hidden');
+  if (state.name) setName(state.name);
+} else if (state.onboarded && !state.consented) {
+  document.getElementById('app').style.display = 'none';
+  obNext(3);
+} else {
+  document.getElementById('app').style.display = 'none';
+}
+
+const consentCheck = document.getElementById('ob-consent-check');
+const consentBtn = document.getElementById('ob-consent-btn');
+if (consentCheck && consentBtn) {
+  consentCheck.addEventListener('change', () => {
+    const on = consentCheck.checked;
+    consentBtn.style.opacity = on ? '1' : '0.35';
+    consentBtn.style.pointerEvents = on ? 'auto' : 'none';
+  });
+}
+
+function obAcceptConsent() {
+  if (!consentCheck || !consentCheck.checked) return;
+  localStorage.setItem('sc_consent_v1', '1');
+  state.consented = true;
+  audit('consent.update', 'consent', { clinicalCompanion: true });
+  if (state.name && state.onboarded) {
+    startApp();
+    return;
+  }
+  obNext(4);
+}
+
+// Onboarding
+function obNext(n) {
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('ob-' + n).classList.add('active');
+}
+
+let obReason = '';
+function obSelectReason(el) {
+  document.querySelectorAll('.ob-pill').forEach(p => p.classList.remove('sel'));
+  el.classList.add('sel');
+  obReason = el.textContent;
+  setTimeout(() => obNext(3), 220);
+}
+
+function onNameInput() {
+  const v = document.getElementById('ob-name').value.trim();
+  const btn = document.getElementById('ob-name-btn');
+  btn.style.opacity = v ? '1' : '0.35';
+  btn.style.pointerEvents = v ? 'auto' : 'none';
+}
+
+function obSubmitName() {
+  const v = document.getElementById('ob-name').value.trim();
+  if (!v) return;
+  if (!state.consented) { obNext(3); showToast('Consent required first'); return; }
+  state.name = v;
+  localStorage.setItem('sc_name', v);
+  localStorage.setItem('sc_onboarded', '1');
+  document.getElementById('ob-name-heading').textContent = 'Nice to meet you, ' + v + '.';
+  const btn = document.getElementById('ob-name-btn');
+  btn.textContent = "Let's begin →";
+  btn.onclick = startApp;
+}
+
+function startApp() {
+  if (!state.consented) { obNext(3); return; }
+  document.getElementById('onboarding').classList.add('hidden');
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  setName(state.name);
+  state.onboarded = true;
+  refreshMuseumUI();
+  const firstSession = localStorage.getItem('sc_first_session_done') !== '1';
+  if (firstSession) {
+    localStorage.setItem('sc_first_session_done', '1');
+    openCheckIn();
+  }
+}
+
+// Navigation
+function goTab(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function setName(n) {
+  document.getElementById('today-name').textContent = n || '';
+  document.getElementById('profile-name-display').textContent = n || '—';
+  const h = new Date().getHours();
+  const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('today-greeting').textContent = g;
+}
+
+function moodIcon(mood) {
+  const m = String(mood || '').match(/\p{Extended_Pictographic}/u);
+  return m ? m[0] : '—';
+}
+
+function localDayKeyFromDate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function localDayKey(iso) {
+  return localDayKeyFromDate(new Date(iso));
+}
+
+function refreshTodayStats() {
+  const cis = state.checkIns || [];
+  const streakEl = document.getElementById('stat-streak');
+  const yEl = document.getElementById('stat-yesterday');
+  const wEl = document.getElementById('stat-week');
+  const ctx = document.getElementById('today-context');
+  if (!cis.length) {
+    if (streakEl) streakEl.textContent = '—';
+    if (yEl) yEl.textContent = '—';
+    if (wEl) wEl.textContent = '—';
+    if (ctx) ctx.textContent = 'Tap the orb when you\'re ready to check in.';
+    return;
+  }
+  const days = new Set(cis.map((c) => localDayKey(c.at)));
+  let streak = 0;
+  const cursor = new Date();
+  cursor.setHours(12, 0, 0, 0);
+  for (;;) {
+    const key = localDayKeyFromDate(cursor);
+    if (!days.has(key)) break;
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  const y = new Date();
+  y.setHours(12, 0, 0, 0);
+  y.setDate(y.getDate() - 1);
+  const yKey = localDayKeyFromDate(y);
+  const yEntry = cis.find((c) => localDayKey(c.at) === yKey);
+  const weekStart = new Date();
+  weekStart.setHours(0, 0, 0, 0);
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  const weekCount = cis.filter((c) => new Date(c.at) >= weekStart).length;
+  if (streakEl) streakEl.textContent = String(streak);
+  if (yEl) yEl.textContent = yEntry ? moodIcon(yEntry.mood) : '—';
+  if (wEl) wEl.textContent = String(weekCount);
+  if (ctx) {
+    ctx.textContent = streak
+      ? 'You\'ve checked in ' + streak + ' day' + (streak === 1 ? '' : 's') + ' in a row · ' + cis.length + ' on this device.'
+      : cis.length + ' check-in' + (cis.length === 1 ? '' : 's') + ' on this device.';
+  }
+}
+
+function refreshYouInsights() {
+  const cis = state.checkIns || [];
+  const from = document.getElementById('sl-from');
+  const body = document.getElementById('sl-body');
+  const date = document.getElementById('sl-date');
+  const plist = document.getElementById('patterns-list');
+  if (!cis.length) {
+    if (from) from.textContent = 'Soul\'s reflection';
+    if (body) body.textContent = 'Check in to unlock weekly reflections from your on-device data.';
+    if (date) date.textContent = '';
+    if (plist) {
+      plist.innerHTML = '<div class="pattern-card"><div class="pc-type">On-device</div><div class="pc-text">Check in to unlock</div><div class="pc-confidence">Needs local check-in data</div></div>';
+    }
+    return;
+  }
+  const weekStart = new Date();
+  weekStart.setHours(0, 0, 0, 0);
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  const week = cis.filter((c) => new Date(c.at) >= weekStart);
+  const moods = week.map((c) => moodIcon(c.mood)).filter((m) => m !== '—');
+  const uniqueDays = new Set(week.map((c) => localDayKey(c.at))).size;
+  if (from) from.textContent = 'Soul\'s reflection · This week';
+  if (body) {
+    body.textContent = week.length
+      ? 'You checked in on ' + uniqueDays + ' day' + (uniqueDays === 1 ? '' : 's') + ' this week (' + week.length + ' total). Recent moods: ' + (moods.slice(0, 5).join(' ') || '—') + '. Reflections are rules-based from your on-device check-ins — not a clinician and not a live AI model.'
+      : 'You have ' + cis.length + ' check-in' + (cis.length === 1 ? '' : 's') + ' on this device. No check-ins yet this calendar week.';
+  }
+  if (date) {
+    date.textContent = week.length
+      ? weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' – today'
+      : 'On-device · ' + cis.length + ' check-ins';
+  }
+  if (plist) {
+    const latest = cis[0];
+    const noteBit = latest.note ? ' Latest note saved.' : '';
+    plist.innerHTML =
+      '<div class="pattern-card"><div class="pc-type">Check-ins · On-device</div>' +
+      '<div class="pc-text">' + cis.length + ' check-in' + (cis.length === 1 ? '' : 's') + ' stored locally. Latest mood: ' + moodIcon(latest.mood) + '.' + noteBit + '</div>' +
+      '<div class="pc-confidence">Rules-based · not clinical diagnosis</div></div>';
+  }
+}
+
+function refreshMuseumUI() {
+  renderJournalList();
+  refreshTodayStats();
+  refreshYouInsights();
+}
+
+const questions = [
+  '"What\'s the first thing you noticed this morning?"',
+  '"If today had a color, what would it be?"',
+  '"What are you carrying into today?"',
+  '"What would make today feel complete?"',
+  '"Who do you want to be today?"',
+];
+document.getElementById('today-question').textContent = questions[new Date().getDay() % questions.length];
+
+// Habits
+function toggleHabit(wrap, idx) {
+  state.habits[idx] = !state.habits[idx];
+  localStorage.setItem('sc_habits', JSON.stringify(state.habits));
+  updateHabitRing(idx);
+  if (state.habits[idx]) showToast('Habit complete ✓');
+}
+
+function updateHabitRing(idx) {
+  const arc = document.getElementById('h' + idx);
+  if (arc) arc.style.strokeDashoffset = state.habits[idx] ? '0' : '150.8';
+}
+
+state.habits.forEach((_, i) => updateHabitRing(i));
+
+// Check-in
+let ciData = {};
+function openCheckIn() {
+  ciData = {}; state.ciStep = 0;
+  updateCiProgress(0);
+  document.querySelectorAll('.ci-step').forEach((s,i) => {
+    s.classList.toggle('active', i === 0);
+  });
+  document.querySelectorAll('.ci-em,.ci-scale-btn').forEach(el => el.classList.remove('sel'));
+  document.getElementById('ci-free').value = '';
+  document.getElementById('ci-next-btn').textContent = 'Continue';
+  document.getElementById('ci-overlay').classList.add('open');
+}
+function closeCheckIn() { document.getElementById('ci-overlay').classList.remove('open'); }
+
+function updateCiProgress(step) {
+  for (let i = 0; i < 4; i++) {
+    const d = document.getElementById('ci-p' + i);
+    d.classList.toggle('done', i < step);
+    d.classList.toggle('active', i === step);
+  }
+}
+
+function ciSelect(el, group) {
+  el.closest('.ci-step').querySelectorAll('.ci-em.sel,.ci-scale-btn.sel').forEach(e => e.classList.remove('sel'));
+  el.classList.add('sel');
+  ciData[group] = el.textContent.trim();
+  setTimeout(() => ciNext(), 200);
+}
+
+function ciNext() {
+  if (state.ciStep === 3) { submitCheckIn(); return; }
+  const prev = document.getElementById('ci-s' + state.ciStep);
+  state.ciStep++;
+  const next = document.getElementById('ci-s' + state.ciStep);
+  prev.classList.remove('active');
+  next.classList.add('active');
+  updateCiProgress(state.ciStep);
+  if (state.ciStep === 3) document.getElementById('ci-next-btn').textContent = 'Done';
+}
+
+function submitCheckIn() {
+  const entry = {
+    at: new Date().toISOString(),
+    mood: ciData.mood || '',
+    energy: ciData.energy || '',
+    sleep: ciData.sleep || '',
+    note: ciData.note || '',
+  };
+  state.checkIns = state.checkIns || JSON.parse(localStorage.getItem('sc_checkins') || '[]');
+  state.checkIns.unshift(entry);
+  if (state.checkIns.length > 60) state.checkIns.length = 60;
+  localStorage.setItem('sc_checkins', JSON.stringify(state.checkIns));
+  audit('checkin.create', 'checkin', { mood: entry.mood });
+  closeCheckIn();
+  showToast('Check-in saved on this device ✓');
+  refreshTodayStats();
+  refreshYouInsights();
+}
+
+// Chat
+const responses = [
+  "Thank you for sharing that. What's sitting heaviest right now?",
+  "That makes sense. It sounds like you've been carrying a lot. What does it feel like in your body?",
+  "I hear you. What do you need most right now — to be heard, or to find a way through?",
+  "You're not alone in this. What's the thing you least want to look at today?",
+  "Sometimes just saying it out loud changes something. What else is there?",
+  "That took something to share. How long have you been holding this?",
+  "Something in what you said caught my attention. When did this start feeling this way?",
+  "Let's slow down. Take a breath. What's one thing that felt okay today?",
+];
+let rIdx = 0;
+
+function onChatInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  document.getElementById('send-btn').classList.toggle('visible', el.value.trim().length > 0);
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (!state.consented) { obNext(3); showToast('Consent required'); return; }
+  addMsg('user', text);
+  input.value = ''; input.style.height = '';
+  document.getElementById('send-btn').classList.remove('visible');
+
+  if (crisisTier(text) === 3) {
+    audit('safety.tier3', 'chat', { preview: text.slice(0, 80) });
+    document.getElementById('crisis-banner').classList.add('show');
+    addMsg('ai', "I can hear you're in real pain. I'm not a crisis counselor. Please call or text 988 (US), text HOME to 741741, or use local emergency services. Opening grounding / panic support.");
+    openPanic();
+    return;
+  }
+
+  document.getElementById('crisis-banner').classList.remove('show');
+  const typing = document.getElementById('typing');
+  typing.classList.add('visible');
+  scrollChat();
+  setTimeout(() => {
+    typing.classList.remove('visible');
+    addMsg('ai', responses[rIdx++ % responses.length]);
+  }, 900 + Math.random() * 600);
+}
+
+function openClinic() {
+  const c = localStorage.getItem('sc_consent_v1') === '1';
+  document.getElementById('clinic-consent').innerHTML = c
+    ? '<span style="color:var(--green)">Clinical companion consent: recorded on device</span>'
+    : '<span style="color:var(--red)">No consent on this device</span>';
+  document.getElementById('clinic-notes').innerHTML = state.clinicNotes.length
+    ? state.clinicNotes.map((n) => `<div class="clinic-note"><time>${n.at}</time>${n.body.replace(/</g,'&lt;')}</div>`).join('')
+    : '<div class="clinic-note">No notes yet.</div>';
+  document.getElementById('clinic-audit').textContent = state.audit.length
+    ? state.audit.slice(0, 30).map((a) => `${a.at} · ${a.action} · ${a.resource}`).join('\n')
+    : 'No audit events.';
+  document.getElementById('clinic-overlay').classList.add('open');
+}
+function closeClinic() { document.getElementById('clinic-overlay').classList.remove('open'); }
+function saveClinicNote() {
+  const body = document.getElementById('clinic-note-body').value.trim();
+  if (!body) return;
+  state.clinicNotes.unshift({ at: new Date().toISOString(), body, clinicianId: 'local-clinician' });
+  localStorage.setItem('sc_clinic_notes', JSON.stringify(state.clinicNotes));
+  audit('note.create', 'clinical_note', { len: body.length });
+  document.getElementById('clinic-note-body').value = '';
+  openClinic();
+  showToast('Note saved locally');
+}
+
+function addMsg(role, text) {
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  const safe = String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const el = document.createElement('div');
+  if (role === 'ai') {
+    el.className = 'msg-ai';
+    el.innerHTML = `<div class="msg-ai-text">${safe}</div><div class="msg-ai-time">${now}</div>`;
+  } else {
+    el.className = 'msg-user';
+    el.innerHTML = `<div class="msg-user-bubble">${safe}</div><div class="msg-user-time">${now}</div>`;
+  }
+  const msgs = document.getElementById('messages');
+  msgs.insertBefore(el, document.getElementById('typing').parentElement);
+  scrollChat();
+}
+
+function scrollChat() {
+  const m = document.getElementById('messages');
+  setTimeout(() => m.scrollTop = m.scrollHeight, 40);
+}
+
+function clearChat() {
+  document.getElementById('messages').innerHTML = `
+    <div class="msg-ai">
+      <div class="msg-ai-text">How are you feeling right now?<br/>You can share anything — I'm listening.</div>
+      <div class="msg-ai-time">Just now</div>
+    </div>`;
+  document.getElementById('messages').appendChild(document.getElementById('typing').parentElement);
+}
+
+// Panic
+function openPanic() {
+  audit('panic.open', 'panic');
+  document.getElementById('panic-overlay').classList.add('open');
+}
+function closePanic() { document.getElementById('panic-overlay').classList.remove('open'); }
+function closePanicGoChat() { closePanic(); goTab('soul'); }
+
+// Grounding
+const flows = {
+  '54321': {steps:[
+    {l:'Step 1 of 5 · See',t:'Look around you.',h:'Name 5 things you can see right now. Take your time.'},
+    {l:'Step 2 of 5 · Touch',t:'Notice 4 things you can touch.',h:'Feel their texture. Their temperature. Be here.'},
+    {l:'Step 3 of 5 · Hear',t:'Listen carefully.',h:'What are 3 things you can hear? Near ones and far ones.'},
+    {l:'Step 4 of 5 · Smell',t:'Notice 2 things you can smell.',h:'Or imagine a scent that feels safe to you.'},
+    {l:'Step 5 of 5 · Taste',t:'Notice 1 thing you can taste.',h:'Take one slow, deep breath. You made it through.'},
+  ]},
+  'breathing': {steps:[
+    {l:'Box breathing · Round 1',t:'Breathe in.',h:'Slowly, for 4 counts. 1… 2… 3… 4…'},
+    {l:'Box breathing · Hold',t:'Hold.',h:'4 counts. 1… 2… 3… 4…'},
+    {l:'Box breathing · Out',t:'Breathe out.',h:'Slowly, for 4 counts. 1… 2… 3… 4…'},
+    {l:'Box breathing · Hold empty',t:'Hold.',h:'Empty lungs, 4 counts. 1… 2… 3… 4… Then repeat.'},
+  ]}
+};
+
+function startGrounding(key) {
+  closePanic();
+  state.groundFlow = key; state.groundStep = 0;
+  renderGroundStep();
+  document.getElementById('ground-overlay').classList.add('open');
+}
+
+function renderGroundStep() {
+  const f = flows[state.groundFlow];
+  const s = f.steps[state.groundStep];
+  document.getElementById('g-label').textContent = s.l;
+  document.getElementById('g-text').textContent = s.t;
+  document.getElementById('g-hint').textContent = s.h;
+  document.getElementById('g-next').textContent = state.groundStep === f.steps.length - 1 ? "I'm feeling better" : 'Next';
+  let html = '';
+  for (let i = 0; i < f.steps.length; i++) {
+    const cls = i < state.groundStep ? 'done' : i === state.groundStep ? 'active' : '';
+    html += `<div class="gp-dot ${cls}"></div>`;
+  }
+  document.getElementById('g-progress').innerHTML = html;
+}
+
+function groundNext() {
+  const f = flows[state.groundFlow];
+  if (state.groundStep < f.steps.length - 1) {
+    state.groundStep++;
+    renderGroundStep();
+  } else {
+    closeGrounding();
+    showToast('Well done. You did something brave.');
+  }
+}
+function closeGrounding() { document.getElementById('ground-overlay').classList.remove('open'); }
+
+// Journal
+function renderJournalList() {
+  const list = document.getElementById('journal-list');
+  if (!list) return;
+  if (!state.journals.length) {
+    list.innerHTML = '<div class="pattern-card"><div class="pc-type">Journal</div><div class="pc-text">No entries yet. Tap + New to write.</div><div class="pc-confidence">Stored on this device only</div></div>';
+    return;
+  }
+  list.innerHTML = state.journals.map((j,i) => `
+    <button class="journal-entry" onclick="openEntry(${i})">
+      <div class="je-meta"><span class="je-date">${j.date}</span><span class="je-mood">${j.mood}</span></div>
+      <div class="je-title">${j.title}</div>
+      <div class="je-preview">${j.text}</div>
+    </button>`).join('');
+}
+
+function openEntry(idx) {
+  const j = state.journals[idx];
+  document.getElementById('read-date').textContent = j.date;
+  document.getElementById('read-title').textContent = j.title;
+  document.getElementById('read-text').textContent = j.text;
+  document.getElementById('read-ref').textContent = j.ref || 'Soul is still reflecting on this.';
+  document.getElementById('read-overlay').classList.add('open');
+}
+function closeRead() { document.getElementById('read-overlay').classList.remove('open'); }
+
+function openCompose() {
+  document.getElementById('compose-area').value = '';
+  document.getElementById('compose-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('compose-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('compose-area').focus(), 350);
+}
+function closeCompose() { document.getElementById('compose-overlay').classList.remove('open'); }
+
+function saveEntry() {
+  const text = document.getElementById('compose-area').value.trim();
+  if (!text) { closeCompose(); return; }
+  state.journals.unshift({
+    title: text.split(/[.!?]/)[0].substring(0,60) || 'New entry',
+    mood: '✏️', date: 'Just now', text,
+    ref: 'Something worth sitting with.'
+  });
+  localStorage.setItem('sc_journals', JSON.stringify(state.journals));
+  renderJournalList();
+  closeCompose();
+  showToast('Entry saved');
+}
+
+// Profile
+function openProfile() {
+  refreshProfileMeta();
+  document.getElementById('profile-overlay').classList.add('open');
+}
+function closeProfile() { document.getElementById('profile-overlay').classList.remove('open'); }
+
+function refreshProfileMeta() {
+  const jc = document.getElementById('profile-journal-count');
+  const ac = document.getElementById('profile-audit-count');
+  if (jc) jc.textContent = String(state.journals.length);
+  if (ac) ac.textContent = String(state.audit.length);
+  const nv = document.getElementById('notif-val');
+  if (nv) nv.textContent = state.notifs ? 'On ›' : 'Off ›';
+}
+
+function toggleNotifs() {
+  state.notifs = !state.notifs;
+  localStorage.setItem('sc_notif_reminder', state.notifs ? '1' : '0');
+  refreshProfileMeta();
+  audit('settings.notif', 'prefs', { on: state.notifs });
+  showToast(state.notifs
+    ? 'Reminder preference on (local) — no browser push on this PWA yet'
+    : 'Check-in reminder off');
+}
+
+function openPrivacy() {
+  const keys = [
+    'sc_name', 'sc_onboarded', 'sc_consent_v1', 'sc_member_id',
+    'sc_habits', 'sc_journals', 'sc_clinic_notes', 'sc_audit', 'sc_notif_reminder', 'sc_checkins',
+  ].filter((k) => localStorage.getItem(k) != null);
+  document.getElementById('privacy-keys').innerHTML = keys.length
+    ? keys.map((k) => '<li><code>' + k + '</code></li>').join('')
+    : '<li>No SoulCap keys stored yet</li>';
+  document.getElementById('privacy-overlay').classList.add('open');
+}
+function closePrivacy() { document.getElementById('privacy-overlay').classList.remove('open'); }
+
+function deleteAllData() {
+  if (!confirm('Delete all SoulCap data on this device? This cannot be undone.')) return;
+  Object.keys(localStorage).filter((k) => k.startsWith('sc_')).forEach((k) => localStorage.removeItem(k));
+  sessionStorage.removeItem('sc_demo');
+  showToast('All local data deleted');
+  setTimeout(() => { location.href = location.pathname; }, 600);
+}
+
+// Toast
+let toastT;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// PWA Install
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredPrompt = e;
+  document.getElementById('install-banner').classList.add('show');
+});
+document.getElementById('install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  deferredPrompt = null; dismissInstall();
+  if (outcome === 'accepted') showToast('SoulCap installed ✓');
+});
+function dismissInstall() { document.getElementById('install-banner').classList.remove('show'); }
+window.addEventListener('appinstalled', () => showToast('SoulCap installed ✓'));
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  const p = location.hostname === 'localhost' ? '/sw.js' : '/SoulCap/sw.js';
+  navigator.serviceWorker.register(p + '?v=023').catch(() => {});
+}
+
+// Boot paint — journals + stats from localStorage (not static HTML)
+refreshProfileMeta();
+refreshMuseumUI();
+if (DEMO && state.onboarded && state.consented) {
+  document.getElementById('onboarding').classList.add('hidden');
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  if (typeof setName === 'function' && state.name) setName(state.name);
+  showToast('Demo mode · sample check-ins + habits on device');
+}
+</script>
+</body>
+</html>

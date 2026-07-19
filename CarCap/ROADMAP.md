@@ -2,13 +2,13 @@
 
 > Updated 2026-07-19. Fleet standard: `capricorn-tooling/shared/CAP-STANDARD.md`.
 
-## Now — v0.1.0 (shipped)
+## Now — v0.1.1 (shipped)
 - Vehicles garage (make/model/year/plate)
 - Service log + reminders
 - Fuel / odometer entries + basic L/100
-- Docs wallet (text/meta)
+- Docs wallet (text/meta — no photo wallet yet)
 - Today / Settings / demo mode
-- PWA offline (`carcap-v1`)
+- PWA offline (`carcap-v2`)
 - Docs pack + basic `screen-gallery.html`
 
 ## Cap Standard gaps
