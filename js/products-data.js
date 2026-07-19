@@ -505,7 +505,7 @@ const PRODUCTS = {
     slug: 'travelcap',
     name: 'TravelCap',
     category: 'Lifestyle',
-    ver: '0.2.4',
+    ver: '0.3.0',
     symbol: '⬡',
     tagline: 'Your trip. On your device.',
     pitch: 'TravelOS for itineraries, packing, documents, and budgets — with a rules-based Smart Assistant. Static Pages: manual flights; optional AviationStack when a key is available.',
