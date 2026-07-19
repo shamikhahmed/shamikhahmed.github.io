@@ -33,8 +33,8 @@ Most consumer apps rent user data and break without servers. Caps are install-on
 | ScentCap | Fragrance wardrobe | [Open](https://shamikhahmed.github.io/ScentCap/?demo=1) |
 | AuraCap | Digital DNA / ecosystem | [Open](https://shamikhahmed.github.io/AuraCap/?demo=1) |
 | MasteryCap | School / mastery | [Open](https://shamikhahmed.github.io/MasteryCap/) (Settings → Enter demo mode) |
-| TravelCap | Trip OS | [Open](https://shamikhahmed.github.io/TravelCap/) |
-| IdeaCap | Idea capture | [Open](https://shamikhahmed.github.io/IdeaCap/) |
+| TravelCap | Trip OS | [Open](https://shamikhahmed.github.io/TravelCap/?demo=1) |
+| IdeaCap | Idea capture | [Open](https://shamikhahmed.github.io/IdeaCap/?demo=1) |
 | SoulCap | Clinical-path companion | [Open](https://shamikhahmed.github.io/SoulCap/?demo=1) |
 | CarCap | Garage / service / fuel | [Open](https://shamikhahmed.github.io/CarCap/?demo=1) |
 
