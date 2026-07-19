@@ -1,3 +1,6 @@
+## Beauty deep trio — 2026-07-20
+- Catalog: SteadyCap 2.4.0 · LedgerCap 3.56.0 · MasteryCap 42.2.0
+
 ## Investor kit
 - Full 13-Cap + hub/pitch screenshot deck under assets/investor/ (2026-07-19)
 
