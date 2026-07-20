@@ -573,7 +573,7 @@ const PRODUCTS = {
     slug: 'masterycap',
     name: 'MasteryCap',
     category: 'Education',
-    ver: '42.2.2',
+    ver: '42.2.3',
     symbol: '▣',
     tagline: 'Trade school. No income promises.',
     pitch: 'Offline bilingual trading education — quizzes, SRS, paper sim, glossary. Honesty lint blocks income claims.',
