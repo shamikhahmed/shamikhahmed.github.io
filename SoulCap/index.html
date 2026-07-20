@@ -362,9 +362,9 @@ html,body{
 }
 .messages::-webkit-scrollbar{display:none;}
 
-.msg-ai{padding:0 22px;align-self:flex-start;max-width:100%;}
-.msg-ai-text{font-size:17px;color:var(--l1);line-height:1.6;font-weight:400;}
-.msg-ai-time{font-size:11px;color:var(--l3);margin-top:6px;}
+.msg-companion{padding:0 22px;align-self:flex-start;max-width:100%;}
+.msg-companion-text{font-size:17px;color:var(--l1);line-height:1.6;font-weight:400;}
+.msg-companion-time{font-size:11px;color:var(--l3);margin-top:6px;}
 
 .msg-anchor{
   margin:0 22px 4px;padding:10px 14px;
@@ -815,9 +815,9 @@ html,body{
       </div>
       <div class="crisis-banner" id="crisis-banner">Crisis language detected. Companion paused. Call/text <strong>988</strong> · text HOME to <strong>741741</strong> · or open Panic for grounding.</div>
       <div class="messages" id="messages">
-        <div class="msg-ai">
-          <div class="msg-ai-text">How are you feeling right now?<br/>You can share anything — I'm listening.</div>
-          <div class="msg-ai-time">Just now</div>
+        <div class="msg-companion">
+          <div class="msg-companion-text">How are you feeling right now?<br/>You can share anything — I'm listening.</div>
+          <div class="msg-companion-time">Just now</div>
         </div>
       </div>
       <div class="typing-wrap"><div class="typing-dots" id="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>
@@ -1538,7 +1538,7 @@ function sendMessage() {
   if (crisisTier(text) === 3) {
     audit('safety.tier3', 'chat', { preview: text.slice(0, 80) });
     document.getElementById('crisis-banner').classList.add('show');
-    addMsg('ai', "I can hear you're in real pain. I'm not a crisis counselor. Please call or text 988 (US), text HOME to 741741, or use local emergency services. Opening grounding / panic support.");
+    addMsg('companion', "I can hear you're in real pain. I'm not a crisis counselor. Please call or text 988 (US), text HOME to 741741, or use local emergency services. Opening grounding / panic support.");
     openPanic();
     return;
   }
@@ -1549,7 +1549,7 @@ function sendMessage() {
   scrollChat();
   setTimeout(() => {
     typing.classList.remove('visible');
-    addMsg('ai', responses[rIdx++ % responses.length]);
+    addMsg('companion', responses[rIdx++ % responses.length]);
   }, 900 + Math.random() * 600);
 }
 
@@ -1582,9 +1582,9 @@ function addMsg(role, text) {
   const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
   const safe = String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const el = document.createElement('div');
-  if (role === 'ai') {
-    el.className = 'msg-ai';
-    el.innerHTML = `<div class="msg-ai-text">${safe}</div><div class="msg-ai-time">${now}</div>`;
+  if (role === 'companion') {
+    el.className = 'msg-companion';
+    el.innerHTML = `<div class="msg-companion-text">${safe}</div><div class="msg-companion-time">${now}</div>`;
   } else {
     el.className = 'msg-user';
     el.innerHTML = `<div class="msg-user-bubble">${safe}</div><div class="msg-user-time">${now}</div>`;
@@ -1601,9 +1601,9 @@ function scrollChat() {
 
 function clearChat() {
   document.getElementById('messages').innerHTML = `
-    <div class="msg-ai">
-      <div class="msg-ai-text">How are you feeling right now?<br/>You can share anything — I'm listening.</div>
-      <div class="msg-ai-time">Just now</div>
+    <div class="msg-companion">
+      <div class="msg-companion-text">How are you feeling right now?<br/>You can share anything — I'm listening.</div>
+      <div class="msg-companion-time">Just now</div>
     </div>`;
   document.getElementById('messages').appendChild(document.getElementById('typing').parentElement);
 }
