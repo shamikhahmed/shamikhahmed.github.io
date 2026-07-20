@@ -636,7 +636,7 @@ const PRODUCTS = {
     slug: 'carcap',
     name: 'CarCap',
     category: 'Lifestyle',
-    ver: '0.2.1',
+    ver: '0.2.2',
     symbol: '▣',
     tagline: 'Garage. Service. Fuel. Local.',
     pitch: 'Offline vehicle garage with service logs, fuel/odometer, and document notes — Cap Standard MVP.',
