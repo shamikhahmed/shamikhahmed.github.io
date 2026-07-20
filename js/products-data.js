@@ -265,7 +265,7 @@ const PRODUCTS = {
     legacySlug: 'stundsos',
     name: 'LedgerCap',
     category: 'Wealth',
-    ver: '3.56.1',
+    ver: '3.56.2',
     symbol: '▣',
     tagline: 'Pakistani wealth. One ledger.',
     pitch: 'LedgerCap is a wealth tracker for Pakistani investors — PSX stocks, Meezan funds, Zakat, IPO watch, and net worth in PKR. Bloomberg-quality clarity, phone-native, no account required.',
