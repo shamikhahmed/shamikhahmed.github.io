@@ -25,7 +25,7 @@ const PRODUCTS = {
     legacySlug: 'vaultos',
     name: 'VaultCap',
     category: 'Finance & Identity',
-  ver: '5.1.13',
+  ver: '5.1.14',
     symbol: '◆',
     tagline: 'Everything you own. Encrypted.',
     pitch: 'VaultCap is the private vault for money, identity, and documents — encrypted on your phone before anything is saved. Built for families who manage life across borders without handing data to the cloud.',
