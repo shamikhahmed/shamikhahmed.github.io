@@ -145,7 +145,7 @@ const PRODUCTS = {
     legacySlug: 'prismos',
     name: 'PrismCap',
     category: 'Play',
-    ver: '4.4.0',
+    ver: '4.4.1',
     symbol: '✦',
     tagline: '39 games. One phone. Zero Wi‑Fi.',
     pitch: 'PrismCap is a party arcade on your phone — 39 pass-and-play games, achievements, and daily challenges. No accounts, no ads, no Wi-Fi needed.',
