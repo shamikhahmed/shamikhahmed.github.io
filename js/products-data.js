@@ -446,7 +446,7 @@ const PRODUCTS = {
     slug: 'auracap',
     name: 'AuraCap',
     category: 'Productivity',
-    ver: '5.3.2',
+    ver: '5.3.3',
     symbol: '◎',
     tagline: 'Your Apple setup. Understood.',
     pitch: 'AuraCap imports your real app list, scores your ecosystem, and helps you design layouts, wallpapers, and widgets — across iPhone, iPad, and Mac, without uploading anything.',
