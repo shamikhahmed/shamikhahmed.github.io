@@ -387,7 +387,7 @@ const PRODUCTS = {
     slug: 'scentcap',
     name: 'ScentCap',
     category: 'Lifestyle',
-    ver: '1.4.1',
+    ver: '1.4.2',
     symbol: '◌',
     tagline: 'Your wardrobe. Finally organized.',
     pitch: 'ScentCap is a fragrance operating system — catalog bottles, log wears, layer with intention, and get daily picks shaped by weather and occasion. Warm, private, offline.',
