@@ -25,7 +25,7 @@ const PRODUCTS = {
     legacySlug: 'vaultos',
     name: 'VaultCap',
     category: 'Finance & Identity',
-  ver: '5.1.15',
+  ver: '5.1.16',
     symbol: '◆',
     tagline: 'Everything you own. Encrypted.',
     pitch: 'VaultCap is the private vault for money, identity, and documents — encrypted on your phone before anything is saved. Built for families who manage life across borders without handing data to the cloud.',
@@ -146,6 +146,7 @@ const PRODUCTS = {
     name: 'PrismCap',
     category: 'Play',
     ver: '4.4.1',
+    forSale: true,
     symbol: '✦',
     tagline: '39 games. One phone. Zero Wi‑Fi.',
     pitch: 'PrismCap is a party arcade on your phone — 39 pass-and-play games, achievements, and daily challenges. No accounts, no ads, no Wi-Fi needed.',
@@ -540,7 +541,7 @@ const PRODUCTS = {
     slug: 'ideacap',
     name: 'IdeaCap',
     category: 'Productivity',
-    ver: '1.1.2',
+    ver: '1.2.0',
     symbol: '✦',
     tagline: 'Capture ideas. Stay sovereign.',
     pitch: 'Voice and text idea capture with Smart Assistant analysis offline. Optional cloud LLM only when you add your own API keys.',
@@ -573,7 +574,7 @@ const PRODUCTS = {
     slug: 'masterycap',
     name: 'MasteryCap',
     category: 'Education',
-    ver: '42.2.4',
+    ver: '42.3.0',
     symbol: '▣',
     tagline: 'Trade school. No income promises.',
     pitch: 'Offline bilingual trading education — quizzes, SRS, paper sim, glossary. Honesty lint blocks income claims.',
@@ -637,6 +638,7 @@ const PRODUCTS = {
     name: 'CarCap',
     category: 'Lifestyle',
     ver: '0.2.2',
+    forSale: true,
     symbol: '▣',
     tagline: 'Garage. Service. Fuel. Local.',
     pitch: 'Offline vehicle garage with service logs, fuel/odometer, and document notes — Cap Standard MVP.',
@@ -665,7 +667,10 @@ const PRODUCTS = {
   },
 };
 
-const PRODUCTS_LIST = Object.values(PRODUCTS);
+/* Active Caps first; for-sale Caps stay listed but deprioritized. */
+const PRODUCTS_LIST = Object.values(PRODUCTS).sort(
+  (a, b) => Number(!!a.forSale) - Number(!!b.forSale)
+);
 
 const LEGACY_SLUG_MAP = Object.fromEntries(
   Object.values(PRODUCTS).map((p) => [p.legacySlug, p.slug])

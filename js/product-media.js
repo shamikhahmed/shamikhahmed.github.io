@@ -110,6 +110,8 @@ function productCardThumb(p) {
 }
 
 function initScreenshotGalleries() {
+  ensureShotLightbox();
+
   document.querySelectorAll('.screenshot-gallery').forEach((gallery) => {
     const slides = gallery.querySelectorAll('.gallery-slide');
     const dots = gallery.querySelectorAll('.gallery-dot');
@@ -126,6 +128,15 @@ function initScreenshotGalleries() {
     gallery.querySelector('.gallery-prev')?.addEventListener('click', () => show(idx - 1));
     gallery.querySelector('.gallery-next')?.addEventListener('click', () => show(idx + 1));
     dots.forEach((d) => d.addEventListener('click', () => show(Number(d.dataset.index))));
+
+    gallery.querySelectorAll('.device-screen img, .gallery-slide img').forEach((img) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openShotLightbox(img.currentSrc || img.src, img.alt || 'Screenshot');
+      });
+    });
 
     let touchX = 0;
     gallery.addEventListener('touchstart', (e) => {
@@ -145,6 +156,44 @@ function initScreenshotGalleries() {
       gallery.addEventListener('touchstart', () => clearInterval(timer), { passive: true });
     }
   });
+
+  document.querySelectorAll('.device-showcase .device-screen img, .product-card-thumb img').forEach((img) => {
+    if (img.dataset.lbBound) return;
+    img.dataset.lbBound = '1';
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', (e) => {
+      e.preventDefault();
+      openShotLightbox(img.currentSrc || img.src, img.alt || 'Screenshot');
+    });
+  });
+}
+
+function ensureShotLightbox() {
+  if (document.getElementById('shot-lightbox')) return;
+  const lb = document.createElement('div');
+  lb.id = 'shot-lightbox';
+  lb.className = 'shot-lightbox';
+  lb.hidden = true;
+  lb.innerHTML =
+    '<button type="button" class="shot-lightbox-close" aria-label="Close">Close</button>' +
+    '<img class="shot-lightbox-img" alt="">';
+  document.body.appendChild(lb);
+  const close = () => { lb.hidden = true; document.body.classList.remove('shot-lightbox-open'); };
+  lb.querySelector('.shot-lightbox-close').addEventListener('click', close);
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lb.hidden) close();
+  });
+}
+
+function openShotLightbox(src, alt) {
+  ensureShotLightbox();
+  const lb = document.getElementById('shot-lightbox');
+  const img = lb.querySelector('.shot-lightbox-img');
+  img.src = src;
+  img.alt = alt || 'Screenshot';
+  lb.hidden = false;
+  document.body.classList.add('shot-lightbox-open');
 }
 
 function initHomeCarousel() {

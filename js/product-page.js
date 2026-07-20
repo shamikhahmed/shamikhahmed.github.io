@@ -61,9 +61,9 @@
     hero: () =>
       `<section class="product-hero" id="overview" ${accent}>` +
         `<div class="wrap">` +
-          `<p class="eyebrow">${p.category}${p.ver ? ' · v' + p.ver : ''}</p>` +
+          `<p class="eyebrow">${p.category}${p.ver ? ' · v' + p.ver : ''}${p.forSale ? ' · For sale' : ''}</p>` +
           `<div class="symbol"><img src="assets/marks/${p.slug}.svg" alt="" width="72" height="72"></div>` +
-          `<h1>${p.name}</h1>` +
+          `<h1>${p.name}${p.forSale ? ' <span class="sale-pill">For sale</span>' : ''}</h1>` +
           `<p class="hook">${p.hook}</p>` +
           `<div class="highlight-row">${highlights}</div>` +
           `<div class="actions">` +

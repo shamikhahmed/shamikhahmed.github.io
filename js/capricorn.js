@@ -75,14 +75,14 @@
     const grid = document.getElementById('productsGrid');
     if (grid) {
       grid.innerHTML = PRODUCTS_LIST.map((p) =>
-        `<a href="${productHref(p)}" class="product-card${p.light ? ' product-card-light' : ''}" style="--p-accent:${p.accent}">` +
+        `<a href="${productHref(p)}" class="product-card${p.light ? ' product-card-light' : ''}${p.forSale ? ' product-card--sale' : ''}" style="--p-accent:${p.accent}">` +
           (typeof productCardThumb === 'function' ? productCardThumb(p) : '') +
           `<div class="product-card-body">` +
             `<div class="product-symbol">${p.symbol}</div>` +
-            `<div class="cat">${p.category} · v${p.ver}</div>` +
-            `<h3>${p.name}</h3>` +
+            `<div class="cat">${p.category} · v${p.ver}${p.forSale ? ' · For sale' : ''}</div>` +
+            `<h3>${p.name}${p.forSale ? ' <span class="sale-pill">For sale</span>' : ''}</h3>` +
             `<p>${p.tagline}</p>` +
-            `<span class="link">Open Cap →</span>` +
+            `<span class="link">${p.forSale ? 'View Cap →' : 'Open Cap →'}</span>` +
           `</div>` +
         `</a>`
       ).join('');
