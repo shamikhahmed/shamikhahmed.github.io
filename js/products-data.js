@@ -85,7 +85,7 @@ const PRODUCTS = {
     legacySlug: 'fitnessos',
     name: 'PulseCap',
     category: 'Performance',
-    ver: '6.2.6',
+    ver: '6.2.7',
     symbol: '◇',
     tagline: 'Train with intention.',
     pitch: 'PulseCap is a performance OS for lifters — Coach Kernel, 300+ exercises, body intelligence, recovery readiness, gym-floor tools, and a Smart Coach that reads your history. No subscription. No wearable required.',
