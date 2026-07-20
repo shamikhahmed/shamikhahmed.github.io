@@ -205,7 +205,7 @@ const PRODUCTS = {
     legacySlug: 'disciplineos',
     name: 'SteadyCap',
     category: 'Recovery',
-    ver: '2.4.2',
+    ver: '2.4.3',
     symbol: '○',
     tagline: 'Recovery is a system. Not a streak.',
     pitch: 'SteadyCap is a recovery app — habits, medicines, journal triggers, craving forecasts, and a 5-phase SOS. Serious where it needs to be. Warm where it matters.',
