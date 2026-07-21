@@ -2,13 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="refresh" content="0;url=SoulCap/">
-  <title>SoulCap → Capricorn Systems</title>
-  <link rel="canonical" href="https://shamikhahmed.github.io/SoulCap/">
-  <script>location.replace('SoulCap/');</script>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#16131A">
+  <meta name="description" content="SoulCap — private, offline self-regulation skills, journal, and relationship map. Not therapy.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="css/capricorn-core.css?v=1">
+  <link rel="stylesheet" href="css/capricorn.css?v=18">
+  <title>SoulCap — Capricorn Systems</title>
+  <link rel="canonical" href="https://shamikhahmed.github.io/soulcap.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Capricorn Systems">
+  <meta property="og:title" content="SoulCap — Capricorn Systems">
+  <meta property="og:description" content="Private, offline self-regulation skills, journal, and relationship map. Not therapy.">
+  <meta property="og:url" content="https://shamikhahmed.github.io/soulcap.html">
+  <meta property="og:image" content="https://shamikhahmed.github.io/assets/screenshots/soulcap.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SoulCap — Capricorn Systems">
+  <meta name="twitter:description" content="Private, offline self-regulation skills, journal, and relationship map. Not therapy.">
+  <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/soulcap.png">
 </head>
-<body>
-  <p><a href="SoulCap/">Continue to SoulCap</a></p>
+<body data-product="soulcap">
+  <nav class="nav scrolled" id="siteNav">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/logo.svg" alt="" width="42" height="42">
+      Capricorn <em>Systems</em>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#products">Products</a>
+      <a href="sovereignty.html">Sovereignty</a>
+      <a href="about.html">About</a>
+    </div>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><svg width="18" height="13" viewBox="0 0 18 13" fill="none" aria-hidden="true"><rect width="18" height="1.5" rx="1" fill="currentColor"/><rect x="2" y="5.75" width="16" height="1.5" rx="1" fill="currentColor"/><rect x="4" y="11.5" width="14" height="1.5" rx="1" fill="currentColor"/></svg></button>
+  </nav>
+  <main class="page" id="productPage"></main>
+  <div class="install-bar" id="installBar" hidden>
+    <div><p id="installTitle">Install</p><span>Add to Home Screen for the full experience</span></div>
+    <a href="#" class="btn btn-product" id="installLaunch">Launch →</a>
+  </div>
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html#products">All products</a>
+      <a href="vaultcap.html">VaultCap</a>
+      <a href="pulsecap.html">PulseCap</a>
+      <a href="prismcap.html">PrismCap</a>
+      <a href="steadycap.html">SteadyCap</a>
+      <a href="ledgercap.html">LedgerCap</a>
+      <a href="deeponycap.html">DeePonyCap</a>
+      <a href="scentcap.html">ScentCap</a>
+      <a href="auracap.html">AuraCap</a>
+    </div>
+    <p>© 2026 Capricorn Systems</p>
+  </footer>
+  <script src="js/products-data.js?v=2"></script>
+  <script src="js/product-media.js?v=11"></script>
+  <script src="js/product-page.js?v=13"></script>
+  <script src="js/capricorn.js"></script>
+  <script src="js/capricorn-motion.js" defer></script>
+
+  <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/capricorn-scene.js"></script>
+  <script src="js/capricorn-cinematic.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',function(){if(window.CapCinematic)CapCinematic.init({canvas:'#cap-scene'});});</script>
 </body>
 </html>

@@ -6,8 +6,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.join(__dirname, '../assets/screenshots');
-const BASE = 'https://shamikhahmed.github.io';
+const OUT = process.env.CAP_SCREENSHOT_OUT
+  ? path.resolve(process.env.CAP_SCREENSHOT_OUT)
+  : path.join(__dirname, '../assets/screenshots');
+const BASE = process.env.CAP_SCREENSHOT_BASE || 'https://shamikhahmed.github.io';
+const SOULCAP_URL = process.env.CAP_SOULCAP_URL || `${BASE}/SoulCap/`;
 
 async function waitMs(page, ms) {
   await page.waitForTimeout(ms);
@@ -111,7 +114,69 @@ async function prismSetup(page) {
   await waitMs(page, 2500);
 }
 
+async function soulcapOpen(page, query = '?demo=1') {
+  await page.goto(`${SOULCAP_URL}${query}`, { waitUntil: 'networkidle', timeout: 90000 });
+  await page.waitForFunction(() => Boolean(window.__soulcap), { timeout: 15000 });
+  await page.evaluate(() => document.getElementById('splash')?.classList.add('gone'));
+  await waitMs(page, 500);
+}
+
+async function soulcapTab(page, tab) {
+  await page.evaluate((value) => {
+    document.querySelector(`#tabs button[data-tab="${value}"]`)?.click();
+  }, tab);
+  await waitMs(page, 500);
+}
+
 const APPS = [
+  {
+    slug: 'soulcap',
+    async capture(page) {
+      await soulcapOpen(page);
+      await page.screenshot({ path: path.join(OUT, 'soulcap.png') });
+      console.log('OK', 'soulcap.png');
+
+      await soulcapTab(page, 'calm');
+      await page.screenshot({ path: path.join(OUT, 'soulcap-2.png') });
+      console.log('OK', 'soulcap-2.png');
+
+      await page.getByRole('button', { name: /Settle down/i }).click();
+      await waitMs(page, 500);
+      await page.evaluate(() => window.scrollTo(0, 620));
+      await waitMs(page, 250);
+      await page.screenshot({ path: path.join(OUT, 'soulcap-3.png') });
+      console.log('OK', 'soulcap-3.png');
+
+      await soulcapTab(page, 'journal');
+      await page.screenshot({ path: path.join(OUT, 'soulcap-4.png') });
+      console.log('OK', 'soulcap-4.png');
+
+      await page.getByRole('button', { name: /New entry/i }).click();
+      await waitMs(page, 350);
+      await page.screenshot({ path: path.join(OUT, 'soulcap-5.png') });
+      console.log('OK', 'soulcap-5.png');
+
+      await page.getByRole('button', { name: /Three good things/i }).click();
+      await waitMs(page, 350);
+      await page.screenshot({ path: path.join(OUT, 'soulcap-6.png') });
+      console.log('OK', 'soulcap-6.png');
+
+      await page.getByRole('button', { name: 'Close' }).click();
+      await soulcapTab(page, 'map');
+      await waitMs(page, 700);
+      await page.screenshot({ path: path.join(OUT, 'soulcap-7.png') });
+      console.log('OK', 'soulcap-7.png');
+
+      await soulcapOpen(page, '?demo=1&panic=1');
+      await page.screenshot({ path: path.join(OUT, 'soulcap-8.png') });
+      console.log('OK', 'soulcap-8.png');
+
+      await captureDevices(page, 'soulcap', async () => {
+        await soulcapOpen(page);
+        await soulcapTab(page, 'journal');
+      });
+    },
+  },
   {
     slug: 'vaultcap',
     async capture(page) {
@@ -270,7 +335,7 @@ async function captureDevices(page, slug, navFn) {
 }
 
 function checkDedup() {
-  const slugs = ['vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'auracap'];
+  const slugs = ['soulcap', 'vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'auracap'];
   let failed = false;
   for (const slug of slugs) {
     const names = readdirSync(OUT)
@@ -297,8 +362,12 @@ function checkDedup() {
 
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
+const selectedSlugs = (process.env.CAP_SCREENSHOT_SLUGS || '')
+  .split(',')
+  .map((slug) => slug.trim())
+  .filter(Boolean);
 
-for (const app of APPS) {
+for (const app of APPS.filter((app) => !selectedSlugs.length || selectedSlugs.includes(app.slug))) {
   if (app.capture) {
     const page = await browser.newPage({
       viewport: { width: 390, height: 844 },

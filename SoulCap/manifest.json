@@ -1,13 +1,13 @@
 {
   "name": "SoulCap",
   "short_name": "SoulCap",
-  "description": "Clinician-supported wellness companion (clinical path \u2014 not a medical device)",
+  "description": "Skills for hard moments. Works offline, stays on your device. Not therapy, not a crisis service.",
   "start_url": "/SoulCap/",
   "scope": "/SoulCap/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0E0D0C",
-  "theme_color": "#0E0D0C",
+  "background_color": "#F6F2EC",
+  "theme_color": "#F6F2EC",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -39,5 +39,17 @@
     "health",
     "lifestyle"
   ],
-  "lang": "en"
+  "lang": "en",
+  "shortcuts": [
+    {
+      "name": "I need help now",
+      "short_name": "Help",
+      "url": "./?panic=1"
+    },
+    {
+      "name": "Calm",
+      "short_name": "Calm",
+      "url": "./?tab=calm"
+    }
+  ]
 }

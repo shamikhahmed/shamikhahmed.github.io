@@ -56,6 +56,26 @@
 
   const tickerItems = (p.highlights || []).concat(p.highlights || []);
   const ticker = tickerItems.map(h => `<span class="ticker-item">${h}</span>`).join('');
+  const privacyAction = p.privacyUrl
+    ? `<a href="${p.privacyUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Privacy</a>`
+    : '';
+  const privacyFooter = p.privacyUrl
+    ? `<a href="${p.privacyUrl}" target="_blank" rel="noopener">Privacy</a> · `
+    : '';
+  const presentationTabs = p.presentationUrl
+    ? `<div class="pitch-tabs" role="tablist" aria-label="Deck format">` +
+        `<button type="button" class="pitch-tab is-active" role="tab" aria-selected="true" data-pitch-tab="pitch">Pitch Deck</button>` +
+        `<button type="button" class="pitch-tab" role="tab" aria-selected="false" data-pitch-tab="presentation">Full Presentation</button>` +
+      `</div>`
+    : '';
+  const presentationEmbed = p.presentationUrl
+    ? `<div class="pitch-embed hidden" data-pitch-panel="presentation" hidden>` +
+        `<iframe data-src="${p.presentationUrl}" title="${p.name} full presentation" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` +
+      `</div>`
+    : '';
+  const presentationAction = p.presentationUrl
+    ? `<a href="${p.presentationUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Open presentation fullscreen →</a>`
+    : '';
 
   const F = {
     hero: () =>
@@ -69,7 +89,7 @@
           `<div class="actions">` +
             `<a href="${p.url}" class="btn btn-product">Launch ${p.name} →</a>` +
             `<a href="#pitch" class="btn btn-ghost">Investor pitch</a>` +
-            `<a href="${p.privacyUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Privacy</a>` +
+            privacyAction +
           `</div>` +
         `</div>` +
       `</section>`,
@@ -90,20 +110,15 @@
         `<div class="wrap reveal">` +
           `<p class="eyebrow">Investor pitch</p>` +
           `<h2>The ${p.name} deck</h2>` +
-          `<p class="lead" style="margin-top:12px">Scroll the investor presentation inline — pitch deck for quick reads, full presentation for boardroom walkthrough.</p>` +
-          `<div class="pitch-tabs" role="tablist" aria-label="Deck format">` +
-            `<button type="button" class="pitch-tab is-active" role="tab" aria-selected="true" data-pitch-tab="pitch">Pitch Deck</button>` +
-            `<button type="button" class="pitch-tab" role="tab" aria-selected="false" data-pitch-tab="presentation">Full Presentation</button>` +
-          `</div>` +
+          `<p class="lead" style="margin-top:12px">${p.presentationUrl ? 'Scroll the investor presentation inline — pitch deck for quick reads, full presentation for boardroom walkthrough.' : 'Scroll the current product pitch inline or open it fullscreen.'}</p>` +
+          presentationTabs +
           `<div class="pitch-embed" data-pitch-panel="pitch">` +
             `<iframe src="${p.pitchUrl}" title="${p.name} investor pitch deck" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` +
           `</div>` +
-          `<div class="pitch-embed hidden" data-pitch-panel="presentation" hidden>` +
-            `<iframe data-src="${p.presentationUrl}" title="${p.name} full presentation" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` +
-          `</div>` +
+          presentationEmbed +
           `<p class="pitch-embed-actions">` +
             `<a href="${p.pitchUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Open pitch fullscreen →</a>` +
-            `<a href="${p.presentationUrl}" class="btn btn-ghost" target="_blank" rel="noopener">Open presentation fullscreen →</a>` +
+            presentationAction +
           `</p>` +
         `</div>` +
       `</section>`,
@@ -199,8 +214,8 @@
         `<h2>Ready to install ${p.name}?</h2>` +
         `<p class="lead" style="margin:16px auto 28px">Open the app, add it to your home screen, and own your data.</p>` +
         `<a href="${p.url}" class="btn btn-product">Launch ${p.name} →</a>` +
-        `<p style="margin-top:20px;font-size:13px;color:var(--dim)">` +
-          `<a href="${p.privacyUrl}" target="_blank" rel="noopener">Privacy</a> · ` +
+        `<p style="margin-top:20px;font-size:15px;color:var(--dim)">` +
+          privacyFooter +
           `<a href="${p.github}" target="_blank" rel="noopener">Source</a> · ` +
           `<a href="index.html#products">All products</a>` +
         `</p>` +

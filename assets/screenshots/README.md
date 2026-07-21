@@ -11,15 +11,22 @@ Canonical screenshot store for [shamikhahmed.github.io](https://shamikhahmed.git
 | `{slug}-ipad.png` | iPad frame |
 | `{slug}-mac.png` | Mac frame |
 
-## Current slugs (all 8 Cap apps)
+## Full gallery slugs
 
-`vaultcap`, `pulsecap`, `prismcap`, `steadycap`, `ledgercap`, `deeponycap`, `scentcap`, `auracap` — 11 files each (88 total).
+`soulcap`, `vaultcap`, `pulsecap`, `prismcap`, `steadycap`, `ledgercap`, `deeponycap`,
+`scentcap`, `auracap` — primary, carousel, iPad, and Mac captures.
 
-Capricorn six use 9 gallery files (`-2` … `-8` + ipad + mac). ScentCap and AuraCap include `-9.png` as an extra gallery frame.
+Most full galleries use 10 files (primary + `-2` … `-8` + iPad + Mac). ScentCap and AuraCap
+include `-9.png` as an extra gallery frame.
 
 ## Regenerate
 
 ```bash
 cd shamikhahmed.github.io
+node scripts/capture-screenshots.mjs
+
+# One product, optionally against a local build
+CAP_SCREENSHOT_SLUGS=soulcap \
+CAP_SOULCAP_URL=http://127.0.0.1:8788/ \
 node scripts/capture-screenshots.mjs
 ```

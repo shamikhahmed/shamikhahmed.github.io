@@ -3,34 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0E0D0C">
-<title>SoulCap — Clinical Path Pitch</title>
+<meta name="theme-color" content="#16131A">
+<title>SoulCap — Private, offline self-regulation</title>
 <style>
-  :root{--bg:#0E0D0C;--text:#f4f4f8;--muted:#9a9ab8;--acc:#8B9A7A;--gold:#c9a227}
+  :root{--bg:#16131A;--text:#EFEAF2;--muted:#A9A0B4;--acc:#A78BFA;--soft:rgba(167,139,250,.14)}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(900px 500px at 10% -10%,rgba(139,154,122,.22) 0%,var(--bg) 55%);color:var(--text);min-height:100vh;padding:48px 24px}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(900px 500px at 10% -10%,rgba(167,139,250,.22) 0%,var(--bg) 55%);color:var(--text);min-height:100vh;padding:48px 24px}
   .wrap{max-width:720px;margin:0 auto}
   .badge{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:16px}
   h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.03em;margin-bottom:12px}
   .sub{color:var(--muted);font-size:1.05rem;line-height:1.55;max-width:38rem;margin-bottom:22px}
-  .honest{border:1px solid rgba(201,162,39,.35);background:rgba(201,162,39,.08);border-radius:14px;padding:16px 18px;color:#e8d9a8;font-size:.92rem;line-height:1.5;margin:20px 0}
+  .honest{border:1px solid rgba(167,139,250,.34);background:var(--soft);border-radius:14px;padding:16px 18px;color:var(--text);font-size:.92rem;line-height:1.5;margin:20px 0}
   .actions{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
   a.btn{display:inline-flex;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:600}
-  .primary{background:var(--acc);color:#0E0D0C}
+  .primary{background:var(--acc);color:var(--bg)}
   .secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.14)}
-  img.qr{width:128px;height:128px;border-radius:12px;border:2px solid var(--gold);background:#fffaf3;padding:6px;margin-top:8px}
+  img.qr{width:128px;height:128px;border-radius:12px;border:2px solid var(--acc);background:#fffaf3;padding:6px;margin-top:8px}
   footer{margin-top:40px;font-size:.8rem;color:var(--muted)}
   footer a{color:var(--acc)}
 </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="badge">Capricorn Systems · Clinical path</div>
+    <div class="badge">Capricorn Systems · Offline by design</div>
     <h1>SoulCap</h1>
-    <p class="sub">On-device clinician-supported wellness companion. Consent, check-ins, journal, keyword safety rail, Panic/988, local clinician notes. Not a medical device. Not therapy.</p>
+    <p class="sub">A quiet, private emotional operating system: 37 guided self-regulation skills, a full journal book, and a map of the people around you. No account. No server. No analytics.</p>
     <div class="honest">
-      <strong>Honesty.</strong> Live product is this Pages PWA (<code>localStorage</code>). Chat is a rules-based Smart Companion — not a live LLM. Nest + Expo exist as source lab only, undeployed.
-      Crisis: call/text <strong>988</strong> (US) · text <strong>HOME</strong> to <strong>741741</strong>.
+      <strong>Honesty.</strong> SoulCap is self-guided wellness software — not therapy, diagnosis,
+      treatment, or a crisis service. Everything in the shipped PWA stays in
+      <code>localStorage</code>. Nest and Expo remain separate, undeployed labs.
     </div>
     <div class="actions">
       <a class="btn primary" href="./?demo=1">Try Demo</a>
@@ -39,7 +40,7 @@
       <a class="btn secondary" href="https://shamikhahmed.github.io/">← Hub</a>
     </div>
     <img class="qr" src="assets/qr-soulcap.png" width="128" height="128" alt="QR — open SoulCap" decoding="async">
-    <footer>© 2026 Capricorn Systems · v0.3.0 · <a href="https://shamikhahmed.github.io/SoulCap/">shamikhahmed.github.io/SoulCap</a></footer>
+    <footer>© 2026 Capricorn Systems · v0.8.0 · <a href="https://shamikhahmed.github.io/SoulCap/">shamikhahmed.github.io/SoulCap</a></footer>
   </div>
 </body>
 </html>

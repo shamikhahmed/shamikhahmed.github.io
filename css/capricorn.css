@@ -1519,6 +1519,13 @@ html:has(body.layout-prismcap) {
   .layout-product .product-shell {
     grid-template-columns: 1fr;
     padding: 0;
+    width: 100%;
+    min-width: 0;
+  }
+  .layout-product .product-rail,
+  .layout-product .product-main {
+    width: 100%;
+    min-width: 0;
   }
   .layout-product .product-rail-nav {
     position: sticky;
@@ -1534,6 +1541,7 @@ html:has(body.layout-prismcap) {
     background: color-mix(in srgb, var(--bg) 94%, transparent);
     backdrop-filter: blur(14px);
     z-index: 40;
+    max-width: 100vw;
   }
   body.layout-deeponycap.layout-product .product-rail-nav {
     background: rgba(200, 145, 168, 0.96);
