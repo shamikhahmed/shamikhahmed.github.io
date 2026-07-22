@@ -218,6 +218,48 @@ var PRINCIPLES_UI = {
   remove:'Remove'
 };
 
+var MANUAL_SECTIONS = ['rest', 'people', 'work', 'thinking', 'recovery'];
+
+var MANUAL_UI = {
+  title:'My manual',
+  cardHint:'Your own notes — grown from what you confirm here.',
+  empty:'Nothing here yet. As you add principles, confirm patterns, and use resets, gentle suggestions can appear. You can edit or remove anything.',
+  refresh:'Refresh suggestions',
+  refreshAdded:'{n} new line added.',
+  refreshAddedPlural:'{n} new lines added.',
+  refreshNone:'No new suggestions right now.',
+  add:'Add a line',
+  remove:'Remove',
+  pickSection:'Section',
+  lineLabel:'Manual line',
+  editHint:'Edits stay yours — suggestions will not overwrite them.',
+  sectionRest:'Rest',
+  sectionPeople:'People',
+  sectionWork:'Work',
+  sectionThinking:'Thinking',
+  sectionRecovery:'Recovery'
+};
+
+var EMPTY_UI = {
+  now:'No check-ins yet. When you tap how you are arriving, a quiet picture of your days can build here — no streaks, no score.',
+  calm:'Pick what you need, or browse everything below. Nothing to get right.',
+  journal:'A private place for your words. One line is enough when you are ready.',
+  map:'You at the centre. Add someone when it feels useful — only you see this map.',
+  me:'This space fills in as you go. Profile, story, and plan are all optional.'
+};
+
+var CONSTELLATION_UI = {
+  notesLabel:'Private notes',
+  notesPlaceholder:'What helps you remember about this person…',
+  eventsHeading:'Life events',
+  eventLabel:'Event',
+  eventPlaceholder:'e.g. moved away, new job…',
+  addEvent:'Add event',
+  removeEvent:'Remove',
+  ringHistoryHeading:'Closer / further history',
+  ringHistoryQuiet:'Ring changes you logged here.'
+};
+
 var EMOTION_WORDS = [
   'Disappointed','Uneasy','Content','Relieved','Hopeful','Ashamed',
   'Restless','Curious','Inspired','Calm','Grateful','Lonely',
@@ -306,7 +348,13 @@ var LIBRARY_UI = {
   homeHint:'Read about anxiety, sleep, low mood, grief, worry, and boundaries.',
   searchLabel:'Search the emotional library',
   searchPlaceholder:'Search anxiety, sleep, grief…',
+  filterAll:'All',
+  filterSaved:'Saved',
+  save:'Save article',
+  saved:'Saved',
+  unsave:'Remove bookmark',
   noMatches:'Nothing matches that search yet.',
+  noSaved:'Nothing saved yet. Tap Save on any article to keep it here.',
   resultStatus:'{n} articles',
   resultStatusOne:'1 article',
   back:'← Back to Calm',
@@ -847,7 +895,8 @@ var JOURNAL_UI = {
   chooseStartHint:'Use a gentle structure, or begin with a blank page.',
   decorate:'Decorate this page',
   searchLabel:'Search your journal',
-  searchPlaceholder:'Search words or titles',
+  searchPlaceholder:'Search words, moods, or titles',
+  searchClear:'Clear journal search',
   allMonths:'All months',
   noMatches:'No entries match that search. Your writing is still here.',
   localVoiceUnavailable:'On-device transcription is not available in this browser. Nothing was sent anywhere.',

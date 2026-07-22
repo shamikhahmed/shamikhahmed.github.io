@@ -41,7 +41,7 @@
   /* ── State ─────────────────────────────────────────────────────────────── */
   var KEY = 'soulcap_v1';
   var DEFAULT = {
-    v: 9, onboarded: false, welcomed: false, ageOk: null, region: null, consent: false,
+    v: 10, onboarded: false, welcomed: false, ageOk: null, region: null, consent: false,
     profile: { name: '', age: '', pronouns: '' },
     history: {},
     concerns: [], checkins: [], skillRuns: [], people: [], links: [], inferences: [],
@@ -57,7 +57,9 @@
     userModel: {},
     mapPace: 'drift', resetItems: [], resetDone: {}, parkedThoughts: [],
     reflectionPrefs: { dismissedForever: false, lastShown: 0 }, pendingReflection: null,
-    emotionFavorites: [], principles: []
+    emotionFavorites: [], principles: [],
+    manual: { lines: [], dismissedAuto: {} },
+    libraryBookmarks: []
   };
   var VALID_THEMES = { light:1, dark:1, night:1, ocean:1, forest:1, rain:1, space:1, sunrise:1, minimal:1, amoled:1 };
   var DRIP_DAY_CAP = 4;
@@ -103,6 +105,11 @@
       p.pendingReflection = p.pendingReflection && typeof p.pendingReflection === 'object' ? p.pendingReflection : null;
       p.emotionFavorites = Array.isArray(p.emotionFavorites) ? p.emotionFavorites : [];
       p.principles = Array.isArray(p.principles) ? p.principles : [];
+      p.manual = p.manual && typeof p.manual === 'object' ? p.manual : clone(DEFAULT.manual);
+      p.manual.lines = Array.isArray(p.manual.lines) ? p.manual.lines : [];
+      p.manual.dismissedAuto = p.manual.dismissedAuto && typeof p.manual.dismissedAuto === 'object' && !Array.isArray(p.manual.dismissedAuto) ? p.manual.dismissedAuto : {};
+      p.libraryBookmarks = Array.isArray(p.libraryBookmarks) ? p.libraryBookmarks : [];
+      p.people = (Array.isArray(p.people) ? p.people : []).map(normalizePerson);
       if (p.locale === 'ur') p.locale = 'rui';
       if (p.locale !== 'en' && p.locale !== 'rui') p.locale = 'en';
       if (p.theme && !VALID_THEMES[p.theme]) p.theme = null;
@@ -156,7 +163,30 @@
       if (p.locale === 'ur') p.locale = 'rui';
       p.v = 9; changed = true;
     }
+    if (version < 10) {
+      p.manual = p.manual && typeof p.manual === 'object' ? p.manual : { lines: [], dismissedAuto: {} };
+      p.manual.lines = Array.isArray(p.manual.lines) ? p.manual.lines : [];
+      p.manual.dismissedAuto = p.manual.dismissedAuto && typeof p.manual.dismissedAuto === 'object' && !Array.isArray(p.manual.dismissedAuto) ? p.manual.dismissedAuto : {};
+      p.libraryBookmarks = Array.isArray(p.libraryBookmarks) ? p.libraryBookmarks : [];
+      p.people = (Array.isArray(p.people) ? p.people : []).map(normalizePerson);
+      p.v = 10; changed = true;
+    }
     return { value: p, changed: changed };
+  }
+  function normalizePerson(p) {
+    p = p || {};
+    p.notes = typeof p.notes === 'string' ? p.notes : '';
+    p.events = Array.isArray(p.events) ? p.events : [];
+    p.ringHistory = Array.isArray(p.ringHistory) ? p.ringHistory.slice(-20) : [];
+    return p;
+  }
+  function appendRingHistory(person, ring) {
+    if (!person) return;
+    person.ringHistory = Array.isArray(person.ringHistory) ? person.ringHistory : [];
+    var last = person.ringHistory.length ? person.ringHistory[person.ringHistory.length - 1] : null;
+    if (last && last.ring === ring) return;
+    person.ringHistory.push({ t: Date.now(), ring: ring });
+    if (person.ringHistory.length > 20) person.ringHistory = person.ringHistory.slice(-20);
   }
   function normalizeCheckin(c, i) {
     c = c || {};
@@ -328,6 +358,9 @@
     container.appendChild(el('p', { class: 'p-sm', style: 'margin:2px 0 0',
       text: 'If you feel unsafe or in danger, please contact your local emergency services or a crisis helpline in your area.' }));
     if (panicSaveWarning) container.appendChild(el('p', { class: 'p-sm', text: CHECKIN_UI.crisisSaveFailed }));
+    container.appendChild(el('button', { class: 'btn ghost', text: 'Open my plan', onclick: function () {
+      closePanic(); safetyPlanSheet();
+    } }));
   }
 
   var pacerTimer = null, pacerPhase = 0;
@@ -1292,6 +1325,86 @@
   /* ── Calm — guided front door ──────────────────────────────────────────── */
   var calm = { need: null, seen: null, hand: ['none'], browse: false, section: 'guided' };
   var libraryQuery = '';
+  var libraryFilter = 'all';
+
+  function manualSectionLabel(key) {
+    if (key === 'rest') return MANUAL_UI.sectionRest;
+    if (key === 'people') return MANUAL_UI.sectionPeople;
+    if (key === 'work') return MANUAL_UI.sectionWork;
+    if (key === 'thinking') return MANUAL_UI.sectionThinking;
+    if (key === 'recovery') return MANUAL_UI.sectionRecovery;
+    return key;
+  }
+  function manualLineTexts() {
+    var texts = {};
+    state.manual.lines.forEach(function (line) {
+      if (line && line.text) texts[line.text.trim().toLowerCase()] = true;
+    });
+    return texts;
+  }
+  function manualLineIds() {
+    var ids = {};
+    state.manual.lines.forEach(function (line) { if (line && line.id) ids[line.id] = true; });
+    return ids;
+  }
+  function buildManualDrafts() {
+    var drafts = [], texts = manualLineTexts(), ids = manualLineIds();
+    function canAdd(id, text) {
+      var key = (text || '').trim().toLowerCase();
+      if (!key || texts[key] || ids[id] || state.manual.dismissedAuto[id]) return false;
+      return true;
+    }
+    function pushDraft(id, section, text) {
+      if (!canAdd(id, text)) return;
+      drafts.push({ id: id, section: section, text: text, source: 'auto', edited: false });
+      texts[text.trim().toLowerCase()] = true;
+      ids[id] = true;
+    }
+    derivePatterns().forEach(function (pattern) {
+      if (state.patternPrefs.decisions[pattern.id] !== 'confirmed') return;
+      var topic = pattern.title.replace(/ may be /gi, ' can feel ').replace(/\.$/, '').toLowerCase();
+      pushDraft('auto-pattern-' + pattern.id + '-rest', 'rest', 'When this shows up, you noticed ' + topic + '.');
+      var detail = pattern.summary.replace(/\.$/, '').toLowerCase();
+      pushDraft('auto-pattern-' + pattern.id + '-think', 'thinking', 'When reflecting, you noticed ' + detail + '.');
+    });
+    state.principles.forEach(function (principle, idx) {
+      var text = (principle || '').trim();
+      if (!text) return;
+      var section = idx % 2 === 0 ? 'thinking' : 'recovery';
+      pushDraft('auto-principle-' + idx, section, text);
+    });
+    enabledResetItems().forEach(function (item) {
+      var used = false;
+      Object.keys(state.resetDone).forEach(function (dayKey) {
+        var done = state.resetDone[dayKey];
+        if (Array.isArray(done) && done.indexOf(item.id) !== -1) used = true;
+      });
+      if (!used) return;
+      pushDraft('auto-reset-' + item.id, 'recovery', 'You have used "' + item.title + '" as a reset.');
+    });
+    return drafts;
+  }
+  function refreshManual() {
+    var drafts = buildManualDrafts(), added = 0;
+    drafts.forEach(function (draft) {
+      var exists = state.manual.lines.some(function (line) {
+        return line.id === draft.id || ((line.text || '').trim().toLowerCase() === draft.text.trim().toLowerCase());
+      });
+      if (exists) return;
+      state.manual.lines.push(draft);
+      added++;
+    });
+    if (added) save();
+    return added;
+  }
+  function toggleLibraryBookmark(id) {
+    var i = state.libraryBookmarks.indexOf(id);
+    if (i === -1) state.libraryBookmarks.push(id); else state.libraryBookmarks.splice(i, 1);
+    save();
+  }
+  function isLibraryBookmarked(id) {
+    return state.libraryBookmarks.indexOf(id) !== -1;
+  }
 
   function toggleCalmHand(key) {
     if (key === 'none') {
@@ -1311,6 +1424,7 @@
       p.appendChild(el('p', { class: 'eyebrow', text: LIBRARY_UI.label }));
       p.appendChild(el('h2', { class: 'h-sec', text: article.title }));
       p.appendChild(el('button', { class: 'btn quiet article-close-top', text: LIBRARY_UI.close, onclick: closeSheet }));
+      var bookmarked = isLibraryBookmarked(article.id);
       p.appendChild(el('p', { class: 'p-voice', text: article.summary }));
       p.appendChild(el('div', { class: 'notice', text: LIBRARY_UI.reviewNote }));
       article.sections.forEach(function (section) {
@@ -1330,12 +1444,23 @@
       });
       p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.references }));
       article.references.forEach(function (reference) { p.appendChild(el('p', { class: 'p-sm', text: reference })); });
+      p.appendChild(el('button', { class: 'btn ghost', 'aria-pressed': bookmarked ? 'true' : 'false',
+        text: bookmarked ? LIBRARY_UI.saved : LIBRARY_UI.save, onclick: function () {
+          toggleLibraryBookmark(article.id);
+          closeSheet(); articleSheet(article.id);
+        } }));
       p.appendChild(el('button', { class: 'btn quiet', text: LIBRARY_UI.close, onclick: closeSheet }));
     });
   }
   function renderLibrary(v) {
     v.appendChild(el('button', { class: 'btn ghost', text: LIBRARY_UI.back, onclick: function () { calm.section = 'guided'; render(); } }));
     v.appendChild(el('p', { class: 'p', text: LIBRARY_UI.intro }));
+    v.appendChild(el('div', { class: 'chips', role: 'group', 'aria-label': 'Library filter' }, [
+      el('button', { class: 'chip', 'aria-pressed': libraryFilter === 'all' ? 'true' : 'false', text: LIBRARY_UI.filterAll,
+        onclick: function () { libraryFilter = 'all'; render(); } }),
+      el('button', { class: 'chip', 'aria-pressed': libraryFilter === 'saved' ? 'true' : 'false', text: LIBRARY_UI.filterSaved,
+        onclick: function () { libraryFilter = 'saved'; render(); } })
+    ]));
     var search = el('input', { type:'search', value:libraryQuery, placeholder:LIBRARY_UI.searchPlaceholder, 'aria-label':LIBRARY_UI.searchLabel });
     var status = el('p', { class:'meta library-status', role:'status', 'aria-live':'polite', 'aria-atomic':'true' });
     var results = el('div', { class:'stack library-results' });
@@ -1343,15 +1468,17 @@
       clear(results);
       var query = libraryQuery.trim().toLowerCase();
       var matches = ARTICLES.filter(function (article) {
+        if (libraryFilter === 'saved' && !isLibraryBookmarked(article.id)) return false;
         return !query || [article.title, article.summary].concat(article.tags).join(' ').toLowerCase().indexOf(query) !== -1;
       });
       status.textContent = !matches.length
-        ? LIBRARY_UI.noMatches
+        ? (libraryFilter === 'saved' ? LIBRARY_UI.noSaved : LIBRARY_UI.noMatches)
         : (matches.length === 1 ? LIBRARY_UI.resultStatusOne : LIBRARY_UI.resultStatus.replace('{n}', '' + matches.length));
-      if (!matches.length) results.appendChild(el('div', { class:'notice', text:LIBRARY_UI.noMatches }));
+      if (!matches.length) results.appendChild(el('div', { class:'notice', text: libraryFilter === 'saved' ? LIBRARY_UI.noSaved : LIBRARY_UI.noMatches }));
       matches.forEach(function (article) {
+        var saved = isLibraryBookmarked(article.id);
         results.appendChild(el('button', { class:'card tap article-card', onclick:function () { articleSheet(article.id); } }, [
-          el('h2', { class:'card-title', text:article.title }),
+          el('h2', { class:'card-title', text:article.title + (saved ? ' · Saved' : '') }),
           el('p', { class:'p-sm', text:article.summary }),
           el('p', { class:'meta', text:article.skillIds.length + ' related exercise' + (article.skillIds.length === 1 ? '' : 's') })
         ]));
@@ -1686,6 +1813,7 @@
           el('p', { class:'p-sm', text:SUPPORT_UI.homeHint })
         ])
       ]));
+      v.appendChild(el('p', { class: 'p-sm calm-empty', text: EMPTY_UI.calm }));
     }
 
     // Q1 — what do you need
@@ -1786,9 +1914,12 @@
     v.appendChild(el('button', { class: 'btn ghost', text: PARK_UI.button, onclick: function () { parkThoughtSheet(); } }));
 
     var due = dueParkedThoughts();
+    var parkQuery = journalQuery.trim().toLowerCase();
     if (due.length) {
       v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PARK_UI.dueHeading }));
-      due.forEach(function (item) {
+      due.filter(function (item) {
+        return !parkQuery || (item.title || '').toLowerCase().indexOf(parkQuery) !== -1;
+      }).forEach(function (item) {
         v.appendChild(el('div', { class: 'park-card card' }, [
           el('h2', { class: 'card-title', text: item.title }),
           item.body ? el('p', { class: 'p-sm', text: item.body }) : null,
@@ -1804,19 +1935,26 @@
 
     if (!state.journal.length) {
       v.appendChild(el('div', { class: 'card' }, [
-        el('p', { class: 'p-voice', text: 'A private place to put things down. No one else can read it — it lives on your phone.' }),
+        el('p', { class: 'p-voice', text: EMPTY_UI.journal }),
         el('p', { class: 'p-sm', text: 'Write freely, add a photo, drop in a sticker, tag how the day felt. Or don’t. It’s yours.' })
       ]));
     } else {
       v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:4px', text: 'Contents' }));
       var search = el('input', { class: 'journal-search', type: 'search', value: journalQuery,
         placeholder: JOURNAL_UI.searchPlaceholder, 'aria-label': JOURNAL_UI.searchLabel });
+      if (journalQuery) search.setAttribute('aria-describedby', 'journalSearchClear');
+      var searchRow = el('div', { class: 'journal-search-row' }, [search]);
+      if (journalQuery) {
+        searchRow.appendChild(el('button', { id: 'journalSearchClear', class: 'btn quiet journal-search-clear',
+          type: 'button', 'aria-label': JOURNAL_UI.searchClear, text: 'Clear',
+          onclick: function () { journalQuery = ''; render(); } }));
+      }
       var contents = el('div', { class: 'journal-contents' });
       search.addEventListener('input', function () {
         journalQuery = search.value;
         renderJournalContents(contents);
       });
-      v.appendChild(search);
+      v.appendChild(searchRow);
 
       var sorted = state.journal.slice().sort(function (a, b) { return b.t - a.t; });
       var seenMonths = {};
@@ -1848,7 +1986,9 @@
     clear(wrap);
     var query = journalQuery.trim().toLowerCase();
     var sorted = state.journal.slice().sort(function (a, b) { return b.t - a.t; }).filter(function (e) {
-      return !query || ((e.title || '') + ' ' + (e.body || '')).toLowerCase().indexOf(query) !== -1;
+      if (!query) return true;
+      var hay = ((e.title || '') + ' ' + (e.body || '') + ' ' + (e.mood || '') + ' ' + (e.feelingWord || '')).toLowerCase();
+      return hay.indexOf(query) !== -1;
     });
     if (!sorted.length) {
       wrap.appendChild(el('div', { class: 'notice', text: JOURNAL_UI.noMatches }));
@@ -2029,6 +2169,7 @@
     stopJournalRecognition(false);
     draft.title = $('#jeTitle').value.trim();
     draft.body = $('#jeBody').value.trim();
+    if (typeof draft.feelingWord === 'string') draft.feelingWord = draft.feelingWord.trim().slice(0, 80);
     if (draft.feelingWord && draft.body.indexOf(draft.feelingWord) === -1) {
       draft.body = (draft.body ? draft.body + '\n\n' : '') + draft.feelingWord;
     }
@@ -2485,6 +2626,7 @@
       node.classList.remove('dragging'); mapState.dragging = false; highlight(null);
       if (wasDrag) {
         var v = toVB(e.clientX, e.clientY), ring = nearest(v.x, v.y);
+        if (p.ring !== ring.key) appendRingHistory(p, ring.key);
         p.ring = ring.key; rec.r = ring.r; save(); buzz(12); positionAll();
         var angDelta = rec.ang - drag.startAng;
         var timeDelta = (Date.now() - drag.startTime) / 1000;
@@ -2518,8 +2660,44 @@
       panel.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: 'How close' }));
       panel.appendChild(el('div', { class: 'chips' }, ringDefs().map(function (r) {
         return el('button', { class: 'chip', 'aria-pressed': p.ring === r.key ? 'true' : 'false', text: r.label.charAt(0) + r.label.slice(1).toLowerCase(),
-          onclick: function () { p.ring = r.key; save(); closeSheet(); render(); } });
+          onclick: function () {
+            if (p.ring !== r.key) appendRingHistory(p, r.key);
+            p.ring = r.key; save(); closeSheet(); render();
+          } });
       })));
+      panel.appendChild(el('hr', { class: 'sep' }));
+      panel.appendChild(el('p', { class: 'eyebrow', text: CONSTELLATION_UI.notesLabel }));
+      var notes = el('textarea', { placeholder: CONSTELLATION_UI.notesPlaceholder, 'aria-label': CONSTELLATION_UI.notesLabel, style: 'min-height:90px' });
+      notes.value = p.notes || '';
+      notes.addEventListener('change', function () { p.notes = notes.value.trim().slice(0, 500); save(); });
+      panel.appendChild(notes);
+      panel.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CONSTELLATION_UI.eventsHeading }));
+      (p.events || []).forEach(function (ev, idx) {
+        panel.appendChild(el('div', { class: 'stack constellation-event' }, [
+          el('p', { class: 'p-sm', text: new Date(ev.t).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) + ' · ' + ev.label }),
+          el('button', { class: 'btn quiet', text: CONSTELLATION_UI.removeEvent, onclick: function () {
+            p.events.splice(idx, 1); save(); closeSheet(); personSheet(id);
+          } })
+        ]));
+      });
+      var eventInput = el('input', { type: 'text', placeholder: CONSTELLATION_UI.eventPlaceholder, 'aria-label': CONSTELLATION_UI.eventLabel, maxlength: '80' });
+      panel.appendChild(eventInput);
+      panel.appendChild(el('button', { class: 'btn ghost', text: CONSTELLATION_UI.addEvent, onclick: function () {
+        var label = eventInput.value.trim();
+        if (!label) { eventInput.focus(); return; }
+        p.events = p.events || [];
+        p.events.push({ id: uid(), t: Date.now(), label: label.slice(0, 80) });
+        save(); closeSheet(); personSheet(id);
+      } }));
+      if (p.ringHistory && p.ringHistory.length) {
+        panel.appendChild(el('hr', { class: 'sep' }));
+        panel.appendChild(el('p', { class: 'eyebrow', text: CONSTELLATION_UI.ringHistoryHeading }));
+        panel.appendChild(el('p', { class: 'p-sm', text: CONSTELLATION_UI.ringHistoryQuiet }));
+        p.ringHistory.slice().reverse().forEach(function (entry) {
+          var ring = ringDefs().filter(function (r) { return r.key === entry.ring; })[0];
+          panel.appendChild(el('p', { class: 'meta', text: new Date(entry.t).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) + ' · ' + (ring ? ring.label : entry.ring) }));
+        });
+      }
       if (state.trackContact) {
         panel.appendChild(el('hr', { class: 'sep' }));
         panel.appendChild(el('p', { class: 'meta', text: p.lastContact ? 'Last spoke: ' + Math.round((Date.now() - p.lastContact) / 86400000) + ' days ago' : 'No contact logged' }));
@@ -2552,7 +2730,7 @@
       var sup = el('select', { 'aria-label': 'Supportive' }, [el('option', { value: '0.85', text: 'Usually helps' }), el('option', { value: '0.5', text: 'Sometimes helps' }), el('option', { value: '0.2', text: 'Not really' })]); panel.appendChild(sup);
       panel.appendChild(el('button', { class: 'btn', text: 'Add', onclick: function () {
         var n = name.value.trim(); if (!n) { name.focus(); return; }
-        state.people.push({ id: uid(), name: n.slice(0, 24), type: typeSel.value, ring: ringSel.value, supportive: parseFloat(sup.value), drain: 1 - parseFloat(sup.value), hard: false, suggestible: true, lastContact: null, spokeAt: [] });
+        state.people.push(normalizePerson({ id: uid(), name: n.slice(0, 24), type: typeSel.value, ring: ringSel.value, supportive: parseFloat(sup.value), drain: 1 - parseFloat(sup.value), hard: false, suggestible: true, lastContact: null, spokeAt: [], notes: '', events: [], ringHistory: [] }));
         save(); closeSheet(); render();
       } }));
       panel.appendChild(el('button', { class: 'btn quiet', text: 'Cancel', onclick: closeSheet }));
@@ -2563,7 +2741,7 @@
     v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: 'Constellation' }), el('h1', { class: 'h-voice', text: 'The people around you.' })]));
     if (!state.people.length) {
       v.appendChild(el('div', { class: 'card' }, [
-        el('p', { class: 'p-voice', text: 'You at the centre. The people in your life placed by how close they actually feel — not how close they’re supposed to feel.' }),
+        el('p', { class: 'p-voice', text: EMPTY_UI.map }),
         el('p', { class: 'p-sm', text: 'Nobody else ever sees this. It stays on your device.' }),
         el('button', { class: 'btn', text: 'Add the first person', onclick: addPersonSheet })
       ]));
@@ -2668,6 +2846,9 @@
     ]));
     var states = ['Steady', 'Wired', 'Flat', 'Heavy', 'Not sure'];
     var rc = todayCheckin(), today = rc ? rc.state : null;
+    if (!state.checkins.length) {
+      v.appendChild(el('p', { class: 'p-sm now-empty', text: EMPTY_UI.now }));
+    }
     v.appendChild(el('div', {}, [
       el('p', { class: 'p-voice', text: 'How are you arriving right now?' }),
       el('div', { style: 'height:11px' }),
@@ -2775,6 +2956,9 @@
     var v = $('#view-me'); clear(v);
     var name = (state.profile.name || '').trim();
     v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: 'You' }), el('h1', { class: 'h-voice', text: name || 'Your space.' })]));
+    if (!name && !historyFilled() && !state.principles.length && !state.manual.lines.length && !planFilled()) {
+      v.appendChild(el('p', { class: 'p-sm me-empty', text: EMPTY_UI.me }));
+    }
 
     // Profile card
     v.appendChild(el('button', { class: 'card tap', onclick: profileSheet }, [
@@ -2880,7 +3064,85 @@
       el('p', { class: 'p-sm', text: state.principles.length ? state.principles.slice(0, 2).join(' · ') : PRINCIPLES_UI.cardHint })
     ]));
 
+    v.appendChild(el('button', { class: 'card tap manual-card', onclick: manualSheet }, [
+      el('h2', { class: 'card-title', text: MANUAL_UI.title }),
+      el('p', { class: 'p-sm', text: state.manual.lines.length ? (state.manual.lines.length + ' line' + (state.manual.lines.length === 1 ? '' : 's')) : MANUAL_UI.cardHint })
+    ]));
+
     v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
+  }
+  function manualSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: MANUAL_UI.title }));
+      var live = el('p', { class: 'meta manual-live', role: 'status', 'aria-live': 'polite', 'aria-atomic': 'true' });
+      p.appendChild(live);
+      if (!state.manual.lines.length) p.appendChild(el('p', { class: 'p-sm', text: MANUAL_UI.empty }));
+      MANUAL_SECTIONS.forEach(function (section) {
+        var lines = state.manual.lines.filter(function (line) { return line.section === section; });
+        if (!lines.length) return;
+        p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:10px', text: manualSectionLabel(section) }));
+        lines.forEach(function (line) {
+          var lineId = line.id;
+          var inp = el('input', { type: 'text', value: line.text, 'aria-label': MANUAL_UI.lineLabel + ' — ' + manualSectionLabel(section) });
+          inp.addEventListener('change', function () {
+            var val = inp.value.trim().slice(0, 200);
+            if (!val) return;
+            for (var li = 0; li < state.manual.lines.length; li++) {
+              if (state.manual.lines[li].id === lineId) {
+                state.manual.lines[li].text = val;
+                state.manual.lines[li].edited = true;
+                if (state.manual.lines[li].source === 'auto') state.manual.lines[li].source = 'user';
+                break;
+              }
+            }
+            save();
+          });
+          p.appendChild(el('div', { class: 'stack manual-row' }, [
+            inp,
+            el('button', { class: 'btn quiet', text: MANUAL_UI.remove, onclick: function () {
+              for (var ri = 0; ri < state.manual.lines.length; ri++) {
+                if (state.manual.lines[ri].id === lineId) {
+                  if (state.manual.lines[ri].source === 'auto') state.manual.dismissedAuto[lineId] = true;
+                  state.manual.lines.splice(ri, 1);
+                  break;
+                }
+              }
+              save(); closeSheet(); manualSheet();
+            } })
+          ]));
+        });
+      });
+      var addSection = 'thinking';
+      var sectionWrap = el('div', { class: 'chips', role: 'group', 'aria-label': MANUAL_UI.pickSection });
+      MANUAL_SECTIONS.forEach(function (section) {
+        sectionWrap.appendChild(el('button', { class: 'chip', 'aria-pressed': addSection === section ? 'true' : 'false', text: manualSectionLabel(section),
+          onclick: function () {
+            addSection = section;
+            Array.prototype.forEach.call(sectionWrap.children, function (b) {
+              b.setAttribute('aria-pressed', b.textContent === manualSectionLabel(section) ? 'true' : 'false');
+            });
+          } }));
+      });
+      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:12px', text: MANUAL_UI.add }));
+      p.appendChild(sectionWrap);
+      var newLine = el('input', { type: 'text', placeholder: MANUAL_UI.lineLabel, 'aria-label': MANUAL_UI.lineLabel });
+      p.appendChild(newLine);
+      p.appendChild(el('button', { class: 'btn ghost', text: MANUAL_UI.add, onclick: function () {
+        var text = newLine.value.trim().slice(0, 200);
+        if (!text) { newLine.focus(); return; }
+        state.manual.lines.push({ id: uid(), section: addSection, text: text, source: 'user', edited: false });
+        save(); closeSheet(); manualSheet();
+      } }));
+      p.appendChild(el('button', { class: 'btn', text: MANUAL_UI.refresh, onclick: function () {
+        var added = refreshManual();
+        live.textContent = added
+          ? (added === 1 ? MANUAL_UI.refreshAdded.replace('{n}', '1') : MANUAL_UI.refreshAddedPlural.replace('{n}', '' + added))
+          : MANUAL_UI.refreshNone;
+        closeSheet(); manualSheet();
+      } }));
+      p.appendChild(el('p', { class: 'p-sm', text: MANUAL_UI.editHint }));
+      p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
+    });
   }
   function principlesSheet() {
     openSheet(function (p) {
@@ -2906,7 +3168,7 @@
       p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
     });
   }
-  var APP_VERSION = '1.4.0';
+  var APP_VERSION = '1.6.0';
   function settingsGroup(v, title, kids) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:14px', text: title })); kids.forEach(function (k) { if (k) v.appendChild(k); }); }
   function toggleBtn(label, on, fn) { return el('button', { class: 'btn ghost', style: 'display:flex;justify-content:space-between', onclick: fn, html: '<span>' + label + '</span><span style="color:var(--accent);font-weight:600">' + (on ? 'On' : 'Off') + '</span>' }); }
   function settingChips(opts, isOn, fn) { return el('div', { class: 'chips' }, opts.map(function (o) { return el('button', { class: 'chip', 'aria-pressed': isOn(o) ? 'true' : 'false', text: o.l, onclick: function () { fn(o); } }); })); }
@@ -3176,7 +3438,7 @@
   window.__soulcap = {
     assessRisk: assessRisk, suggestSkill: suggestSkill, suggestPerson: suggestPerson,
     getState: function () { return state; }, skillCount: SKILLS.length,
-    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.4.0',
+    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.6.0',
     nextDripQuestion: nextDripQuestion, estimateValue: estimateValue,
     answerDrip: answerDrip, skipDrip: skipDrip, correctEstimate: correctEstimate,
     clearEstimate: clearEstimate, setTheme: setTheme, setLocale: setLocale,
@@ -3192,7 +3454,8 @@
         }, ms || 500);
       });
     },
-    derivePatterns: derivePatterns, maybeQueueReflection: maybeQueueReflection
+    derivePatterns: derivePatterns, maybeQueueReflection: maybeQueueReflection,
+    buildManualDrafts: buildManualDrafts, refreshManual: refreshManual
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

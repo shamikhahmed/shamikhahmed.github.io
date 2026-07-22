@@ -569,7 +569,12 @@ input[type="range"]{width:100%;min-height:48px;accent-color:var(--accent)}
 .j-entry .jphotos{display:flex;gap:6px;margin-top:10px}
 .j-entry .jphotos img{width:46px;height:46px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
 .j-entry .jmood{display:inline-block;margin-top:9px;font-size:16px}
-.journal-search{margin:0}
+.journal-search{margin:0;flex:1}
+.journal-search-row{display:flex;gap:8px;align-items:center;margin:0}
+.journal-search-clear{flex-shrink:0}
+.manual-row{margin-top:6px}
+.manual-live{min-height:1.2em}
+.calm-empty,.now-empty,.me-empty{margin:8px 0 0}
 .journal-months{margin:0}
 .journal-contents{display:flex;flex-direction:column;gap:10px}
 .journal-month-heading{
