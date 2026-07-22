@@ -26,7 +26,7 @@ if(a.accent==='plum'||a.accent==='lilac'||a.accent==='mulberry'||a.accent==='ind
 if(a.contrast==='standard'||a.contrast==='high')document.documentElement.setAttribute('data-contrast',a.contrast);
 if(a.reduceTransparency)document.documentElement.setAttribute('data-transparency','reduced');
 var loc=localStorage.getItem('soulcap_locale');
-if(loc==='ur'){document.documentElement.setAttribute('lang','ur');document.documentElement.setAttribute('dir','rtl');}
+if(loc==='rui'||loc==='ur'){document.documentElement.setAttribute('lang','rui');document.documentElement.setAttribute('dir','ltr');}
 else{document.documentElement.setAttribute('lang','en');document.documentElement.setAttribute('dir','ltr');}
 }catch(e){}})();
 </script>

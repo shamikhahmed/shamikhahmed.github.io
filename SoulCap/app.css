@@ -471,6 +471,15 @@ input[type="range"]{width:100%;min-height:48px;accent-color:var(--accent)}
 .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
 .legend span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2)}
 .legend i{width:9px;height:9px;border-radius:50%;display:block;flex:none}
+.map-focus-glow circle{stroke:var(--accent);stroke-width:3;filter:drop-shadow(0 0 14px var(--accent-glow))}
+.timeline-day{margin-top:8px}
+.reset-row{margin-top:8px}
+.park-card{margin-top:8px}
+.settings-card{margin-top:10px}
+.emotion-chips{margin-top:6px}
+@media (prefers-reduced-motion:reduce){
+  .map-focus-glow circle{filter:none}
+}
 
 /* ── Sheet ─────────────────────────────────────────────── */
 /* Above the journal editor (95) and runner (90) so confirms sit on top. */

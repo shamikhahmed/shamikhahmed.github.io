@@ -75,11 +75,11 @@ var PATTERN_UI = {
   heading:'Possible patterns',
   intro:'Local observations from repeated days. Each one shows its evidence and stays a possibility until you confirm it.',
   lateTitle:'Late hours may be harder',
-  lateSummary:'Several check-ins happened late at night.',
+  lateSummary:'Several check-ins may have happened late at night.',
   noiseTitle:'Mental noise may be running high',
   noiseSummary:'You marked mental noise near the high end on several days.',
   triggerSuffix:'may be showing up often',
-  triggerSummary:'This context appears repeatedly',
+  triggerSummary:'This context may appear repeatedly',
   evidence:'See evidence',
   confirm:'Yes, that fits',
   reject:'Not really',
@@ -136,13 +136,98 @@ var THEME_OPTIONS = [
 
 var LOCALE_OPTIONS = [
   { k:'en', l:'English', dir:'ltr' },
-  { k:'ur', l:'اردو (preview)', dir:'rtl' }
+  { k:'rui', l:'Roman Urdu (preview)', dir:'ltr' }
 ];
 
 var LOCALE_UI = {
   language:'Language',
-  previewNote:'Urdu is a layout preview only. Clinical and safety wording still needs a native clinical-copy review before it replaces English.',
-  reviewPending:'Urdu clinical review is not complete yet. English remains the default safety language.'
+  previewNote:'Roman Urdu is a layout preview only. Clinical and safety wording still needs a native clinical-copy review before it replaces English.',
+  reviewPending:'Roman Urdu clinical review is not complete yet. English remains the default safety language.'
+};
+
+var MAP_PACE_OPTIONS = [
+  { k:'still', l:'Still' },
+  { k:'drift', l:'Drift' },
+  { k:'live', l:'Live' }
+];
+
+var RESET_UI = {
+  title:'Personal reset menu',
+  homeHint:'Small steps that help you land again. Yours to edit.',
+  intro:'Add a few gentle resets for hard moments. Tap one when you have done it today — no streaks or scores.',
+  empty:'Start with one or two small things that help you reset. You can rename them anytime.',
+  add:'Add a reset step',
+  edit:'Edit reset menu',
+  titleLabel:'Title',
+  notesLabel:'Notes (optional)',
+  enabled:'Show on menu',
+  save:'Save',
+  cancel:'Cancel',
+  done:'Done for today',
+  notDone:'Mark for today',
+  remove:'Remove',
+  back:'← Back to Calm'
+};
+
+var PARK_UI = {
+  button:'Park a thought',
+  title:'Park a thought',
+  hint:'Set it aside for later. No reminders — it will reappear when the time you choose has passed.',
+  titleLabel:'What is it about?',
+  bodyLabel:'Anything else to remember',
+  whenLabel:'Come back after',
+  tomorrow:'Tomorrow',
+  weekend:'Weekend',
+  week:'One week',
+  save:'Park it',
+  cancel:'Cancel',
+  dueHeading:'Due to revisit',
+  archive:'Archive',
+  dismiss:'Dismiss for now',
+  empty:'Nothing parked right now.',
+  archived:'Archived'
+};
+
+var TIMELINE_UI = {
+  title:'Your week',
+  cardHint:'Check-ins and journal titles, day by day.',
+  empty:'Your week will slowly become a story rather than a list.',
+  checkin:'Check-in',
+  journal:'Journal',
+  close:'Close',
+  prev:'Earlier',
+  next:'Later'
+};
+
+var REFLECTION_UI = {
+  cardTitle:'A gentle reflection',
+  skip:'Skip for now',
+  answer:'Write a short note',
+  dismiss:'Do not show again',
+  save:'Save note',
+  cancel:'Cancel',
+  placeholder:'A sentence is enough.'
+};
+
+var PRINCIPLES_UI = {
+  title:'Principles',
+  cardHint:'Short reminders you choose for yourself.',
+  empty:'Add a line or two that helps you steer.',
+  add:'Add principle',
+  save:'Save',
+  remove:'Remove'
+};
+
+var EMOTION_WORDS = [
+  'Disappointed','Uneasy','Content','Relieved','Hopeful','Ashamed',
+  'Restless','Curious','Inspired','Calm','Grateful','Lonely',
+  'Overwhelmed','Tender','Frustrated','Peaceful'
+];
+
+var REFLECTION_PROMPTS = {
+  journal:'What stood out from what you wrote?',
+  pattern:'Does this pattern feel familiar in your day?',
+  park:'What would help you let that thought rest for now?'
 };
 
 var DRIP_UI = {
@@ -208,9 +293,9 @@ var STRINGS = {
     helpNow:'I need help now',
     tabs:{ now:'Now', calm:'Calm', journal:'Journal', map:'People', me:'You' }
   },
-  ur: {
-    helpNow:'مجھے اب مدد چاہیے',
-    tabs:{ now:'اب', calm:'سکون', journal:'جرنل', map:'لوگ', me:'آپ' }
+  rui: {
+    helpNow:'Mujhe ab madad chahiye',
+    tabs:{ now:'Ab', calm:'Sakoon', journal:'Journal', map:'Log', me:'Aap' }
   }
 };
 

@@ -1,0 +1,91 @@
+{
+  "app": "SoulCap",
+  "version": "1.4.0",
+  "generated": "2026-07-22T00:38:42.038Z",
+  "shots": [
+    {
+      "file": "desktop-01-now.png",
+      "label": "Now",
+      "route": "/?demo=1&tab=now",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-02-calm.png",
+      "label": "Calm",
+      "route": "/?demo=1&tab=calm",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-03-journal.png",
+      "label": "Journal",
+      "route": "/?demo=1&tab=journal",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-04-map.png",
+      "label": "Constellation",
+      "route": "/?demo=1&tab=map",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-05-me.png",
+      "label": "You",
+      "route": "/?demo=1&tab=me",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-06-library.png",
+      "label": "Emotional library",
+      "route": "calm/library",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-07-help.png",
+      "label": "Help now",
+      "route": "/?demo=1&panic=1",
+      "viewport": "desktop"
+    },
+    {
+      "file": "mobile-01-now.png",
+      "label": "Now",
+      "route": "/?demo=1&tab=now",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-02-calm.png",
+      "label": "Calm",
+      "route": "/?demo=1&tab=calm",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-03-journal.png",
+      "label": "Journal",
+      "route": "/?demo=1&tab=journal",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-04-map.png",
+      "label": "Constellation",
+      "route": "/?demo=1&tab=map",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-05-me.png",
+      "label": "You",
+      "route": "/?demo=1&tab=me",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-06-library.png",
+      "label": "Emotional library",
+      "route": "calm/library",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-07-help.png",
+      "label": "Help now",
+      "route": "/?demo=1&panic=1",
+      "viewport": "mobile"
+    }
+  ]
+}

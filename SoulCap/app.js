@@ -41,7 +41,7 @@
   /* ── State ─────────────────────────────────────────────────────────────── */
   var KEY = 'soulcap_v1';
   var DEFAULT = {
-    v: 8, onboarded: false, welcomed: false, ageOk: null, region: null, consent: false,
+    v: 9, onboarded: false, welcomed: false, ageOk: null, region: null, consent: false,
     profile: { name: '', age: '', pronouns: '' },
     history: {},
     concerns: [], checkins: [], skillRuns: [], people: [], links: [], inferences: [],
@@ -54,7 +54,10 @@
     appearance: { text: 'standard', density: 'compact', accent: 'plum', contrast: 'standard', reduceTransparency: false },
     dailySupports: { selected: [], days: {} },
     drip: { answers: {}, skipped: {}, dayKey: '', askedToday: [] },
-    userModel: {}
+    userModel: {},
+    mapPace: 'drift', resetItems: [], resetDone: {}, parkedThoughts: [],
+    reflectionPrefs: { dismissedForever: false, lastShown: 0 }, pendingReflection: null,
+    emotionFavorites: [], principles: []
   };
   var VALID_THEMES = { light:1, dark:1, night:1, ocean:1, forest:1, rain:1, space:1, sunrise:1, minimal:1, amoled:1 };
   var DRIP_DAY_CAP = 4;
@@ -90,7 +93,18 @@
       p.drip.skipped = p.drip.skipped && typeof p.drip.skipped === 'object' && !Array.isArray(p.drip.skipped) ? p.drip.skipped : {};
       p.drip.askedToday = Array.isArray(p.drip.askedToday) ? p.drip.askedToday : [];
       p.userModel = p.userModel && typeof p.userModel === 'object' && !Array.isArray(p.userModel) ? p.userModel : {};
-      if (p.locale !== 'en' && p.locale !== 'ur') p.locale = 'en';
+      p.mapPace = p.mapPace === 'still' || p.mapPace === 'live' ? p.mapPace : (p.mapPace === 'drift' ? 'drift' : DEFAULT.mapPace);
+      p.resetItems = Array.isArray(p.resetItems) ? p.resetItems : [];
+      p.resetDone = p.resetDone && typeof p.resetDone === 'object' && !Array.isArray(p.resetDone) ? p.resetDone : {};
+      p.parkedThoughts = Array.isArray(p.parkedThoughts) ? p.parkedThoughts : [];
+      p.reflectionPrefs = Object.assign(clone(DEFAULT.reflectionPrefs), p.reflectionPrefs || {});
+      p.reflectionPrefs.dismissedForever = p.reflectionPrefs.dismissedForever === true;
+      p.reflectionPrefs.lastShown = typeof p.reflectionPrefs.lastShown === 'number' ? p.reflectionPrefs.lastShown : 0;
+      p.pendingReflection = p.pendingReflection && typeof p.pendingReflection === 'object' ? p.pendingReflection : null;
+      p.emotionFavorites = Array.isArray(p.emotionFavorites) ? p.emotionFavorites : [];
+      p.principles = Array.isArray(p.principles) ? p.principles : [];
+      if (p.locale === 'ur') p.locale = 'rui';
+      if (p.locale !== 'en' && p.locale !== 'rui') p.locale = 'en';
       if (p.theme && !VALID_THEMES[p.theme]) p.theme = null;
       p.checkins = (Array.isArray(p.checkins) ? p.checkins : []).map(normalizeCheckin);
       if (migration.changed) {
@@ -126,9 +140,21 @@
       p.drip.skipped = p.drip.skipped && typeof p.drip.skipped === 'object' && !Array.isArray(p.drip.skipped) ? p.drip.skipped : {};
       p.drip.askedToday = Array.isArray(p.drip.askedToday) ? p.drip.askedToday : [];
       p.userModel = p.userModel && typeof p.userModel === 'object' && !Array.isArray(p.userModel) ? p.userModel : {};
-      p.locale = p.locale === 'ur' ? 'ur' : 'en';
+      p.locale = p.locale === 'ur' || p.locale === 'rui' ? 'rui' : 'en';
       if (p.theme && !VALID_THEMES[p.theme]) p.theme = null;
       p.v = 8; changed = true;
+    }
+    if (version < 9) {
+      p.mapPace = p.mapPace === 'still' || p.mapPace === 'live' ? p.mapPace : DEFAULT.mapPace;
+      p.resetItems = Array.isArray(p.resetItems) ? p.resetItems : [];
+      p.resetDone = p.resetDone && typeof p.resetDone === 'object' && !Array.isArray(p.resetDone) ? p.resetDone : {};
+      p.parkedThoughts = Array.isArray(p.parkedThoughts) ? p.parkedThoughts : [];
+      p.reflectionPrefs = Object.assign(clone(DEFAULT.reflectionPrefs), p.reflectionPrefs || {});
+      p.pendingReflection = p.pendingReflection && typeof p.pendingReflection === 'object' ? p.pendingReflection : null;
+      p.emotionFavorites = Array.isArray(p.emotionFavorites) ? p.emotionFavorites : [];
+      p.principles = Array.isArray(p.principles) ? p.principles : [];
+      if (p.locale === 'ur') p.locale = 'rui';
+      p.v = 9; changed = true;
     }
     return { value: p, changed: changed };
   }
@@ -184,11 +210,11 @@
       if (state.theme && VALID_THEMES[state.theme]) localStorage.setItem('soulcap_theme', state.theme);
       else localStorage.removeItem('soulcap_theme');
       localStorage.setItem('soulcap_appearance', JSON.stringify(appearance));
-      localStorage.setItem('soulcap_locale', state.locale === 'ur' ? 'ur' : 'en');
+      localStorage.setItem('soulcap_locale', state.locale === 'rui' ? 'rui' : 'en');
     } catch (e) {}
   }
   function t(path) {
-    var pack = STRINGS[state.locale === 'ur' ? 'ur' : 'en'] || STRINGS.en;
+    var pack = STRINGS[state.locale === 'rui' ? 'rui' : 'en'] || STRINGS.en;
     var parts = path.split('.');
     var cur = pack, i;
     for (i = 0; i < parts.length; i++) {
@@ -198,7 +224,7 @@
     return typeof cur === 'string' ? cur : path;
   }
   function applyLocale() {
-    var locale = state.locale === 'ur' ? 'ur' : 'en';
+    var locale = state.locale === 'rui' ? 'rui' : 'en';
     var meta = LOCALE_OPTIONS.filter(function (o) { return o.k === locale; })[0] || LOCALE_OPTIONS[0];
     document.documentElement.setAttribute('lang', locale);
     document.documentElement.setAttribute('dir', meta.dir);
@@ -212,7 +238,7 @@
   }
   function setLocale(next) {
     var before = state.locale;
-    state.locale = next === 'ur' ? 'ur' : 'en';
+    state.locale = next === 'rui' ? 'rui' : 'en';
     if (!save()) { state.locale = before; showPreferenceSaveFailed(); return; }
     applyTheme(); reRender();
   }
@@ -449,6 +475,10 @@
       var feeling = el('input', { type: 'text', maxlength: 160, placeholder: CHECKIN_UI.feelingPlaceholder,
         'aria-label': CHECKIN_UI.feeling, value: draftCheckin.feeling || '' });
       p.appendChild(feeling);
+      p.appendChild(buildEmotionChips(draftCheckin.feeling, function (word) {
+        draftCheckin.feeling = word;
+        feeling.value = word;
+      }));
       p.appendChild(el('p', { class: 'p-sm', text: CHECKIN_UI.localSafetyNote }));
       p.appendChild(el('button', { class: 'btn', text: CHECKIN_UI.save, onclick: function () {
         var before = clone(state.checkins);
@@ -570,6 +600,119 @@
     var item = CHECKIN_TRIGGERS.filter(function (trigger) { return trigger.key === key; })[0];
     return item ? item.label : key;
   }
+  function patternConfidenceLabel(count) {
+    if (count >= 15) return 'High confidence';
+    if (count >= 8) return 'Medium confidence';
+    if (count >= 3) return 'Low confidence';
+    return '';
+  }
+  function effectiveMapPace() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'still';
+    return state.mapPace === 'still' || state.mapPace === 'live' ? state.mapPace : 'drift';
+  }
+  function mapRevPeriod(pace) {
+    if (pace === 'live') return 20;
+    if (pace === 'drift') return 45;
+    return 0;
+  }
+  function maybeQueueReflection(trigger) {
+    if (state.reflectionPrefs.dismissedForever) return;
+    if (state.pendingReflection) return;
+    var now = Date.now();
+    if (state.reflectionPrefs.lastShown && now - state.reflectionPrefs.lastShown < 3 * 86400000) return;
+    state.pendingReflection = { trigger: trigger, t: now };
+    save();
+  }
+  function resetDayKey() { return localDayKey(Date.now()); }
+  function enabledResetItems() {
+    return state.resetItems.filter(function (item) { return item && item.enabled !== false; });
+  }
+  function toggleResetDone(id) {
+    var before = clone(state.resetDone);
+    var key = resetDayKey();
+    var done = Array.isArray(state.resetDone[key]) ? state.resetDone[key].slice() : [];
+    var i = done.indexOf(id);
+    if (i === -1) done.push(id); else done.splice(i, 1);
+    if (done.length) state.resetDone[key] = done; else delete state.resetDone[key];
+    if (!save()) { state.resetDone = before; showPreferenceSaveFailed(); return; }
+    buzz(8); reRender();
+  }
+  function dueParkedThoughts() {
+    var now = Date.now();
+    return state.parkedThoughts.filter(function (item) {
+      return item && !item.archived && item.reopenAfter && item.reopenAfter <= now;
+    });
+  }
+  function parkReopenAfter(preset) {
+    var d = new Date();
+    if (preset === 'tomorrow') { d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); }
+    else if (preset === 'weekend') {
+      var day = d.getDay(), add = day === 6 ? 7 : day === 0 ? 7 : (6 - day);
+      d.setDate(d.getDate() + add); d.setHours(10, 0, 0, 0);
+    } else { d.setDate(d.getDate() + 7); d.setHours(9, 0, 0, 0); }
+    return d.getTime();
+  }
+  function archiveParkedThought(id) {
+    var item = state.parkedThoughts.filter(function (x) { return x.id === id; })[0];
+    if (!item) return;
+    item.archived = true;
+    save();
+    maybeQueueReflection('park');
+    render();
+  }
+  function emotionWordList(query) {
+    var q = (query || '').trim().toLowerCase();
+    var fav = state.emotionFavorites || [];
+    var rest = EMOTION_WORDS.filter(function (w) { return fav.indexOf(w) === -1; });
+    var list = fav.concat(rest);
+    if (!q) return list;
+    return list.filter(function (w) { return w.toLowerCase().indexOf(q) !== -1; });
+  }
+  function toggleEmotionFavorite(word) {
+    var i = state.emotionFavorites.indexOf(word);
+    if (i === -1) state.emotionFavorites.push(word); else state.emotionFavorites.splice(i, 1);
+    save();
+  }
+  function buildEmotionChips(current, onPick) {
+    var query = '';
+    var search = el('input', { type: 'search', placeholder: 'Search feelings…', 'aria-label': 'Search feelings' });
+    var wrap = el('div', { class: 'chips emotion-chips' });
+    function draw() {
+      clear(wrap);
+      emotionWordList(query).slice(0, 16).forEach(function (word) {
+        wrap.appendChild(el('button', { class: 'chip', 'aria-pressed': current === word ? 'true' : 'false', text: word,
+          onclick: function () {
+            var next = current === word ? '' : word;
+            if (next) {
+              var fi = state.emotionFavorites.indexOf(next);
+              if (fi !== -1) state.emotionFavorites.splice(fi, 1);
+              state.emotionFavorites.unshift(next);
+              if (state.emotionFavorites.length > 8) state.emotionFavorites.length = 8;
+              save();
+            }
+            onPick(next); draw();
+          } }));
+      });
+    }
+    search.addEventListener('input', function () { query = search.value; draw(); });
+    draw();
+    return el('div', {}, [search, wrap]);
+  }
+  function weekTimelineDays(offset) {
+    offset = offset || 0;
+    var days = [], start = new Date();
+    start.setHours(12, 0, 0, 0);
+    start.setDate(start.getDate() - 6 + offset * 7);
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(start);
+      d.setDate(start.getDate() + i);
+      var key = localDayKey(d.getTime());
+      var checkins = state.checkins.filter(function (c) { return localDayKey(c.t) === key; });
+      var journals = state.journal.filter(function (e) { return localDayKey(e.t) === key; });
+      days.push({ key: key, t: d.getTime(), checkins: checkins, journals: journals });
+    }
+    return days;
+  }
   function derivePatterns() {
     if (!state.patternPrefs.enabled) return [];
     var patterns = [], checkins = state.checkins || [];
@@ -617,13 +760,15 @@
     var before = clone(state.patternPrefs.decisions);
     state.patternPrefs.decisions[id] = decision;
     if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
+    if (decision === 'confirmed') maybeQueueReflection('pattern');
     render();
   }
   function patternSheet(pattern) {
     openSheet(function (p) {
       p.appendChild(el('h2', { class: 'h-sec', text: pattern.title }));
       p.appendChild(el('p', { class: 'p', text: pattern.summary }));
-      p.appendChild(el('p', { class: 'eyebrow', text: pattern.count + ' ' + PATTERN_UI.dayBasis }));
+      var conf = patternConfidenceLabel(pattern.count);
+      p.appendChild(el('p', { class: 'meta', text: pattern.count + ' ' + PATTERN_UI.dayBasis + (conf ? ' · ' + conf : '') }));
       var dates = {};
       pattern.dates.forEach(function (t) { dates[localDayKey(t)] = t; });
       Object.keys(dates).sort().reverse().forEach(function (key) {
@@ -1070,6 +1215,7 @@
   }
   function openSheet(build) {
     if (!$('#sheet').classList.contains('on')) sheetOpener = document.activeElement;
+    if (mapState) mapState.sheetPause = true;
     var panel = $('#sheetPanel'); clear(panel);
     panel.appendChild(el('div', { class: 'grab' }));
     build(panel);
@@ -1089,6 +1235,8 @@
   }
   function closeSheet() {
     coverImageRequest++;
+    clearMapFocus();
+    if (mapState) mapState.sheetPause = false;
     $('#sheet').classList.remove('on'); $('#sheet').setAttribute('aria-hidden', 'true');
     setSheetBackgroundInert(false);
     document.body.style.overflow = '';
@@ -1260,6 +1408,243 @@
       ]));
     });
   }
+  function resetMenuSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: RESET_UI.title }));
+      p.appendChild(el('p', { class: 'p-sm', text: RESET_UI.intro }));
+      var items = enabledResetItems();
+      var key = resetDayKey();
+      var done = Array.isArray(state.resetDone[key]) ? state.resetDone[key] : [];
+      if (!items.length) p.appendChild(el('div', { class: 'notice', text: RESET_UI.empty }));
+      items.forEach(function (item) {
+        var complete = done.indexOf(item.id) !== -1;
+        p.appendChild(el('div', { class: 'reset-row card' }, [
+          el('h3', { class: 'card-title', text: item.title }),
+          item.notes ? el('p', { class: 'p-sm', text: item.notes }) : null,
+          el('button', { class: 'btn ghost', 'aria-pressed': complete ? 'true' : 'false',
+            text: complete ? RESET_UI.done : RESET_UI.notDone, onclick: function () { toggleResetDone(item.id); closeSheet(); resetMenuSheet(); } })
+        ]));
+      });
+      p.appendChild(el('button', { class: 'btn ghost', text: RESET_UI.edit, onclick: resetEditSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: RESET_UI.back, onclick: closeSheet }));
+    });
+  }
+  function resetEditSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: RESET_UI.edit }));
+      state.resetItems.forEach(function (item, idx) {
+        p.appendChild(el('div', { class: 'reset-row card' }, [
+          el('p', { class: 'eyebrow', text: RESET_UI.titleLabel }),
+          el('input', { type: 'text', value: item.title, 'aria-label': RESET_UI.titleLabel,
+            onchange: function (e) { item.title = e.target.value.trim().slice(0, 60); save(); } }),
+          el('p', { class: 'eyebrow', text: RESET_UI.notesLabel }),
+          el('input', { type: 'text', value: item.notes || '', 'aria-label': RESET_UI.notesLabel,
+            onchange: function (e) { item.notes = e.target.value.trim().slice(0, 120); save(); } }),
+          el('button', { class: 'btn quiet', text: RESET_UI.remove, onclick: function () {
+            state.resetItems.splice(idx, 1); save(); closeSheet(); resetEditSheet();
+          } })
+        ]));
+      });
+      p.appendChild(el('button', { class: 'btn ghost', text: RESET_UI.add, onclick: function () {
+        state.resetItems.push({ id: uid(), title: 'One small reset', notes: '', enabled: true });
+        save(); closeSheet(); resetEditSheet();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: RESET_UI.back, onclick: resetMenuSheet }));
+    });
+  }
+  function parkThoughtSheet(existingId) {
+    var draft = existingId ? clone(state.parkedThoughts.filter(function (x) { return x.id === existingId; })[0] || {}) : { title: '', body: '', preset: 'tomorrow' };
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: PARK_UI.title }));
+      p.appendChild(el('p', { class: 'p-sm', text: PARK_UI.hint }));
+      var title = el('input', { type: 'text', maxlength: '80', placeholder: PARK_UI.titleLabel, 'aria-label': PARK_UI.titleLabel, value: draft.title || '' });
+      var body = el('textarea', { placeholder: PARK_UI.bodyLabel, 'aria-label': PARK_UI.bodyLabel, style: 'min-height:90px' });
+      body.value = draft.body || '';
+      var preset = draft.preset || 'tomorrow';
+      p.appendChild(el('p', { class: 'eyebrow', text: PARK_UI.titleLabel })); p.appendChild(title);
+      p.appendChild(el('p', { class: 'eyebrow', text: PARK_UI.bodyLabel })); p.appendChild(body);
+      p.appendChild(el('p', { class: 'eyebrow', text: PARK_UI.whenLabel }));
+      var chips = el('div', { class: 'chips' });
+      [['tomorrow', PARK_UI.tomorrow], ['weekend', PARK_UI.weekend], ['week', PARK_UI.week]].forEach(function (pair) {
+        chips.appendChild(el('button', { class: 'chip', 'aria-pressed': preset === pair[0] ? 'true' : 'false', text: pair[1],
+          onclick: function () {
+            preset = pair[0];
+            Array.prototype.forEach.call(chips.children, function (b) { b.setAttribute('aria-pressed', b.textContent === pair[1] ? 'true' : 'false'); });
+          } }));
+      });
+      p.appendChild(chips);
+      p.appendChild(el('button', { class: 'btn', text: PARK_UI.save, onclick: function () {
+        var t = title.value.trim();
+        if (!t) { title.focus(); return; }
+        var entry = { id: existingId || uid(), title: t.slice(0, 80), body: body.value.trim().slice(0, 500),
+          created: Date.now(), reopenAfter: parkReopenAfter(preset), archived: false, preset: preset };
+        if (existingId) {
+          state.parkedThoughts = state.parkedThoughts.map(function (x) { return x.id === existingId ? entry : x; });
+        } else state.parkedThoughts.push(entry);
+        save(); closeSheet(); render();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: PARK_UI.cancel, onclick: closeSheet }));
+    });
+  }
+  var timelineOffset = 0;
+  function timelineSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: TIMELINE_UI.title }));
+      var days = weekTimelineDays(timelineOffset);
+      var any = days.some(function (d) { return d.checkins.length || d.journals.length; });
+      if (!any) p.appendChild(el('p', { class: 'p-voice', text: TIMELINE_UI.empty }));
+      days.forEach(function (day) {
+        if (!day.checkins.length && !day.journals.length) return;
+        var block = el('div', { class: 'timeline-day card' }, [
+          el('p', { class: 'eyebrow', text: new Date(day.t).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short' }) })
+        ]);
+        day.checkins.forEach(function (c) {
+          var need = c.need ? (CHECKIN_DIRECT_NEEDS.filter(function (n) { return n.key === c.need; })[0] || {}).label : '';
+          block.appendChild(el('p', { class: 'p-sm', text: TIMELINE_UI.checkin + ': ' + c.state + (need ? ' · ' + need : '') + (c.feeling ? ' · ' + c.feeling : '') }));
+        });
+        day.journals.forEach(function (e) {
+          block.appendChild(el('p', { class: 'p-sm', text: TIMELINE_UI.journal + ': ' + (e.title || 'Untitled') }));
+        });
+        p.appendChild(block);
+      });
+      p.appendChild(el('div', { class: 'chips' }, [
+        el('button', { class: 'chip', text: TIMELINE_UI.prev, onclick: function () { timelineOffset--; closeSheet(); timelineSheet(); } }),
+        el('button', { class: 'chip', text: TIMELINE_UI.next, onclick: function () { timelineOffset++; closeSheet(); timelineSheet(); } })
+      ]));
+      p.appendChild(el('button', { class: 'btn quiet', text: TIMELINE_UI.close, onclick: closeSheet }));
+    });
+  }
+  function reflectionAnswerSheet() {
+    if (!state.pendingReflection) return;
+    var trigger = state.pendingReflection.trigger;
+    var prompt = REFLECTION_PROMPTS[trigger] || REFLECTION_PROMPTS.journal;
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: REFLECTION_UI.cardTitle }));
+      p.appendChild(el('p', { class: 'p-voice', text: prompt }));
+      var note = el('textarea', { placeholder: REFLECTION_UI.placeholder, 'aria-label': REFLECTION_UI.placeholder, style: 'min-height:90px' });
+      p.appendChild(note);
+      p.appendChild(el('button', { class: 'btn', text: REFLECTION_UI.save, onclick: function () {
+        var text = note.value.trim();
+        if (text) {
+          state.journal.push({ id: uid(), t: Date.now(), title: 'Reflection', body: text, mood: '', photos: [], decor: '' });
+        }
+        state.reflectionPrefs.lastShown = Date.now();
+        state.pendingReflection = null;
+        save(); closeSheet(); render();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: REFLECTION_UI.cancel, onclick: closeSheet }));
+    });
+  }
+  function skipReflection() {
+    state.reflectionPrefs.lastShown = Date.now();
+    state.pendingReflection = null;
+    save(); render();
+  }
+  function dismissReflectionForever() {
+    state.reflectionPrefs.dismissedForever = true;
+    state.reflectionPrefs.lastShown = Date.now();
+    state.pendingReflection = null;
+    save(); render();
+  }
+  function settingsSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: 'Settings' }));
+      settingsGroup(p, 'Appearance', [
+        settingChips(THEME_OPTIONS,
+          function (o) { return state.theme === o.k; }, function (o) { setTheme(o.k); }),
+        el('p', { class: 'p-sm', text: 'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.' }),
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: LOCALE_UI.language }),
+        settingChips(LOCALE_OPTIONS,
+          function (o) { return state.locale === o.k; }, function (o) { setLocale(o.k); }),
+        el('p', { class: 'p-sm', text: state.locale === 'rui' ? LOCALE_UI.reviewPending : LOCALE_UI.previewNote }),
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.accent }),
+        settingChips(ACCENT_OPTIONS,
+          function (o) { return state.appearance.accent === o.k; }, function (o) { setAppearance('accent', o.k); }),
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.text }),
+        settingChips(TEXT_OPTIONS,
+          function (o) { return state.appearance.text === o.k; }, function (o) { setAppearance('text', o.k); }),
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.density }),
+        settingChips(DENSITY_OPTIONS,
+          function (o) { return state.appearance.density === o.k; }, function (o) { setAppearance('density', o.k); }),
+        el('div', { class: 'stack' }, [
+          toggleBtn(PRESENTATION_UI.contrast, state.appearance.contrast === 'high', function () { setAppearance('contrast', state.appearance.contrast === 'high' ? 'standard' : 'high'); }),
+          toggleBtn(PRESENTATION_UI.transparency, state.appearance.reduceTransparency, function () { setAppearance('reduceTransparency', !state.appearance.reduceTransparency); })
+        ])
+      ]);
+      settingsGroup(p, 'Personalisation', [
+        toggleBtn(PRESENTATION_UI.patternLearning, state.patternPrefs.enabled, function () {
+          var before = state.patternPrefs.enabled;
+          state.patternPrefs.enabled = !state.patternPrefs.enabled;
+          if (!save()) { state.patternPrefs.enabled = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        }),
+        el('p', { class: 'p-sm', text: state.patternPrefs.enabled ? PRESENTATION_UI.patternHint : PATTERN_UI.disabled }),
+        Object.keys(state.patternPrefs.decisions).length ? el('button', { class: 'btn ghost', text: PATTERN_UI.reset, onclick: function () {
+          var before = clone(state.patternPrefs.decisions);
+          state.patternPrefs.decisions = {};
+          if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        } }) : null
+      ]);
+      settingsGroup(p, 'Guided exercises', [
+        el('div', { class: 'stack' }, [
+          toggleBtn('Spoken guidance', state.voice.on, function () {
+            var before = state.voice.on; state.voice.on = !state.voice.on;
+            if (!save()) { state.voice.on = before; showPreferenceSaveFailed(); return; }
+            reRender();
+          }),
+          state.voice.on ? el('button', { class: 'btn ghost', text: 'Voice & accent', onclick: voiceSheet }) : null,
+          toggleBtn('Vibration', state.haptics, function () {
+            var before = state.haptics; state.haptics = !state.haptics;
+            if (!save()) { state.haptics = before; showPreferenceSaveFailed(); return; }
+            buzz(14); reRender();
+          })
+        ]),
+        el('p', { class: 'eyebrow', style: 'margin-top:12px', text: 'Exercise pace' }),
+        settingChips([{ v: 1.35, l: 'Slow' }, { v: 1, l: 'Steady' }, { v: 0.8, l: 'Brisk' }],
+          function (o) { return (state.pace || 1) === o.v; }, function (o) {
+            var before = state.pace; state.pace = o.v;
+            if (!save()) { state.pace = before; showPreferenceSaveFailed(); return; }
+            reRender();
+          }),
+        el('p', { class: 'p-sm', text: 'How long each step of a guided exercise stays on screen. Slow gives more time to read.' })
+      ]);
+      settingsGroup(p, 'Constellation', [
+        el('p', { class: 'eyebrow', text: 'Map pace' }),
+        settingChips(MAP_PACE_OPTIONS,
+          function (o) { return state.mapPace === o.k; }, function (o) {
+            var before = state.mapPace; state.mapPace = o.k;
+            if (!save()) { state.mapPace = before; showPreferenceSaveFailed(); return; }
+            reRender();
+          }),
+        el('p', { class: 'p-sm', text: 'Still keeps the map fixed. Drift is gentle. Live moves faster. Reduced-motion always uses Still.' }),
+        el('div', { class: 'stack' }, [
+          toggleBtn('Show links between people', state.showLinks, function () {
+            var before = state.showLinks; state.showLinks = !state.showLinks;
+            if (!save()) { state.showLinks = before; showPreferenceSaveFailed(); return; }
+            reRender();
+          }),
+          toggleBtn('Track when we last spoke', state.trackContact, function () {
+            var before = state.trackContact; state.trackContact = !state.trackContact;
+            if (!save()) { state.trackContact = before; showPreferenceSaveFailed(); return; }
+            reRender();
+          })
+        ]),
+        el('p', { class: 'p-sm', text: 'Both off by default. Contact tracking only ever shows you the number — it will never tell you to reach out to anyone.' })
+      ]);
+      settingsGroup(p, 'Your data', [
+        el('div', { class: 'stack' }, [
+          el('button', { class: 'btn ghost', text: 'Export everything', onclick: exportData }),
+          el('button', { class: 'btn danger', text: 'Delete everything, permanently', onclick: confirmDelete })
+        ])
+      ]);
+      settingsGroup(p, 'About', [
+        el('p', { class: 'p-sm', text: 'SoulCap · v' + APP_VERSION }),
+        el('div', { class: 'notice', html: '<b>SoulCap is not therapy</b>, not a doctor, and not a crisis service. Nothing you write leaves this device. There is no account and no server.' })
+      ]);
+      p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
+    });
+  }
   function renderCalm() {
     var v = $('#view-calm'); clear(v);
     var title = calm.browse ? 'Every technique.' : calm.section === 'library' ? LIBRARY_UI.title : calm.section === 'supports' ? SUPPORT_UI.title : 'What do you need\nright now?';
@@ -1288,6 +1673,10 @@
 
     if (!calm.need) {
       v.appendChild(el('div', { class:'calm-tools' }, [
+        el('button', { class:'card tap calm-tool reset-card', onclick: resetMenuSheet }, [
+          el('h2', { class:'card-title', text: RESET_UI.title }),
+          el('p', { class:'p-sm', text: RESET_UI.homeHint })
+        ]),
         el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'library'; calm.browse = false; render(); } }, [
           el('h2', { class:'card-title', text:LIBRARY_UI.title }),
           el('p', { class:'p-sm', text:LIBRARY_UI.homeHint })
@@ -1394,6 +1783,24 @@
     ]);
     v.appendChild(cover);
     v.appendChild(el('button', { class: 'btn', text: '＋  New entry', onclick: newEntrySheet }));
+    v.appendChild(el('button', { class: 'btn ghost', text: PARK_UI.button, onclick: function () { parkThoughtSheet(); } }));
+
+    var due = dueParkedThoughts();
+    if (due.length) {
+      v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PARK_UI.dueHeading }));
+      due.forEach(function (item) {
+        v.appendChild(el('div', { class: 'park-card card' }, [
+          el('h2', { class: 'card-title', text: item.title }),
+          item.body ? el('p', { class: 'p-sm', text: item.body }) : null,
+          el('div', { class: 'chips' }, [
+            el('button', { class: 'chip', text: PARK_UI.archive, onclick: function () { archiveParkedThought(item.id); } }),
+            el('button', { class: 'chip', text: PARK_UI.dismiss, onclick: function () {
+              item.reopenAfter = Date.now() + 86400000; save(); render();
+            } })
+          ])
+        ]));
+      });
+    }
 
     if (!state.journal.length) {
       v.appendChild(el('div', { class: 'card' }, [
@@ -1576,6 +1983,15 @@
       moodWrap.appendChild(el('button', { text: m, 'aria-label': 'Mood ' + m, 'aria-pressed': draft.mood === m ? 'true' : 'false',
         onclick: function () { draft.mood = draft.mood === m ? '' : m; Array.prototype.forEach.call(moodWrap.children, function (b) { b.setAttribute('aria-pressed', b.textContent === draft.mood ? 'true' : 'false'); }); } }));
     });
+    var moodParent = $('#jeMoodWrap').parentNode;
+    var oldEmo = moodParent.querySelector('.je-emotion-wrap');
+    if (oldEmo) oldEmo.parentNode.removeChild(oldEmo);
+    var emoWrap = el('div', { class: 'je-emotion-wrap' });
+    emoWrap.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CHECKIN_UI.feeling }));
+    emoWrap.appendChild(buildEmotionChips(draft.feelingWord || '', function (word) {
+      draft.feelingWord = word;
+    }));
+    moodParent.insertBefore(emoWrap, $('#jeMoodWrap').nextSibling);
     renderDraftPhotos();
 
     // Delete control only for existing entries.
@@ -1613,6 +2029,9 @@
     stopJournalRecognition(false);
     draft.title = $('#jeTitle').value.trim();
     draft.body = $('#jeBody').value.trim();
+    if (draft.feelingWord && draft.body.indexOf(draft.feelingWord) === -1) {
+      draft.body = (draft.body ? draft.body + '\n\n' : '') + draft.feelingWord;
+    }
     if (!draft.title && !draft.body && !draft.photos.length) { closeEditor(); return; } // nothing to save
     var previous = null;
     var index = -1;
@@ -1633,6 +2052,7 @@
       return;
     }
     closeEditor(); render();
+    if (isNew) maybeQueueReflection('journal');
   }
   // Down-scale before storing — full-res photos would blow the ~5MB local limit fast.
   function scaleImageFile(file, done) {
@@ -1841,6 +2261,18 @@
   // the "names flying away, not rotating" bug.
   var mapState = null;
   function stopMap() { if (mapState && mapState.raf) cancelAnimationFrame(mapState.raf); mapState = null; }
+  function clearMapFocus() {
+    if (!mapState || !mapState.svg) return;
+    Array.prototype.forEach.call(mapState.svg.querySelectorAll('.map-focus-glow'), function (node) {
+      node.classList.remove('map-focus-glow');
+    });
+  }
+  function setMapFocus(personId) {
+    clearMapFocus();
+    if (!mapState || !personId) return;
+    var rec = mapState.nodes.filter(function (n) { return n.p.id === personId; })[0];
+    if (rec) rec.el.classList.add('map-focus-glow');
+  }
 
   function drawMap() {
     stopMap();
@@ -1901,7 +2333,7 @@
     svg.appendChild(s('circle', { class: 'sun', cx: 200, cy: 200, r: 31, fill: 'var(--accent)' }));
     var you = s('text', { class: 'sun-lab', x: 200, y: 205 }); you.textContent = 'You'; svg.appendChild(you);
 
-    mapState = { svg: svg, nodes: nodes, edges: edges, raf: null, last: 0, dragging: false, reduced: reduced, nr: nr };
+    mapState = { svg: svg, nodes: nodes, edges: edges, raf: null, last: 0, dragging: false, reduced: reduced, nr: nr, sheetPause: false, inertia: null, sampleNode: nodes[0] || null };
     nodes.forEach(function (rec) { attachNodeDrag(rec); });
     attachMapPinch(svg);
     positionAll();
@@ -1926,9 +2358,24 @@
     if (!mapState) return;
     if (!mapState.last) mapState.last = ts;
     var dt = (ts - mapState.last) / 1000; mapState.last = ts;
-    if (!mapState.dragging && !mapState.reduced) {
-      var d = dt * (2 * Math.PI / 150); // one revolution every 2.5 minutes
-      mapState.nodes.forEach(function (n) { n.ang += d; });
+    var paused = mapState.sheetPause || ($('#sheet') && $('#sheet').classList.contains('on'));
+    if (!mapState.dragging && !mapState.reduced && !paused) {
+      if (mapState.inertia) {
+        var elapsed = ts - mapState.inertia.start;
+        if (elapsed >= 700) mapState.inertia = null;
+        else {
+          var decay = 1 - elapsed / 700;
+          mapState.inertia.rec.ang += mapState.inertia.velocity * dt * decay;
+        }
+      }
+      if (!mapState.inertia) {
+        var pace = effectiveMapPace();
+        var period = mapRevPeriod(pace);
+        if (period > 0) {
+          var d = dt * (2 * Math.PI / period);
+          mapState.nodes.forEach(function (n) { n.ang += d; });
+        }
+      }
     }
     positionAll();
     mapState.raf = requestAnimationFrame(frame);
@@ -2019,7 +2466,8 @@
     function nearest(vx, vy) { var d = Math.hypot(vx - 200, vy - 200), rings = ringDefs(), best = rings[0], bd = Infinity; rings.forEach(function (r) { var dd = Math.abs(r.r - d); if (dd < bd) { bd = dd; best = r; } }); return best; }
     function highlight(key) { Array.prototype.forEach.call(svg.querySelectorAll('.orbit'), function (o) { o.classList.toggle('drop', o.getAttribute('data-key') === key); }); }
     node.addEventListener('pointerdown', function (e) {
-      e.preventDefault(); drag = { moved: false, x: e.clientX, y: e.clientY };
+      e.preventDefault(); drag = { moved: false, x: e.clientX, y: e.clientY, startAng: rec.ang, startTime: Date.now() };
+      mapState.inertia = null;
       node.classList.add('dragging'); mapState.dragging = true;
       try { node.setPointerCapture(e.pointerId); } catch (_) {}
     });
@@ -2038,6 +2486,11 @@
       if (wasDrag) {
         var v = toVB(e.clientX, e.clientY), ring = nearest(v.x, v.y);
         p.ring = ring.key; rec.r = ring.r; save(); buzz(12); positionAll();
+        var angDelta = rec.ang - drag.startAng;
+        var timeDelta = (Date.now() - drag.startTime) / 1000;
+        if (timeDelta > 0.05 && Math.abs(angDelta) > 0.02) {
+          mapState.inertia = { rec: rec, velocity: angDelta / timeDelta, start: performance.now() };
+        }
       } else personSheet(p.id);
       drag = null;
     }
@@ -2055,6 +2508,7 @@
   }
   function personSheet(id) {
     var p = state.people.filter(function (x) { return x.id === id; })[0]; if (!p) return;
+    setMapFocus(id);
     openSheet(function (panel) {
       panel.appendChild(el('h2', { class: 'h-sec', text: p.name }));
       panel.appendChild(el('p', { class: 'eyebrow', text: typeMeta(p.type).label }));
@@ -2128,7 +2582,7 @@
         } });
       }))]));
       v.appendChild(el('button', { class: 'btn ghost', text: 'Name the rings', onclick: ringNameSheet }));
-      v.appendChild(el('p', { class: 'p-sm', text: 'Pinch the map to add or remove a ring (3–7). Long-press a ring label to rename. Drag anyone in or out. Tap a person to open them.' }));
+      v.appendChild(el('p', { class: 'p-sm', text: 'Pinch the map to add or remove a ring (3–7). Long-press a ring label to rename. Drag anyone in or out. Tap a person to open them. Change map pace in Settings.' }));
       if (state.trackContact) {
         v.appendChild(el('p', { class: 'p-sm', text: 'Larger dots reflect how often you’ve logged speaking lately — not how important anyone is.' }));
       }
@@ -2182,16 +2636,35 @@
   }
 
   /* ── Now ───────────────────────────────────────────────────────────────── */
-  function greeting() {
-    var h = new Date().getHours(), name = (state.profile.name || '').trim();
-    var g = h < 5 ? 'It’s late' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  function greetingForHour(h) {
+    var name = (state.profile.name || '').trim();
+    var g = h < 6 ? 'It’s late' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
     return name ? g + ', ' + name + '.' : g + '.';
+  }
+  function greeting() {
+    return greetingForHour(new Date().getHours());
   }
   function renderNow() {
     var v = $('#view-now'); clear(v);
     v.appendChild(el('div', {}, [
       el('p', { class: 'eyebrow', text: new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' }) }),
       el('h1', { class: 'h-voice', text: greeting() })
+    ]));
+    if (state.pendingReflection && !state.reflectionPrefs.dismissedForever) {
+      var pr = REFLECTION_PROMPTS[state.pendingReflection.trigger] || REFLECTION_PROMPTS.journal;
+      v.appendChild(el('div', { class: 'card' }, [
+        el('h2', { class: 'card-title', text: REFLECTION_UI.cardTitle }),
+        el('p', { class: 'p-sm', text: pr }),
+        el('button', { class: 'btn', text: REFLECTION_UI.answer, onclick: reflectionAnswerSheet }),
+        el('div', { class: 'chips', style: 'margin-top:8px' }, [
+          el('button', { class: 'chip', text: REFLECTION_UI.skip, onclick: skipReflection }),
+          el('button', { class: 'chip', text: REFLECTION_UI.dismiss, onclick: dismissReflectionForever })
+        ])
+      ]));
+    }
+    v.appendChild(el('button', { class: 'card tap', onclick: timelineSheet }, [
+      el('h2', { class: 'card-title', text: TIMELINE_UI.title }),
+      el('p', { class: 'p-sm', text: TIMELINE_UI.cardHint })
     ]));
     var states = ['Steady', 'Wired', 'Flat', 'Heavy', 'Not sure'];
     var rc = todayCheckin(), today = rc ? rc.state : null;
@@ -2384,7 +2857,7 @@
       rows.appendChild(el('div', { class: 'row pattern-row' }, [
         el('div', {}, [
           el('div', { class: 'lab', text: pattern.title }),
-          el('div', { class: 'sub', text: pattern.summary + ' Based on ' + pattern.count + ' ' + PATTERN_UI.dayBasis + '.' }),
+          el('div', { class: 'sub', text: pattern.summary + ' Based on ' + pattern.count + ' ' + PATTERN_UI.dayBasis + '.' + (patternConfidenceLabel(pattern.count) ? ' ' + patternConfidenceLabel(pattern.count) + '.' : '') }),
           el('div', { class: 'chips pattern-actions' }, actions)
         ]),
         el('span', { class: decision === 'confirmed' ? 'tier declared' : 'tier guess', text: decision === 'confirmed' ? PATTERN_UI.confirmed : PATTERN_UI.guess })
@@ -2392,95 +2865,48 @@
     });
     if (any) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:6px', text: 'What SoulCap knows' })); v.appendChild(rows); }
 
-    // Settings — grouped
-    v.appendChild(el('hr', { class: 'sep' }));
-    settingsGroup(v, 'Appearance', [
-      settingChips(THEME_OPTIONS,
-        function (o) { return state.theme === o.k; }, function (o) { setTheme(o.k); }),
-      el('p', { class: 'p-sm', text: 'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.' }),
-      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: LOCALE_UI.language }),
-      settingChips(LOCALE_OPTIONS,
-        function (o) { return state.locale === o.k; }, function (o) { setLocale(o.k); }),
-      el('p', { class: 'p-sm', text: state.locale === 'ur' ? LOCALE_UI.reviewPending : LOCALE_UI.previewNote }),
-      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.accent }),
-      settingChips(ACCENT_OPTIONS,
-        function (o) { return state.appearance.accent === o.k; }, function (o) { setAppearance('accent', o.k); }),
-      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.text }),
-      settingChips(TEXT_OPTIONS,
-        function (o) { return state.appearance.text === o.k; }, function (o) { setAppearance('text', o.k); }),
-      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.density }),
-      settingChips(DENSITY_OPTIONS,
-        function (o) { return state.appearance.density === o.k; }, function (o) { setAppearance('density', o.k); }),
-      el('div', { class: 'stack' }, [
-        toggleBtn(PRESENTATION_UI.contrast, state.appearance.contrast === 'high', function () { setAppearance('contrast', state.appearance.contrast === 'high' ? 'standard' : 'high'); }),
-        toggleBtn(PRESENTATION_UI.transparency, state.appearance.reduceTransparency, function () { setAppearance('reduceTransparency', !state.appearance.reduceTransparency); })
-      ])
-    ]);
-    settingsGroup(v, 'Personalisation', [
-      toggleBtn(PRESENTATION_UI.patternLearning, state.patternPrefs.enabled, function () {
-        var before = state.patternPrefs.enabled;
-        state.patternPrefs.enabled = !state.patternPrefs.enabled;
-        if (!save()) { state.patternPrefs.enabled = before; showPreferenceSaveFailed(); return; }
-        reRender();
-      }),
-      el('p', { class: 'p-sm', text: state.patternPrefs.enabled ? PRESENTATION_UI.patternHint : PATTERN_UI.disabled }),
-      Object.keys(state.patternPrefs.decisions).length ? el('button', { class: 'btn ghost', text: PATTERN_UI.reset, onclick: function () {
-        var before = clone(state.patternPrefs.decisions);
-        state.patternPrefs.decisions = {};
-        if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
-        reRender();
-      } }) : null
-    ]);
-    settingsGroup(v, 'Guided exercises', [
-      el('div', { class: 'stack' }, [
-        toggleBtn('Spoken guidance', state.voice.on, function () {
-          var before = state.voice.on; state.voice.on = !state.voice.on;
-          if (!save()) { state.voice.on = before; showPreferenceSaveFailed(); return; }
-          reRender();
-        }),
-        state.voice.on ? el('button', { class: 'btn ghost', text: 'Voice & accent', onclick: voiceSheet }) : null,
-        toggleBtn('Vibration', state.haptics, function () {
-          var before = state.haptics; state.haptics = !state.haptics;
-          if (!save()) { state.haptics = before; showPreferenceSaveFailed(); return; }
-          buzz(14); reRender();
-        })
-      ]),
-      el('p', { class: 'eyebrow', style: 'margin-top:12px', text: 'Exercise pace' }),
-      settingChips([{ v: 1.35, l: 'Slow' }, { v: 1, l: 'Steady' }, { v: 0.8, l: 'Brisk' }],
-        function (o) { return (state.pace || 1) === o.v; }, function (o) {
-          var before = state.pace; state.pace = o.v;
-          if (!save()) { state.pace = before; showPreferenceSaveFailed(); return; }
-          reRender();
-        }),
-      el('p', { class: 'p-sm', text: 'How long each step of a guided exercise stays on screen. Slow gives more time to read.' })
-    ]);
-    settingsGroup(v, 'Constellation extras', [
-      el('div', { class: 'stack' }, [
-        toggleBtn('Show links between people', state.showLinks, function () {
-          var before = state.showLinks; state.showLinks = !state.showLinks;
-          if (!save()) { state.showLinks = before; showPreferenceSaveFailed(); return; }
-          reRender();
-        }),
-        toggleBtn('Track when we last spoke', state.trackContact, function () {
-          var before = state.trackContact; state.trackContact = !state.trackContact;
-          if (!save()) { state.trackContact = before; showPreferenceSaveFailed(); return; }
-          reRender();
-        })
-      ]),
-      el('p', { class: 'p-sm', text: 'Both off by default. Contact tracking only ever shows you the number — it will never tell you to reach out to anyone.' })
-    ]);
-    settingsGroup(v, 'Your data', [
-      el('div', { class: 'stack' }, [
-        el('button', { class: 'btn ghost', text: 'Export everything', onclick: exportData }),
-        el('button', { class: 'btn danger', text: 'Delete everything, permanently', onclick: confirmDelete })
-      ])
-    ]);
+    v.appendChild(el('button', { class: 'card tap settings-card', onclick: settingsSheet }, [
+      el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: 'Settings' }), el('span', { class: 'pill', text: 'Open' })]),
+      el('p', { class: 'p-sm', text: 'Appearance, language, accessibility, constellation pace, guided exercises, and your data.' })
+    ]));
 
-    v.appendChild(el('div', { class: 'notice', html: '<b>SoulCap is not therapy</b>, not a doctor, and not a crisis service. Nothing you write leaves this device. There is no account and no server.' }));
-    v.appendChild(el('p', { class: 'p-sm', style: 'text-align:center', text: 'SoulCap · v' + APP_VERSION }));
+    v.appendChild(el('button', { class: 'card tap', onclick: timelineSheet }, [
+      el('h2', { class: 'card-title', text: TIMELINE_UI.title }),
+      el('p', { class: 'p-sm', text: TIMELINE_UI.cardHint })
+    ]));
+
+    v.appendChild(el('button', { class: 'card tap', onclick: principlesSheet }, [
+      el('h2', { class: 'card-title', text: PRINCIPLES_UI.title }),
+      el('p', { class: 'p-sm', text: state.principles.length ? state.principles.slice(0, 2).join(' · ') : PRINCIPLES_UI.cardHint })
+    ]));
+
     v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
   }
-  var APP_VERSION = '1.2.1';
+  function principlesSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: PRINCIPLES_UI.title }));
+      if (!state.principles.length) p.appendChild(el('p', { class: 'p-sm', text: PRINCIPLES_UI.empty }));
+      state.principles.forEach(function (line, idx) {
+        var inp = el('input', { type: 'text', value: line, 'aria-label': PRINCIPLES_UI.title });
+        inp.addEventListener('change', function () {
+          state.principles[idx] = inp.value.trim().slice(0, 120);
+          if (!state.principles[idx]) state.principles.splice(idx, 1);
+          save();
+        });
+        p.appendChild(el('div', { class: 'stack' }, [
+          inp,
+          el('button', { class: 'btn quiet', text: PRINCIPLES_UI.remove, onclick: function () {
+            state.principles.splice(idx, 1); save(); closeSheet(); principlesSheet();
+          } })
+        ]));
+      });
+      p.appendChild(el('button', { class: 'btn ghost', text: PRINCIPLES_UI.add, onclick: function () {
+        state.principles.push(''); save(); closeSheet(); principlesSheet();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
+    });
+  }
+  var APP_VERSION = '1.4.0';
   function settingsGroup(v, title, kids) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:14px', text: title })); kids.forEach(function (k) { if (k) v.appendChild(k); }); }
   function toggleBtn(label, on, fn) { return el('button', { class: 'btn ghost', style: 'display:flex;justify-content:space-between', onclick: fn, html: '<span>' + label + '</span><span style="color:var(--accent);font-weight:600">' + (on ? 'On' : 'Off') + '</span>' }); }
   function settingChips(opts, isOn, fn) { return el('div', { class: 'chips' }, opts.map(function (o) { return el('button', { class: 'chip', 'aria-pressed': isOn(o) ? 'true' : 'false', text: o.l, onclick: function () { fn(o); } }); })); }
@@ -2750,12 +3176,23 @@
   window.__soulcap = {
     assessRisk: assessRisk, suggestSkill: suggestSkill, suggestPerson: suggestPerson,
     getState: function () { return state; }, skillCount: SKILLS.length,
-    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.2.1',
+    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.4.0',
     nextDripQuestion: nextDripQuestion, estimateValue: estimateValue,
     answerDrip: answerDrip, skipDrip: skipDrip, correctEstimate: correctEstimate,
     clearEstimate: clearEstimate, setTheme: setTheme, setLocale: setLocale,
     setRingCount: setRingCount, contactScore: contactScore, logSpokeToday: logSpokeToday,
-    startSkill: startSkill // test hook
+    startSkill: startSkill, greetingForHour: greetingForHour, patternConfidenceLabel: patternConfidenceLabel,
+    setMapPace: function (pace) { state.mapPace = pace; save(); if (mapState) mapState.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; },
+    mapAngleSample: function (ms) {
+      if (!mapState || !mapState.sampleNode) return 0;
+      var start = mapState.sampleNode.ang;
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          resolve(mapState && mapState.sampleNode ? mapState.sampleNode.ang - start : 0);
+        }, ms || 500);
+      });
+    },
+    derivePatterns: derivePatterns, maybeQueueReflection: maybeQueueReflection
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
