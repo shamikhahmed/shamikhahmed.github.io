@@ -337,7 +337,84 @@ var STRINGS = {
     common:{
       close:'Close', cancel:'Cancel', done:'Done', save:'Save', delete:'Delete', edit:'Edit',
       add:'Add', open:'Open', back:'Back', next:'Next', skip:'Skip', confirm:'Confirm',
-      settings:'Settings', appearance:'Appearance', ok:'OK'
+      settings:'Settings', appearance:'Appearance', ok:'OK', on:'On', off:'Off', help:'Help'
+    },
+    welcome:{
+      title:'A quiet place to steady yourself.',
+      subtitle:'Techniques that work in a few minutes. A private journal. A map of the people around you. Everything stays on your phone.',
+      tagline:'Not therapy. Not a crisis service. Just something that helps.',
+      begin:'Begin'
+    },
+    onboarding:{
+      ageTitle:'First — how old are you?',
+      ageBody:'SoulCap is built for adults. We ask because the right support for someone under 18 looks different, and we’d rather point you somewhere better than get it wrong.',
+      over18:'18 or older',
+      under18:'Under 18',
+      under18Hint:'This isn’t built for you yet — please talk to a trusted adult or a service for young people',
+      under18Body:'SoulCap isn’t the right fit yet. Please reach out to a trusted adult, or a support service made for young people where you are.',
+      nameTitle:'What should we call you?',
+      nameBody:'So this feels like yours. Skip it if you’d rather not.',
+      namePlaceholder:'Your name or a nickname',
+      continue:'Continue',
+      consentTitle:'What this is, plainly.',
+      understand:'I understand',
+      concernsTitle:'What’s been hard lately?',
+      concernsBody:'Pick any, or none. You can change this whenever — skipping doesn’t break anything.',
+      start:'Start',
+      skipIn:'Skip — just let me in'
+    },
+    checkin:{
+      addDetail:'Add optional detail',
+      editDetail:'Edit today’s detail',
+      detailTitle:'A little more detail',
+      detailHint:'Skip anything. This stays on this device and only supports local suggestions.',
+      dimensions:'How is each part?',
+      dimensionsHint:'Leave a slider at “Not set” if you do not want to answer.',
+      need:'What would help most?',
+      triggers:'What might be affecting this?',
+      feeling:'Your own words (optional)',
+      feelingPlaceholder:'A word or short phrase',
+      save:'Save detail',
+      saveFailedTitle:'That did not save',
+      saveFailedBody:'Your previous check-in is still here. This phone may be low on local storage.',
+      crisisSaveFailed:'This check-in did not save, but Help is still available.',
+      localSafetyNote:'Short check-in words are checked on this device only so Help can appear when needed.',
+      ok:'OK',
+      cancel:'Cancel',
+      arrival:'How are you arriving right now?',
+      states:{ Steady:'Steady', Wired:'Wired', Flat:'Flat', Heavy:'Heavy', 'Not sure':'Not sure' }
+    },
+    calm:{
+      whereAreYou:'Where are you?',
+      onMyOwn:'On my own',
+      aroundPeople:'Around people',
+      gotAnything:'Got anything to hand?',
+      browseAll:'Browse all techniques',
+      showEverything:'Just show me everything',
+      backToGuided:'← Back to guided'
+    },
+    me:{
+      eyebrow:'You',
+      yourSpace:'Your space.',
+      profile:'Profile',
+      setupProfile:'Set up your profile',
+      yourStory:'Your story',
+      myPlan:'My plan',
+      edit:'Edit',
+      add:'Add',
+      optional:'Optional'
+    },
+    concerns:{
+      hard_to_switch_off:'Hard to switch off',
+      sleep:'Sleep',
+      low_mood:'Low mood',
+      panic:'Panic',
+      grief:'Grief',
+      anger:'Anger',
+      loneliness:'Loneliness',
+      work:'Work',
+      family:'Family',
+      not_sure_yet:'Not sure yet'
     },
     locale:{
       language:'Language',
@@ -401,7 +478,7 @@ var STRINGS = {
       refresh:'Refresh suggestions', add:'Add a line', remove:'Remove', close:'Close'
     },
     mapPace:{ still:'Still', drift:'Drift', live:'Live' },
-    panic:{ exit:'Leave help screen', plan:'Open my plan' },
+    panic:{ exit:'I’m okay — go back', plan:'Open my plan' },
     settingsCard:{ title:'Settings', hint:'Appearance, language, accessibility, and your data.', open:'Open' }
   },
   rui: {
@@ -410,7 +487,84 @@ var STRINGS = {
     common:{
       close:'Band karein', cancel:'Mansookh', done:'Ho gaya', save:'Mehfooz karein', delete:'Hata dein',
       edit:'Tabdeel karein', add:'Shamil karein', open:'Kholen', back:'Wapas', next:'Agla', skip:'Chhor dein',
-      confirm:'Tasdeeq karein', settings:'Tanzimaat', appearance:'Roop', ok:'Theek hai'
+      confirm:'Tasdeeq karein', settings:'Tanzimaat', appearance:'Roop', ok:'Theek hai', on:'Chalu', off:'Band', help:'Madad'
+    },
+    welcome:{
+      title:'Apne aap ko sambhalne ki ek pur-sukoon jagah.',
+      subtitle:'Chand minute mein kaam karne wali techniques. Private journal. Aap ke ird-gird logon ka naqsha. Sab kuch phone par rehta hai.',
+      tagline:'Therapy nahi. Crisis service nahi. Bas kuch jo madad kare.',
+      begin:'Shuru karein'
+    },
+    onboarding:{
+      ageTitle:'Pehle — aap ki umar kya hai?',
+      ageBody:'SoulCap adults ke liye bana hai. Hum is liye poochte hain ke 18 se kam umar ke liye sahi madad alag hoti hai.',
+      over18:'18 ya us se ziyada',
+      under18:'18 se kam',
+      under18Hint:'Abhi aap ke liye nahi — kisi trusted adult ya young people service se baat karein',
+      under18Body:'SoulCap abhi sahi fit nahi. Kisi trusted adult ya apne ilaqay ki young people service se rabta karein.',
+      nameTitle:'Aap ko kya keh kar bulayen?',
+      nameBody:'Taake yeh aap jaisa lage. Chhor sakte hain agar na chahein.',
+      namePlaceholder:'Naam ya nickname',
+      continue:'Agla',
+      consentTitle:'Yeh kya hai, seedhi baat.',
+      understand:'Samajh gaya',
+      concernsTitle:'Haal mein kya mushkil raha?',
+      concernsBody:'Jo chaahein chun lein, ya kuch na chunen. Kabhi bhi badal sakte hain — skip karne se kuch nahi bigadta.',
+      start:'Shuru',
+      skipIn:'Chhor dein — bas andar aa jayein'
+    },
+    checkin:{
+      addDetail:'Optional detail shamil karein',
+      editDetail:'Aaj ka detail tabdeel karein',
+      detailTitle:'Thori aur detail',
+      detailHint:'Jo na chahein chhor dein. Yeh sirf is device par rehta hai.',
+      dimensions:'Har hissa kaisa hai?',
+      dimensionsHint:'Jawab na dena ho to slider “Not set” par chhor dein.',
+      need:'Sab se ziyada kya madad karega?',
+      triggers:'Is par kya asar ho sakta hai?',
+      feeling:'Apne alfaz (optional)',
+      feelingPlaceholder:'Ek lafz ya chhoti phrase',
+      save:'Detail mehfooz karein',
+      saveFailedTitle:'Mehfooz nahi hua',
+      saveFailedBody:'Purana check-in ab bhi yahan hai. Shayad storage kam ho.',
+      crisisSaveFailed:'Check-in save nahi hua, lekin Madad ab bhi maujood hai.',
+      localSafetyNote:'Check-in ke chhotay alfaz sirf is device par check hote hain taake Madad zaroorat par aa sake.',
+      ok:'Theek hai',
+      cancel:'Mansookh',
+      arrival:'Ab aap kaisay aa rahe hain?',
+      states:{ Steady:'Mustaqil', Wired:'Be-qarar', Flat:'Sust', Heavy:'Bhari', 'Not sure':'Yaqeen nahi' }
+    },
+    calm:{
+      whereAreYou:'Aap kahan hain?',
+      onMyOwn:'Akela / akeli',
+      aroundPeople:'Logon ke darmiyan',
+      gotAnything:'Kuch paas hai?',
+      browseAll:'Tamam techniques dekhein',
+      showEverything:'Sab dikha dein',
+      backToGuided:'← Guided par wapas'
+    },
+    me:{
+      eyebrow:'Aap',
+      yourSpace:'Aap ki jagah.',
+      profile:'Profile',
+      setupProfile:'Profile set karein',
+      yourStory:'Aap ki kahani',
+      myPlan:'Mera plan',
+      edit:'Tabdeel',
+      add:'Shamil',
+      optional:'Optional'
+    },
+    concerns:{
+      hard_to_switch_off:'Band hona mushkil',
+      sleep:'Neend',
+      low_mood:'Mood kam',
+      panic:'Ghabrahat',
+      grief:'Gham',
+      anger:'Gussa',
+      loneliness:'Tanhai',
+      work:'Kaam',
+      family:'Khandan',
+      not_sure_yet:'Abhi yaqeen nahi'
     },
     locale:{
       language:'Zubaan',
@@ -605,7 +759,7 @@ var DAILY_SUPPORTS = [
   { id:'quiet', title:'Take a quiet pause', note:'One minute without needing to improve anything.' }
 ];
 
-const SKILLS = [
+var SKILLS = [
   /* ─────────────── AUTONOMIC — works on the nervous system directly ─────────── */
   { id:'physiological-sigh', name:'Physiological sigh', domain:'breath', family:'autonomic',
     mins:2, capacity:'low', needs:'none', discreet:true,
@@ -932,7 +1086,7 @@ const SKILLS = [
     source:'Values clarification — ACT' }
 ];
 
-const DOMAIN_META = {
+var DOMAIN_META = {
   breath:  { label:'Breath',  cssVar:'--breath'  },
   ground:  { label:'Ground',  cssVar:'--ground-h'},
   rest:    { label:'Rest',    cssVar:'--rest'    },
@@ -943,7 +1097,7 @@ const DOMAIN_META = {
   reflect: { label:'Reflect', cssVar:'--reflect' }
 };
 
-const FAMILY_META = {
+var FAMILY_META = {
   autonomic:  { label:'Nervous system', note:'Works on your body directly — fastest in a spike.' },
   sensory:    { label:'Senses',         note:'Anchors you through what you can feel and taste.' },
   orienting:  { label:'Orienting',      note:'Tells a threat-primed body that it has checked the room.' },
@@ -957,7 +1111,7 @@ const FAMILY_META = {
 };
 
 /* What must be to hand for a technique to be possible right now. */
-const NEEDS_META = {
+var NEEDS_META = {
   none:  { label:'Nothing needed' },
   water: { label:'A tap or a drink' },
   cold:  { label:'Something cold' },
@@ -978,12 +1132,12 @@ var CALM_HAND_OPTIONS = [
 // can't promise any specific line is reachable, so we point to people and general
 // emergency services rather than naming numbers). See renderPanicHelp in app.js.
 
-const CONCERNS = [
+var CONCERNS = [
   'Hard to switch off','Sleep','Low mood','Panic','Grief',
   'Anger','Loneliness','Work','Family','Not sure yet'
 ];
 
-const RELATIONSHIP_TYPES = [
+var RELATIONSHIP_TYPES = [
   { code:'FAMILY',    label:'Family',    cssVar:'--warmth'  },
   { code:'FRIEND',    label:'Friend',    cssVar:'--clarity' },
   { code:'PARTNER',   label:'Partner',   cssVar:'--rest'    },
@@ -994,7 +1148,7 @@ const RELATIONSHIP_TYPES = [
 
 /* Calm front-door — "what do you need right now?" maps intent to families,
  * so Calm asks a real question instead of mirroring the Techniques library. */
-const CALM_NEEDS = [
+var CALM_NEEDS = [
   { key:'settle', label:'Settle down',        sub:'Racing, wired, panicky', families:['autonomic','sensory','orienting'] },
   { key:'lift',   label:'Lift a low mood',    sub:'Flat, heavy, stuck',      families:['activation','connection','cognitive'] },
   { key:'sleep',  label:'Get to sleep',       sub:'Can’t switch off',        families:['sleep','autonomic','imagery'] },
@@ -1004,12 +1158,12 @@ const CALM_NEEDS = [
 ];
 
 /* Journal book-cover options — colours (as gradient pairs) and stickers. */
-const COVER_COLORS = [
+var COVER_COLORS = [
   ['#6C5CE7', '#4A3A9E'], ['#8E7CC3', '#5B4A8A'], ['#4F6E88', '#2F4459'],
   ['#4F6E6A', '#2E4642'], ['#8A5F3C', '#5A3C24'], ['#9C6B52', '#6A4636'],
   ['#635777', '#3F3651'], ['#2A2430', '#141018']
 ];
-const JOURNAL_STICKERS = ['📔', '🌙', '🌿', '⭐', '🕊️', '🫧', '🌊', '🔥', '🌸', '☕', '🎧', '✨', '🧭', '🪶'];
+var JOURNAL_STICKERS = ['📔', '🌙', '🌿', '⭐', '🕊️', '🫧', '🌊', '🔥', '🌸', '☕', '🎧', '✨', '🧭', '🪶'];
 
 /* Starting points, not assignments. Blank always stays first. */
 var JOURNAL_TEMPLATES = [
@@ -1045,11 +1199,12 @@ var JOURNAL_UI = {
   coverPhoto:'Choose a cover photo',
   removeCoverPhoto:'Remove cover photo',
   storageFullTitle:'Storage is full',
-  storageFullBody:'This phone’s local storage is out of room — usually photos. Remove a few images and try again. Nothing was lost.'
+  storageFullBody:'This phone’s local storage is out of room — usually photos. Remove a few images and try again. Nothing was lost.',
+  manyPhotosWarn:'That is quite a lot of photos for one entry. Saving anyway — remove a few if storage gets tight.'
 };
 
 /* Optional journal prompts, offered but never required. */
-const JOURNAL_PROMPTS = [
+var JOURNAL_PROMPTS = [
   'What’s taking up the most room in your head right now?',
   'What went better than you expected today?',
   'What are you carrying that isn’t yours to carry?',
@@ -1063,7 +1218,7 @@ const JOURNAL_PROMPTS = [
 /* History-taking — entirely optional, never in the opening questionnaire.
  * The more the user shares, the more specifically SoulCap can adapt. Sensitive
  * fields (trauma, breakups) are last and clearly marked optional. All local. */
-const HISTORY_SECTIONS = [
+var HISTORY_SECTIONS = [
   { key:'status', title:'Relationship status', kind:'choice',
     hint:'However you’d describe it.',
     options:['Single','In a relationship','Married','It’s complicated','Separated / divorced','Widowed','Prefer not to say'] },
@@ -1089,7 +1244,7 @@ const HISTORY_SECTIONS = [
 ];
 
 /* Stanley-Brown safety planning steps. Written when steady, surfaced when not. */
-const SAFETY_PLAN_STEPS = [
+var SAFETY_PLAN_STEPS = [
   { key:'signs',    title:'My warning signs',
     hint:'Thoughts, feelings or situations that tell you things are sliding.',
     placeholder:'e.g. stop replying to messages, stay up past 3am' },
