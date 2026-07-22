@@ -333,11 +333,150 @@ var DRIP_QUESTIONS = [
 var STRINGS = {
   en: {
     helpNow:'I need help now',
-    tabs:{ now:'Now', calm:'Calm', journal:'Journal', map:'People', me:'You' }
+    tabs:{ now:'Now', calm:'Calm', journal:'Journal', map:'People', me:'You' },
+    common:{
+      close:'Close', cancel:'Cancel', done:'Done', save:'Save', delete:'Delete', edit:'Edit',
+      add:'Add', open:'Open', back:'Back', next:'Next', skip:'Skip', confirm:'Confirm',
+      settings:'Settings', appearance:'Appearance', ok:'OK'
+    },
+    locale:{
+      language:'Language',
+      previewNote:'Roman Urdu is a layout preview only. Clinical and safety wording still needs a native clinical-copy review before it replaces English.',
+      reviewPending:'Roman Urdu clinical review is not complete yet. English remains the default safety language.',
+      clinicalNotice:'Technique steps, library articles, and crisis guidance stay in English until clinical review is complete.',
+      clinicalDismiss:'Got it'
+    },
+    themes:{
+      auto:'Auto', light:'Light', dark:'Dark', night:'Night', ocean:'Ocean', forest:'Forest',
+      rain:'Rain', space:'Space', sunrise:'Sunrise', minimal:'Minimal', amoled:'AMOLED'
+    },
+    presentation:{
+      accent:'Accent colour', text:'Text size', density:'Layout spacing', contrast:'Higher contrast',
+      transparency:'Reduce transparency', patternLearning:'Local pattern observations',
+      patternHint:'When off, SoulCap stops deriving new pattern cards. Your check-ins and existing data stay unchanged.',
+      themeNote:'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.',
+      standard:'Standard', large:'Large', compact:'Compact', comfortable:'Comfortable',
+      plum:'Plum', lilac:'Lilac', mulberry:'Mulberry', indigo:'Indigo'
+    },
+    empty:{
+      now:'No check-ins yet. When you tap how you are arriving, a quiet picture of your days can build here — no streaks, no score.',
+      calm:'Pick what you need, or browse everything below. Nothing to get right.',
+      journal:'A private place for your words. One line is enough when you are ready.',
+      map:'You at the centre. Add someone when it feels useful — only you see this map.',
+      me:'This space fills in as you go. Profile, story, and plan are all optional.'
+    },
+    reset:{
+      title:'Personal reset menu', homeHint:'Small steps that help you land again. Yours to edit.',
+      intro:'Add a few gentle resets for hard moments. Tap one when you have done it today — no streaks or scores.',
+      empty:'Start with one or two small things that help you reset. You can rename them anytime.',
+      add:'Add a reset step', edit:'Edit reset menu', titleLabel:'Title', notesLabel:'Notes (optional)',
+      enabled:'Show on menu', save:'Save', cancel:'Cancel', done:'Done for today',
+      notDone:'Mark for today', remove:'Remove', back:'← Back to Calm'
+    },
+    park:{
+      button:'Park a thought', title:'Park a thought',
+      hint:'Set it aside for later. No reminders — it will reappear when the time you choose has passed.',
+      titleLabel:'What is it about?', bodyLabel:'Anything else to remember', whenLabel:'Come back after',
+      tomorrow:'Tomorrow', weekend:'Weekend', week:'One week', save:'Park it', cancel:'Cancel',
+      dueHeading:'Due to revisit', archive:'Archive', dismiss:'Dismiss for now',
+      empty:'Nothing parked right now.', archived:'Archived'
+    },
+    pattern:{
+      evidence:'See evidence', confirm:'Yes, that fits', reject:'Not really', hide:'Hide',
+      confirmed:'You confirmed', guess:'A possibility', reset:'Reset pattern decisions',
+      disabled:'Pattern observations are off. Check-ins still work normally.', done:'Done',
+      reviewNote:'Not yet reviewed by a licensed clinician.'
+    },
+    timeline:{
+      title:'Your week', empty:'Your week will slowly become a story rather than a list.',
+      checkin:'Check-in', journal:'Journal', close:'Close', prev:'Earlier', next:'Later'
+    },
+    principles:{
+      title:'Principles', cardHint:'Short reminders you choose for yourself.',
+      empty:'Add a line or two that helps you steer.', add:'Add principle', save:'Save', remove:'Remove', close:'Close'
+    },
+    manual:{
+      title:'My manual', cardHint:'Your own notes — grown from what you confirm here.',
+      empty:'Nothing here yet. As you add principles, confirm patterns, and use resets, gentle suggestions can appear. You can edit or remove anything.',
+      refresh:'Refresh suggestions', add:'Add a line', remove:'Remove', close:'Close'
+    },
+    mapPace:{ still:'Still', drift:'Drift', live:'Live' },
+    panic:{ exit:'Leave help screen', plan:'Open my plan' },
+    settingsCard:{ title:'Settings', hint:'Appearance, language, accessibility, and your data.', open:'Open' }
   },
   rui: {
     helpNow:'Mujhe ab madad chahiye',
-    tabs:{ now:'Ab', calm:'Sakoon', journal:'Journal', map:'Log', me:'Aap' }
+    tabs:{ now:'Ab', calm:'Sakoon', journal:'Journal', map:'Log', me:'Aap' },
+    common:{
+      close:'Band karein', cancel:'Mansookh', done:'Ho gaya', save:'Mehfooz karein', delete:'Hata dein',
+      edit:'Tabdeel karein', add:'Shamil karein', open:'Kholen', back:'Wapas', next:'Agla', skip:'Chhor dein',
+      confirm:'Tasdeeq karein', settings:'Tanzimaat', appearance:'Roop', ok:'Theek hai'
+    },
+    locale:{
+      language:'Zubaan',
+      previewNote:'Roman Urdu abhi sirf layout ka preview hai. Clinical aur safety alfaaz tab tak English mein rahenge jab tak native clinical review na ho.',
+      reviewPending:'Roman Urdu clinical review abhi mukammal nahi. Safety ke liye English default rehti hai.',
+      clinicalNotice:'Technique steps, library articles, aur crisis guidance abhi English mein hain — jab tak clinical review na ho.',
+      clinicalDismiss:'Samajh gaya'
+    },
+    themes:{
+      auto:'Khud', light:'Roshan', dark:'Andhera', night:'Raat', ocean:'Samandar', forest:'Jungle',
+      rain:'Barish', space:'Khala', sunrise:'Tulu-e-aftaab', minimal:'Sada', amoled:'AMOLED'
+    },
+    presentation:{
+      accent:'Rang', text:'Matn ka size', density:'Fasaail', contrast:'Ziyada contrast',
+      transparency:'Shefafiat kam karein', patternLearning:'Local pattern observations',
+      patternHint:'Band karne par naye pattern cards nahi banenge. Purana data waisa hi rahega.',
+      themeNote:'Raat andhere se bhi halki hai. AMOLED qareeb siyah hai. Mood themes contrast aur reduced-motion ko sambhalte hain.',
+      standard:'Aam', large:'Barha', compact:'Squeeze', comfortable:'Aram se',
+      plum:'Baingani', lilac:'Lilac', mulberry:'Shahtoot', indigo:'Neela'
+    },
+    empty:{
+      now:'Abhi koi check-in nahi. Jab aap batayenge ke aap kaisay aa rahe hain, dinon ki halki tasveer yahan ban sakti hai — na streak, na score.',
+      calm:'Jo chahiye woh chun lein, ya neeche sab dekhein. Kuch sahi karne ki zaroorat nahi.',
+      journal:'Apne alfaz ke liye private jagah. Ek line bhi kaafi hai jab tayyar hon.',
+      map:'Aap markaz mein. Jab faida lage kisi ko shamil karein — yeh map sirf aap dekhte hain.',
+      me:'Yeh jagah dheere dheere bharti hai. Profile, kahani, aur plan sab optional hain.'
+    },
+    reset:{
+      title:'Apna reset menu', homeHint:'Chhotay qadam jo dubara land karne mein madad karein. Aap tabdeel kar sakte hain.',
+      intro:'Mushkil lamhon ke liye kuch halkay resets shamil karein. Jab aaj kar lein to tap karein — na streak, na score.',
+      empty:'Ek do chhoti cheezein se shuru karein jo reset mein madad karti hain. Naam kabhi bhi badal sakte hain.',
+      add:'Reset step shamil karein', edit:'Reset menu tabdeel karein', titleLabel:'Unwan', notesLabel:'Notes (optional)',
+      enabled:'Menu par dikhayen', save:'Mehfooz karein', cancel:'Mansookh', done:'Aaj ke liye ho gaya',
+      notDone:'Aaj ke liye mark karein', remove:'Hata dein', back:'← Sakoon par wapas'
+    },
+    park:{
+      button:'Soch park karein', title:'Soch park karein',
+      hint:'Baad ke liye rakh dein. Koi reminder nahi — jab aap ka time aa jaye tab wapas aayegi.',
+      titleLabel:'Kis baare mein hai?', bodyLabel:'Yaad rakhne ke liye kuch aur', whenLabel:'Kab wapas aayein',
+      tomorrow:'Kal', weekend:'Weekend', week:'Ek hafta', save:'Park kar dein', cancel:'Mansookh',
+      dueHeading:'Dobara dekhne ka waqt', archive:'Archive', dismiss:'Abhi ke liye chhor dein',
+      empty:'Abhi kuch park nahi.', archived:'Archive ho gaya'
+    },
+    pattern:{
+      evidence:'Saboot dekhein', confirm:'Haan, theek lagta hai', reject:'Ziyada nahi', hide:'Chhupa dein',
+      confirmed:'Aap ne tasdeeq ki', guess:'Ek mumkinat', reset:'Pattern faislay reset karein',
+      disabled:'Pattern observations band hain. Check-ins normal chalte hain.', done:'Ho gaya',
+      reviewNote:'Abhi licensed clinician ne review nahi ki.'
+    },
+    timeline:{
+      title:'Aap ka hafta', empty:'Aap ka hafta dheere dheere list se kahani ban jayega.',
+      checkin:'Check-in', journal:'Journal', close:'Band karein', prev:'Pehle', next:'Baad mein'
+    },
+    principles:{
+      title:'Usool', cardHint:'Chhoti yaad dahaniyan jo aap khud chunte hain.',
+      empty:'Ek do line shamil karein jo rasta dikhaye.', add:'Usool shamil karein', save:'Mehfooz karein',
+      remove:'Hata dein', close:'Band karein'
+    },
+    manual:{
+      title:'Mera manual', cardHint:'Aap ke apne notes — jo yahan tasdeeq karte hain us se.',
+      empty:'Abhi kuch nahi. Usool, patterns, aur resets se halki suggestions aa sakti hain. Sab tabdeel ya hata sakte hain.',
+      refresh:'Suggestions taza karein', add:'Line shamil karein', remove:'Hata dein', close:'Band karein'
+    },
+    mapPace:{ still:'Saakin', drift:'Halki halchal', live:'Zinda' },
+    panic:{ exit:'Madad screen chhor dein', plan:'Mera plan kholen' },
+    settingsCard:{ title:'Tanzimaat', hint:'Roop, zubaan, accessibility, aur aap ka data.', open:'Kholen' }
   }
 };
 

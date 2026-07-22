@@ -59,7 +59,8 @@
     reflectionPrefs: { dismissedForever: false, lastShown: 0 }, pendingReflection: null,
     emotionFavorites: [], principles: [],
     manual: { lines: [], dismissedAuto: {} },
-    libraryBookmarks: []
+    libraryBookmarks: [],
+    notices: { clinicalEnglishDismissed: false }
   };
   var VALID_THEMES = { light:1, dark:1, night:1, ocean:1, forest:1, rain:1, space:1, sunrise:1, minimal:1, amoled:1 };
   var DRIP_DAY_CAP = 4;
@@ -109,6 +110,11 @@
       p.manual.lines = Array.isArray(p.manual.lines) ? p.manual.lines : [];
       p.manual.dismissedAuto = p.manual.dismissedAuto && typeof p.manual.dismissedAuto === 'object' && !Array.isArray(p.manual.dismissedAuto) ? p.manual.dismissedAuto : {};
       p.libraryBookmarks = Array.isArray(p.libraryBookmarks) ? p.libraryBookmarks : [];
+      p.notices = Object.assign(clone(DEFAULT.notices), p.notices || {});
+      try {
+        if (localStorage.getItem('soulcap_notice_clinical') === '1') p.notices.clinicalEnglishDismissed = true;
+      } catch (noticeErr) {}
+      p.notices.clinicalEnglishDismissed = p.notices.clinicalEnglishDismissed === true;
       p.people = (Array.isArray(p.people) ? p.people : []).map(normalizePerson);
       if (p.locale === 'ur') p.locale = 'rui';
       if (p.locale !== 'en' && p.locale !== 'rui') p.locale = 'en';
@@ -243,15 +249,47 @@
       localStorage.setItem('soulcap_locale', state.locale === 'rui' ? 'rui' : 'en');
     } catch (e) {}
   }
-  function t(path) {
-    var pack = STRINGS[state.locale === 'rui' ? 'rui' : 'en'] || STRINGS.en;
+  function t(path, fallback) {
+    var locale = state.locale === 'rui' ? 'rui' : 'en';
     var parts = path.split('.');
-    var cur = pack, i;
+    var cur = STRINGS[locale], i;
     for (i = 0; i < parts.length; i++) {
-      if (!cur || typeof cur !== 'object') return path;
+      if (!cur || typeof cur !== 'object') { cur = null; break; }
       cur = cur[parts[i]];
     }
-    return typeof cur === 'string' ? cur : path;
+    if (typeof cur === 'string') return cur;
+    cur = STRINGS.en;
+    for (i = 0; i < parts.length; i++) {
+      if (!cur || typeof cur !== 'object') { cur = null; break; }
+      cur = cur[parts[i]];
+    }
+    if (typeof cur === 'string') return cur;
+    return fallback !== undefined ? fallback : path;
+  }
+  function tUi(group, key, enPack) {
+    var val = t(group + '.' + key);
+    if (val !== group + '.' + key) return val;
+    return enPack && enPack[key] !== undefined ? enPack[key] : val;
+  }
+  function themeChipLabel(k, fallback) {
+    var key = k === null || k === undefined ? 'auto' : k;
+    return t('themes.' + key, fallback);
+  }
+  function presentationChipLabel(k, fallback) {
+    return t('presentation.' + k, fallback);
+  }
+  function mapPaceLabel(k, fallback) {
+    return t('mapPace.' + k, fallback);
+  }
+  function clinicalNoticeDismissed() {
+    if (state.notices && state.notices.clinicalEnglishDismissed) return true;
+    try { return localStorage.getItem('soulcap_notice_clinical') === '1'; } catch (e) { return false; }
+  }
+  function dismissClinicalNotice() {
+    if (!state.notices) state.notices = clone(DEFAULT.notices);
+    state.notices.clinicalEnglishDismissed = true;
+    try { localStorage.setItem('soulcap_notice_clinical', '1'); } catch (e) {}
+    save(); reRender();
   }
   function applyLocale() {
     var locale = state.locale === 'rui' ? 'rui' : 'en';
@@ -271,6 +309,7 @@
     state.locale = next === 'rui' ? 'rui' : 'en';
     if (!save()) { state.locale = before; showPreferenceSaveFailed(); return; }
     applyTheme(); reRender();
+    if ($('#sheet').classList.contains('on')) settingsSheet();
   }
   function setTheme(next) {
     var before = state.theme;
@@ -808,7 +847,7 @@
         p.appendChild(el('p', { class: 'p-sm', text: new Date(dates[key]).toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'short', year:'numeric' }) }));
       });
       p.appendChild(el('p', { class: 'notice', text: PATTERN_UI.evidenceNote }));
-      p.appendChild(el('button', { class: 'btn', text: PATTERN_UI.done, onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn', text: tUi('pattern', 'done', PATTERN_UI), onclick: closeSheet }));
     });
   }
   function weeklySummary() {
@@ -1259,11 +1298,12 @@
       $('#sheet').setAttribute('aria-labelledby', 'sheetTitle');
     } else {
       $('#sheet').removeAttribute('aria-labelledby');
-      $('#sheet').setAttribute('aria-label', 'Options');
+      $('#sheet').setAttribute('aria-label', t('common.settings', 'Options'));
     }
     $('#sheet').classList.add('on'); $('#sheet').setAttribute('aria-hidden', 'false');
     setSheetBackgroundInert(true);
     document.body.style.overflow = 'hidden';
+    buzz(8);
     var f = panel.querySelector('button, input, select, textarea, a'); if (f) f.focus();
   }
   function closeSheet() {
@@ -1537,62 +1577,62 @@
   }
   function resetMenuSheet() {
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: RESET_UI.title }));
-      p.appendChild(el('p', { class: 'p-sm', text: RESET_UI.intro }));
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('reset', 'title', RESET_UI) }));
+      p.appendChild(el('p', { class: 'p-sm', text: tUi('reset', 'intro', RESET_UI) }));
       var items = enabledResetItems();
       var key = resetDayKey();
       var done = Array.isArray(state.resetDone[key]) ? state.resetDone[key] : [];
-      if (!items.length) p.appendChild(el('div', { class: 'notice', text: RESET_UI.empty }));
+      if (!items.length) p.appendChild(el('div', { class: 'notice', text: tUi('reset', 'empty', RESET_UI) }));
       items.forEach(function (item) {
         var complete = done.indexOf(item.id) !== -1;
         p.appendChild(el('div', { class: 'reset-row card' }, [
           el('h3', { class: 'card-title', text: item.title }),
           item.notes ? el('p', { class: 'p-sm', text: item.notes }) : null,
           el('button', { class: 'btn ghost', 'aria-pressed': complete ? 'true' : 'false',
-            text: complete ? RESET_UI.done : RESET_UI.notDone, onclick: function () { toggleResetDone(item.id); closeSheet(); resetMenuSheet(); } })
+            text: complete ? tUi('reset', 'done', RESET_UI) : tUi('reset', 'notDone', RESET_UI), onclick: function () { toggleResetDone(item.id); closeSheet(); resetMenuSheet(); } })
         ]));
       });
-      p.appendChild(el('button', { class: 'btn ghost', text: RESET_UI.edit, onclick: resetEditSheet }));
-      p.appendChild(el('button', { class: 'btn quiet', text: RESET_UI.back, onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn ghost', text: tUi('reset', 'edit', RESET_UI), onclick: resetEditSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('reset', 'back', RESET_UI), onclick: closeSheet }));
     });
   }
   function resetEditSheet() {
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: RESET_UI.edit }));
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('reset', 'edit', RESET_UI) }));
       state.resetItems.forEach(function (item, idx) {
         p.appendChild(el('div', { class: 'reset-row card' }, [
-          el('p', { class: 'eyebrow', text: RESET_UI.titleLabel }),
-          el('input', { type: 'text', value: item.title, 'aria-label': RESET_UI.titleLabel,
+          el('p', { class: 'eyebrow', text: tUi('reset', 'titleLabel', RESET_UI) }),
+          el('input', { type: 'text', value: item.title, 'aria-label': tUi('reset', 'titleLabel', RESET_UI),
             onchange: function (e) { item.title = e.target.value.trim().slice(0, 60); save(); } }),
-          el('p', { class: 'eyebrow', text: RESET_UI.notesLabel }),
-          el('input', { type: 'text', value: item.notes || '', 'aria-label': RESET_UI.notesLabel,
+          el('p', { class: 'eyebrow', text: tUi('reset', 'notesLabel', RESET_UI) }),
+          el('input', { type: 'text', value: item.notes || '', 'aria-label': tUi('reset', 'notesLabel', RESET_UI),
             onchange: function (e) { item.notes = e.target.value.trim().slice(0, 120); save(); } }),
-          el('button', { class: 'btn quiet', text: RESET_UI.remove, onclick: function () {
+          el('button', { class: 'btn quiet', text: tUi('reset', 'remove', RESET_UI), onclick: function () {
             state.resetItems.splice(idx, 1); save(); closeSheet(); resetEditSheet();
           } })
         ]));
       });
-      p.appendChild(el('button', { class: 'btn ghost', text: RESET_UI.add, onclick: function () {
+      p.appendChild(el('button', { class: 'btn ghost', text: tUi('reset', 'add', RESET_UI), onclick: function () {
         state.resetItems.push({ id: uid(), title: 'One small reset', notes: '', enabled: true });
         save(); closeSheet(); resetEditSheet();
       } }));
-      p.appendChild(el('button', { class: 'btn quiet', text: RESET_UI.back, onclick: resetMenuSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('reset', 'back', RESET_UI), onclick: resetMenuSheet }));
     });
   }
   function parkThoughtSheet(existingId) {
     var draft = existingId ? clone(state.parkedThoughts.filter(function (x) { return x.id === existingId; })[0] || {}) : { title: '', body: '', preset: 'tomorrow' };
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: PARK_UI.title }));
-      p.appendChild(el('p', { class: 'p-sm', text: PARK_UI.hint }));
-      var title = el('input', { type: 'text', maxlength: '80', placeholder: PARK_UI.titleLabel, 'aria-label': PARK_UI.titleLabel, value: draft.title || '' });
-      var body = el('textarea', { placeholder: PARK_UI.bodyLabel, 'aria-label': PARK_UI.bodyLabel, style: 'min-height:90px' });
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('park', 'title', PARK_UI) }));
+      p.appendChild(el('p', { class: 'p-sm', text: tUi('park', 'hint', PARK_UI) }));
+      var title = el('input', { type: 'text', maxlength: '80', placeholder: tUi('park', 'titleLabel', PARK_UI), 'aria-label': tUi('park', 'titleLabel', PARK_UI), value: draft.title || '' });
+      var body = el('textarea', { placeholder: tUi('park', 'bodyLabel', PARK_UI), 'aria-label': tUi('park', 'bodyLabel', PARK_UI), style: 'min-height:90px' });
       body.value = draft.body || '';
       var preset = draft.preset || 'tomorrow';
-      p.appendChild(el('p', { class: 'eyebrow', text: PARK_UI.titleLabel })); p.appendChild(title);
-      p.appendChild(el('p', { class: 'eyebrow', text: PARK_UI.bodyLabel })); p.appendChild(body);
-      p.appendChild(el('p', { class: 'eyebrow', text: PARK_UI.whenLabel }));
+      p.appendChild(el('p', { class: 'eyebrow', text: tUi('park', 'titleLabel', PARK_UI) })); p.appendChild(title);
+      p.appendChild(el('p', { class: 'eyebrow', text: tUi('park', 'bodyLabel', PARK_UI) })); p.appendChild(body);
+      p.appendChild(el('p', { class: 'eyebrow', text: tUi('park', 'whenLabel', PARK_UI) }));
       var chips = el('div', { class: 'chips' });
-      [['tomorrow', PARK_UI.tomorrow], ['weekend', PARK_UI.weekend], ['week', PARK_UI.week]].forEach(function (pair) {
+      [['tomorrow', tUi('park', 'tomorrow', PARK_UI)], ['weekend', tUi('park', 'weekend', PARK_UI)], ['week', tUi('park', 'week', PARK_UI)]].forEach(function (pair) {
         chips.appendChild(el('button', { class: 'chip', 'aria-pressed': preset === pair[0] ? 'true' : 'false', text: pair[1],
           onclick: function () {
             preset = pair[0];
@@ -1600,26 +1640,26 @@
           } }));
       });
       p.appendChild(chips);
-      p.appendChild(el('button', { class: 'btn', text: PARK_UI.save, onclick: function () {
-        var t = title.value.trim();
-        if (!t) { title.focus(); return; }
-        var entry = { id: existingId || uid(), title: t.slice(0, 80), body: body.value.trim().slice(0, 500),
+      p.appendChild(el('button', { class: 'btn', text: tUi('park', 'save', PARK_UI), onclick: function () {
+        var tval = title.value.trim();
+        if (!tval) { title.focus(); return; }
+        var entry = { id: existingId || uid(), title: tval.slice(0, 80), body: body.value.trim().slice(0, 500),
           created: Date.now(), reopenAfter: parkReopenAfter(preset), archived: false, preset: preset };
         if (existingId) {
           state.parkedThoughts = state.parkedThoughts.map(function (x) { return x.id === existingId ? entry : x; });
         } else state.parkedThoughts.push(entry);
         save(); closeSheet(); render();
       } }));
-      p.appendChild(el('button', { class: 'btn quiet', text: PARK_UI.cancel, onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('park', 'cancel', PARK_UI), onclick: closeSheet }));
     });
   }
   var timelineOffset = 0;
   function timelineSheet() {
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: TIMELINE_UI.title }));
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('timeline', 'title', TIMELINE_UI) }));
       var days = weekTimelineDays(timelineOffset);
       var any = days.some(function (d) { return d.checkins.length || d.journals.length; });
-      if (!any) p.appendChild(el('p', { class: 'p-voice', text: TIMELINE_UI.empty }));
+      if (!any) p.appendChild(el('p', { class: 'p-voice', text: tUi('timeline', 'empty', TIMELINE_UI) }));
       days.forEach(function (day) {
         if (!day.checkins.length && !day.journals.length) return;
         var block = el('div', { class: 'timeline-day card' }, [
@@ -1627,18 +1667,18 @@
         ]);
         day.checkins.forEach(function (c) {
           var need = c.need ? (CHECKIN_DIRECT_NEEDS.filter(function (n) { return n.key === c.need; })[0] || {}).label : '';
-          block.appendChild(el('p', { class: 'p-sm', text: TIMELINE_UI.checkin + ': ' + c.state + (need ? ' · ' + need : '') + (c.feeling ? ' · ' + c.feeling : '') }));
+          block.appendChild(el('p', { class: 'p-sm', text: tUi('timeline', 'checkin', TIMELINE_UI) + ': ' + c.state + (need ? ' · ' + need : '') + (c.feeling ? ' · ' + c.feeling : '') }));
         });
         day.journals.forEach(function (e) {
-          block.appendChild(el('p', { class: 'p-sm', text: TIMELINE_UI.journal + ': ' + (e.title || 'Untitled') }));
+          block.appendChild(el('p', { class: 'p-sm', text: tUi('timeline', 'journal', TIMELINE_UI) + ': ' + (e.title || 'Untitled') }));
         });
         p.appendChild(block);
       });
       p.appendChild(el('div', { class: 'chips' }, [
-        el('button', { class: 'chip', text: TIMELINE_UI.prev, onclick: function () { timelineOffset--; closeSheet(); timelineSheet(); } }),
-        el('button', { class: 'chip', text: TIMELINE_UI.next, onclick: function () { timelineOffset++; closeSheet(); timelineSheet(); } })
+        el('button', { class: 'chip', text: tUi('timeline', 'prev', TIMELINE_UI), onclick: function () { timelineOffset--; closeSheet(); timelineSheet(); } }),
+        el('button', { class: 'chip', text: tUi('timeline', 'next', TIMELINE_UI), onclick: function () { timelineOffset++; closeSheet(); timelineSheet(); } })
       ]));
-      p.appendChild(el('button', { class: 'btn quiet', text: TIMELINE_UI.close, onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('timeline', 'close', TIMELINE_UI), onclick: closeSheet }));
     });
   }
   function reflectionAnswerSheet() {
@@ -1675,38 +1715,42 @@
   }
   function settingsSheet() {
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: 'Settings' }));
-      settingsGroup(p, 'Appearance', [
-        settingChips(THEME_OPTIONS,
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('common', 'settings', { settings: 'Settings' }) }));
+      settingsGroup(p, tUi('common', 'appearance', { appearance: 'Appearance' }), [
+        themeSettingChips(THEME_OPTIONS,
           function (o) { return state.theme === o.k; }, function (o) { setTheme(o.k); }),
-        el('p', { class: 'p-sm', text: 'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.' }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: LOCALE_UI.language }),
+        el('p', { class: 'p-sm', text: tUi('presentation', 'themeNote', { themeNote: 'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.' }) }),
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('locale', 'language', LOCALE_UI) }),
         settingChips(LOCALE_OPTIONS,
           function (o) { return state.locale === o.k; }, function (o) { setLocale(o.k); }),
-        el('p', { class: 'p-sm', text: state.locale === 'rui' ? LOCALE_UI.reviewPending : LOCALE_UI.previewNote }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.accent }),
-        settingChips(ACCENT_OPTIONS,
+        el('p', { class: 'p-sm', text: state.locale === 'rui' ? tUi('locale', 'reviewPending', LOCALE_UI) : tUi('locale', 'previewNote', LOCALE_UI) }),
+        state.locale === 'rui' && !clinicalNoticeDismissed() ? el('div', { class: 'notice' }, [
+          el('p', { class: 'p-sm', text: tUi('locale', 'clinicalNotice', LOCALE_UI) }),
+          el('button', { class: 'btn ghost', text: tUi('locale', 'clinicalDismiss', LOCALE_UI), onclick: dismissClinicalNotice })
+        ]) : null,
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('presentation', 'accent', PRESENTATION_UI) }),
+        accentSettingChips(ACCENT_OPTIONS,
           function (o) { return state.appearance.accent === o.k; }, function (o) { setAppearance('accent', o.k); }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.text }),
-        settingChips(TEXT_OPTIONS,
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('presentation', 'text', PRESENTATION_UI) }),
+        textDensitySettingChips(TEXT_OPTIONS,
           function (o) { return state.appearance.text === o.k; }, function (o) { setAppearance('text', o.k); }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.density }),
-        settingChips(DENSITY_OPTIONS,
+        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('presentation', 'density', PRESENTATION_UI) }),
+        textDensitySettingChips(DENSITY_OPTIONS,
           function (o) { return state.appearance.density === o.k; }, function (o) { setAppearance('density', o.k); }),
         el('div', { class: 'stack' }, [
-          toggleBtn(PRESENTATION_UI.contrast, state.appearance.contrast === 'high', function () { setAppearance('contrast', state.appearance.contrast === 'high' ? 'standard' : 'high'); }),
-          toggleBtn(PRESENTATION_UI.transparency, state.appearance.reduceTransparency, function () { setAppearance('reduceTransparency', !state.appearance.reduceTransparency); })
+          toggleBtn(tUi('presentation', 'contrast', PRESENTATION_UI), state.appearance.contrast === 'high', function () { setAppearance('contrast', state.appearance.contrast === 'high' ? 'standard' : 'high'); }),
+          toggleBtn(tUi('presentation', 'transparency', PRESENTATION_UI), state.appearance.reduceTransparency, function () { setAppearance('reduceTransparency', !state.appearance.reduceTransparency); })
         ])
       ]);
       settingsGroup(p, 'Personalisation', [
-        toggleBtn(PRESENTATION_UI.patternLearning, state.patternPrefs.enabled, function () {
+        toggleBtn(tUi('presentation', 'patternLearning', PRESENTATION_UI), state.patternPrefs.enabled, function () {
           var before = state.patternPrefs.enabled;
           state.patternPrefs.enabled = !state.patternPrefs.enabled;
           if (!save()) { state.patternPrefs.enabled = before; showPreferenceSaveFailed(); return; }
           reRender();
         }),
-        el('p', { class: 'p-sm', text: state.patternPrefs.enabled ? PRESENTATION_UI.patternHint : PATTERN_UI.disabled }),
-        Object.keys(state.patternPrefs.decisions).length ? el('button', { class: 'btn ghost', text: PATTERN_UI.reset, onclick: function () {
+        el('p', { class: 'p-sm', text: state.patternPrefs.enabled ? tUi('presentation', 'patternHint', PRESENTATION_UI) : tUi('pattern', 'disabled', PATTERN_UI) }),
+        Object.keys(state.patternPrefs.decisions).length ? el('button', { class: 'btn ghost', text: tUi('pattern', 'reset', PATTERN_UI), onclick: function () {
           var before = clone(state.patternPrefs.decisions);
           state.patternPrefs.decisions = {};
           if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
@@ -1738,7 +1782,7 @@
       ]);
       settingsGroup(p, 'Constellation', [
         el('p', { class: 'eyebrow', text: 'Map pace' }),
-        settingChips(MAP_PACE_OPTIONS,
+        mapPaceSettingChips(MAP_PACE_OPTIONS,
           function (o) { return state.mapPace === o.k; }, function (o) {
             var before = state.mapPace; state.mapPace = o.k;
             if (!save()) { state.mapPace = before; showPreferenceSaveFailed(); return; }
@@ -1769,7 +1813,7 @@
         el('p', { class: 'p-sm', text: 'SoulCap · v' + APP_VERSION }),
         el('div', { class: 'notice', html: '<b>SoulCap is not therapy</b>, not a doctor, and not a crisis service. Nothing you write leaves this device. There is no account and no server.' })
       ]);
-      p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('common', 'close', { close: 'Close' }), onclick: closeSheet }));
     });
   }
   function renderCalm() {
@@ -1780,7 +1824,7 @@
       el('h1', { class: 'h-voice', text: title })
     ]));
     v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
-    v.appendChild(el('div', { class:'notice', text:CALM_REVIEW_NOTE }));
+    v.appendChild(el('div', { class:'notice', text: state.locale === 'rui' ? tUi('pattern', 'reviewNote', PATTERN_UI) : CALM_REVIEW_NOTE }));
 
     if (calm.section === 'library') { renderLibrary(v); return; }
     if (calm.section === 'supports') { renderDailySupports(v); return; }
@@ -1801,8 +1845,8 @@
     if (!calm.need) {
       v.appendChild(el('div', { class:'calm-tools' }, [
         el('button', { class:'card tap calm-tool reset-card', onclick: resetMenuSheet }, [
-          el('h2', { class:'card-title', text: RESET_UI.title }),
-          el('p', { class:'p-sm', text: RESET_UI.homeHint })
+          el('h2', { class:'card-title', text: tUi('reset', 'title', RESET_UI) }),
+          el('p', { class:'p-sm', text: tUi('reset', 'homeHint', RESET_UI) })
         ]),
         el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'library'; calm.browse = false; render(); } }, [
           el('h2', { class:'card-title', text:LIBRARY_UI.title }),
@@ -1813,7 +1857,7 @@
           el('p', { class:'p-sm', text:SUPPORT_UI.homeHint })
         ])
       ]));
-      v.appendChild(el('p', { class: 'p-sm calm-empty', text: EMPTY_UI.calm }));
+      v.appendChild(el('p', { class: 'p-sm calm-empty', text: tUi('empty', 'calm', EMPTY_UI) }));
     }
 
     // Q1 — what do you need
@@ -1911,12 +1955,12 @@
     ]);
     v.appendChild(cover);
     v.appendChild(el('button', { class: 'btn', text: '＋  New entry', onclick: newEntrySheet }));
-    v.appendChild(el('button', { class: 'btn ghost', text: PARK_UI.button, onclick: function () { parkThoughtSheet(); } }));
+    v.appendChild(el('button', { class: 'btn ghost', text: tUi('park', 'button', PARK_UI), onclick: function () { parkThoughtSheet(); } }));
 
     var due = dueParkedThoughts();
     var parkQuery = journalQuery.trim().toLowerCase();
     if (due.length) {
-      v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PARK_UI.dueHeading }));
+      v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('park', 'dueHeading', PARK_UI) }));
       due.filter(function (item) {
         return !parkQuery || (item.title || '').toLowerCase().indexOf(parkQuery) !== -1;
       }).forEach(function (item) {
@@ -1924,8 +1968,8 @@
           el('h2', { class: 'card-title', text: item.title }),
           item.body ? el('p', { class: 'p-sm', text: item.body }) : null,
           el('div', { class: 'chips' }, [
-            el('button', { class: 'chip', text: PARK_UI.archive, onclick: function () { archiveParkedThought(item.id); } }),
-            el('button', { class: 'chip', text: PARK_UI.dismiss, onclick: function () {
+            el('button', { class: 'chip', text: tUi('park', 'archive', PARK_UI), onclick: function () { archiveParkedThought(item.id); } }),
+            el('button', { class: 'chip', text: tUi('park', 'dismiss', PARK_UI), onclick: function () {
               item.reopenAfter = Date.now() + 86400000; save(); render();
             } })
           ])
@@ -1935,7 +1979,7 @@
 
     if (!state.journal.length) {
       v.appendChild(el('div', { class: 'card' }, [
-        el('p', { class: 'p-voice', text: EMPTY_UI.journal }),
+        el('p', { class: 'p-voice', text: tUi('empty', 'journal', EMPTY_UI) }),
         el('p', { class: 'p-sm', text: 'Write freely, add a photo, drop in a sticker, tag how the day felt. Or don’t. It’s yours.' })
       ]));
     } else {
@@ -2741,7 +2785,7 @@
     v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: 'Constellation' }), el('h1', { class: 'h-voice', text: 'The people around you.' })]));
     if (!state.people.length) {
       v.appendChild(el('div', { class: 'card' }, [
-        el('p', { class: 'p-voice', text: EMPTY_UI.map }),
+        el('p', { class: 'p-voice', text: tUi('empty', 'map', EMPTY_UI) }),
         el('p', { class: 'p-sm', text: 'Nobody else ever sees this. It stays on your device.' }),
         el('button', { class: 'btn', text: 'Add the first person', onclick: addPersonSheet })
       ]));
@@ -2847,7 +2891,7 @@
     var states = ['Steady', 'Wired', 'Flat', 'Heavy', 'Not sure'];
     var rc = todayCheckin(), today = rc ? rc.state : null;
     if (!state.checkins.length) {
-      v.appendChild(el('p', { class: 'p-sm now-empty', text: EMPTY_UI.now }));
+      v.appendChild(el('p', { class: 'p-sm now-empty', text: tUi('empty', 'now', EMPTY_UI) }));
     }
     v.appendChild(el('div', {}, [
       el('p', { class: 'p-voice', text: 'How are you arriving right now?' }),
@@ -2957,7 +3001,7 @@
     var name = (state.profile.name || '').trim();
     v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: 'You' }), el('h1', { class: 'h-voice', text: name || 'Your space.' })]));
     if (!name && !historyFilled() && !state.principles.length && !state.manual.lines.length && !planFilled()) {
-      v.appendChild(el('p', { class: 'p-sm me-empty', text: EMPTY_UI.me }));
+      v.appendChild(el('p', { class: 'p-sm me-empty', text: tUi('empty', 'me', EMPTY_UI) }));
     }
 
     // Profile card
@@ -3031,27 +3075,37 @@
       any = true;
       var decision = state.patternPrefs.decisions[pattern.id];
       var actions = [
-        el('button', { class: 'chip', text: PATTERN_UI.evidence, onclick: function () { patternSheet(pattern); } })
+        el('button', { class: 'chip', text: tUi('pattern', 'evidence', PATTERN_UI), onclick: function () { patternSheet(pattern); } })
       ];
       if (decision !== 'confirmed') {
-        actions.push(el('button', { class: 'chip', text: PATTERN_UI.confirm, onclick: function () { setPatternDecision(pattern.id, 'confirmed'); } }));
-        actions.push(el('button', { class: 'chip', text: PATTERN_UI.reject, onclick: function () { setPatternDecision(pattern.id, 'rejected'); } }));
+        actions.push(el('button', { class: 'chip', text: tUi('pattern', 'confirm', PATTERN_UI), onclick: function () { setPatternDecision(pattern.id, 'confirmed'); } }));
+        actions.push(el('button', { class: 'chip', text: tUi('pattern', 'reject', PATTERN_UI), onclick: function () { setPatternDecision(pattern.id, 'rejected'); } }));
       }
-      actions.push(el('button', { class: 'chip', text: PATTERN_UI.hide, onclick: function () { setPatternDecision(pattern.id, 'hidden'); } }));
+      actions.push(el('button', { class: 'chip', text: tUi('pattern', 'hide', PATTERN_UI), onclick: function () { setPatternDecision(pattern.id, 'hidden'); } }));
       rows.appendChild(el('div', { class: 'row pattern-row' }, [
         el('div', {}, [
           el('div', { class: 'lab', text: pattern.title }),
           el('div', { class: 'sub', text: pattern.summary + ' Based on ' + pattern.count + ' ' + PATTERN_UI.dayBasis + '.' + (patternConfidenceLabel(pattern.count) ? ' ' + patternConfidenceLabel(pattern.count) + '.' : '') }),
           el('div', { class: 'chips pattern-actions' }, actions)
         ]),
-        el('span', { class: decision === 'confirmed' ? 'tier declared' : 'tier guess', text: decision === 'confirmed' ? PATTERN_UI.confirmed : PATTERN_UI.guess })
+        el('span', { class: decision === 'confirmed' ? 'tier declared' : 'tier guess', text: decision === 'confirmed' ? tUi('pattern', 'confirmed', PATTERN_UI) : tUi('pattern', 'guess', PATTERN_UI) })
       ]));
     });
     if (any) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:6px', text: 'What SoulCap knows' })); v.appendChild(rows); }
 
+    if (state.locale === 'rui' && !clinicalNoticeDismissed()) {
+      v.appendChild(el('div', { class: 'notice' }, [
+        el('p', { class: 'p-sm', text: tUi('locale', 'clinicalNotice', LOCALE_UI) }),
+        el('button', { class: 'btn ghost', text: tUi('locale', 'clinicalDismiss', LOCALE_UI), onclick: dismissClinicalNotice })
+      ]));
+    }
+
     v.appendChild(el('button', { class: 'card tap settings-card', onclick: settingsSheet }, [
-      el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: 'Settings' }), el('span', { class: 'pill', text: 'Open' })]),
-      el('p', { class: 'p-sm', text: 'Appearance, language, accessibility, constellation pace, guided exercises, and your data.' })
+      el('div', { class: 'card-head' }, [
+        el('h2', { class: 'card-title', text: tUi('settingsCard', 'title', { title: 'Settings' }) }),
+        el('span', { class: 'pill', text: tUi('settingsCard', 'open', { open: 'Open' }) })
+      ]),
+      el('p', { class: 'p-sm', text: tUi('settingsCard', 'hint', { hint: 'Appearance, language, accessibility, constellation pace, guided exercises, and your data.' }) })
     ]));
 
     v.appendChild(el('button', { class: 'card tap', onclick: timelineSheet }, [
@@ -3073,10 +3127,10 @@
   }
   function manualSheet() {
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: MANUAL_UI.title }));
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('manual', 'title', MANUAL_UI) }));
       var live = el('p', { class: 'meta manual-live', role: 'status', 'aria-live': 'polite', 'aria-atomic': 'true' });
       p.appendChild(live);
-      if (!state.manual.lines.length) p.appendChild(el('p', { class: 'p-sm', text: MANUAL_UI.empty }));
+      if (!state.manual.lines.length) p.appendChild(el('p', { class: 'p-sm', text: tUi('manual', 'empty', MANUAL_UI) }));
       MANUAL_SECTIONS.forEach(function (section) {
         var lines = state.manual.lines.filter(function (line) { return line.section === section; });
         if (!lines.length) return;
@@ -3141,13 +3195,13 @@
         closeSheet(); manualSheet();
       } }));
       p.appendChild(el('p', { class: 'p-sm', text: MANUAL_UI.editHint }));
-      p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('manual', 'close', MANUAL_UI), onclick: closeSheet }));
     });
   }
   function principlesSheet() {
     openSheet(function (p) {
-      p.appendChild(el('h2', { class: 'h-sec', text: PRINCIPLES_UI.title }));
-      if (!state.principles.length) p.appendChild(el('p', { class: 'p-sm', text: PRINCIPLES_UI.empty }));
+      p.appendChild(el('h2', { class: 'h-sec', text: tUi('principles', 'title', PRINCIPLES_UI) }));
+      if (!state.principles.length) p.appendChild(el('p', { class: 'p-sm', text: tUi('principles', 'empty', PRINCIPLES_UI) }));
       state.principles.forEach(function (line, idx) {
         var inp = el('input', { type: 'text', value: line, 'aria-label': PRINCIPLES_UI.title });
         inp.addEventListener('change', function () {
@@ -3165,13 +3219,30 @@
       p.appendChild(el('button', { class: 'btn ghost', text: PRINCIPLES_UI.add, onclick: function () {
         state.principles.push(''); save(); closeSheet(); principlesSheet();
       } }));
-      p.appendChild(el('button', { class: 'btn quiet', text: 'Close', onclick: closeSheet }));
+      p.appendChild(el('button', { class: 'btn quiet', text: tUi('principles', 'close', PRINCIPLES_UI), onclick: closeSheet }));
     });
   }
-  var APP_VERSION = '1.6.0';
+  var APP_VERSION = '1.7.0';
   function settingsGroup(v, title, kids) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:14px', text: title })); kids.forEach(function (k) { if (k) v.appendChild(k); }); }
   function toggleBtn(label, on, fn) { return el('button', { class: 'btn ghost', style: 'display:flex;justify-content:space-between', onclick: fn, html: '<span>' + label + '</span><span style="color:var(--accent);font-weight:600">' + (on ? 'On' : 'Off') + '</span>' }); }
-  function settingChips(opts, isOn, fn) { return el('div', { class: 'chips' }, opts.map(function (o) { return el('button', { class: 'chip', 'aria-pressed': isOn(o) ? 'true' : 'false', text: o.l, onclick: function () { fn(o); } }); })); }
+  function settingChips(opts, isOn, fn, labelFn) {
+    return el('div', { class: 'chips' }, opts.map(function (o) {
+      var label = labelFn ? labelFn(o) : o.l;
+      return el('button', { class: 'chip', 'aria-pressed': isOn(o) ? 'true' : 'false', text: label, onclick: function () { fn(o); } });
+    }));
+  }
+  function themeSettingChips(opts, isOn, fn) {
+    return settingChips(opts, isOn, fn, function (o) { return themeChipLabel(o.k, o.l); });
+  }
+  function mapPaceSettingChips(opts, isOn, fn) {
+    return settingChips(opts, isOn, fn, function (o) { return mapPaceLabel(o.k, o.l); });
+  }
+  function accentSettingChips(opts, isOn, fn) {
+    return settingChips(opts, isOn, fn, function (o) { return presentationChipLabel(o.k, o.l); });
+  }
+  function textDensitySettingChips(opts, isOn, fn) {
+    return settingChips(opts, isOn, fn, function (o) { return presentationChipLabel(o.k, o.l); });
+  }
   function setAppearance(key, value) {
     var before = state.appearance[key];
     state.appearance[key] = value;
@@ -3438,7 +3509,7 @@
   window.__soulcap = {
     assessRisk: assessRisk, suggestSkill: suggestSkill, suggestPerson: suggestPerson,
     getState: function () { return state; }, skillCount: SKILLS.length,
-    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.6.0',
+    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.7.0',
     nextDripQuestion: nextDripQuestion, estimateValue: estimateValue,
     answerDrip: answerDrip, skipDrip: skipDrip, correctEstimate: correctEstimate,
     clearEstimate: clearEstimate, setTheme: setTheme, setLocale: setLocale,
