@@ -13,6 +13,326 @@
  *   capacity         'low' works mid-panic | 'medium' needs some reserve | 'any'
  */
 
+/* Check-in intent outranks ambient context such as time of day. “Not sure”
+   deliberately starts with low-demand grounding rather than pretending certainty. */
+var CHECKIN_PROFILES = {
+  Steady: { tags:['stable','stuck'], weight:5, reason:'you said you’re feeling steady' },
+  Wired: { tags:['anxiety','panic','wired'], weight:5, reason:'you said you’re feeling wired' },
+  Flat: { tags:['flat','withdrawn','numb'], weight:5, reason:'you said you’re feeling flat' },
+  Heavy: { tags:['shame','self-critical','low','overwhelmed'], weight:5, reason:'you said things feel heavy' },
+  'Not sure': { families:['orienting','sensory'], weight:3.5, reason:'you’re not sure yet, so this starts gently' }
+};
+
+var CHECKIN_DIMENSIONS = [
+  { key:'energy', label:'Energy', low:'Very low', high:'Plenty' },
+  { key:'tension', label:'Body tension', low:'Loose', high:'Very tense' },
+  { key:'noise', label:'Mental noise', low:'Quiet', high:'Very loud' },
+  { key:'social', label:'Social capacity', low:'Need space', high:'Open to people' },
+  { key:'sleep', label:'Sleep quality', low:'Rough', high:'Rested' }
+];
+
+var CHECKIN_TRIGGERS = [
+  { key:'work', label:'Work or study' },
+  { key:'family', label:'Family' },
+  { key:'relationship', label:'Relationship' },
+  { key:'health', label:'Health' },
+  { key:'money', label:'Money' },
+  { key:'sleep', label:'Sleep' },
+  { key:'unknown', label:'Not sure' }
+];
+
+var CHECKIN_DIRECT_NEEDS = [
+  { key:'settle', label:'Settle down', families:['autonomic','sensory','orienting'], reason:'you asked to settle down' },
+  { key:'lift', label:'A little energy', families:['activation'], reason:'you asked for a little energy' },
+  { key:'sleep', label:'Rest or sleep', domains:['rest'], reason:'you asked for rest' },
+  { key:'clarity', label:'Clear my head', families:['load','cognitive'], reason:'you asked for a clearer head' },
+  { key:'kindness', label:'Be kinder to myself', families:['soothing'], reason:'you asked for self-kindness' },
+  { key:'connection', label:'Feel less alone', families:['connection'], reason:'you asked for connection' },
+  { key:'space', label:'Space from everything', families:['orienting','sensory'], reason:'you asked for space' }
+];
+
+var CHECKIN_UI = {
+  addDetail:'Add optional detail',
+  editDetail:'Edit today’s detail',
+  detailTitle:'A little more detail',
+  detailHint:'Skip anything. This stays on this device and only supports local suggestions.',
+  dimensions:'How is each part?',
+  dimensionsHint:'Leave a slider at “Not set” if you do not want to answer.',
+  need:'What would help most?',
+  triggers:'What might be affecting this?',
+  feeling:'Your own words (optional)',
+  feelingPlaceholder:'A word or short phrase',
+  save:'Save detail',
+  saveFailedTitle:'That did not save',
+  saveFailedBody:'Your previous check-in is still here. This phone may be low on local storage.',
+  crisisSaveFailed:'This check-in did not save, but Help is still available.',
+  localSafetyNote:'Short check-in words are checked on this device only so Help can appear when needed.',
+  ok:'OK',
+  cancel:'Cancel'
+};
+
+var PATTERN_UI = {
+  heading:'Possible patterns',
+  intro:'Local observations from repeated days. Each one shows its evidence and stays a possibility until you confirm it.',
+  lateTitle:'Late hours may be harder',
+  lateSummary:'Several check-ins happened late at night.',
+  noiseTitle:'Mental noise may be running high',
+  noiseSummary:'You marked mental noise near the high end on several days.',
+  triggerSuffix:'may be showing up often',
+  triggerSummary:'This context appears repeatedly',
+  evidence:'See evidence',
+  confirm:'Yes, that fits',
+  reject:'Not really',
+  hide:'Hide',
+  confirmed:'You confirmed',
+  guess:'A possibility',
+  reset:'Reset pattern decisions',
+  disabled:'Pattern observations are off. Check-ins still work normally.',
+  weeklyTitle:'Recent seven days',
+  weeklySummary:'days checked in',
+  weeklyCommon:'appeared most often',
+  weeklyNote:'A factual summary of what you recorded — not a score or interpretation.',
+  dayBasis:'distinct days',
+  evidenceNote:'This is a repeated correlation, not a cause or diagnosis. It was calculated only on this device.',
+  done:'Done',
+  noWeekly:'Not enough recent check-ins for a summary yet.'
+};
+
+var PRESENTATION_UI = {
+  accent:'Accent colour',
+  text:'Text size',
+  density:'Layout spacing',
+  contrast:'Higher contrast',
+  transparency:'Reduce transparency',
+  patternLearning:'Local pattern observations',
+  patternHint:'When off, SoulCap stops deriving new pattern cards. Your check-ins and existing data stay unchanged.',
+  saveFailedTitle:'That setting did not save',
+  saveFailedBody:'Your previous settings are still in place. This phone may be low on local storage.'
+};
+
+var ACCENT_OPTIONS = [
+  { k:'plum', l:'Plum' },
+  { k:'lilac', l:'Lilac' },
+  { k:'mulberry', l:'Mulberry' },
+  { k:'indigo', l:'Indigo' }
+];
+
+var TEXT_OPTIONS = [{ k:'standard', l:'Standard' }, { k:'large', l:'Large' }];
+var DENSITY_OPTIONS = [{ k:'compact', l:'Compact' }, { k:'comfortable', l:'Comfortable' }];
+
+var THEME_OPTIONS = [
+  { k:null, l:'Auto' },
+  { k:'light', l:'Light' },
+  { k:'dark', l:'Dark' },
+  { k:'night', l:'Night' },
+  { k:'ocean', l:'Ocean' },
+  { k:'forest', l:'Forest' },
+  { k:'rain', l:'Rain' },
+  { k:'space', l:'Space' },
+  { k:'sunrise', l:'Sunrise' },
+  { k:'minimal', l:'Minimal' },
+  { k:'amoled', l:'AMOLED' }
+];
+
+var LOCALE_OPTIONS = [
+  { k:'en', l:'English', dir:'ltr' },
+  { k:'ur', l:'اردو (preview)', dir:'rtl' }
+];
+
+var LOCALE_UI = {
+  language:'Language',
+  previewNote:'Urdu is a layout preview only. Clinical and safety wording still needs a native clinical-copy review before it replaces English.',
+  reviewPending:'Urdu clinical review is not complete yet. English remains the default safety language.'
+};
+
+var DRIP_UI = {
+  title:'A few gentle questions',
+  cardTitle:'Know you a little better',
+  cardHint:'A few optional questions today. Estimates only — never a diagnosis.',
+  intro:'Answer only what feels useful. Skip anything. SoulCap builds gentle estimates with confidence, never labels or diagnoses.',
+  doneToday:'Enough for today. More questions can wait until another day.',
+  empty:'No more questions in this short set.',
+  skip:'Skip this one',
+  save:'Save answer',
+  close:'Close',
+  estimateHeading:'Gentle estimates',
+  estimateHint:'These are local estimates from what you share. They are not diagnoses, scores, or clinical results.',
+  confidence:'confidence',
+  correct:'Adjust',
+  reset:'Clear this estimate',
+  low:'Low',
+  mid:'Medium',
+  high:'High',
+  saveFailedTitle:'That did not save',
+  saveFailedBody:'Your previous answers are still here. This phone may be low on local storage.',
+  notDiagnosis:'Not a diagnosis or clinical score.'
+};
+
+var USER_MODEL_KEYS = [
+  { key:'stress', label:'Stress load', low:'Lighter', high:'Heavier' },
+  { key:'sleep', label:'Sleep strain', low:'Rested', high:'Worn' },
+  { key:'energy', label:'Energy reserve', low:'Low', high:'Steady' },
+  { key:'resilience', label:'Recovery sense', low:'Fragile', high:'Steadying' }
+];
+
+/* Tiny drip bank. Sessions stay small; branching uses prior answers only. */
+var DRIP_QUESTIONS = [
+  { id:'stress-week', key:'stress', invert:false, weight:1,
+    text:'How heavy has the last week felt?',
+    options:[{ v:1, l:'Light' },{ v:2, l:'Manageable' },{ v:3, l:'Busy' },{ v:4, l:'Heavy' },{ v:5, l:'Overwhelming' }] },
+  { id:'stress-body', key:'stress', invert:false, weight:0.8, when:{ stress:{ min:3 } },
+    text:'Where does that heaviness show up most?',
+    options:[{ v:2, l:'Thoughts' },{ v:3, l:'Body' },{ v:4, l:'Both' },{ v:3, l:'Not sure' }] },
+  { id:'sleep-quality', key:'sleep', invert:false, weight:1,
+    text:'How has sleep been lately?',
+    options:[{ v:1, l:'Restful' },{ v:2, l:'Mostly okay' },{ v:3, l:'Uneven' },{ v:4, l:'Broken' },{ v:5, l:'Very rough' }] },
+  { id:'sleep-mind', key:'sleep', invert:false, weight:0.8, when:{ sleep:{ min:3 } },
+    text:'When sleep is hard, what is most true?',
+    options:[{ v:3, l:'Mind will not switch off' },{ v:4, l:'Wake often' },{ v:2, l:'Hard to get to bed' },{ v:3, l:'Not sure' }] },
+  { id:'energy-day', key:'energy', invert:true, weight:1,
+    text:'How much energy do you usually have for ordinary things?',
+    options:[{ v:1, l:'Very little' },{ v:2, l:'Some' },{ v:3, l:'Enough' },{ v:4, l:'Plenty' },{ v:5, l:'A lot' }] },
+  { id:'energy-start', key:'energy', invert:true, weight:0.7, when:{ energy:{ max:2 } },
+    text:'What feels most available on a low day?',
+    options:[{ v:2, l:'One small task' },{ v:3, l:'Rest first' },{ v:2, l:'Ask for help' },{ v:1, l:'Not sure yet' }] },
+  { id:'resilience-bounce', key:'resilience', invert:true, weight:1,
+    text:'After a hard day, how quickly do you usually find your feet again?',
+    options:[{ v:1, l:'Very slowly' },{ v:2, l:'Slowly' },{ v:3, l:'In time' },{ v:4, l:'Fairly soon' },{ v:5, l:'Quite quickly' }] },
+  { id:'resilience-help', key:'resilience', invert:true, weight:0.7, when:{ resilience:{ max:2 } },
+    text:'What helps you recover, even a little?',
+    options:[{ v:3, l:'Quiet' },{ v:4, l:'Someone kind' },{ v:3, l:'Movement' },{ v:2, l:'Still figuring that out' }] }
+];
+
+var STRINGS = {
+  en: {
+    helpNow:'I need help now',
+    tabs:{ now:'Now', calm:'Calm', journal:'Journal', map:'People', me:'You' }
+  },
+  ur: {
+    helpNow:'مجھے اب مدد چاہیے',
+    tabs:{ now:'اب', calm:'سکون', journal:'جرنل', map:'لوگ', me:'آپ' }
+  }
+};
+
+var LIBRARY_UI = {
+  label:'Emotional library',
+  title:'Understand what’s happening',
+  intro:'Short, evidence-informed reading. Not a diagnosis, treatment, or substitute for care.',
+  homeHint:'Read about anxiety, sleep, low mood, grief, worry, and boundaries.',
+  searchLabel:'Search the emotional library',
+  searchPlaceholder:'Search anxiety, sleep, grief…',
+  noMatches:'Nothing matches that search yet.',
+  resultStatus:'{n} articles',
+  resultStatusOne:'1 article',
+  back:'← Back to Calm',
+  practical:'Things that may help',
+  reflect:'Questions to consider',
+  support:'When professional support may help',
+  references:'Sources and further reading',
+  related:'Related exercises',
+  reviewNote:'Not yet reviewed by a licensed clinician.',
+  close:'Close'
+};
+var CALM_REVIEW_NOTE = 'Skills and articles are evidence-informed but not yet reviewed by a licensed clinician.';
+
+var ARTICLES = [
+  { id:'anxiety-panic', title:'Anxiety and panic', tags:['anxiety','panic','wired','fear'],
+    summary:'When the body’s alarm system fires hard, even without immediate danger.',
+    sections:[
+      { title:'What it can feel like', body:'A racing heart, short breath, dizziness, tightness, dread, or a strong urge to escape. The sensations are real. They do not tell you, by themselves, what is causing them.' },
+      { title:'What may be happening', body:'The threat system prepares the body to act. Fighting every sensation can add another layer of alarm; some people find it easier to orient to the room and let the wave change at its own pace.' }
+    ],
+    practical:['Put both feet somewhere supported and name what you can see.','Try a slower exhale without forcing a deep breath.','If symptoms are new, severe, or medically concerning, seek medical advice rather than assuming anxiety.'],
+    reflection:['What did you notice first: a thought, a body sensation, or something around you?','What helped the wave become even slightly more manageable?'],
+    support:'Consider professional support when panic keeps returning, changes what you can do, or you are unsure whether symptoms have a physical cause.',
+    references:['World Health Organization — Doing What Matters in Times of Stress (2020)','NHS — Panic disorder overview and self-help guidance'],
+    skillIds:['physiological-sigh','feet-floor','orient-room'] },
+
+  { id:'overthinking', title:'Overthinking and worry', tags:['worry','overthinking','thoughts','focus'],
+    summary:'When the mind keeps rehearsing possibilities without reaching a useful next step.',
+    sections:[
+      { title:'Worry is not failure', body:'Worry often tries to create certainty. It can feel productive while repeating the same question. A useful distinction is whether something needs one concrete action now or whether the mind is circling an uncertainty.' },
+      { title:'Making room around a thought', body:'A thought can be important without being a fact or an instruction. Writing it down, naming it as a thought, or choosing a later time to revisit it can reduce the need to keep holding it.' }
+    ],
+    practical:['Write the question down once.','Ask whether one small action is available today.','If no action is available, choose when you will revisit it and return attention to the present task.'],
+    reflection:['Is this a problem with a next action, or an uncertainty you cannot settle tonight?','What would “enough thinking for now” look like?'],
+    support:'Consider professional support when worry takes up much of the day, disrupts sleep, or makes ordinary responsibilities hard to manage.',
+    references:['World Health Organization — Doing What Matters in Times of Stress (2020)','NHS Every Mind Matters — Tackling your worries'],
+    skillIds:['worry-vs-problem','worry-postponement','defusion'] },
+
+  { id:'sleep', title:'Sleep when the mind will not switch off', tags:['sleep','night','rest','insomnia'],
+    summary:'A gentle explanation of why trying harder to sleep can sometimes keep you awake.',
+    sections:[
+      { title:'Sleep cannot be forced', body:'Pressure to sleep can make the bed feel like a place for effort and monitoring. A calmer aim is to create conditions for rest, then let sleep arrive rather than checking whether it has.' },
+      { title:'Protecting the association', body:'If you are awake and frustrated for a while, some sleep guidance suggests moving to a dim, quiet activity and returning when sleepiness comes back.' }
+    ],
+    practical:['Keep light low and avoid clock-checking if you can.','Choose something quiet and uninteresting rather than trying to solve tomorrow.','Keep wake time reasonably consistent after a rough night.'],
+    reflection:['What usually turns bedtime into effort?','What is one part of the evening you can make less demanding?'],
+    support:'Consider professional or medical support when sleep trouble persists, affects safety or daily functioning, or comes with breathing problems, severe mood changes, or medication concerns.',
+    references:['NHS — Insomnia guidance','American Academy of Sleep Medicine — Behavioral and psychological treatments for chronic insomnia'],
+    skillIds:['stimulus-control','wind-down','worry-postponement'] },
+
+  { id:'low-mood', title:'Low mood and feeling flat', tags:['low mood','flat','heavy','motivation'],
+    summary:'When energy and interest shrink, small action can be more available than motivation.',
+    sections:[
+      { title:'Why starting feels hard', body:'Low mood can reduce energy, reward, and expectation that anything will help. Waiting to feel motivated may keep life smaller; a tiny chosen action can sometimes come before any change in feeling.' },
+      { title:'Small means small', body:'The aim is not a perfect routine. It may be standing by an open window, washing one cup, or walking for two minutes. Completion is information, not a score.' }
+    ],
+    practical:['Choose one action that takes under ten minutes.','Make the first step smaller than your mind says it should be.','Notice what happened without demanding that it improve your mood.'],
+    reflection:['What has become harder lately?','What used to give even a small sense of interest, care, or movement?'],
+    support:'Consider professional support when low mood lasts, keeps deepening, affects basic care or functioning, or includes thoughts of self-harm or not wanting to live.',
+    references:['NHS — Low mood and depression guidance','World Health Organization — Doing What Matters in Times of Stress (2020)'],
+    skillIds:['behavioural-activation','ten-minute-walk','self-compassion-break'] },
+
+  { id:'grief', title:'Grief', tags:['grief','loss','bereavement','missing'],
+    summary:'Grief can move between pain, numbness, memory, anger, relief, and ordinary moments.',
+    sections:[
+      { title:'No single correct shape', body:'Grief is not a fixed sequence. Feelings can change by the hour, return after quiet periods, or be absent when you expected them. None of that measures how much someone mattered.' },
+      { title:'Continuing while carrying it', body:'Support can include remembering, resting, keeping one ordinary routine, or being near someone who does not require you to explain.' }
+    ],
+    practical:['Lower expectations on days with less capacity.','Choose one person or place where you do not have to perform being okay.','Keep a small routine that supports food, rest, or daylight.'],
+    reflection:['What part of this loss feels most present today?','Is there a way you want to remember or stay connected to what mattered?'],
+    support:'Consider professional support when grief feels impossible to carry alone, daily functioning remains severely affected, or safety becomes a concern.',
+    references:['NHS — Grief after bereavement or loss','American Psychological Association — Grief resources'],
+    skillIds:['hand-on-heart','reach-out','values-check'] },
+
+  { id:'boundaries', title:'Boundaries and difficult relationships', tags:['boundaries','relationships','family','work'],
+    summary:'A boundary describes what you will do to protect capacity; it does not control another person.',
+    sections:[
+      { title:'Boundaries can be quiet', body:'A boundary may be ending a conversation, delaying a reply, sharing less information, or choosing where you spend time. It does not need a perfect speech.' },
+      { title:'Discomfort is not proof of wrongdoing', body:'Setting a limit can bring guilt or anxiety, especially when others expect access. Those feelings may need care without deciding the limit was wrong.' }
+    ],
+    practical:['Name the limit in one plain sentence.','Choose what you will do if the limit is not respected.','Practise with a lower-stakes situation first.'],
+    reflection:['What interaction leaves you with less capacity than you can afford?','What is in your control before, during, or after it?'],
+    support:'Consider professional support when a relationship involves fear, coercion, threats, violence, or repeated control. Prioritise local, qualified help and immediate safety.',
+    references:['NHS — Mental wellbeing and relationships resources','American Psychological Association — Building and maintaining healthy relationships'],
+    skillIds:['values-check','self-compassion-break','orient-room'] }
+];
+
+var SUPPORT_UI = {
+  title:'Small daily supports',
+  intro:'Choose only what feels useful. Mark today if you want. No streaks, scores, reminders, or missed-day messages.',
+  homeHint:'Optional daily actions. No streaks, scores, or pressure.',
+  choose:'Choose your supports',
+  today:'Today',
+  empty:'Pick one or two small supports. You can change them any time.',
+  done:'Done today',
+  notDone:'Mark for today',
+  remove:'Remove',
+  back:'← Back to Calm',
+  saveFailedTitle:'That did not save',
+  saveFailedBody:'Your previous daily-support choices are still here. Nothing was counted.'
+};
+
+var DAILY_SUPPORTS = [
+  { id:'water', title:'Have some water', note:'A glass, a few sips, whatever is available.' },
+  { id:'daylight', title:'See some daylight', note:'A window, doorway, balcony, or brief step outside.' },
+  { id:'move', title:'Move for a few minutes', note:'Walk, stretch, or change position.' },
+  { id:'journal', title:'Put one thought down', note:'One sentence counts. A full entry is not required.' },
+  { id:'connect', title:'Speak or message someone', note:'You choose the person and use your own phone.' },
+  { id:'quiet', title:'Take a quiet pause', note:'One minute without needing to improve anything.' }
+];
+
 const SKILLS = [
   /* ─────────────── AUTONOMIC — works on the nervous system directly ─────────── */
   { id:'physiological-sigh', name:'Physiological sigh', domain:'breath', family:'autonomic',
@@ -374,12 +694,14 @@ const NEEDS_META = {
   quiet: { label:'Somewhere private' }
 };
 
-/* Crisis directory.
- * Only long-established, publicly documented services are listed.
- * NO Pakistan-specific entry: no local service has been independently verified as
- * live and staffed. PK routes to the international directory — an absent local
- * number is safer than a wrong one. Do not add entries without verification.
- */
+var CALM_HAND_OPTIONS = [
+  { key:'none', label:'Nothing' },
+  { key:'water', label:'A tap or drink' },
+  { key:'cold', label:'Something cold' },
+  { key:'sour', label:'Something sour' },
+  { key:'space', label:'Room to move' }
+];
+
 // No crisis-line directory and no region/country selection (owner decision — we
 // can't promise any specific line is reachable, so we point to people and general
 // emergency services rather than naming numbers). See renderPanicHelp in app.js.
@@ -508,8 +830,8 @@ const SAFETY_PLAN_STEPS = [
     hint:'Pulled from your Constellation, or add anyone.',
     placeholder:'e.g. Amina' },
   { key:'pros',     title:'Professionals and services',
-    hint:'GP, therapist, crisis line.',
-    placeholder:'e.g. Dr. Naveed, Samaritans 116 123' },
+    hint:'GP, therapist, or a local support service you trust.',
+    placeholder:'e.g. Dr. Naveed or a local service I trust' },
   { key:'safer',    title:'Making my space safer',
     hint:'What you would move, lock away, or ask someone to hold.',
     placeholder:'e.g. give spare medication to Bilal' }

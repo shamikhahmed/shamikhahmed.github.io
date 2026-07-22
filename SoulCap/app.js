@@ -41,31 +41,109 @@
   /* ── State ─────────────────────────────────────────────────────────────── */
   var KEY = 'soulcap_v1';
   var DEFAULT = {
-    v: 5, onboarded: false, welcomed: false, ageOk: null, region: null, consent: false,
+    v: 8, onboarded: false, welcomed: false, ageOk: null, region: null, consent: false,
     profile: { name: '', age: '', pronouns: '' },
     history: {},
     concerns: [], checkins: [], skillRuns: [], people: [], links: [], inferences: [],
     safetyPlan: {}, episodes: [], favourites: [], journal: [],
     journalCover: { title: 'My Journal', subtitle: '', color: 0, sticker: '📔', photo: '' },
-    theme: null, rings: 3, ringNames: {}, pace: 1,
+    theme: null, locale: 'en', rings: 3, ringNames: {}, pace: 1,
     voice: { on: false, name: null, rate: 0.85, pitch: 1 },
-    haptics: true, showLinks: false, trackContact: false
+    haptics: true, showLinks: false, trackContact: false,
+    patternPrefs: { enabled: true, decisions: {} },
+    appearance: { text: 'standard', density: 'compact', accent: 'plum', contrast: 'standard', reduceTransparency: false },
+    dailySupports: { selected: [], days: {} },
+    drip: { answers: {}, skipped: {}, dayKey: '', askedToday: [] },
+    userModel: {}
   };
+  var VALID_THEMES = { light:1, dark:1, night:1, ocean:1, forest:1, rain:1, space:1, sunrise:1, minimal:1, amoled:1 };
+  var DRIP_DAY_CAP = 4;
   var state = load();
   var sheetOpener = null;
+  var panicSaveWarning = false;
 
   function load() {
     try {
       var raw = localStorage.getItem(KEY);
       if (!raw) return clone(DEFAULT);
-      var p = Object.assign(clone(DEFAULT), JSON.parse(raw));
+      var migration = migrateState(JSON.parse(raw));
+      var p = Object.assign(clone(DEFAULT), migration.value);
       p.profile = Object.assign(clone(DEFAULT.profile), p.profile || {});
       p.voice = Object.assign(clone(DEFAULT.voice), p.voice || {});
       p.history = p.history || {};
       p.ringNames = p.ringNames || {};
       p.journalCover = Object.assign(clone(DEFAULT.journalCover), p.journalCover || {});
+      p.patternPrefs = Object.assign(clone(DEFAULT.patternPrefs), p.patternPrefs || {});
+      p.patternPrefs.enabled = typeof p.patternPrefs.enabled === 'boolean' ? p.patternPrefs.enabled : true;
+      p.patternPrefs.decisions = p.patternPrefs.decisions && typeof p.patternPrefs.decisions === 'object' && !Array.isArray(p.patternPrefs.decisions) ? p.patternPrefs.decisions : {};
+      p.appearance = Object.assign(clone(DEFAULT.appearance), p.appearance || {});
+      if (['standard','large'].indexOf(p.appearance.text) === -1) p.appearance.text = DEFAULT.appearance.text;
+      if (['compact','comfortable'].indexOf(p.appearance.density) === -1) p.appearance.density = DEFAULT.appearance.density;
+      if (['plum','lilac','mulberry','indigo'].indexOf(p.appearance.accent) === -1) p.appearance.accent = DEFAULT.appearance.accent;
+      if (['standard','high'].indexOf(p.appearance.contrast) === -1) p.appearance.contrast = DEFAULT.appearance.contrast;
+      p.appearance.reduceTransparency = p.appearance.reduceTransparency === true;
+      p.dailySupports = Object.assign(clone(DEFAULT.dailySupports), p.dailySupports || {});
+      p.dailySupports.selected = Array.isArray(p.dailySupports.selected) ? p.dailySupports.selected : [];
+      p.dailySupports.days = p.dailySupports.days && typeof p.dailySupports.days === 'object' && !Array.isArray(p.dailySupports.days) ? p.dailySupports.days : {};
+      p.drip = Object.assign(clone(DEFAULT.drip), p.drip || {});
+      p.drip.answers = p.drip.answers && typeof p.drip.answers === 'object' && !Array.isArray(p.drip.answers) ? p.drip.answers : {};
+      p.drip.skipped = p.drip.skipped && typeof p.drip.skipped === 'object' && !Array.isArray(p.drip.skipped) ? p.drip.skipped : {};
+      p.drip.askedToday = Array.isArray(p.drip.askedToday) ? p.drip.askedToday : [];
+      p.userModel = p.userModel && typeof p.userModel === 'object' && !Array.isArray(p.userModel) ? p.userModel : {};
+      if (p.locale !== 'en' && p.locale !== 'ur') p.locale = 'en';
+      if (p.theme && !VALID_THEMES[p.theme]) p.theme = null;
+      p.checkins = (Array.isArray(p.checkins) ? p.checkins : []).map(normalizeCheckin);
+      if (migration.changed) {
+        try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (migrationError) {}
+      }
       return p;
     } catch (e) { return clone(DEFAULT); }
+  }
+  function migrateState(saved) {
+    var p = clone(saved || {}), changed = false;
+    var version = typeof p.v === 'number' ? p.v : 5;
+    if (version < 6) {
+      p.checkins = (Array.isArray(p.checkins) ? p.checkins : []).map(normalizeCheckin);
+      p.patternPrefs = p.patternPrefs && typeof p.patternPrefs === 'object' ? p.patternPrefs : { enabled: true, decisions: {} };
+      p.patternPrefs.decisions = p.patternPrefs.decisions || {};
+      (Array.isArray(p.inferences) ? p.inferences : []).forEach(function (item) {
+        if (item && item.id && typeof item.confirmed === 'boolean') {
+          p.patternPrefs.decisions[item.id] = item.confirmed ? 'confirmed' : 'rejected';
+        }
+      });
+      p.appearance = p.appearance && typeof p.appearance === 'object' ? p.appearance : clone(DEFAULT.appearance);
+      p.v = 6; changed = true;
+    }
+    if (version < 7) {
+      p.dailySupports = p.dailySupports && typeof p.dailySupports === 'object' ? p.dailySupports : clone(DEFAULT.dailySupports);
+      p.dailySupports.selected = Array.isArray(p.dailySupports.selected) ? p.dailySupports.selected : [];
+      p.dailySupports.days = p.dailySupports.days && typeof p.dailySupports.days === 'object' && !Array.isArray(p.dailySupports.days) ? p.dailySupports.days : {};
+      p.v = 7; changed = true;
+    }
+    if (version < 8) {
+      p.drip = p.drip && typeof p.drip === 'object' ? p.drip : clone(DEFAULT.drip);
+      p.drip.answers = p.drip.answers && typeof p.drip.answers === 'object' && !Array.isArray(p.drip.answers) ? p.drip.answers : {};
+      p.drip.skipped = p.drip.skipped && typeof p.drip.skipped === 'object' && !Array.isArray(p.drip.skipped) ? p.drip.skipped : {};
+      p.drip.askedToday = Array.isArray(p.drip.askedToday) ? p.drip.askedToday : [];
+      p.userModel = p.userModel && typeof p.userModel === 'object' && !Array.isArray(p.userModel) ? p.userModel : {};
+      p.locale = p.locale === 'ur' ? 'ur' : 'en';
+      if (p.theme && !VALID_THEMES[p.theme]) p.theme = null;
+      p.v = 8; changed = true;
+    }
+    return { value: p, changed: changed };
+  }
+  function normalizeCheckin(c, i) {
+    c = c || {};
+    return Object.assign({}, c, {
+      id: c.id || ('checkin-' + (c.t || 0) + '-' + (i || 0)),
+      t: c.t || Date.now(),
+      updatedAt: c.updatedAt || c.t || Date.now(),
+      state: c.state || 'Not sure',
+      dims: c.dims && typeof c.dims === 'object' && !Array.isArray(c.dims) ? c.dims : {},
+      triggers: Array.isArray(c.triggers) ? c.triggers : [],
+      need: c.need || '',
+      feeling: c.feeling || ''
+    });
   }
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
@@ -93,12 +171,56 @@
 
   /* ── Theme / haptics ───────────────────────────────────────────────────── */
   function applyTheme() {
-    if (state.theme) document.documentElement.setAttribute('data-theme', state.theme);
+    if (state.theme && VALID_THEMES[state.theme]) document.documentElement.setAttribute('data-theme', state.theme);
     else document.documentElement.removeAttribute('data-theme');
+    var appearance = state.appearance || DEFAULT.appearance;
+    document.documentElement.setAttribute('data-text', appearance.text);
+    document.documentElement.setAttribute('data-density', appearance.density);
+    document.documentElement.setAttribute('data-accent', appearance.accent);
+    document.documentElement.setAttribute('data-contrast', appearance.contrast);
+    document.documentElement.setAttribute('data-transparency', appearance.reduceTransparency ? 'reduced' : 'standard');
+    applyLocale();
     try {
-      if (state.theme) localStorage.setItem('soulcap_theme', state.theme);
+      if (state.theme && VALID_THEMES[state.theme]) localStorage.setItem('soulcap_theme', state.theme);
       else localStorage.removeItem('soulcap_theme');
+      localStorage.setItem('soulcap_appearance', JSON.stringify(appearance));
+      localStorage.setItem('soulcap_locale', state.locale === 'ur' ? 'ur' : 'en');
     } catch (e) {}
+  }
+  function t(path) {
+    var pack = STRINGS[state.locale === 'ur' ? 'ur' : 'en'] || STRINGS.en;
+    var parts = path.split('.');
+    var cur = pack, i;
+    for (i = 0; i < parts.length; i++) {
+      if (!cur || typeof cur !== 'object') return path;
+      cur = cur[parts[i]];
+    }
+    return typeof cur === 'string' ? cur : path;
+  }
+  function applyLocale() {
+    var locale = state.locale === 'ur' ? 'ur' : 'en';
+    var meta = LOCALE_OPTIONS.filter(function (o) { return o.k === locale; })[0] || LOCALE_OPTIONS[0];
+    document.documentElement.setAttribute('lang', locale);
+    document.documentElement.setAttribute('dir', meta.dir);
+    var tabs = document.querySelectorAll('#tabs button[data-tab] span');
+    Array.prototype.forEach.call(tabs, function (span) {
+      var tab = span.parentNode.getAttribute('data-tab');
+      if (STRINGS.en.tabs[tab]) span.textContent = t('tabs.' + tab);
+    });
+    var fab = document.getElementById('fab');
+    if (fab) fab.setAttribute('aria-label', t('helpNow'));
+  }
+  function setLocale(next) {
+    var before = state.locale;
+    state.locale = next === 'ur' ? 'ur' : 'en';
+    if (!save()) { state.locale = before; showPreferenceSaveFailed(); return; }
+    applyTheme(); reRender();
+  }
+  function setTheme(next) {
+    var before = state.theme;
+    state.theme = next && VALID_THEMES[next] ? next : null;
+    if (!save()) { state.theme = before; showPreferenceSaveFailed(); return; }
+    applyTheme(); reRender();
   }
   function buzz(pattern) {
     if (!state.haptics) return;
@@ -179,6 +301,7 @@
     container.appendChild(el('a', { href: 'sms:', class: 'btn', style: 'text-decoration:none', text: 'Message someone I trust' }));
     container.appendChild(el('p', { class: 'p-sm', style: 'margin:2px 0 0',
       text: 'If you feel unsafe or in danger, please contact your local emergency services or a crisis helpline in your area.' }));
+    if (panicSaveWarning) container.appendChild(el('p', { class: 'p-sm', text: CHECKIN_UI.crisisSaveFailed }));
   }
 
   var pacerTimer = null, pacerPhase = 0;
@@ -216,7 +339,7 @@
   }
   function closePanic() {
     $('#panic').classList.remove('on'); $('#panic').setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = ''; stopPacer(); hushVoice();
+    document.body.style.overflow = ''; stopPacer(); hushVoice(); panicSaveWarning = false;
   }
   function runPacer() {
     stopPacer(); pacerPhase = 0;
@@ -239,14 +362,111 @@
 
   /* ── Check-ins (deduped per day) ───────────────────────────────────────── */
   function recordCheckin(s) {
+    var before = clone(state.checkins);
     var last = state.checkins[state.checkins.length - 1];
     // One check-in per day: tapping again the same day updates it rather than
     // stacking. A new day appends a fresh entry.
-    if (last && sameDay(last.t, Date.now())) { last.state = s; last.t = Date.now(); }
-    else state.checkins.push({ t: Date.now(), state: s });
-    save();
+    if (last && sameDay(last.t, Date.now())) {
+      last.state = s; last.updatedAt = Date.now();
+    } else {
+      state.checkins.push(normalizeCheckin({ id: uid(), t: Date.now(), updatedAt: Date.now(), state: s }, state.checkins.length));
+    }
+    if (!save()) { state.checkins = before; return false; }
+    return true;
   }
   function latestCheckin() { return state.checkins.length ? state.checkins[state.checkins.length - 1] : null; }
+  function todayCheckin() {
+    var c = latestCheckin();
+    return c && sameDay(c.t, Date.now()) ? c : null;
+  }
+  function showCheckinSaveFailed() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: CHECKIN_UI.saveFailedTitle }));
+      p.appendChild(el('p', { class: 'p', text: CHECKIN_UI.saveFailedBody }));
+      p.appendChild(el('button', { class: 'btn', text: CHECKIN_UI.ok, onclick: closeSheet }));
+    });
+  }
+  function showPreferenceSaveFailed() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: PRESENTATION_UI.saveFailedTitle }));
+      p.appendChild(el('p', { class: 'p', text: PRESENTATION_UI.saveFailedBody }));
+      p.appendChild(el('button', { class: 'btn', text: CHECKIN_UI.ok, onclick: closeSheet }));
+    });
+  }
+  function checkinDetailSheet() {
+    var existing = todayCheckin();
+    if (!existing) return;
+    var draftCheckin = clone(existing);
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: CHECKIN_UI.detailTitle }));
+      p.appendChild(el('p', { class: 'p-sm', text: CHECKIN_UI.detailHint }));
+      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CHECKIN_UI.dimensions }));
+      p.appendChild(el('p', { class: 'p-sm', text: CHECKIN_UI.dimensionsHint }));
+      CHECKIN_DIMENSIONS.forEach(function (cfg) {
+        var current = draftCheckin.dims[cfg.key] || 0;
+        var value = el('span', { class: 'meta', text: current ? (current + ' / 5') : 'Not set' });
+        var range = el('input', { type: 'range', min: 0, max: 5, step: 1, value: current,
+          'aria-label': cfg.label, 'aria-valuetext': current ? (current + ' of 5') : 'Not set' });
+        range.addEventListener('input', function () {
+          var n = parseInt(range.value, 10);
+          if (n) draftCheckin.dims[cfg.key] = n; else delete draftCheckin.dims[cfg.key];
+          value.textContent = n ? (n + ' / 5') : 'Not set';
+          range.setAttribute('aria-valuetext', n ? (n + ' of 5') : 'Not set');
+        });
+        p.appendChild(el('div', { class: 'dimension' }, [
+          el('div', { class: 'dimension-head' }, [el('span', { class: 'lab', text: cfg.label }), value]),
+          range,
+          el('div', { class: 'dimension-ends' }, [el('span', { text: cfg.low }), el('span', { text: cfg.high })])
+        ]));
+      });
+
+      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CHECKIN_UI.need }));
+      var needWrap = el('div', { class: 'chips' });
+      CHECKIN_DIRECT_NEEDS.forEach(function (item) {
+        needWrap.appendChild(el('button', { class: 'chip', 'aria-pressed': draftCheckin.need === item.key ? 'true' : 'false', text: item.label,
+          onclick: function () {
+            draftCheckin.need = draftCheckin.need === item.key ? '' : item.key;
+            Array.prototype.forEach.call(needWrap.children, function (b) {
+              b.setAttribute('aria-pressed', b.textContent === item.label && draftCheckin.need === item.key ? 'true' : 'false');
+            });
+          } }));
+      });
+      p.appendChild(needWrap);
+
+      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CHECKIN_UI.triggers }));
+      var triggerWrap = el('div', { class: 'chips' });
+      CHECKIN_TRIGGERS.forEach(function (item) {
+        triggerWrap.appendChild(el('button', { class: 'chip', 'aria-pressed': draftCheckin.triggers.indexOf(item.key) !== -1 ? 'true' : 'false', text: item.label,
+          onclick: function () {
+            var i = draftCheckin.triggers.indexOf(item.key);
+            if (i === -1) draftCheckin.triggers.push(item.key); else draftCheckin.triggers.splice(i, 1);
+            this.setAttribute('aria-pressed', i === -1 ? 'true' : 'false');
+          } }));
+      });
+      p.appendChild(triggerWrap);
+
+      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CHECKIN_UI.feeling }));
+      var feeling = el('input', { type: 'text', maxlength: 160, placeholder: CHECKIN_UI.feelingPlaceholder,
+        'aria-label': CHECKIN_UI.feeling, value: draftCheckin.feeling || '' });
+      p.appendChild(feeling);
+      p.appendChild(el('p', { class: 'p-sm', text: CHECKIN_UI.localSafetyNote }));
+      p.appendChild(el('button', { class: 'btn', text: CHECKIN_UI.save, onclick: function () {
+        var before = clone(state.checkins);
+        var risk = assessRisk(feeling.value);
+        draftCheckin.feeling = feeling.value.trim().slice(0, 160);
+        draftCheckin.updatedAt = Date.now();
+        state.checkins = state.checkins.map(function (c) { return c.id === draftCheckin.id ? clone(draftCheckin) : c; });
+        if (!save()) {
+          state.checkins = before;
+          if (risk === 3) { panicSaveWarning = true; closeSheet(); openPanic(); return; }
+          showCheckinSaveFailed(); return;
+        }
+        closeSheet(); render();
+        if (risk === 3) openPanic();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: CHECKIN_UI.cancel, onclick: closeSheet }));
+    });
+  }
   function currentCheckin() {
     var c = latestCheckin();
     return c && (Date.now() - c.t) < 12 * 3600 * 1000 ? c : null;
@@ -297,11 +517,17 @@
       if (h > 0) { score += h; why.push('it has helped you before'); }
       if (state.favourites.indexOf(s.id) !== -1) { score += 1.2; why.push('you saved it'); }
       if (last) {
-        var map = { Wired: ['anxiety','panic','wired'], Heavy: ['low','shame','self-critical'],
-                    Flat: ['low','flat','withdrawn'], Steady: ['stable','stuck'] };
-        var want = map[last.state] || [];
-        if (s.indication.some(function (i) { return want.indexOf(i) !== -1; })) {
-          score += 1.5; why.push('you said you’re feeling ' + last.state.toLowerCase());
+        var profile = CHECKIN_PROFILES[last.state];
+        var tagMatch = profile && profile.tags && s.indication.some(function (i) { return profile.tags.indexOf(i) !== -1; });
+        var familyMatch = profile && profile.families && profile.families.indexOf(s.family) !== -1;
+        if (tagMatch || familyMatch) {
+          score += profile.weight; why.push(profile.reason);
+        }
+        if (last.need) {
+          var direct = CHECKIN_DIRECT_NEEDS.filter(function (item) { return item.key === last.need; })[0];
+          var directFamily = direct && direct.families && direct.families.indexOf(s.family) !== -1;
+          var directDomain = direct && direct.domains && direct.domains.indexOf(s.domain) !== -1;
+          if (directFamily || directDomain) { score += 4; why.push(direct.reason); }
         }
       }
       state.concerns.forEach(function (c) {
@@ -317,7 +543,7 @@
       if (tags.indexOf('trauma') !== -1 && (s.family === 'orienting' || s.family === 'sensory' || s.family === 'soothing')) { score += 1.4; why.push('gentle grounding suits what you shared'); }
       var hour = new Date().getHours();
       if (hour >= 22 || hour <= 5) {
-        if (s.domain === 'rest') { score += 3; why.push('it’s late'); }
+        if (s.domain === 'rest') { score += 1.5; why.push('it’s late'); }
         if (s.domain === 'reflect' || s.domain === 'move') score -= 2;
       }
       if (recent.indexOf(s.id) !== -1) score -= 2;
@@ -331,6 +557,253 @@
     var uniq = pick.why.filter(function (v, i, a) { return a.indexOf(v) === i; }).slice(0, 2);
     return 'Because ' + uniq.join(', and ') + '.';
   }
+  function localDayKey(t) {
+    var d = new Date(t);
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function distinctDays(records) {
+    var days = {};
+    records.forEach(function (record) { days[localDayKey(record.t)] = true; });
+    return Object.keys(days).length;
+  }
+  function triggerLabel(key) {
+    var item = CHECKIN_TRIGGERS.filter(function (trigger) { return trigger.key === key; })[0];
+    return item ? item.label : key;
+  }
+  function derivePatterns() {
+    if (!state.patternPrefs.enabled) return [];
+    var patterns = [], checkins = state.checkins || [];
+    if (distinctDays(checkins) >= 5) {
+      var late = checkins.filter(function (c) {
+        var hour = new Date(c.t).getHours();
+        return hour >= 22 || hour <= 4;
+      });
+      if (distinctDays(late) >= 3) {
+        patterns.push({ id:'late-nights', title:PATTERN_UI.lateTitle, summary:PATTERN_UI.lateSummary,
+          count:distinctDays(late), evidence:late.map(function (c) { return c.id; }),
+          dates:late.map(function (c) { return c.t; }) });
+      }
+
+      var noiseRated = checkins.filter(function (c) { return typeof (c.dims || {}).noise === 'number'; });
+      var highNoise = noiseRated.filter(function (c) { return c.dims.noise >= 4; });
+      if (distinctDays(noiseRated) >= 5 && distinctDays(highNoise) >= 3) {
+        patterns.push({ id:'high-noise', title:PATTERN_UI.noiseTitle, summary:PATTERN_UI.noiseSummary,
+          count:distinctDays(highNoise), evidence:highNoise.map(function (c) { return c.id; }),
+          dates:highNoise.map(function (c) { return c.t; }) });
+      }
+
+      var triggerDays = {};
+      checkins.forEach(function (c) {
+        (c.triggers || []).forEach(function (key) {
+          triggerDays[key] = triggerDays[key] || {};
+          triggerDays[key][localDayKey(c.t)] = c;
+        });
+      });
+      Object.keys(triggerDays).forEach(function (key) {
+        var records = Object.keys(triggerDays[key]).map(function (day) { return triggerDays[key][day]; });
+        if (records.length < 3) return;
+        patterns.push({ id:'trigger-' + key, title:triggerLabel(key) + ' ' + PATTERN_UI.triggerSuffix,
+          summary:PATTERN_UI.triggerSummary + ': ' + triggerLabel(key).toLowerCase() + '.',
+          count:records.length, evidence:records.map(function (c) { return c.id; }),
+          dates:records.map(function (c) { return c.t; }) });
+      });
+    }
+    return patterns.filter(function (pattern) {
+      var decision = state.patternPrefs.decisions[pattern.id];
+      return decision !== 'rejected' && decision !== 'hidden';
+    });
+  }
+  function setPatternDecision(id, decision) {
+    var before = clone(state.patternPrefs.decisions);
+    state.patternPrefs.decisions[id] = decision;
+    if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
+    render();
+  }
+  function patternSheet(pattern) {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: pattern.title }));
+      p.appendChild(el('p', { class: 'p', text: pattern.summary }));
+      p.appendChild(el('p', { class: 'eyebrow', text: pattern.count + ' ' + PATTERN_UI.dayBasis }));
+      var dates = {};
+      pattern.dates.forEach(function (t) { dates[localDayKey(t)] = t; });
+      Object.keys(dates).sort().reverse().forEach(function (key) {
+        p.appendChild(el('p', { class: 'p-sm', text: new Date(dates[key]).toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'short', year:'numeric' }) }));
+      });
+      p.appendChild(el('p', { class: 'notice', text: PATTERN_UI.evidenceNote }));
+      p.appendChild(el('button', { class: 'btn', text: PATTERN_UI.done, onclick: closeSheet }));
+    });
+  }
+  function weeklySummary() {
+    var since = Date.now() - 7 * 86400000;
+    var recent = state.checkins.filter(function (c) { return c.t >= since; });
+    if (distinctDays(recent) < 2) return null;
+    var states = {}, dimensions = {};
+    recent.forEach(function (c) {
+      states[c.state] = (states[c.state] || 0) + 1;
+      Object.keys(c.dims || {}).forEach(function (key) {
+        dimensions[key] = dimensions[key] || [];
+        dimensions[key].push(c.dims[key]);
+      });
+    });
+    var common = Object.keys(states).sort(function (a, b) { return states[b] - states[a]; })[0];
+    var detail = CHECKIN_DIMENSIONS.map(function (cfg) {
+      var values = dimensions[cfg.key] || [];
+      if (values.length < 2) return null;
+      var avg = values.reduce(function (sum, value) { return sum + value; }, 0) / values.length;
+      return cfg.label + ' ' + avg.toFixed(1) + '/5';
+    }).filter(Boolean);
+    return { days:distinctDays(recent), common:common, detail:detail };
+  }
+
+  function ensureDripDay() {
+    var key = localDayKey(Date.now());
+    if (state.drip.dayKey !== key) {
+      state.drip.dayKey = key;
+      state.drip.askedToday = [];
+    }
+  }
+  function estimateValue(key) {
+    var item = state.userModel[key];
+    return item && typeof item.value === 'number' ? item.value : null;
+  }
+  function questionEligible(q) {
+    if (state.drip.answers[q.id] || state.drip.skipped[q.id]) return false;
+    if (!q.when) return true;
+    return Object.keys(q.when).every(function (key) {
+      var rule = q.when[key], value = estimateValue(key);
+      if (value == null) return false;
+      if (rule.min != null && value < rule.min) return false;
+      if (rule.max != null && value > rule.max) return false;
+      return true;
+    });
+  }
+  function nextDripQuestion() {
+    ensureDripDay();
+    if ((state.drip.askedToday || []).length >= DRIP_DAY_CAP) return null;
+    var i, q;
+    for (i = 0; i < DRIP_QUESTIONS.length; i++) {
+      q = DRIP_QUESTIONS[i];
+      if (questionEligible(q) && state.drip.askedToday.indexOf(q.id) === -1) return q;
+    }
+    return null;
+  }
+  function showDripSaveFailed() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: DRIP_UI.saveFailedTitle }));
+      p.appendChild(el('p', { class: 'p', text: DRIP_UI.saveFailedBody }));
+      p.appendChild(el('button', { class: 'btn', text: CHECKIN_UI.ok, onclick: closeSheet }));
+    });
+  }
+  function updateEstimate(key, raw, weight, source) {
+    var value = Math.max(1, Math.min(5, raw));
+    var prev = state.userModel[key];
+    var conf = prev && typeof prev.confidence === 'number' ? prev.confidence : 0;
+    var blended = prev && typeof prev.value === 'number'
+      ? (prev.value * conf + value * weight) / (conf + weight)
+      : value;
+    var nextConf = Math.min(0.92, conf + weight * 0.18);
+    state.userModel[key] = {
+      value: Math.round(blended * 10) / 10,
+      confidence: Math.round(nextConf * 100) / 100,
+      source: source || 'declared',
+      updatedAt: Date.now()
+    };
+  }
+  function answerDrip(q, option) {
+    var beforeDrip = clone(state.drip);
+    var beforeModel = clone(state.userModel);
+    ensureDripDay();
+    state.drip.answers[q.id] = { v: option.v, t: Date.now() };
+    if (state.drip.askedToday.indexOf(q.id) === -1) state.drip.askedToday.push(q.id);
+    updateEstimate(q.key, q.invert ? (6 - option.v) : option.v, q.weight || 1, 'declared');
+    if (!save()) {
+      state.drip = beforeDrip;
+      state.userModel = beforeModel;
+      showDripSaveFailed();
+      return false;
+    }
+    return true;
+  }
+  function skipDrip(q) {
+    var beforeDrip = clone(state.drip);
+    ensureDripDay();
+    state.drip.skipped[q.id] = Date.now();
+    if (state.drip.askedToday.indexOf(q.id) === -1) state.drip.askedToday.push(q.id);
+    if (!save()) { state.drip = beforeDrip; showDripSaveFailed(); return false; }
+    return true;
+  }
+  function correctEstimate(key, value) {
+    var before = clone(state.userModel);
+    updateEstimate(key, value, 1.2, 'corrected');
+    state.userModel[key].confidence = Math.max(state.userModel[key].confidence, 0.7);
+    if (!save()) { state.userModel = before; showDripSaveFailed(); return false; }
+    return true;
+  }
+  function clearEstimate(key) {
+    var before = clone(state.userModel);
+    delete state.userModel[key];
+    if (!save()) { state.userModel = before; showDripSaveFailed(); return false; }
+    return true;
+  }
+  function confidenceLabel(c) {
+    if (c < 0.35) return DRIP_UI.low;
+    if (c < 0.65) return DRIP_UI.mid;
+    return DRIP_UI.high;
+  }
+  function dripSheet() {
+    openSheet(function (p) {
+      function draw() {
+        clear(p);
+        p.appendChild(el('div', { class: 'grab' }));
+        p.appendChild(el('h2', { class: 'h-sec', id: 'sheetTitle', text: DRIP_UI.title }));
+        p.appendChild(el('p', { class: 'p', text: DRIP_UI.intro }));
+        p.appendChild(el('div', { class: 'notice', text: DRIP_UI.notDiagnosis }));
+        var q = nextDripQuestion();
+        if (!q) {
+          p.appendChild(el('p', { class: 'p-voice', text: (state.drip.askedToday || []).length >= DRIP_DAY_CAP ? DRIP_UI.doneToday : DRIP_UI.empty }));
+          p.appendChild(el('button', { class: 'btn', text: DRIP_UI.close, onclick: function () { closeSheet(); render(); } }));
+          return;
+        }
+        p.appendChild(el('p', { class: 'eyebrow', text: 'Question ' + ((state.drip.askedToday || []).length + 1) + ' of ' + DRIP_DAY_CAP + ' today' }));
+        p.appendChild(el('p', { class: 'p-voice', text: q.text }));
+        p.appendChild(el('div', { class: 'stack drip-options' }, q.options.map(function (option) {
+          return el('button', { class: 'opt', text: option.l, onclick: function () {
+            if (!answerDrip(q, option)) return;
+            buzz(8); draw();
+          } });
+        })));
+        p.appendChild(el('button', { class: 'btn quiet', text: DRIP_UI.skip, onclick: function () {
+          if (!skipDrip(q)) return;
+          draw();
+        } }));
+        p.appendChild(el('button', { class: 'btn quiet', text: DRIP_UI.close, onclick: function () { closeSheet(); render(); } }));
+        var focus = p.querySelector('button, input, select, textarea, a');
+        if (focus) focus.focus();
+      }
+      draw();
+    });
+  }
+  function estimateSheet(key) {
+    var meta = USER_MODEL_KEYS.filter(function (item) { return item.key === key; })[0];
+    if (!meta) return;
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: meta.label }));
+      p.appendChild(el('p', { class: 'p', text: DRIP_UI.estimateHint }));
+      p.appendChild(el('div', { class: 'chips' }, [1, 2, 3, 4, 5].map(function (n) {
+        return el('button', { class: 'chip', text: '' + n, onclick: function () {
+          if (!correctEstimate(key, n)) return;
+          closeSheet(); render();
+        } });
+      })));
+      p.appendChild(el('p', { class: 'p-sm', text: meta.low + ' → ' + meta.high }));
+      p.appendChild(el('button', { class: 'btn ghost', text: DRIP_UI.reset, onclick: function () {
+        if (!clearEstimate(key)) return;
+        closeSheet(); render();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: DRIP_UI.close, onclick: closeSheet }));
+    });
+  }
+
   function paceMult() { return state.pace || 1; }
   function fmtTime(sec) {
     sec = Math.round(sec);
@@ -669,16 +1142,136 @@
   }
 
   /* ── Calm — guided front door ──────────────────────────────────────────── */
-  var calm = { need: null, seen: null, hand: null, browse: false };
+  var calm = { need: null, seen: null, hand: ['none'], browse: false, section: 'guided' };
+  var libraryQuery = '';
 
+  function toggleCalmHand(key) {
+    if (key === 'none') {
+      calm.hand = ['none'];
+      return;
+    }
+    calm.hand = calm.hand.filter(function (item) { return item !== 'none'; });
+    var i = calm.hand.indexOf(key);
+    if (i === -1) calm.hand.push(key); else calm.hand.splice(i, 1);
+    if (!calm.hand.length) calm.hand = ['none'];
+  }
+
+  function articleSheet(id) {
+    var article = ARTICLES.filter(function (item) { return item.id === id; })[0];
+    if (!article) return;
+    openSheet(function (p) {
+      p.appendChild(el('p', { class: 'eyebrow', text: LIBRARY_UI.label }));
+      p.appendChild(el('h2', { class: 'h-sec', text: article.title }));
+      p.appendChild(el('button', { class: 'btn quiet article-close-top', text: LIBRARY_UI.close, onclick: closeSheet }));
+      p.appendChild(el('p', { class: 'p-voice', text: article.summary }));
+      p.appendChild(el('div', { class: 'notice', text: LIBRARY_UI.reviewNote }));
+      article.sections.forEach(function (section) {
+        p.appendChild(el('h3', { class: 'card-title article-heading', text: section.title }));
+        p.appendChild(el('p', { class: 'p', text: section.body }));
+      });
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.practical }));
+      p.appendChild(el('ul', { class: 'article-list' }, article.practical.map(function (item) { return el('li', { text: item }); })));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.reflect }));
+      p.appendChild(el('ul', { class: 'article-list' }, article.reflection.map(function (item) { return el('li', { text: item }); })));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.support }));
+      p.appendChild(el('div', { class: 'notice', text: article.support }));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.related }));
+      article.skillIds.forEach(function (skillId) {
+        var skill = SKILLS.filter(function (item) { return item.id === skillId; })[0];
+        if (skill) p.appendChild(el('button', { class: 'btn ghost', text: skill.name, onclick: function () { skillSheet(skill.id); } }));
+      });
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.references }));
+      article.references.forEach(function (reference) { p.appendChild(el('p', { class: 'p-sm', text: reference })); });
+      p.appendChild(el('button', { class: 'btn quiet', text: LIBRARY_UI.close, onclick: closeSheet }));
+    });
+  }
+  function renderLibrary(v) {
+    v.appendChild(el('button', { class: 'btn ghost', text: LIBRARY_UI.back, onclick: function () { calm.section = 'guided'; render(); } }));
+    v.appendChild(el('p', { class: 'p', text: LIBRARY_UI.intro }));
+    var search = el('input', { type:'search', value:libraryQuery, placeholder:LIBRARY_UI.searchPlaceholder, 'aria-label':LIBRARY_UI.searchLabel });
+    var status = el('p', { class:'meta library-status', role:'status', 'aria-live':'polite', 'aria-atomic':'true' });
+    var results = el('div', { class:'stack library-results' });
+    function draw() {
+      clear(results);
+      var query = libraryQuery.trim().toLowerCase();
+      var matches = ARTICLES.filter(function (article) {
+        return !query || [article.title, article.summary].concat(article.tags).join(' ').toLowerCase().indexOf(query) !== -1;
+      });
+      status.textContent = !matches.length
+        ? LIBRARY_UI.noMatches
+        : (matches.length === 1 ? LIBRARY_UI.resultStatusOne : LIBRARY_UI.resultStatus.replace('{n}', '' + matches.length));
+      if (!matches.length) results.appendChild(el('div', { class:'notice', text:LIBRARY_UI.noMatches }));
+      matches.forEach(function (article) {
+        results.appendChild(el('button', { class:'card tap article-card', onclick:function () { articleSheet(article.id); } }, [
+          el('h2', { class:'card-title', text:article.title }),
+          el('p', { class:'p-sm', text:article.summary }),
+          el('p', { class:'meta', text:article.skillIds.length + ' related exercise' + (article.skillIds.length === 1 ? '' : 's') })
+        ]));
+      });
+    }
+    search.addEventListener('input', function () { libraryQuery = search.value; draw(); });
+    v.appendChild(search); v.appendChild(status); v.appendChild(results); draw();
+  }
+  function supportDayKey() { return localDayKey(Date.now()); }
+  function showSupportSaveFailed() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class:'h-sec', text:SUPPORT_UI.saveFailedTitle }));
+      p.appendChild(el('p', { class:'p', text:SUPPORT_UI.saveFailedBody }));
+      p.appendChild(el('button', { class:'btn', text:CHECKIN_UI.ok, onclick:closeSheet }));
+    });
+  }
+  function toggleDailySupport(id) {
+    var before = clone(state.dailySupports);
+    var i = state.dailySupports.selected.indexOf(id);
+    if (i === -1) state.dailySupports.selected.push(id); else state.dailySupports.selected.splice(i, 1);
+    if (!save()) { state.dailySupports = before; showSupportSaveFailed(); return; }
+    reRender();
+  }
+  function toggleSupportDone(id) {
+    var before = clone(state.dailySupports);
+    var key = supportDayKey();
+    var done = Array.isArray(state.dailySupports.days[key]) ? state.dailySupports.days[key].slice() : [];
+    var i = done.indexOf(id);
+    if (i === -1) done.push(id); else done.splice(i, 1);
+    if (done.length) state.dailySupports.days[key] = done; else delete state.dailySupports.days[key];
+    if (!save()) { state.dailySupports = before; showSupportSaveFailed(); return; }
+    buzz(8); reRender();
+  }
+  function renderDailySupports(v) {
+    v.appendChild(el('button', { class:'btn ghost', text:SUPPORT_UI.back, onclick:function () { calm.section = 'guided'; render(); } }));
+    v.appendChild(el('p', { class:'p', text:SUPPORT_UI.intro }));
+    v.appendChild(el('p', { class:'eyebrow', text:SUPPORT_UI.choose }));
+    v.appendChild(el('div', { class:'chips', role:'group', 'aria-label':SUPPORT_UI.choose }, DAILY_SUPPORTS.map(function (support) {
+      return el('button', { class:'chip', 'aria-pressed':state.dailySupports.selected.indexOf(support.id) !== -1 ? 'true' : 'false',
+        text:support.title, onclick:function () { toggleDailySupport(support.id); } });
+    })));
+    var selected = DAILY_SUPPORTS.filter(function (support) { return state.dailySupports.selected.indexOf(support.id) !== -1; });
+    if (!selected.length) { v.appendChild(el('div', { class:'notice', text:SUPPORT_UI.empty })); return; }
+    v.appendChild(el('p', { class:'eyebrow support-today', text:SUPPORT_UI.today }));
+    var storedDone = state.dailySupports.days[supportDayKey()];
+    var done = Array.isArray(storedDone) ? storedDone : [];
+    selected.forEach(function (support) {
+      var complete = done.indexOf(support.id) !== -1;
+      v.appendChild(el('div', { class:'card support-card' }, [
+        el('h2', { class:'card-title', text:support.title }),
+        el('p', { class:'p-sm', text:support.note }),
+        el('button', { class:'btn ghost', 'aria-pressed':complete ? 'true' : 'false',
+          text:complete ? SUPPORT_UI.done : SUPPORT_UI.notDone, onclick:function () { toggleSupportDone(support.id); } })
+      ]));
+    });
+  }
   function renderCalm() {
     var v = $('#view-calm'); clear(v);
+    var title = calm.browse ? 'Every technique.' : calm.section === 'library' ? LIBRARY_UI.title : calm.section === 'supports' ? SUPPORT_UI.title : 'What do you need\nright now?';
     v.appendChild(el('div', {}, [
       el('p', { class: 'eyebrow', text: 'Calm' }),
-      el('h1', { class: 'h-voice', text: calm.browse ? 'Every technique.' : 'What do you need\nright now?' })
+      el('h1', { class: 'h-voice', text: title })
     ]));
-    v.appendChild(el('button', { class: 'help-btn', text: 'I need help now', onclick: openPanic }));
+    v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
+    v.appendChild(el('div', { class:'notice', text:CALM_REVIEW_NOTE }));
 
+    if (calm.section === 'library') { renderLibrary(v); return; }
+    if (calm.section === 'supports') { renderDailySupports(v); return; }
     if (calm.browse) {
       v.appendChild(el('button', { class: 'btn ghost', text: '← Back to guided', onclick: function () { calm.browse = false; render(); } }));
       Object.keys(FAMILY_META).forEach(function (fam) {
@@ -691,6 +1284,19 @@
         items.forEach(function (s) { v.appendChild(skillCard(s, true)); });
       });
       return;
+    }
+
+    if (!calm.need) {
+      v.appendChild(el('div', { class:'calm-tools' }, [
+        el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'library'; calm.browse = false; render(); } }, [
+          el('h2', { class:'card-title', text:LIBRARY_UI.title }),
+          el('p', { class:'p-sm', text:LIBRARY_UI.homeHint })
+        ]),
+        el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'supports'; calm.browse = false; render(); } }, [
+          el('h2', { class:'card-title', text:SUPPORT_UI.title }),
+          el('p', { class:'p-sm', text:SUPPORT_UI.homeHint })
+        ])
+      ]));
     }
 
     // Q1 — what do you need
@@ -719,12 +1325,9 @@
     v.appendChild(el('div', {}, [
       el('p', { class: 'p-voice', text: 'Got anything to hand?' }),
       el('div', { style: 'height:10px' }),
-      el('div', { class: 'chips' }, [
-        { k: null, l: 'Nothing' }, { k: 'water', l: 'A tap or drink' }, { k: 'cold', l: 'Something cold' },
-        { k: 'sour', l: 'Something sour' }, { k: 'space', l: 'Room to move' }
-      ].map(function (o) {
-        return el('button', { class: 'chip', 'aria-pressed': calm.hand === o.k ? 'true' : 'false', text: o.l,
-          onclick: function () { calm.hand = calm.hand === o.k ? null : o.k; render(); } });
+      el('div', { class: 'chips', role: 'group', 'aria-label': 'Things available' }, CALM_HAND_OPTIONS.map(function (o) {
+        return el('button', { class: 'chip', 'aria-pressed': calm.hand.indexOf(o.key) !== -1 ? 'true' : 'false', text: o.label,
+          onclick: function () { toggleCalmHand(o.key); render(); } });
       }))
     ]));
 
@@ -735,7 +1338,7 @@
       if (need.families.indexOf(s.family) === -1) return false;
       if (!capacityFits(s.capacity, cap)) return false;
       if (calm.seen === true && !s.discreet) return false;
-      if (['water', 'cold', 'sour', 'space'].indexOf(s.needs) !== -1 && calm.hand !== s.needs) return false;
+      if (['water', 'cold', 'sour', 'space'].indexOf(s.needs) !== -1 && calm.hand.indexOf(s.needs) === -1) return false;
       return true;
     });
     list.sort(function (a, b) { return helpfulScore(b.id) - helpfulScore(a.id); });
@@ -831,7 +1434,7 @@
       v.appendChild(contents);
       renderJournalContents(contents);
     }
-    v.appendChild(el('button', { class: 'help-btn', text: 'I need help now', onclick: openPanic }));
+    v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
   }
 
   function renderJournalContents(wrap) {
@@ -1182,6 +1785,56 @@
   }
   function nodeR() { var n = state.rings; return n <= 4 ? 15 : n <= 5 ? 13 : n <= 6 ? 12 : 11; }
   function typeMeta(code) { return RELATIONSHIP_TYPES.filter(function (t) { return t.code === code; })[0] || RELATIONSHIP_TYPES[5]; }
+  function setRingCount(n) {
+    n = Math.max(3, Math.min(7, n | 0));
+    if (n === state.rings) return false;
+    var before = state.rings;
+    var beforePeople = clone(state.people);
+    state.rings = n;
+    var keep = {};
+    var i;
+    for (i = 0; i < n; i++) keep['r' + i] = 1;
+    state.people.forEach(function (p) {
+      if (!keep[p.ring]) p.ring = 'r' + (n - 1);
+    });
+    Object.keys(state.ringNames || {}).forEach(function (key) {
+      if (!keep[key]) delete state.ringNames[key];
+    });
+    if (!save()) {
+      state.rings = before;
+      state.people = beforePeople;
+      return false;
+    }
+    return true;
+  }
+  function contactScore(p) {
+    if (!state.trackContact || !p) return 0;
+    var cut = Date.now() - 30 * 86400000;
+    var log = Array.isArray(p.spokeAt) ? p.spokeAt : [];
+    var n = 0, i;
+    for (i = 0; i < log.length; i++) if (log[i] >= cut) n++;
+    if (!n && p.lastContact && p.lastContact >= cut) n = 1;
+    return n;
+  }
+  function nodeRadiusFor(p, base, maxScore) {
+    if (!state.trackContact || maxScore <= 0) return base;
+    var s = contactScore(p) / maxScore;
+    return Math.max(9, Math.round(base * (0.85 + s * 0.5)));
+  }
+  function logSpokeToday(p) {
+    var before = clone(p);
+    var now = Date.now();
+    var cut = now - 90 * 86400000;
+    p.lastContact = now;
+    p.spokeAt = (Array.isArray(p.spokeAt) ? p.spokeAt : []).filter(function (t) { return t >= cut; });
+    p.spokeAt.push(now);
+    if (!save()) {
+      p.lastContact = before.lastContact;
+      p.spokeAt = before.spokeAt;
+      return false;
+    }
+    return true;
+  }
 
   // Rotation is driven in JS so labels can be kept upright. The previous CSS
   // group-spin + counter-spin flung labels off their transform origin — that was
@@ -1197,11 +1850,18 @@
     function s(tag, a) { var n = document.createElementNS(NS, tag); Object.keys(a).forEach(function (k) { n.setAttribute(k, a[k]); }); return n; }
     var rings = ringDefs(), nr = nodeR();
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var scores = state.people.map(contactScore);
+    var maxScore = 0;
+    scores.forEach(function (v) { if (v > maxScore) maxScore = v; });
 
     rings.forEach(function (ring) {
-      svg.appendChild(s('circle', { class: 'orbit', 'data-key': ring.key, cx: 200, cy: 200, r: ring.r }));
-      var lab = s('text', { class: 'orbit-lab', x: 200, y: 200 - ring.r + 13, 'text-anchor': 'middle' });
-      lab.textContent = ring.label.toUpperCase(); svg.appendChild(lab);
+      var orbit = s('circle', { class: 'orbit', 'data-key': ring.key, cx: 200, cy: 200, r: ring.r });
+      svg.appendChild(orbit);
+      var lab = s('text', { class: 'orbit-lab', 'data-key': ring.key, x: 200, y: 200 - ring.r + 13, 'text-anchor': 'middle' });
+      lab.textContent = ring.label.toUpperCase();
+      svg.appendChild(lab);
+      attachRingRename(lab, ring.key);
+      attachRingRename(orbit, ring.key);
     });
 
     var edgeGroup = s('g', {}); svg.appendChild(edgeGroup);
@@ -1213,14 +1873,16 @@
       var ring = rings.filter(function (r) { return r.key === p.ring; })[0] || rings[rings.length - 1];
       var ri = rings.indexOf(ring);
       var ang = -Math.PI / 2 + 0.4 + ri * 0.85 + (idx / Math.max(peers.length, 1)) * Math.PI * 2;
+      var pr = nodeRadiusFor(p, nr, maxScore);
       var node = s('g', { class: 'node' + (p.hard ? ' hard' : ''), tabindex: '0', role: 'button',
-        'aria-label': p.name + ', ' + typeMeta(p.type).label + (p.hard ? ', hard right now' : '') });
-      var c = s('circle', { r: nr, fill: 'var(' + typeMeta(p.type).cssVar + ')',
+        'aria-label': p.name + ', ' + typeMeta(p.type).label + (p.hard ? ', hard right now' : '') +
+          (state.trackContact && maxScore ? ', spoke lately ' + contactScore(p) + ' times' : '') });
+      var c = s('circle', { r: pr, fill: 'var(' + typeMeta(p.type).cssVar + ')',
         stroke: p.hard ? 'var(--ink-3)' : 'var(--surface)', 'stroke-width': p.hard ? 1.5 : 2 });
       if (p.hard) c.setAttribute('stroke-dasharray', '3 3');
       var t = s('text', { class: 'node-lab' }); t.textContent = p.name;
       node.appendChild(c); node.appendChild(t);
-      var rec = { p: p, el: node, circle: c, label: t, ang: ang, r: ring.r, x: 200, y: 200 };
+      var rec = { p: p, el: node, circle: c, label: t, ang: ang, r: ring.r, nr: pr, x: 200, y: 200 };
       nodes.push(rec);
       node.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); personSheet(p.id); } });
       svg.appendChild(node);
@@ -1241,14 +1903,15 @@
 
     mapState = { svg: svg, nodes: nodes, edges: edges, raf: null, last: 0, dragging: false, reduced: reduced, nr: nr };
     nodes.forEach(function (rec) { attachNodeDrag(rec); });
+    attachMapPinch(svg);
     positionAll();
     mapState.raf = requestAnimationFrame(frame);
   }
 
   function positionAll() {
     if (!mapState) return;
-    var nr = mapState.nr;
     mapState.nodes.forEach(function (n) {
+      var nr = n.nr || mapState.nr;
       n.x = 200 + n.r * Math.cos(n.ang); n.y = 200 + n.r * Math.sin(n.ang);
       n.circle.setAttribute('cx', n.x); n.circle.setAttribute('cy', n.y);
       n.label.setAttribute('x', n.x);
@@ -1269,6 +1932,85 @@
     }
     positionAll();
     mapState.raf = requestAnimationFrame(frame);
+  }
+
+  function attachRingRename(elNode, key) {
+    var timer = null, start = null;
+    function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
+    elNode.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      start = { x: e.clientX, y: e.clientY };
+      clearTimer();
+      timer = setTimeout(function () {
+        timer = null; start = null; buzz(10); renameOneRing(key);
+      }, 550);
+    });
+    elNode.addEventListener('pointermove', function (e) {
+      if (!start) return;
+      if (Math.abs(e.clientX - start.x) + Math.abs(e.clientY - start.y) > 8) { clearTimer(); start = null; }
+    });
+    elNode.addEventListener('pointerup', clearTimer);
+    elNode.addEventListener('pointercancel', clearTimer);
+  }
+  function renameOneRing(key) {
+    var rings = ringDefs();
+    var ring = rings.filter(function (r) { return r.key === key; })[0];
+    if (!ring) return;
+    var idx = rings.indexOf(ring);
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: 'Rename ring' }));
+      p.appendChild(el('p', { class: 'p-sm', text: 'Long-press any ring label to rename it. Leave blank for the default.' }));
+      var inp = el('input', { type: 'text', maxlength: '20', placeholder: RING_DEFAULTS[idx] || ('Ring ' + (idx + 1)),
+        'aria-label': 'Ring name', value: state.ringNames[key] || '' });
+      p.appendChild(inp);
+      p.appendChild(el('button', { class: 'btn', text: 'Save', onclick: function () {
+        var val = inp.value.trim().slice(0, 20);
+        if (val) state.ringNames[key] = val; else delete state.ringNames[key];
+        save(); closeSheet(); render();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: 'Cancel', onclick: closeSheet }));
+      setTimeout(function () { inp.focus(); inp.select(); }, 40);
+    });
+  }
+  function attachMapPinch(svg) {
+    var pts = {}, startDist = 0, changed = false;
+    function list() {
+      return Object.keys(pts).map(function (id) { return pts[id]; });
+    }
+    function distance() {
+      var a = list();
+      if (a.length < 2) return 0;
+      return Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y);
+    }
+    svg.addEventListener('pointerdown', function (e) {
+      var t = e.target, onNode = false;
+      while (t && t !== svg) {
+        if (t.getAttribute && ((t.getAttribute('class') || '').indexOf('node') !== -1)) { onNode = true; break; }
+        t = t.parentNode;
+      }
+      if (onNode) return;
+      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (list().length === 2) { startDist = distance(); changed = false; mapState.dragging = true; }
+    });
+    svg.addEventListener('pointermove', function (e) {
+      if (!pts[e.pointerId]) return;
+      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (list().length < 2 || !startDist || changed) return;
+      var d = distance();
+      if (d > startDist * 1.18) {
+        changed = true;
+        if (setRingCount(state.rings + 1)) { buzz(12); render(); }
+      } else if (d < startDist * 0.82) {
+        changed = true;
+        if (setRingCount(state.rings - 1)) { buzz(12); render(); }
+      }
+    });
+    function end(e) {
+      delete pts[e.pointerId];
+      if (list().length < 2) { startDist = 0; changed = false; if (mapState) mapState.dragging = false; }
+    }
+    svg.addEventListener('pointerup', end);
+    svg.addEventListener('pointercancel', end);
   }
 
   function attachNodeDrag(rec) {
@@ -1327,7 +2069,11 @@
       if (state.trackContact) {
         panel.appendChild(el('hr', { class: 'sep' }));
         panel.appendChild(el('p', { class: 'meta', text: p.lastContact ? 'Last spoke: ' + Math.round((Date.now() - p.lastContact) / 86400000) + ' days ago' : 'No contact logged' }));
-        panel.appendChild(el('button', { class: 'btn ghost', text: 'We spoke today', onclick: function () { p.lastContact = Date.now(); save(); closeSheet(); render(); } }));
+        panel.appendChild(el('button', { class: 'btn ghost', text: 'We spoke today', onclick: function () {
+          if (!logSpokeToday(p)) return;
+          closeSheet(); render();
+        } }));
+        panel.appendChild(el('p', { class: 'p-sm', text: 'Logged speaks shape node size on the map. Size means frequency you logged — never importance.' }));
       }
       panel.appendChild(el('hr', { class: 'sep' }));
       panel.appendChild(el('button', { class: 'btn ' + (p.hard ? '' : 'ghost'), text: p.hard ? 'This is hard right now — on' : 'Mark “hard right now”',
@@ -1352,7 +2098,7 @@
       var sup = el('select', { 'aria-label': 'Supportive' }, [el('option', { value: '0.85', text: 'Usually helps' }), el('option', { value: '0.5', text: 'Sometimes helps' }), el('option', { value: '0.2', text: 'Not really' })]); panel.appendChild(sup);
       panel.appendChild(el('button', { class: 'btn', text: 'Add', onclick: function () {
         var n = name.value.trim(); if (!n) { name.focus(); return; }
-        state.people.push({ id: uid(), name: n.slice(0, 24), type: typeSel.value, ring: ringSel.value, supportive: parseFloat(sup.value), drain: 1 - parseFloat(sup.value), hard: false, suggestible: true, lastContact: null });
+        state.people.push({ id: uid(), name: n.slice(0, 24), type: typeSel.value, ring: ringSel.value, supportive: parseFloat(sup.value), drain: 1 - parseFloat(sup.value), hard: false, suggestible: true, lastContact: null, spokeAt: [] });
         save(); closeSheet(); render();
       } }));
       panel.appendChild(el('button', { class: 'btn quiet', text: 'Cancel', onclick: closeSheet }));
@@ -1376,12 +2122,18 @@
       wrap.appendChild(legend); v.appendChild(wrap);
       v.appendChild(el('button', { class: 'btn ghost', text: 'Add someone', onclick: addPersonSheet }));
       v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: 'Rings' }), el('div', { class: 'chips' }, [3, 4, 5, 6, 7].map(function (n) {
-        return el('button', { class: 'chip', 'aria-pressed': state.rings === n ? 'true' : 'false', text: '' + n, onclick: function () { state.rings = n; save(); render(); } });
+        return el('button', { class: 'chip', 'aria-pressed': state.rings === n ? 'true' : 'false', text: '' + n, onclick: function () {
+          if (!setRingCount(n)) return;
+          buzz(8); render();
+        } });
       }))]));
       v.appendChild(el('button', { class: 'btn ghost', text: 'Name the rings', onclick: ringNameSheet }));
-      v.appendChild(el('p', { class: 'p-sm', text: 'Drag anyone in or out to change how close they feel. Tap to open them. The map turns slowly on its own.' }));
+      v.appendChild(el('p', { class: 'p-sm', text: 'Pinch the map to add or remove a ring (3–7). Long-press a ring label to rename. Drag anyone in or out. Tap a person to open them.' }));
+      if (state.trackContact) {
+        v.appendChild(el('p', { class: 'p-sm', text: 'Larger dots reflect how often you’ve logged speaking lately — not how important anyone is.' }));
+      }
     }
-    v.appendChild(el('button', { class: 'help-btn', text: 'I need help now', onclick: openPanic }));
+    v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
   }
   function ringNameSheet() {
     openSheet(function (p) {
@@ -1442,14 +2194,26 @@
       el('h1', { class: 'h-voice', text: greeting() })
     ]));
     var states = ['Steady', 'Wired', 'Flat', 'Heavy', 'Not sure'];
-    var rc = currentCheckin(), today = rc && (Date.now() - rc.t < 6 * 3600 * 1000) ? rc.state : null;
+    var rc = todayCheckin(), today = rc ? rc.state : null;
     v.appendChild(el('div', {}, [
       el('p', { class: 'p-voice', text: 'How are you arriving right now?' }),
       el('div', { style: 'height:11px' }),
       el('div', { class: 'chips' }, states.map(function (s) {
         return el('button', { class: 'chip', 'aria-pressed': today === s ? 'true' : 'false', text: s,
-          onclick: function () { recordCheckin(s); buzz(10); render(); } });
+          onclick: function () {
+            if (!recordCheckin(s)) { showCheckinSaveFailed(); return; }
+            buzz(10); render();
+          } });
       }))
+    ]));
+    if (rc) {
+      var hasDetail = Object.keys(rc.dims || {}).length || (rc.triggers || []).length || rc.need || rc.feeling;
+      v.appendChild(el('button', { class: 'btn ghost', text: hasDetail ? CHECKIN_UI.editDetail : CHECKIN_UI.addDetail, onclick: checkinDetailSheet }));
+    }
+    var dripQ = nextDripQuestion();
+    v.appendChild(el('button', { class: 'card tap', onclick: dripSheet }, [
+      el('h2', { class: 'card-title', text: DRIP_UI.cardTitle }),
+      el('p', { class: 'p-sm', text: dripQ ? DRIP_UI.cardHint : DRIP_UI.doneToday })
     ]));
     var pick = suggestSkill(), dm = DOMAIN_META[pick.skill.domain];
     v.appendChild(el('div', { class: 'card' }, [
@@ -1477,7 +2241,7 @@
         el('div', { class: 'spark', html: '<svg viewBox="0 0 280 46" preserveAspectRatio="none" width="100%" height="46" aria-hidden="true"><polyline points="' + pts + '" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/></svg>' })
       ]));
     }
-    v.appendChild(el('button', { class: 'help-btn', text: 'I need help now', onclick: openPanic }));
+    v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
   }
 
   /* ── Safety plan ───────────────────────────────────────────────────────── */
@@ -1489,6 +2253,23 @@
         var ta = el('textarea', { placeholder: step.placeholder, 'aria-label': step.title }); ta.value = state.safetyPlan[step.key] || '';
         ta.addEventListener('change', function () { state.safetyPlan[step.key] = ta.value; save(); });
         p.appendChild(el('div', {}, [el('p', { class: 'eyebrow', style: 'margin-top:10px', text: step.title }), el('p', { class: 'p-sm', style: 'margin-bottom:8px', text: step.hint }), ta]));
+        if (step.key === 'contacts') {
+          var pool = state.people.filter(function (person) {
+            return !person.hard && person.supportive >= 0.5 && person.suggestible !== false;
+          });
+          if (pool.length) {
+            p.appendChild(el('p', { class: 'p-sm', text: 'From your Constellation — tap to add. You can still type anyone else.' }));
+            p.appendChild(el('div', { class: 'chips', role: 'group', 'aria-label': 'People from Constellation' }, pool.map(function (person) {
+              return el('button', { class: 'chip', text: person.name, onclick: function () {
+                var cur = (state.safetyPlan.contacts || '').trim();
+                if (cur.split(/,\s*/).indexOf(person.name) !== -1) return;
+                state.safetyPlan.contacts = cur ? (cur + ', ' + person.name) : person.name;
+                ta.value = state.safetyPlan.contacts;
+                save(); buzz(8);
+              } });
+            })));
+          }
+        }
       });
       p.appendChild(el('button', { class: 'btn', text: 'Done', onclick: function () { save(); closeSheet(); render(); } }));
     });
@@ -1559,41 +2340,132 @@
         el('p', { class: 'p-sm', text: 'No score, no rating. Just what’s happened.' })
       ]));
     }
+    var week = weeklySummary();
+    if (week) {
+      v.appendChild(el('div', { class: 'card' }, [
+        el('h2', { class: 'card-title', text: PATTERN_UI.weeklyTitle }),
+        el('p', { class: 'p', text: week.days + ' ' + PATTERN_UI.weeklySummary + ' · ' + week.common + ' ' + PATTERN_UI.weeklyCommon + '.' }),
+        week.detail.length ? el('p', { class: 'p-sm', text: week.detail.join(' · ') }) : null,
+        el('p', { class: 'reason', text: PATTERN_UI.weeklyNote })
+      ]));
+    }
 
     // Trust tiers
     var rows = el('div', {}); var any = false;
+    USER_MODEL_KEYS.forEach(function (meta) {
+      var item = state.userModel[meta.key];
+      if (!item || typeof item.value !== 'number') return;
+      any = true;
+      rows.appendChild(el('div', { class: 'row pattern-row' }, [
+        el('div', {}, [
+          el('div', { class: 'lab', text: meta.label + ' · ' + item.value.toFixed(1) + '/5' }),
+          el('div', { class: 'sub', text: confidenceLabel(item.confidence) + ' ' + DRIP_UI.confidence + ' · ' + DRIP_UI.notDiagnosis }),
+          el('div', { class: 'chips pattern-actions' }, [
+            el('button', { class: 'chip', text: DRIP_UI.correct, onclick: function () { estimateSheet(meta.key); } })
+          ])
+        ]),
+        el('span', { class: 'tier declared', text: item.source === 'corrected' ? 'Corrected' : 'You said' })
+      ]));
+    });
     state.concerns.forEach(function (c) { any = true; rows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: c }), el('div', { class: 'sub', text: 'You picked this when you started' })]), el('span', { class: 'tier declared', text: 'You said' })])); });
     var helpful = {}; state.skillRuns.forEach(function (r) { if (r.helpful === true) helpful[r.id] = (helpful[r.id] || 0) + 1; });
     Object.keys(helpful).forEach(function (id) { var s = SKILLS.filter(function (x) { return x.id === id; })[0]; if (!s) return; any = true; rows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: s.name + ' seems to help' }), el('div', { class: 'sub', text: 'You said it helped ' + helpful[id] + ' time' + (helpful[id] > 1 ? 's' : '') })]), el('span', { class: 'tier observed', text: 'Observed' })])); });
-    var lateCount = state.checkins.filter(function (c) { var h = new Date(c.t).getHours(); return h >= 22 || h <= 4; }).length;
-    if (lateCount >= 3 && !state.inferences.filter(function (i) { return i.id === 'late-nights'; })[0]) {
+    derivePatterns().forEach(function (pattern) {
       any = true;
-      rows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: 'Nights might be harder for you' }), el('div', { class: 'sub', text: 'Guessed from when you check in. Is that right?' }), el('div', { style: 'display:flex;gap:8px;margin-top:11px' }, [el('button', { class: 'chip', text: 'Yes', onclick: function () { setInference('late-nights', true); } }), el('button', { class: 'chip', text: 'Not really', onclick: function () { setInference('late-nights', false); } })])]), el('span', { class: 'tier guess', text: 'A guess' })]));
-    }
+      var decision = state.patternPrefs.decisions[pattern.id];
+      var actions = [
+        el('button', { class: 'chip', text: PATTERN_UI.evidence, onclick: function () { patternSheet(pattern); } })
+      ];
+      if (decision !== 'confirmed') {
+        actions.push(el('button', { class: 'chip', text: PATTERN_UI.confirm, onclick: function () { setPatternDecision(pattern.id, 'confirmed'); } }));
+        actions.push(el('button', { class: 'chip', text: PATTERN_UI.reject, onclick: function () { setPatternDecision(pattern.id, 'rejected'); } }));
+      }
+      actions.push(el('button', { class: 'chip', text: PATTERN_UI.hide, onclick: function () { setPatternDecision(pattern.id, 'hidden'); } }));
+      rows.appendChild(el('div', { class: 'row pattern-row' }, [
+        el('div', {}, [
+          el('div', { class: 'lab', text: pattern.title }),
+          el('div', { class: 'sub', text: pattern.summary + ' Based on ' + pattern.count + ' ' + PATTERN_UI.dayBasis + '.' }),
+          el('div', { class: 'chips pattern-actions' }, actions)
+        ]),
+        el('span', { class: decision === 'confirmed' ? 'tier declared' : 'tier guess', text: decision === 'confirmed' ? PATTERN_UI.confirmed : PATTERN_UI.guess })
+      ]));
+    });
     if (any) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:6px', text: 'What SoulCap knows' })); v.appendChild(rows); }
 
     // Settings — grouped
     v.appendChild(el('hr', { class: 'sep' }));
     settingsGroup(v, 'Appearance', [
-      settingChips([{ k: null, l: 'Auto' }, { k: 'light', l: 'Light' }, { k: 'dark', l: 'Dark' }, { k: 'night', l: 'Night' }],
-        function (o) { return state.theme === o.k; }, function (o) { state.theme = o.k; save(); applyTheme(); reRender(); }),
-      el('p', { class: 'p-sm', text: 'Night is dimmer than dark — for 3am, when a normal screen is still too bright.' })
+      settingChips(THEME_OPTIONS,
+        function (o) { return state.theme === o.k; }, function (o) { setTheme(o.k); }),
+      el('p', { class: 'p-sm', text: 'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.' }),
+      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: LOCALE_UI.language }),
+      settingChips(LOCALE_OPTIONS,
+        function (o) { return state.locale === o.k; }, function (o) { setLocale(o.k); }),
+      el('p', { class: 'p-sm', text: state.locale === 'ur' ? LOCALE_UI.reviewPending : LOCALE_UI.previewNote }),
+      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.accent }),
+      settingChips(ACCENT_OPTIONS,
+        function (o) { return state.appearance.accent === o.k; }, function (o) { setAppearance('accent', o.k); }),
+      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.text }),
+      settingChips(TEXT_OPTIONS,
+        function (o) { return state.appearance.text === o.k; }, function (o) { setAppearance('text', o.k); }),
+      el('p', { class: 'eyebrow', style: 'margin-top:8px', text: PRESENTATION_UI.density }),
+      settingChips(DENSITY_OPTIONS,
+        function (o) { return state.appearance.density === o.k; }, function (o) { setAppearance('density', o.k); }),
+      el('div', { class: 'stack' }, [
+        toggleBtn(PRESENTATION_UI.contrast, state.appearance.contrast === 'high', function () { setAppearance('contrast', state.appearance.contrast === 'high' ? 'standard' : 'high'); }),
+        toggleBtn(PRESENTATION_UI.transparency, state.appearance.reduceTransparency, function () { setAppearance('reduceTransparency', !state.appearance.reduceTransparency); })
+      ])
+    ]);
+    settingsGroup(v, 'Personalisation', [
+      toggleBtn(PRESENTATION_UI.patternLearning, state.patternPrefs.enabled, function () {
+        var before = state.patternPrefs.enabled;
+        state.patternPrefs.enabled = !state.patternPrefs.enabled;
+        if (!save()) { state.patternPrefs.enabled = before; showPreferenceSaveFailed(); return; }
+        reRender();
+      }),
+      el('p', { class: 'p-sm', text: state.patternPrefs.enabled ? PRESENTATION_UI.patternHint : PATTERN_UI.disabled }),
+      Object.keys(state.patternPrefs.decisions).length ? el('button', { class: 'btn ghost', text: PATTERN_UI.reset, onclick: function () {
+        var before = clone(state.patternPrefs.decisions);
+        state.patternPrefs.decisions = {};
+        if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
+        reRender();
+      } }) : null
     ]);
     settingsGroup(v, 'Guided exercises', [
       el('div', { class: 'stack' }, [
-        toggleBtn('Spoken guidance', state.voice.on, function () { state.voice.on = !state.voice.on; save(); reRender(); }),
+        toggleBtn('Spoken guidance', state.voice.on, function () {
+          var before = state.voice.on; state.voice.on = !state.voice.on;
+          if (!save()) { state.voice.on = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        }),
         state.voice.on ? el('button', { class: 'btn ghost', text: 'Voice & accent', onclick: voiceSheet }) : null,
-        toggleBtn('Vibration', state.haptics, function () { state.haptics = !state.haptics; save(); buzz(14); reRender(); })
+        toggleBtn('Vibration', state.haptics, function () {
+          var before = state.haptics; state.haptics = !state.haptics;
+          if (!save()) { state.haptics = before; showPreferenceSaveFailed(); return; }
+          buzz(14); reRender();
+        })
       ]),
       el('p', { class: 'eyebrow', style: 'margin-top:12px', text: 'Exercise pace' }),
       settingChips([{ v: 1.35, l: 'Slow' }, { v: 1, l: 'Steady' }, { v: 0.8, l: 'Brisk' }],
-        function (o) { return (state.pace || 1) === o.v; }, function (o) { state.pace = o.v; save(); reRender(); }),
+        function (o) { return (state.pace || 1) === o.v; }, function (o) {
+          var before = state.pace; state.pace = o.v;
+          if (!save()) { state.pace = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        }),
       el('p', { class: 'p-sm', text: 'How long each step of a guided exercise stays on screen. Slow gives more time to read.' })
     ]);
     settingsGroup(v, 'Constellation extras', [
       el('div', { class: 'stack' }, [
-        toggleBtn('Show links between people', state.showLinks, function () { state.showLinks = !state.showLinks; save(); reRender(); }),
-        toggleBtn('Track when we last spoke', state.trackContact, function () { state.trackContact = !state.trackContact; save(); reRender(); })
+        toggleBtn('Show links between people', state.showLinks, function () {
+          var before = state.showLinks; state.showLinks = !state.showLinks;
+          if (!save()) { state.showLinks = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        }),
+        toggleBtn('Track when we last spoke', state.trackContact, function () {
+          var before = state.trackContact; state.trackContact = !state.trackContact;
+          if (!save()) { state.trackContact = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        })
       ]),
       el('p', { class: 'p-sm', text: 'Both off by default. Contact tracking only ever shows you the number — it will never tell you to reach out to anyone.' })
     ]);
@@ -1606,12 +2478,18 @@
 
     v.appendChild(el('div', { class: 'notice', html: '<b>SoulCap is not therapy</b>, not a doctor, and not a crisis service. Nothing you write leaves this device. There is no account and no server.' }));
     v.appendChild(el('p', { class: 'p-sm', style: 'text-align:center', text: 'SoulCap · v' + APP_VERSION }));
-    v.appendChild(el('button', { class: 'help-btn', text: 'I need help now', onclick: openPanic }));
+    v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
   }
-  var APP_VERSION = '0.8.0';
+  var APP_VERSION = '1.2.1';
   function settingsGroup(v, title, kids) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:14px', text: title })); kids.forEach(function (k) { if (k) v.appendChild(k); }); }
   function toggleBtn(label, on, fn) { return el('button', { class: 'btn ghost', style: 'display:flex;justify-content:space-between', onclick: fn, html: '<span>' + label + '</span><span style="color:var(--accent);font-weight:600">' + (on ? 'On' : 'Off') + '</span>' }); }
   function settingChips(opts, isOn, fn) { return el('div', { class: 'chips' }, opts.map(function (o) { return el('button', { class: 'chip', 'aria-pressed': isOn(o) ? 'true' : 'false', text: o.l, onclick: function () { fn(o); } }); })); }
+  function setAppearance(key, value) {
+    var before = state.appearance[key];
+    state.appearance[key] = value;
+    if (!save()) { state.appearance[key] = before; applyTheme(); showPreferenceSaveFailed(); return; }
+    applyTheme(); reRender();
+  }
 
   var voiceFilter = 'All';
   function voiceSheet() {
@@ -1674,7 +2552,7 @@
       p.appendChild(el('h2', { class: 'h-sec', text: 'Delete everything?' }));
       p.appendChild(el('p', { class: 'p', text: 'Check-ins, exercises, your Constellation, your journal, your plan. This cannot be undone, and there is no backup anywhere.' }));
       p.appendChild(el('button', { class: 'btn danger', text: 'Yes, delete it all', onclick: function () {
-        try { localStorage.removeItem(KEY); localStorage.removeItem('soulcap_theme'); } catch (e) {}
+        try { localStorage.removeItem(KEY); localStorage.removeItem('soulcap_theme'); localStorage.removeItem('soulcap_appearance'); localStorage.removeItem('soulcap_locale'); } catch (e) {}
         state = clone(DEFAULT); closeSheet(); applyTheme(); render();
       } }));
       p.appendChild(el('button', { class: 'btn quiet', text: 'Keep my data', onclick: closeSheet }));
@@ -1692,7 +2570,7 @@
     ]));
     v.appendChild(el('div', { class: 'stack' }, [
       el('button', { class: 'btn', text: 'Begin', onclick: function () { state.welcomed = true; save(); render(); } }),
-      el('button', { class: 'help-btn', text: 'I need help now', onclick: openPanic })
+      el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic })
     ]));
   }
   var obStep = 0;
@@ -1729,7 +2607,7 @@
       v.appendChild(el('button', { class: 'btn', text: 'Start', onclick: finishOnboarding }));
       v.appendChild(el('button', { class: 'btn quiet', text: 'Skip — just let me in', onclick: finishOnboarding }));
     }
-    v.appendChild(el('button', { class: 'help-btn', style: 'margin-top:auto', text: 'I need help now', onclick: openPanic }));
+    v.appendChild(el('button', { class: 'help-btn', style: 'margin-top:auto', text: t('helpNow'), onclick: openPanic }));
   }
   function finishOnboarding() { state.onboarded = true; save(); render(); }
 
@@ -1767,7 +2645,15 @@
     state.history = { status: 'Single', household: 'with my family', hobbies: 'cricket, cooking, long drives' };
     state.concerns = ['Hard to switch off', 'Low mood'];
     var day = 86400000, now = Date.now();
-    ['Wired', 'Flat', 'Steady', 'Heavy', 'Wired', 'Steady'].forEach(function (s, i) { state.checkins.push({ t: now - (6 - i) * day, state: s }); });
+    ['Wired', 'Flat', 'Steady', 'Heavy', 'Wired', 'Steady'].forEach(function (s, i) {
+      var t = now - (6 - i) * day;
+      state.checkins.push(normalizeCheckin({
+        id:uid(), t:t, updatedAt:t, state:s,
+        dims:{ energy:i % 2 ? 3 : 2, noise:i === 0 || i === 3 || i === 4 ? 4 : 2 },
+        triggers:i === 0 || i === 2 || i === 4 ? ['work'] : [],
+        need:i < 2 ? 'settle' : '', feeling:''
+      }, i));
+    });
     state.skillRuns.push({ t: now - 3 * day, id: 'box-breathing', helpful: true });
     state.skillRuns.push({ t: now - 2 * day, id: 'box-breathing', helpful: true });
     state.skillRuns.push({ t: now - day, id: 'grounding-54321', helpful: true });
@@ -1863,7 +2749,12 @@
 
   window.__soulcap = {
     assessRisk: assessRisk, suggestSkill: suggestSkill, suggestPerson: suggestPerson,
-    getState: function () { return state; }, skillCount: SKILLS.length, version: '0.8.0',
+    getState: function () { return state; }, skillCount: SKILLS.length,
+    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.2.1',
+    nextDripQuestion: nextDripQuestion, estimateValue: estimateValue,
+    answerDrip: answerDrip, skipDrip: skipDrip, correctEstimate: correctEstimate,
+    clearEstimate: clearEstimate, setTheme: setTheme, setLocale: setLocale,
+    setRingCount: setRingCount, contactScore: contactScore, logSpokeToday: logSpokeToday,
     startSkill: startSkill // test hook
   };
 
