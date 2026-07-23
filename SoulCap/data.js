@@ -251,6 +251,90 @@ var EMPTY_UI = {
   meAction:'Set up profile'
 };
 
+/* Guided Path v2.1 — rule-based feeling → chips → family why → exercise.
+ * Never diagnose. Never prescribe CBT/DBT/ACT as treatment. */
+var PATH_UI = {
+  cardTitle:'A short path',
+  cardHint:'A few taps → something that may fit. Optional. Not a diagnosis.',
+  calmHint:'Feeling → what you notice → one exercise.',
+  arrivalTitle:'How are you arriving?',
+  chipsTitle:'What are you noticing?',
+  chipsHint:'Pick up to four. Skip any that do not fit.',
+  continue:'Continue',
+  skip:'Skip',
+  back:'Back',
+  resultTitle:'Something that may help',
+  begin:'Begin',
+  somethingElse:'Something else',
+  readAbout:'Read about this',
+  offerHelp:'I need help now',
+  offerHelpHint:'If this feels unsafe or too big to hold alone, use Help. SoulCap never calls anyone for you.',
+  disclaimer:'Educational self-help only. Not therapy, not a diagnosis, not a crisis service. Nothing leaves this device.',
+  footnote:'Some people learn related ideas in CBT, DBT, ACT, or behavioural activation. SoulCap is not those therapies.',
+  reviewNote:'Path copy is not yet clinically reviewed.',
+  knowsLabel:'Short path',
+  knowsSub:'You explored a short path on this device · not a diagnosis',
+  clear:'Clear this path note',
+  hideCard:'Hide short path on Now',
+  showCard:'Show short path on Now',
+  close:'Close',
+  maxChips:4,
+  advancedTitle:'Thought habits (optional)',
+  advancedHint:'Gentle labels for how thinking can tilt — not a diagnosis.',
+  pickArrival:'Choose how you are arriving to continue.',
+  pickChip:'Pick at least one thing you notice, or go back.',
+  familyLabel:'Starting place'
+};
+
+var PATH_ARRIVALS = [
+  { key:'Wired', label:'Wired', checkin:'Wired' },
+  { key:'Heavy', label:'Heavy', checkin:'Heavy' },
+  { key:'Flat', label:'Flat', checkin:'Flat' },
+  { key:'Overwhelmed', label:'Overwhelmed', checkin:'Wired' },
+  { key:'Not sure', label:'Not sure', checkin:'Not sure' }
+];
+
+var PATH_CHIPS = [
+  { id:'heart', label:'Heart racing / body alarm', families:{ autonomic:3, sensory:1 },
+    experiences:['racing-heart'], skills:['physiological-sigh','grounding-54321'], panicHint:true },
+  { id:'worry', label:'Worry / what-ifs', families:{ cognitive:3, sleep:1 },
+    experiences:['catastrophising'], skills:['worry-vs-problem','thought-record'], panicHint:false },
+  { id:'spin', label:'Thoughts won’t stop', families:{ cognitive:3, load:1 },
+    experiences:['racing-thoughts','rumination'], skills:['defusion','count-backwards'], panicHint:false },
+  { id:'tension', label:'Tight muscles / can’t settle', families:{ autonomic:3 },
+    experiences:[], skills:['pmr','box-breathing'], panicHint:true },
+  { id:'sleep', label:'Sleep is hard', families:{ sleep:3, autonomic:1 },
+    experiences:[], skills:['wind-down','worry-postponement','stimulus-control'], panicHint:false },
+  { id:'avoid', label:'Avoiding / shutting down', families:{ activation:3, cognitive:1 },
+    experiences:[], skills:['behavioural-activation','values-check','opposite-action'], panicHint:false },
+  { id:'low', label:'Flat / no energy', families:{ activation:3, connection:1 },
+    experiences:[], skills:['behavioural-activation','ten-minute-walk'], panicHint:false },
+  { id:'edge', label:'On edge / scanning', families:{ orienting:2, autonomic:2, cognitive:1 },
+    experiences:['hypervigilance'], skills:['orient-room','feet-floor','physiological-sigh'], panicHint:false }
+];
+
+var PATH_ADVANCED = [
+  { id:'allornothing', label:'All-or-nothing thinking', families:{ cognitive:2 },
+    experiences:[], skills:['thought-record','defusion'], panicHint:false },
+  { id:'mindread', label:'Mind-reading', families:{ cognitive:2 },
+    experiences:[], skills:['thought-record','defusion'], panicHint:false },
+  { id:'overgeneral', label:'Always / never thinking', families:{ cognitive:2 },
+    experiences:[], skills:['thought-record','worry-vs-problem'], panicHint:false }
+];
+
+var PATH_REASONS = {
+  autonomic:'When the body is loud, starting with the nervous system often helps more than arguing with thoughts.',
+  sensory:'Anchoring through the senses can interrupt a spiral without needing the right words.',
+  orienting:'Checking the room tells a threat-primed body that it has looked around.',
+  load:'A short structured task can occupy the space a thought-loop needs to run.',
+  soothing:'Gentle rhythm and touch you give yourself can lower intensity a notch.',
+  imagery:'A vivid safer scene can give the body something else to respond to — only if it feels okay.',
+  sleep:'Night and sleep ask for different moves than daytime spikes.',
+  cognitive:'When there is a little room, looking at a thought as a thought can loosen its grip.',
+  activation:'Small outward action can shift mood from the outside in when energy is low.',
+  connection:'A tiny step toward people can reverse withdrawal — only if it feels safe enough.'
+};
+
 var ABOUT_UI = {
   title:'About SoulCap',
   purpose:'A calm, private place for self-regulation skills, a journal, and the people around you.',
@@ -262,7 +346,7 @@ var ABOUT_UI = {
 
 var WHATS_NEW_UI = {
   title:'What’s new',
-  body:'SoulCap 2.0 — clearer layout on You, Now, and Calm. Same private, offline app. No new accounts. Nothing leaves your device.',
+  body:'SoulCap 2.1 — a short optional path: how you are arriving, what you notice, then one exercise that may fit. Still private and offline. Not therapy, not a diagnosis.',
   dismiss:'Got it'
 };
 

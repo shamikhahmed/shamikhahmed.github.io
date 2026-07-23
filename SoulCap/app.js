@@ -57,7 +57,7 @@
   /* ── State ─────────────────────────────────────────────────────────────── */
   var KEY = 'soulcap_v1';
   var DEFAULT = {
-    v: 11, onboarded: false, welcomed: false, ageOk: null, consent: false,
+    v: 12, onboarded: false, welcomed: false, ageOk: null, consent: false,
     profile: { name: '', age: '', pronouns: '' },
     history: {},
     concerns: [], checkins: [], skillRuns: [], people: [], links: [],
@@ -79,6 +79,8 @@
     windDownHour: null,
     screenerResults: {},
     notices: { clinicalEnglishDismissed: false, seenVersion: null },
+    pathSessions: [],
+    pathPrefs: { hide: false }
   };
   var VALID_THEMES = { light:1, dark:1, night:1, ocean:1, forest:1, rain:1, space:1, sunrise:1, minimal:1, amoled:1 };
   var DRIP_DAY_CAP = 4;
@@ -141,6 +143,9 @@
       } catch (noticeErr) {}
       p.notices.clinicalEnglishDismissed = p.notices.clinicalEnglishDismissed === true;
       if (typeof p.notices.seenVersion !== 'string') p.notices.seenVersion = null;
+      p.pathSessions = Array.isArray(p.pathSessions) ? p.pathSessions : [];
+      p.pathPrefs = Object.assign(clone(DEFAULT.pathPrefs), p.pathPrefs || {});
+      p.pathPrefs.hide = p.pathPrefs.hide === true;
       p.people = (Array.isArray(p.people) ? p.people : []).map(normalizePerson);
       if (p.locale === 'ur') p.locale = 'rui';
       if (p.locale !== 'en' && p.locale !== 'rui') p.locale = 'en';
@@ -210,6 +215,12 @@
         ? p.screenerResults : {};
       if (typeof p.windDownHour !== 'number') p.windDownHour = null;
       p.v = 11; changed = true;
+    }
+    if (version < 12) {
+      p.pathSessions = Array.isArray(p.pathSessions) ? p.pathSessions : [];
+      p.pathPrefs = p.pathPrefs && typeof p.pathPrefs === 'object' ? p.pathPrefs : { hide: false };
+      p.pathPrefs.hide = p.pathPrefs.hide === true;
+      p.v = 12; changed = true;
     }
     return { value: p, changed: changed };
   }
@@ -712,6 +723,219 @@
     if (!pick.why.length) return 'I don’t know you yet — this is a good place for most people to start.';
     var uniq = pick.why.filter(function (v, i, a) { return a.indexOf(v) === i; }).slice(0, 2);
     return 'Because ' + uniq.join(', and ') + '.';
+  }
+
+  function pathChipById(id) {
+    var i;
+    for (i = 0; i < PATH_CHIPS.length; i++) if (PATH_CHIPS[i].id === id) return PATH_CHIPS[i];
+    for (i = 0; i < PATH_ADVANCED.length; i++) if (PATH_ADVANCED[i].id === id) return PATH_ADVANCED[i];
+    return null;
+  }
+  function scorePathFamilies(chipIds) {
+    var scores = {}, i, j, chip, fam, keys;
+    (chipIds || []).forEach(function (cid) {
+      chip = pathChipById(cid);
+      if (!chip || !chip.families) return;
+      keys = Object.keys(chip.families);
+      for (j = 0; j < keys.length; j++) {
+        fam = keys[j];
+        scores[fam] = (scores[fam] || 0) + chip.families[fam];
+      }
+    });
+    var best = null, bestScore = -1;
+    keys = Object.keys(scores);
+    for (i = 0; i < keys.length; i++) {
+      if (scores[keys[i]] > bestScore) { bestScore = scores[keys[i]]; best = keys[i]; }
+    }
+    return { family: best || 'autonomic', scores: scores };
+  }
+  function pathPanicCluster(arrivalKey, chipIds) {
+    var hints = 0;
+    (chipIds || []).forEach(function (cid) {
+      var chip = pathChipById(cid);
+      if (chip && chip.panicHint) hints += 1;
+    });
+    if (hints >= 2) return true;
+    if (hints >= 1 && (arrivalKey === 'Wired' || arrivalKey === 'Overwhelmed')) return true;
+    return false;
+  }
+  function suggestPathSkills(family, chipIds) {
+    var cap = currentCapacity();
+    var preferred = {};
+    (chipIds || []).forEach(function (cid) {
+      var chip = pathChipById(cid);
+      if (!chip || !chip.skills) return;
+      chip.skills.forEach(function (sid) { preferred[sid] = (preferred[sid] || 0) + 2; });
+    });
+    var list = SKILLS.filter(function (s) {
+      if (family && s.family !== family) return false;
+      if (!capacityFits(s.capacity, cap)) return false;
+      if (traumaAware() && s.traumaCaution) return false;
+      return true;
+    });
+    if (!list.length) {
+      list = SKILLS.filter(function (s) {
+        if (!capacityFits(s.capacity, cap)) return false;
+        if (traumaAware() && s.traumaCaution) return false;
+        return !!preferred[s.id];
+      });
+    }
+    list.sort(function (a, b) {
+      var pa = preferred[a.id] || 0, pb = preferred[b.id] || 0;
+      if (pb !== pa) return pb - pa;
+      return helpfulScore(b.id) - helpfulScore(a.id);
+    });
+    return list.slice(0, 2);
+  }
+  function savePathSession(session) {
+    if (!state.pathSessions) state.pathSessions = [];
+    state.pathSessions.push(session);
+    if (state.pathSessions.length > 40) state.pathSessions = state.pathSessions.slice(-40);
+    return save();
+  }
+  function clearPathSession(id) {
+    var before = state.pathSessions.slice();
+    state.pathSessions = state.pathSessions.filter(function (s) { return s.id !== id; });
+    if (!save()) { state.pathSessions = before; return false; }
+    return true;
+  }
+  function pathSheet() {
+    var step = 'arrival';
+    var arrival = null;
+    var selected = {};
+    var showAdvanced = false;
+    function selectedIds() {
+      return Object.keys(selected).filter(function (k) { return selected[k]; });
+    }
+    function toggleChip(id) {
+      if (selected[id]) { selected[id] = false; return; }
+      if (selectedIds().length >= (PATH_UI.maxChips || 4)) return;
+      selected[id] = true;
+    }
+    function draw() {
+      openSheet(function (p) {
+        p.appendChild(el('h2', { class: 'h-sec', text: PATH_UI.cardTitle }));
+        p.appendChild(el('div', { class: 'notice', text: PATH_UI.reviewNote }));
+        if (step === 'arrival') {
+          p.appendChild(el('p', { class: 'p-voice', text: PATH_UI.arrivalTitle }));
+          p.appendChild(el('div', { class: 'chips mt-3', role: 'group', 'aria-label': PATH_UI.arrivalTitle }, PATH_ARRIVALS.map(function (a) {
+            return el('button', {
+              class: 'chip',
+              'aria-pressed': arrival && arrival.key === a.key ? 'true' : 'false',
+              text: a.label,
+              onclick: function () { arrival = a; haptic('tick'); draw(); }
+            });
+          })));
+          p.appendChild(el('button', {
+            class: 'btn',
+            text: PATH_UI.continue,
+            onclick: function () {
+              if (!arrival) return;
+              step = 'chips'; draw();
+            }
+          }));
+          p.appendChild(el('button', { class: 'btn quiet', text: PATH_UI.close, onclick: closeSheet }));
+          return;
+        }
+        if (step === 'chips') {
+          p.appendChild(el('p', { class: 'p-voice', text: PATH_UI.chipsTitle }));
+          p.appendChild(el('p', { class: 'p-sm', text: PATH_UI.chipsHint }));
+          p.appendChild(el('div', { class: 'chips mt-3', role: 'group', 'aria-label': PATH_UI.chipsTitle }, PATH_CHIPS.map(function (c) {
+            return el('button', {
+              class: 'chip',
+              'aria-pressed': selected[c.id] ? 'true' : 'false',
+              text: c.label,
+              onclick: function () { toggleChip(c.id); haptic('tick'); draw(); }
+            });
+          })));
+          p.appendChild(el('button', {
+            class: 'btn quiet',
+            text: PATH_UI.advancedTitle,
+            onclick: function () { showAdvanced = !showAdvanced; draw(); }
+          }));
+          if (showAdvanced) {
+            p.appendChild(el('p', { class: 'p-sm', text: PATH_UI.advancedHint }));
+            p.appendChild(el('div', { class: 'chips', role: 'group', 'aria-label': PATH_UI.advancedTitle }, PATH_ADVANCED.map(function (c) {
+              return el('button', {
+                class: 'chip',
+                'aria-pressed': selected[c.id] ? 'true' : 'false',
+                text: c.label,
+                onclick: function () { toggleChip(c.id); haptic('tick'); draw(); }
+              });
+            })));
+          }
+          p.appendChild(el('button', {
+            class: 'btn',
+            text: PATH_UI.continue,
+            onclick: function () {
+              if (!selectedIds().length) return;
+              step = 'result'; draw();
+            }
+          }));
+          p.appendChild(el('button', { class: 'btn quiet', text: PATH_UI.back, onclick: function () { step = 'arrival'; draw(); } }));
+          return;
+        }
+        var chips = selectedIds();
+        var scored = scorePathFamilies(chips);
+        var family = scored.family;
+        var skills = suggestPathSkills(family, chips);
+        var pathPick = suggestSkill();
+        var top = skills[0] || (pathPick && pathPick.skill) || SKILLS[0];
+        var panic = pathPanicCluster(arrival.key, chips);
+        var famMeta = FAMILY_META[family] || { label: family, note: '' };
+        var expId = null;
+        chips.forEach(function (cid) {
+          var chip = pathChipById(cid);
+          if (!expId && chip && chip.experiences && chip.experiences[0]) expId = chip.experiences[0];
+        });
+        p.appendChild(el('p', { class: 'eyebrow', text: PATH_UI.familyLabel }));
+        p.appendChild(el('h2', { class: 'card-title', text: famMeta.label }));
+        p.appendChild(el('p', { class: 'p-voice', text: PATH_REASONS[family] || famMeta.note }));
+        p.appendChild(el('p', { class: 'p-sm', text: PATH_UI.footnote }));
+        p.appendChild(el('div', { class: 'notice', text: PATH_UI.disclaimer }));
+        if (panic) {
+          p.appendChild(el('div', { class: 'card mt-3' }, [
+            el('p', { class: 'p-sm', text: PATH_UI.offerHelpHint }),
+            el('button', { class: 'help-btn', text: PATH_UI.offerHelp, onclick: function () { closeSheet(); openPanic(); } })
+          ]));
+        }
+        if (top) {
+          p.appendChild(el('div', { class: 'card now-suggest mt-3 path-result-card' }, [
+            el('h2', { class: 'card-title', text: top.name }),
+            el('p', { class: 'meta', text: top.mins + ' min · works offline' }),
+            el('p', { class: 'p-sm', text: top.blurb || '' }),
+            el('button', { class: 'btn', text: PATH_UI.begin, onclick: function () {
+              var session = {
+                id: uid(), t: Date.now(), arrival: arrival.key, chips: chips,
+                family: family, skillId: top.id
+              };
+              if (!todayCheckin() && arrival.checkin) recordCheckin(arrival.checkin);
+              savePathSession(session);
+              closeSheet();
+              startSkill(top.id);
+            } })
+          ]));
+        }
+        if (skills[1]) {
+          p.appendChild(el('button', { class: 'btn ghost', text: PATH_UI.somethingElse + ' · ' + skills[1].name, onclick: function () {
+            savePathSession({
+              id: uid(), t: Date.now(), arrival: arrival.key, chips: chips,
+              family: family, skillId: skills[1].id
+            });
+            closeSheet();
+            startSkill(skills[1].id);
+          } }));
+        }
+        if (expId) {
+          p.appendChild(el('button', { class: 'btn quiet', text: PATH_UI.readAbout, onclick: function () {
+            closeSheet(); experienceSheet(expId);
+          } }));
+        }
+        p.appendChild(el('button', { class: 'btn quiet', text: PATH_UI.back, onclick: function () { step = 'chips'; draw(); } }));
+        p.appendChild(el('button', { class: 'btn quiet', text: PATH_UI.close, onclick: closeSheet }));
+      });
+    }
+    draw();
   }
   function localDayKey(t) {
     var d = new Date(t);
@@ -2134,7 +2358,13 @@
           state.patternPrefs.decisions = {};
           if (!save()) { state.patternPrefs.decisions = before; showPreferenceSaveFailed(); return; }
           reRender();
-        } }) : null
+        } }) : null,
+        toggleBtn(state.pathPrefs.hide ? PATH_UI.showCard : PATH_UI.hideCard, !state.pathPrefs.hide, function () {
+          var before = state.pathPrefs.hide;
+          state.pathPrefs.hide = !state.pathPrefs.hide;
+          if (!save()) { state.pathPrefs.hide = before; showPreferenceSaveFailed(); return; }
+          reRender();
+        })
       ]);
       settingsGroup(p, SETTINGS_UI.guided, [
         el('div', { class: 'stack' }, [
@@ -2270,6 +2500,10 @@
       v.appendChild(el('div', { class: 'calm-more section-block' }, [
         el('p', { class: 'eyebrow', text: tUi('me', 'calmMore', { calmMore: 'Also here' }) }),
         el('div', { class:'calm-tools' }, [
+          el('button', { class:'card tap calm-tool path-card', onclick: pathSheet }, [
+            el('h2', { class:'card-title', text: PATH_UI.cardTitle }),
+            el('p', { class:'p-sm', text: PATH_UI.calmHint })
+          ]),
           el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'library'; calm.browse = false; render(); } }, [
             el('h2', { class:'card-title', text:LIBRARY_UI.title }),
             el('p', { class:'p-sm', text:LIBRARY_UI.homeHint })
@@ -3351,6 +3585,12 @@
     v.appendChild(primary);
 
     var quiet = el('div', { class: 'now-quiet' });
+    if (!state.pathPrefs || !state.pathPrefs.hide) {
+      quiet.appendChild(el('button', { class: 'card tap path-card', onclick: pathSheet }, [
+        el('h2', { class: 'card-title', text: PATH_UI.cardTitle }),
+        el('p', { class: 'p-sm', text: PATH_UI.cardHint })
+      ]));
+    }
     quiet.appendChild(el('button', { class: 'card tap experience-picker-card', onclick: experiencePickerSheet }, [
       el('h2', { class: 'card-title', text: EXPERIENCE_PICKER_UI.cardTitle }),
       el('p', { class: 'p-sm', text: EXPERIENCE_PICKER_UI.cardHint })
@@ -3513,6 +3753,23 @@
     state.concerns.forEach(function (c) { anyKnow = true; knowRows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: c }), el('div', { class: 'sub', text: 'You picked this when you started' })]), el('span', { class: 'tier declared', text: 'You said' })])); });
     var helpful = {}; state.skillRuns.forEach(function (r) { if (r.helpful === true) helpful[r.id] = (helpful[r.id] || 0) + 1; });
     Object.keys(helpful).forEach(function (id) { var s = SKILLS.filter(function (x) { return x.id === id; })[0]; if (!s) return; anyKnow = true; knowRows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: s.name + ' seems to help' }), el('div', { class: 'sub', text: 'You said it helped ' + helpful[id] + ' time' + (helpful[id] > 1 ? 's' : '') })]), el('span', { class: 'tier observed', text: 'Observed' })])); });
+    (state.pathSessions || []).slice(-5).reverse().forEach(function (session) {
+      anyKnow = true;
+      var fam = FAMILY_META[session.family];
+      knowRows.appendChild(el('div', { class: 'row pattern-row path-signal' }, [
+        el('div', {}, [
+          el('div', { class: 'lab', text: PATH_UI.knowsLabel + (fam ? ' · ' + fam.label : '') }),
+          el('div', { class: 'sub', text: PATH_UI.knowsSub }),
+          el('div', { class: 'chips pattern-actions' }, [
+            el('button', { class: 'chip', text: PATH_UI.clear, onclick: function () {
+              if (!clearPathSession(session.id)) return;
+              render();
+            } })
+          ])
+        ]),
+        el('span', { class: 'tier observed', text: 'You tried' })
+      ]));
+    });
     if (anyKnow) {
       about.appendChild(el('p', { class: 'eyebrow', text: tUi('me', 'knowsHeading', { knowsHeading: 'What SoulCap knows' }) }));
       about.appendChild(knowRows);
@@ -3710,7 +3967,7 @@
       p.appendChild(el('button', { class: 'btn quiet', text: tUi('principles', 'close', PRINCIPLES_UI), onclick: closeSheet }));
     });
   }
-  var APP_VERSION = '2.0.1';
+  var APP_VERSION = '2.1.0';
   function settingsGroup(v, title, kids) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:var(--space-3)', text: title })); kids.forEach(function (k) { if (k) v.appendChild(k); }); }
   function toggleBtn(label, on, fn) {
     return el('button', { class: 'btn ghost', style: 'display:flex;justify-content:space-between', onclick: fn,
@@ -3997,7 +4254,7 @@
   window.__soulcap = {
     assessRisk: assessRisk, suggestSkill: suggestSkill, suggestPerson: suggestPerson,
     getState: function () { return state; }, skillCount: SKILLS.length,
-    skillIds: SKILLS.map(function (skill) { return skill.id; }),     version: '2.0.1',
+    skillIds: SKILLS.map(function (skill) { return skill.id; }),     version: '2.1.0',
     experienceIds: EXPERIENCES.map(function (item) { return item.id; }),
     experienceHelpsOk: function () {
       return EXPERIENCES.every(function (exp) {
@@ -4031,6 +4288,10 @@
     derivePatterns: derivePatterns, maybeQueueReflection: maybeQueueReflection,
     buildManualDrafts: buildManualDrafts, refreshManual: refreshManual,
     dismissWhatsNew: dismissWhatsNew,
+    openPath: pathSheet,
+    scorePathFamilies: scorePathFamilies,
+    pathPanicCluster: pathPanicCluster,
+    suggestPathSkills: suggestPathSkills,
     setSeenVersion: function (v) {
       if (!state.notices) state.notices = clone(DEFAULT.notices);
       state.notices.seenVersion = v;

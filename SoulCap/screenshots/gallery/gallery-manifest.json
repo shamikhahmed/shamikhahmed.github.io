@@ -1,7 +1,7 @@
 {
   "app": "SoulCap",
-  "version": "2.0.1",
-  "generated": "2026-07-23T12:19:13.104Z",
+  "version": "2.1.0",
+  "generated": "2026-07-23T14:17:55.982Z",
   "shots": [
     {
       "file": "desktop-01-now.png",
@@ -34,13 +34,19 @@
       "viewport": "desktop"
     },
     {
-      "file": "desktop-06-library.png",
+      "file": "desktop-06-guided-path.png",
+      "label": "Guided Path",
+      "route": "now/path",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-07-library.png",
       "label": "Emotional library",
       "route": "calm/library",
       "viewport": "desktop"
     },
     {
-      "file": "desktop-07-help.png",
+      "file": "desktop-08-help.png",
       "label": "Help now",
       "route": "/?demo=1&panic=1",
       "viewport": "desktop"
@@ -76,13 +82,19 @@
       "viewport": "mobile"
     },
     {
-      "file": "mobile-06-library.png",
+      "file": "mobile-06-guided-path.png",
+      "label": "Guided Path",
+      "route": "now/path",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-07-library.png",
       "label": "Emotional library",
       "route": "calm/library",
       "viewport": "mobile"
     },
     {
-      "file": "mobile-07-help.png",
+      "file": "mobile-08-help.png",
       "label": "Help now",
       "route": "/?demo=1&panic=1",
       "viewport": "mobile"

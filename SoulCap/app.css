@@ -400,6 +400,9 @@ input[type="range"]{width:100%;min-height:48px;accent-color:var(--accent)}
 .now-quiet .card-title{font-size:19px}
 .calm-more{margin-top:var(--space-6)}
 .calm-more .calm-tools{margin-top:var(--space-3)}
+.path-card .p-sm{margin-top:var(--space-1)}
+.path-result-card .meta{margin-top:var(--space-1)}
+.path-signal .pattern-actions{margin-top:var(--space-2)}
 .library-results{gap:var(--space-3)}
 .article-card,.experience-card{text-align:left}
 .article-heading{font-size:19px;margin-top:var(--space-2)}
