@@ -50,6 +50,11 @@
       "name": "Calm",
       "short_name": "Calm",
       "url": "./?tab=calm"
+    },
+    {
+      "name": "New journal entry",
+      "short_name": "Journal",
+      "url": "./?tab=journal&new=1"
     }
   ]
 }

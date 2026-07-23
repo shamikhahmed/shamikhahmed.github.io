@@ -57,7 +57,7 @@
   /* ── State ─────────────────────────────────────────────────────────────── */
   var KEY = 'soulcap_v1';
   var DEFAULT = {
-    v: 10, onboarded: false, welcomed: false, ageOk: null, consent: false,
+    v: 11, onboarded: false, welcomed: false, ageOk: null, consent: false,
     profile: { name: '', age: '', pronouns: '' },
     history: {},
     concerns: [], checkins: [], skillRuns: [], people: [], links: [],
@@ -76,7 +76,9 @@
     emotionFavorites: [], principles: [],
     manual: { lines: [], dismissedAuto: {} },
     libraryBookmarks: [],
-    notices: { clinicalEnglishDismissed: false }
+    windDownHour: null,
+    screenerResults: {},
+    notices: { clinicalEnglishDismissed: false, seenVersion: null },
   };
   var VALID_THEMES = { light:1, dark:1, night:1, ocean:1, forest:1, rain:1, space:1, sunrise:1, minimal:1, amoled:1 };
   var DRIP_DAY_CAP = 4;
@@ -126,11 +128,19 @@
       p.manual.lines = Array.isArray(p.manual.lines) ? p.manual.lines : [];
       p.manual.dismissedAuto = p.manual.dismissedAuto && typeof p.manual.dismissedAuto === 'object' && !Array.isArray(p.manual.dismissedAuto) ? p.manual.dismissedAuto : {};
       p.libraryBookmarks = Array.isArray(p.libraryBookmarks) ? p.libraryBookmarks : [];
+      if (typeof p.windDownHour === 'number' && p.windDownHour >= 0 && p.windDownHour <= 23) {
+        p.windDownHour = Math.floor(p.windDownHour);
+      } else {
+        p.windDownHour = null;
+      }
+      p.screenerResults = p.screenerResults && typeof p.screenerResults === 'object' && !Array.isArray(p.screenerResults)
+        ? p.screenerResults : {};
       p.notices = Object.assign(clone(DEFAULT.notices), p.notices || {});
       try {
         if (localStorage.getItem('soulcap_notice_clinical') === '1') p.notices.clinicalEnglishDismissed = true;
       } catch (noticeErr) {}
       p.notices.clinicalEnglishDismissed = p.notices.clinicalEnglishDismissed === true;
+      if (typeof p.notices.seenVersion !== 'string') p.notices.seenVersion = null;
       p.people = (Array.isArray(p.people) ? p.people : []).map(normalizePerson);
       if (p.locale === 'ur') p.locale = 'rui';
       if (p.locale !== 'en' && p.locale !== 'rui') p.locale = 'en';
@@ -194,6 +204,12 @@
       p.libraryBookmarks = Array.isArray(p.libraryBookmarks) ? p.libraryBookmarks : [];
       p.people = (Array.isArray(p.people) ? p.people : []).map(normalizePerson);
       p.v = 10; changed = true;
+    }
+    if (version < 11) {
+      p.screenerResults = p.screenerResults && typeof p.screenerResults === 'object' && !Array.isArray(p.screenerResults)
+        ? p.screenerResults : {};
+      if (typeof p.windDownHour !== 'number') p.windDownHour = null;
+      p.v = 11; changed = true;
     }
     return { value: p, changed: changed };
   }
@@ -352,6 +368,13 @@
     if (!state.haptics) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (navigator.vibrate) { try { navigator.vibrate(pattern); } catch (e) {} }
+  }
+  /* One haptic language: tick = select, done = save/finish, open = sheet/panic. */
+  function haptic(kind) {
+    if (kind === 'done') return buzz(14);
+    if (kind === 'open') return buzz(18);
+    if (kind === 'select') return buzz(12);
+    return buzz(8);
   }
 
   /* ── Voice (device speech synthesis, local only) ───────────────────────── */
@@ -529,7 +552,7 @@
     openSheet(function (p) {
       p.appendChild(el('h2', { class: 'h-sec', text: tUi('checkin', 'detailTitle', CHECKIN_UI) }));
       p.appendChild(el('p', { class: 'p-sm', text: tUi('checkin', 'detailHint', CHECKIN_UI) }));
-      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('checkin', 'dimensions', CHECKIN_UI) }));
+      p.appendChild(el('p', { class: 'eyebrow mt-2', text: tUi('checkin', 'dimensions', CHECKIN_UI) }));
       p.appendChild(el('p', { class: 'p-sm', text: tUi('checkin', 'dimensionsHint', CHECKIN_UI) }));
       CHECKIN_DIMENSIONS.forEach(function (cfg) {
         var current = draftCheckin.dims[cfg.key] || 0;
@@ -549,7 +572,7 @@
         ]));
       });
 
-      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('checkin', 'need', CHECKIN_UI) }));
+      p.appendChild(el('p', { class: 'eyebrow mt-2', text: tUi('checkin', 'need', CHECKIN_UI) }));
       var needWrap = el('div', { class: 'chips' });
       CHECKIN_DIRECT_NEEDS.forEach(function (item) {
         needWrap.appendChild(el('button', { class: 'chip', 'aria-pressed': draftCheckin.need === item.key ? 'true' : 'false', text: item.label,
@@ -562,7 +585,7 @@
       });
       p.appendChild(needWrap);
 
-      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('checkin', 'triggers', CHECKIN_UI) }));
+      p.appendChild(el('p', { class: 'eyebrow mt-2', text: tUi('checkin', 'triggers', CHECKIN_UI) }));
       var triggerWrap = el('div', { class: 'chips' });
       CHECKIN_TRIGGERS.forEach(function (item) {
         triggerWrap.appendChild(el('button', { class: 'chip', 'aria-pressed': draftCheckin.triggers.indexOf(item.key) !== -1 ? 'true' : 'false', text: item.label,
@@ -574,7 +597,7 @@
       });
       p.appendChild(triggerWrap);
 
-      p.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('checkin', 'feeling', CHECKIN_UI) }));
+      p.appendChild(el('p', { class: 'eyebrow mt-2', text: tUi('checkin', 'feeling', CHECKIN_UI) }));
       var feeling = el('input', { type: 'text', maxlength: 160, placeholder: tUi('checkin', 'feelingPlaceholder', CHECKIN_UI),
         'aria-label': tUi('checkin', 'feeling', CHECKIN_UI), value: draftCheckin.feeling || '' });
       p.appendChild(feeling);
@@ -940,6 +963,156 @@
       p.appendChild(el('h2', { class: 'h-sec', text: DRIP_UI.saveFailedTitle }));
       p.appendChild(el('p', { class: 'p', text: DRIP_UI.saveFailedBody }));
       p.appendChild(el('button', { class: 'btn', text: CHECKIN_UI.ok, onclick: closeSheet }));
+    });
+  }
+  function screenerById(id) {
+    return SCREENERS.filter(function (s) { return s.id === id; })[0];
+  }
+  function screenerBandFor(screener, score) {
+    var i, band;
+    for (i = 0; i < screener.bands.length; i++) {
+      band = screener.bands[i];
+      if (score >= band.min && score <= band.max) return band;
+    }
+    return screener.bands[screener.bands.length - 1];
+  }
+  function saveScreenerResult(screenerId, answers) {
+    var screener = screenerById(screenerId);
+    if (!screener) return null;
+    var score = 0, i;
+    for (i = 0; i < answers.length; i++) score += answers[i] || 0;
+    var band = screenerBandFor(screener, score);
+    var item9Positive = screener.item9Index >= 0 && (answers[screener.item9Index] || 0) > 0;
+    var before = clone(state.screenerResults);
+    var prev = state.screenerResults[screenerId] || {};
+    var history = Array.isArray(prev.history) ? prev.history.slice() : [];
+    history.push({ t: Date.now(), score: score, band: band.id });
+    if (history.length > 12) history = history.slice(-12);
+    state.screenerResults[screenerId] = {
+      score: score,
+      band: band.id,
+      bandLabel: band.label,
+      t: Date.now(),
+      item9Positive: item9Positive,
+      confidence: 0.35,
+      history: history
+    };
+    if (!save()) {
+      state.screenerResults = before;
+      showDripSaveFailed();
+      return null;
+    }
+    return state.screenerResults[screenerId];
+  }
+  function clearScreenerResult(screenerId) {
+    var before = clone(state.screenerResults);
+    delete state.screenerResults[screenerId];
+    if (!save()) { state.screenerResults = before; showDripSaveFailed(); return false; }
+    return true;
+  }
+  function screenerPickSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: SCREENER_UI.pickTitle }));
+      p.appendChild(el('p', { class: 'p-sm', text: SCREENER_UI.pickIntro }));
+      p.appendChild(el('div', { class: 'notice', text: SCREENER_UI.notDiagnosis }));
+      SCREENERS.forEach(function (screener) {
+        p.appendChild(el('button', { class: 'card tap', onclick: function () { closeSheet(); screenerRunSheet(screener.id); } }, [
+          el('h2', { class: 'card-title', text: screener.name }),
+          el('p', { class: 'p-sm', text: screener.blurb })
+        ]));
+      });
+      p.appendChild(el('button', { class: 'btn quiet', text: SCREENER_UI.close, onclick: closeSheet }));
+    });
+  }
+  function screenerRunSheet(screenerId, startIndex, answers) {
+    var screener = screenerById(screenerId);
+    if (!screener) return;
+    var idx = typeof startIndex === 'number' ? startIndex : 0;
+    var vals = Array.isArray(answers) ? answers.slice() : [];
+    openSheet(function (p) {
+      p.className = (p.className ? p.className + ' ' : '') + 'screener-run';
+      p.appendChild(el('h2', { class: 'h-sec', text: screener.name }));
+      p.appendChild(el('p', { class: 'meta', text: SCREENER_UI.progress.replace('{n}', '' + (idx + 1)).replace('{total}', '' + screener.items.length) }));
+      p.appendChild(el('p', { class: 'p-sm', text: SCREENER_UI.scaleHint }));
+      p.appendChild(el('p', { class: 'p-voice', text: screener.items[idx] }));
+      p.appendChild(el('div', { class: 'notice', text: SCREENER_UI.notDiagnosis }));
+      var scale = [
+        { v: 0, l: SCREENER_UI.scale0 },
+        { v: 1, l: SCREENER_UI.scale1 },
+        { v: 2, l: SCREENER_UI.scale2 },
+        { v: 3, l: SCREENER_UI.scale3 }
+      ];
+      scale.forEach(function (opt) {
+        p.appendChild(el('button', { class: 'opt', text: opt.l, onclick: function () {
+          vals[idx] = opt.v;
+          if (screener.item9Index === idx && opt.v > 0) {
+            closeSheet();
+            openPanic();
+            // Continue after Help is available; user can finish when ready.
+            setTimeout(function () {
+              if (idx + 1 >= screener.items.length) screenerFinish(screenerId, vals);
+              else screenerRunSheet(screenerId, idx + 1, vals);
+            }, 0);
+            return;
+          }
+          if (idx + 1 >= screener.items.length) {
+            closeSheet();
+            screenerFinish(screenerId, vals);
+          } else {
+            closeSheet();
+            screenerRunSheet(screenerId, idx + 1, vals);
+          }
+        } }));
+      });
+      if (idx > 0) {
+        p.appendChild(el('button', { class: 'btn quiet', text: SCREENER_UI.back, onclick: function () {
+          closeSheet(); screenerRunSheet(screenerId, idx - 1, vals);
+        } }));
+      }
+      p.appendChild(el('button', { class: 'btn quiet', text: SCREENER_UI.close, onclick: closeSheet }));
+    });
+  }
+  function screenerFinish(screenerId, answers) {
+    var screener = screenerById(screenerId);
+    var result = saveScreenerResult(screenerId, answers);
+    if (!result) return;
+    // Item-9 Help is terminal priority — do not cover it with the result sheet.
+    if (result.item9Positive) {
+      openPanic();
+      return;
+    }
+    screenerResultSheet(screenerId);
+  }
+  function screenerResultSheet(screenerId) {
+    var screener = screenerById(screenerId);
+    var result = state.screenerResults[screenerId];
+    if (!screener || !result) return;
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: SCREENER_UI.resultTitle }));
+      p.appendChild(el('p', { class: 'p', text: SCREENER_UI.resultLead + result.bandLabel + SCREENER_UI.resultMid }));
+      p.appendChild(el('div', { class: 'notice', text: SCREENER_UI.notDiagnosis + ' ' + SCREENER_UI.lowConfidence }));
+      if (result.band === screener.topBand) {
+        p.appendChild(el('div', { class: 'redflag redflag-seeDoctor', role: 'region', 'aria-label': SCREENER_UI.topBandNudge }, [
+          el('p', { class: 'redflag-title', text: 'Professional support' }),
+          el('p', { class: 'redflag-body', text: SCREENER_UI.topBandNudge })
+        ]));
+      }
+      p.appendChild(el('p', { class: 'meta', text: SCREENER_UI.historyLine.replace('{score}', '' + result.score).replace('{band}', result.bandLabel) }));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.helps }));
+      (screener.helpSkills || []).forEach(function (skillId) {
+        var skill = SKILLS.filter(function (s) { return s.id === skillId; })[0];
+        if (skill) p.appendChild(el('button', { class: 'btn ghost', text: skill.name, onclick: function () { closeSheet(); startSkill(skill.id); } }));
+      });
+      (screener.helpExperiences || []).forEach(function (expId) {
+        var exp = experienceById(expId);
+        if (exp) p.appendChild(el('button', { class: 'btn ghost', text: exp.name, onclick: function () { closeSheet(); experienceSheet(expId); } }));
+      });
+      p.appendChild(el('button', { class: 'btn ghost', text: SCREENER_UI.retake, onclick: function () { closeSheet(); screenerRunSheet(screenerId); } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: SCREENER_UI.clear, onclick: function () {
+        if (!clearScreenerResult(screenerId)) return;
+        closeSheet(); render();
+      } }));
+      p.appendChild(el('button', { class: 'btn quiet', text: SCREENER_UI.close, onclick: function () { closeSheet(); render(); } }));
     });
   }
   function updateEstimate(key, raw, weight, source) {
@@ -1334,7 +1507,7 @@
     $('#sheet').classList.add('on'); $('#sheet').setAttribute('aria-hidden', 'false');
     setSheetBackgroundInert(true);
     document.body.style.overflow = 'hidden';
-    buzz(8);
+    haptic('tick');
     var f = panel.querySelector('button, input, select, textarea, a'); if (f) f.focus();
   }
   function closeSheet() {
@@ -1523,12 +1696,133 @@
       p.appendChild(el('button', { class: 'btn quiet', text: LIBRARY_UI.close, onclick: closeSheet }));
     });
   }
+  function redFlagPanel(flag) {
+    if (!flag || !flag.level) return null;
+    var emergency = flag.level === 'emergency';
+    var title = emergency ? REDFLAG_UI.emergencyTitle : REDFLAG_UI.seeDoctorTitle;
+    var lead = emergency ? REDFLAG_UI.emergencyLead : REDFLAG_UI.seeDoctorLead;
+    var tail = emergency ? REDFLAG_UI.emergencyTail : REDFLAG_UI.seeDoctorTail;
+    return el('div', {
+      class: 'redflag ' + (emergency ? 'redflag-emergency' : 'redflag-seeDoctor'),
+      role: 'region',
+      'aria-label': title
+    }, [
+      el('p', { class: 'redflag-title', text: title }),
+      el('p', { class: 'redflag-body', text: lead + ' ' + (flag.text || '') + ' ' + tail })
+    ]);
+  }
+  function experienceById(id) {
+    return EXPERIENCES.filter(function (item) { return item.id === id; })[0];
+  }
+  function experienceSheet(id) {
+    var exp = experienceById(id);
+    if (!exp) return;
+    openSheet(function (p) {
+      var group = EXPERIENCE_GROUPS.filter(function (g) { return g.id === exp.group; })[0];
+      p.appendChild(el('p', { class: 'eyebrow', text: LIBRARY_UI.experiencesHeading }));
+      p.appendChild(el('h2', { class: 'h-sec', text: exp.name }));
+      p.appendChild(el('button', { class: 'btn quiet article-close-top', text: LIBRARY_UI.close, onclick: closeSheet }));
+      if (group) p.appendChild(el('p', { class: 'meta', text: group.label }));
+      if (exp.aka && exp.aka.length) {
+        p.appendChild(el('p', { class: 'p-sm', text: LIBRARY_UI.akaPrefix + ': ' + exp.aka.join(', ') }));
+      }
+      p.appendChild(el('div', { class: 'notice', text: LIBRARY_UI.reviewNote }));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.whatItIs }));
+      p.appendChild(el('p', { class: 'p', text: exp.whatItis }));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.why }));
+      p.appendChild(el('p', { class: 'p', text: exp.why }));
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.helps }));
+      (exp.helps || []).forEach(function (skillId) {
+        var skill = SKILLS.filter(function (item) { return item.id === skillId; })[0];
+        if (!skill) return;
+        var dm = DOMAIN_META[skill.domain];
+        p.appendChild(el('button', {
+          class: 'card tap experience-help',
+          onclick: function () { closeSheet(); startSkill(skill.id); }
+        }, [
+          el('div', { class: 'card-head' }, [
+            el('h3', { class: 'card-title', text: skill.name }),
+            el('span', { class: 'domain', style: 'color:var(' + dm.cssVar + ')', text: dm.label })
+          ]),
+          el('p', { class: 'meta', text: LIBRARY_UI.tryExercise + ' · ' + skill.mins + ' min' })
+        ]));
+      });
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.selfCare }));
+      p.appendChild(el('ul', { class: 'article-list' }, (exp.selfCare || []).map(function (item) {
+        return el('li', { text: item });
+      })));
+      if (exp.reflection && exp.reflection.length) {
+        p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.reflect }));
+        p.appendChild(el('ul', { class: 'article-list' }, exp.reflection.map(function (item) {
+          return el('li', { text: item });
+        })));
+      }
+      var flag = redFlagPanel(exp.redFlag);
+      if (flag) p.appendChild(flag);
+      p.appendChild(el('p', { class: 'eyebrow article-label', text: LIBRARY_UI.source }));
+      p.appendChild(el('p', { class: 'p-sm', text: exp.source || '' }));
+      p.appendChild(el('p', { class: 'p-sm', text: REDFLAG_UI.notDiagnosis }));
+      p.appendChild(el('button', { class: 'btn quiet', text: LIBRARY_UI.close, onclick: closeSheet }));
+    });
+  }
+  function experiencePickerSheet() {
+    var query = '';
+    openSheet(function (p) {
+      p.appendChild(el('h2', { class: 'h-sec', text: EXPERIENCE_PICKER_UI.title }));
+      p.appendChild(el('p', { class: 'p-sm', text: EXPERIENCE_PICKER_UI.intro }));
+      p.appendChild(el('div', { class: 'notice', text: LIBRARY_UI.reviewNote }));
+      var search = el('input', {
+        type: 'search',
+        placeholder: EXPERIENCE_PICKER_UI.searchPlaceholder,
+        'aria-label': EXPERIENCE_PICKER_UI.searchLabel
+      });
+      var list = el('div', { class: 'stack library-results mt-3' });
+      function draw() {
+        clear(list);
+        var q = query.trim().toLowerCase();
+        EXPERIENCE_GROUPS.forEach(function (group) {
+          var items = EXPERIENCES.filter(function (exp) {
+            if (exp.group !== group.id) return false;
+            return !q || experienceSearchBlob(exp).indexOf(q) !== -1;
+          });
+          if (!items.length) return;
+          list.appendChild(el('p', { class: 'domain mt-2', style: 'color:var(--ink-3)', text: group.label }));
+          items.forEach(function (exp) {
+            list.appendChild(el('button', {
+              class: 'card tap experience-card',
+              'data-experience-id': exp.id,
+              onclick: function () { closeSheet(); experienceSheet(exp.id); }
+            }, [
+              el('h2', { class: 'card-title', text: exp.name }),
+              el('p', { class: 'p-sm', text: exp.whatItis })
+            ]));
+          });
+        });
+        if (!list.childNodes.length) {
+          list.appendChild(el('div', { class: 'notice', text: LIBRARY_UI.noMatches }));
+        }
+      }
+      search.addEventListener('input', function () { query = search.value; draw(); });
+      p.appendChild(search);
+      p.appendChild(list);
+      p.appendChild(el('button', { class: 'btn quiet', text: EXPERIENCE_PICKER_UI.back, onclick: closeSheet }));
+      draw();
+    });
+  }
+  function experienceSearchBlob(exp) {
+    return [exp.name, exp.whatItis, exp.why].concat(exp.aka || []).concat(exp.commonWith || []).join(' ').toLowerCase();
+  }
   function renderLibrary(v) {
     v.appendChild(el('button', { class: 'btn ghost', text: LIBRARY_UI.back, onclick: function () { calm.section = 'guided'; render(); } }));
     v.appendChild(el('p', { class: 'p', text: LIBRARY_UI.intro }));
+    v.appendChild(el('div', { class: 'notice', text: LIBRARY_UI.experiencesIntro }));
     v.appendChild(el('div', { class: 'chips', role: 'group', 'aria-label': 'Library filter' }, [
       el('button', { class: 'chip', 'aria-pressed': libraryFilter === 'all' ? 'true' : 'false', text: LIBRARY_UI.filterAll,
         onclick: function () { libraryFilter = 'all'; render(); } }),
+      el('button', { class: 'chip', 'aria-pressed': libraryFilter === 'experiences' ? 'true' : 'false', text: LIBRARY_UI.filterExperiences,
+        onclick: function () { libraryFilter = 'experiences'; render(); } }),
+      el('button', { class: 'chip', 'aria-pressed': libraryFilter === 'articles' ? 'true' : 'false', text: LIBRARY_UI.filterArticles,
+        onclick: function () { libraryFilter = 'articles'; render(); } }),
       el('button', { class: 'chip', 'aria-pressed': libraryFilter === 'saved' ? 'true' : 'false', text: LIBRARY_UI.filterSaved,
         onclick: function () { libraryFilter = 'saved'; render(); } })
     ]));
@@ -1538,22 +1832,62 @@
     function draw() {
       clear(results);
       var query = libraryQuery.trim().toLowerCase();
-      var matches = ARTICLES.filter(function (article) {
-        if (libraryFilter === 'saved' && !isLibraryBookmarked(article.id)) return false;
-        return !query || [article.title, article.summary].concat(article.tags).join(' ').toLowerCase().indexOf(query) !== -1;
-      });
-      status.textContent = !matches.length
+      var showExp = libraryFilter === 'all' || libraryFilter === 'experiences';
+      var showArt = libraryFilter === 'all' || libraryFilter === 'articles' || libraryFilter === 'saved';
+      var expMatches = [];
+      var artMatches = [];
+      if (showExp && libraryFilter !== 'saved') {
+        expMatches = EXPERIENCES.filter(function (exp) {
+          return !query || experienceSearchBlob(exp).indexOf(query) !== -1;
+        });
+      }
+      if (showArt) {
+        artMatches = ARTICLES.filter(function (article) {
+          if (libraryFilter === 'saved' && !isLibraryBookmarked(article.id)) return false;
+          return !query || [article.title, article.summary].concat(article.tags).join(' ').toLowerCase().indexOf(query) !== -1;
+        });
+      }
+      var total = expMatches.length + artMatches.length;
+      status.textContent = !total
         ? (libraryFilter === 'saved' ? LIBRARY_UI.noSaved : LIBRARY_UI.noMatches)
-        : (matches.length === 1 ? LIBRARY_UI.resultStatusOne : LIBRARY_UI.resultStatus.replace('{n}', '' + matches.length));
-      if (!matches.length) results.appendChild(el('div', { class:'notice', text: libraryFilter === 'saved' ? LIBRARY_UI.noSaved : LIBRARY_UI.noMatches }));
-      matches.forEach(function (article) {
-        var saved = isLibraryBookmarked(article.id);
-        results.appendChild(el('button', { class:'card tap article-card', onclick:function () { articleSheet(article.id); } }, [
-          el('h2', { class:'card-title', text:article.title + (saved ? ' · Saved' : '') }),
-          el('p', { class:'p-sm', text:article.summary }),
-          el('p', { class:'meta', text:article.skillIds.length + ' related exercise' + (article.skillIds.length === 1 ? '' : 's') })
-        ]));
-      });
+        : (total === 1 ? LIBRARY_UI.resultStatusOne : LIBRARY_UI.resultStatus.replace('{n}', '' + total));
+      if (!total) {
+        results.appendChild(el('div', { class:'notice', text: libraryFilter === 'saved' ? LIBRARY_UI.noSaved : LIBRARY_UI.noMatches }));
+        return;
+      }
+      if (expMatches.length) {
+        if (libraryFilter === 'all') results.appendChild(el('p', { class: 'eyebrow', text: LIBRARY_UI.experiencesHeading }));
+        EXPERIENCE_GROUPS.forEach(function (group) {
+          var groupItems = expMatches.filter(function (exp) { return exp.group === group.id; });
+          if (!groupItems.length) return;
+          if (libraryFilter === 'experiences' || libraryFilter === 'all') {
+            results.appendChild(el('p', { class: 'domain', style: 'color:var(--ink-3);margin:8px 0 2px', text: group.label }));
+            results.appendChild(el('p', { class: 'p-sm', style: 'margin-bottom:8px', text: group.blurb }));
+          }
+          groupItems.forEach(function (exp) {
+            results.appendChild(el('button', {
+              class: 'card tap experience-card',
+              'data-experience-id': exp.id,
+              onclick: function () { experienceSheet(exp.id); }
+            }, [
+              el('h2', { class: 'card-title', text: exp.name }),
+              el('p', { class: 'p-sm', text: exp.whatItis }),
+              el('p', { class: 'meta', text: (exp.helps || []).length + ' related exercise' + ((exp.helps || []).length === 1 ? '' : 's') })
+            ]));
+          });
+        });
+      }
+      if (artMatches.length) {
+        if (libraryFilter === 'all' && expMatches.length) results.appendChild(el('p', { class: 'eyebrow', text: LIBRARY_UI.articlesHeading }));
+        artMatches.forEach(function (article) {
+          var saved = isLibraryBookmarked(article.id);
+          results.appendChild(el('button', { class:'card tap article-card', onclick:function () { articleSheet(article.id); } }, [
+            el('h2', { class:'card-title', text:article.title + (saved ? ' · Saved' : '') }),
+            el('p', { class:'p-sm', text:article.summary }),
+            el('p', { class:'meta', text:article.skillIds.length + ' related exercise' + (article.skillIds.length === 1 ? '' : 's') })
+          ]));
+        });
+      }
     }
     search.addEventListener('input', function () { libraryQuery = search.value; draw(); });
     v.appendChild(search); v.appendChild(status); v.appendChild(results); draw();
@@ -1765,7 +2099,7 @@
         labeledSettingChips(THEME_OPTIONS,
           function (o) { return state.theme === o.k; }, function (o) { setTheme(o.k); }, function (o) { return themeChipLabel(o.k, o.l); }),
         el('p', { class: 'p-sm', text: tUi('presentation', 'themeNote', { themeNote: 'Night is dimmer than dark. AMOLED is near-black. Mood themes keep contrast and reduced-motion intact.' }) }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('locale', 'language', LOCALE_UI) }),
+        el('p', { class: 'eyebrow mt-2', text: tUi('locale', 'language', LOCALE_UI) }),
         settingChips(LOCALE_OPTIONS,
           function (o) { return state.locale === o.k; }, function (o) { setLocale(o.k); }),
         el('p', { class: 'p-sm', text: state.locale === 'rui' ? tUi('locale', 'reviewPending', LOCALE_UI) : tUi('locale', 'previewNote', LOCALE_UI) }),
@@ -1773,13 +2107,13 @@
           el('p', { class: 'p-sm', text: tUi('locale', 'clinicalNotice', LOCALE_UI) }),
           el('button', { class: 'btn ghost', text: tUi('locale', 'clinicalDismiss', LOCALE_UI), onclick: dismissClinicalNotice })
         ]) : null,
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('presentation', 'accent', PRESENTATION_UI) }),
+        el('p', { class: 'eyebrow mt-2', text: tUi('presentation', 'accent', PRESENTATION_UI) }),
         labeledSettingChips(ACCENT_OPTIONS,
           function (o) { return state.appearance.accent === o.k; }, function (o) { setAppearance('accent', o.k); }, function (o) { return presentationChipLabel(o.k, o.l); }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('presentation', 'text', PRESENTATION_UI) }),
+        el('p', { class: 'eyebrow mt-2', text: tUi('presentation', 'text', PRESENTATION_UI) }),
         labeledSettingChips(TEXT_OPTIONS,
           function (o) { return state.appearance.text === o.k; }, function (o) { setAppearance('text', o.k); }, function (o) { return presentationChipLabel(o.k, o.l); }),
-        el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('presentation', 'density', PRESENTATION_UI) }),
+        el('p', { class: 'eyebrow mt-2', text: tUi('presentation', 'density', PRESENTATION_UI) }),
         labeledSettingChips(DENSITY_OPTIONS,
           function (o) { return state.appearance.density === o.k; }, function (o) { setAppearance('density', o.k); }, function (o) { return presentationChipLabel(o.k, o.l); }),
         el('div', { class: 'stack' }, [
@@ -1787,7 +2121,7 @@
           toggleBtn(tUi('presentation', 'transparency', PRESENTATION_UI), state.appearance.reduceTransparency, function () { setAppearance('reduceTransparency', !state.appearance.reduceTransparency); })
         ])
       ]);
-      settingsGroup(p, 'Personalisation', [
+      settingsGroup(p, SETTINGS_UI.personalisation, [
         toggleBtn(tUi('presentation', 'patternLearning', PRESENTATION_UI), state.patternPrefs.enabled, function () {
           var before = state.patternPrefs.enabled;
           state.patternPrefs.enabled = !state.patternPrefs.enabled;
@@ -1802,68 +2136,102 @@
           reRender();
         } }) : null
       ]);
-      settingsGroup(p, 'Guided exercises', [
+      settingsGroup(p, SETTINGS_UI.guided, [
         el('div', { class: 'stack' }, [
-          toggleBtn('Spoken guidance', state.voice.on, function () {
+          toggleBtn(SETTINGS_UI.spoken, state.voice.on, function () {
             var before = state.voice.on; state.voice.on = !state.voice.on;
             if (!save()) { state.voice.on = before; showPreferenceSaveFailed(); return; }
             reRender();
           }),
-          state.voice.on ? el('button', { class: 'btn ghost', text: 'Voice & accent', onclick: voiceSheet }) : null,
-          toggleBtn('Vibration', state.haptics, function () {
+          state.voice.on ? el('button', { class: 'btn ghost', text: SETTINGS_UI.voiceAccent, onclick: voiceSheet }) : null,
+          toggleBtn(SETTINGS_UI.vibration, state.haptics, function () {
             var before = state.haptics; state.haptics = !state.haptics;
             if (!save()) { state.haptics = before; showPreferenceSaveFailed(); return; }
-            buzz(14); reRender();
+            haptic('done'); reRender();
           })
         ]),
-        el('p', { class: 'eyebrow', style: 'margin-top:12px', text: 'Exercise pace' }),
-        settingChips([{ v: 1.35, l: 'Slow' }, { v: 1, l: 'Steady' }, { v: 0.8, l: 'Brisk' }],
+        el('p', { class: 'eyebrow mt-3', text: SETTINGS_UI.exercisePace }),
+        settingChips([{ v: 1.35, l: SETTINGS_UI.slow }, { v: 1, l: SETTINGS_UI.steady }, { v: 0.8, l: SETTINGS_UI.brisk }],
           function (o) { return (state.pace || 1) === o.v; }, function (o) {
             var before = state.pace; state.pace = o.v;
             if (!save()) { state.pace = before; showPreferenceSaveFailed(); return; }
-            reRender();
+            haptic('tick'); reRender();
           }),
-        el('p', { class: 'p-sm', text: 'How long each step of a guided exercise stays on screen. Slow gives more time to read.' })
+        el('p', { class: 'p-sm', text: SETTINGS_UI.paceHint }),
+        el('p', { class: 'eyebrow mt-3', text: WIND_DOWN_UI.settingsTitle }),
+        el('p', { class: 'p-sm', text: WIND_DOWN_UI.settingsHint }),
+        settingChips(
+          [{ v: null, l: WIND_DOWN_UI.off }].concat([17, 18, 19, 20, 21, 22, 23].map(function (h) {
+            return { v: h, l: h + ':00' };
+          })),
+          function (o) { return state.windDownHour === o.v || (o.v === null && state.windDownHour == null); },
+          function (o) {
+            var before = state.windDownHour;
+            state.windDownHour = o.v;
+            if (!save()) { state.windDownHour = before; showPreferenceSaveFailed(); return; }
+            reRender();
+          }
+        )
       ]);
-      settingsGroup(p, 'Constellation', [
-        el('p', { class: 'eyebrow', text: 'Map pace' }),
+      settingsGroup(p, SETTINGS_UI.constellation, [
+        el('p', { class: 'eyebrow', text: SETTINGS_UI.mapPace }),
         labeledSettingChips(MAP_PACE_OPTIONS,
           function (o) { return state.mapPace === o.k; }, function (o) {
             var before = state.mapPace; state.mapPace = o.k;
             if (!save()) { state.mapPace = before; showPreferenceSaveFailed(); return; }
             reRender();
           }, function (o) { return mapPaceLabel(o.k, o.l); }),
-        el('p', { class: 'p-sm', text: 'Still keeps the map fixed. Drift is gentle. Live moves faster. Reduced-motion always uses Still.' }),
+        el('p', { class: 'p-sm', text: SETTINGS_UI.mapPaceHint }),
         el('div', { class: 'stack' }, [
-          toggleBtn('Show links between people', state.showLinks, function () {
+          toggleBtn(SETTINGS_UI.showLinks, state.showLinks, function () {
             var before = state.showLinks; state.showLinks = !state.showLinks;
             if (!save()) { state.showLinks = before; showPreferenceSaveFailed(); return; }
             reRender();
           }),
-          toggleBtn('Track when we last spoke', state.trackContact, function () {
+          toggleBtn(SETTINGS_UI.trackContact, state.trackContact, function () {
             var before = state.trackContact; state.trackContact = !state.trackContact;
             if (!save()) { state.trackContact = before; showPreferenceSaveFailed(); return; }
             reRender();
           })
         ]),
-        el('p', { class: 'p-sm', text: 'Both off by default. Contact tracking only ever shows you the number — it will never tell you to reach out to anyone.' })
+        el('p', { class: 'p-sm', text: SETTINGS_UI.trackHint })
       ]);
-      settingsGroup(p, 'Your data', [
+      settingsGroup(p, SETTINGS_UI.yourData, [
         el('div', { class: 'stack' }, [
-          el('button', { class: 'btn ghost', text: 'Export everything', onclick: exportData }),
-          el('button', { class: 'btn danger', text: 'Delete everything, permanently', onclick: confirmDelete })
+          el('button', { class: 'btn ghost', text: SETTINGS_UI.export, onclick: exportData }),
+          el('button', { class: 'btn danger', text: SETTINGS_UI.delete, onclick: confirmDelete })
         ])
       ]);
-      settingsGroup(p, 'About', [
-        el('p', { class: 'p-sm', text: 'SoulCap · v' + APP_VERSION }),
-        el('div', { class: 'notice', html: '<b>SoulCap is not therapy</b>, not a doctor, and not a crisis service. Nothing you write leaves this device. There is no account and no server.' })
+      settingsGroup(p, SETTINGS_UI.about, [
+        el('button', { class: 'btn ghost', text: ABOUT_UI.open, onclick: function () { closeSheet(); aboutSheet(); } }),
+        el('p', { class: 'p-sm', text: 'SoulCap · v' + APP_VERSION })
       ]);
       p.appendChild(el('button', { class: 'btn quiet', text: tUi('common', 'close', { close: 'Close' }), onclick: closeSheet }));
     });
   }
+  function aboutSheet() {
+    openSheet(function (p) {
+      p.appendChild(el('p', { class: 'about-lockup', text: 'SoulCap' }));
+      p.appendChild(el('h2', { class: 'h-sec sr', text: ABOUT_UI.title }));
+      p.appendChild(el('p', { class: 'p-voice', text: ABOUT_UI.purpose }));
+      p.appendChild(el('div', { class: 'notice', text: ABOUT_UI.honesty }));
+      p.appendChild(el('p', { class: 'p-sm', text: 'Version ' + APP_VERSION }));
+      p.appendChild(el('p', { class: 'about-credits', text: ABOUT_UI.credits }));
+      p.appendChild(el('button', { class: 'btn quiet', text: ABOUT_UI.close, onclick: closeSheet }));
+    });
+  }
+  function shouldShowWhatsNew() {
+    if (!state.onboarded || !state.notices) return false;
+    return state.notices.seenVersion !== APP_VERSION;
+  }
+  function dismissWhatsNew() {
+    if (!state.notices) state.notices = clone(DEFAULT.notices);
+    state.notices.seenVersion = APP_VERSION;
+    save(); render();
+  }
   function renderCalm() {
     var v = $('#view-calm'); clear(v);
-    var title = calm.browse ? 'Every technique.' : calm.section === 'library' ? LIBRARY_UI.title : calm.section === 'supports' ? SUPPORT_UI.title : 'What do you need\nright now?';
+    var title = calm.browse ? 'Every exercise.' : calm.section === 'library' ? LIBRARY_UI.title : calm.section === 'supports' ? SUPPORT_UI.title : 'What do you need\nright now?';
     v.appendChild(el('div', {}, [
       el('p', { class: 'eyebrow', text: 'Calm' }),
       el('h1', { class: 'h-voice', text: title })
@@ -1887,25 +2255,10 @@
       return;
     }
 
+    // Guided path first — one question, then quieter tools below.
     if (!calm.need) {
-      v.appendChild(el('div', { class:'calm-tools' }, [
-        el('button', { class:'card tap calm-tool reset-card', onclick: resetMenuSheet }, [
-          el('h2', { class:'card-title', text: tUi('reset', 'title', RESET_UI) }),
-          el('p', { class:'p-sm', text: tUi('reset', 'homeHint', RESET_UI) })
-        ]),
-        el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'library'; calm.browse = false; render(); } }, [
-          el('h2', { class:'card-title', text:LIBRARY_UI.title }),
-          el('p', { class:'p-sm', text:LIBRARY_UI.homeHint })
-        ]),
-        el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'supports'; calm.browse = false; render(); } }, [
-          el('h2', { class:'card-title', text:SUPPORT_UI.title }),
-          el('p', { class:'p-sm', text:SUPPORT_UI.homeHint })
-        ])
-      ]));
       v.appendChild(el('p', { class: 'p-sm calm-empty', text: tUi('empty', 'calm', EMPTY_UI) }));
     }
-
-    // Q1 — what do you need
     v.appendChild(el('div', { class: 'stack' }, CALM_NEEDS.map(function (n) {
       return el('button', { class: 'opt', 'aria-pressed': calm.need === n.key ? 'true' : 'false',
         html: n.label + '<span class="os">' + n.sub + '</span>',
@@ -1914,6 +2267,27 @@
 
     if (!calm.need) {
       v.appendChild(el('button', { class: 'btn quiet', text: tUi('calm', 'showEverything', { showEverything: 'Just show me everything' }), onclick: function () { calm.browse = true; render(); } }));
+      v.appendChild(el('div', { class: 'calm-more section-block' }, [
+        el('p', { class: 'eyebrow', text: tUi('me', 'calmMore', { calmMore: 'Also here' }) }),
+        el('div', { class:'calm-tools' }, [
+          el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'library'; calm.browse = false; render(); } }, [
+            el('h2', { class:'card-title', text:LIBRARY_UI.title }),
+            el('p', { class:'p-sm', text:LIBRARY_UI.homeHint })
+          ]),
+          el('button', { class:'card tap calm-tool', onclick: experiencePickerSheet }, [
+            el('h2', { class:'card-title', text: EXPERIENCE_PICKER_UI.cardTitle }),
+            el('p', { class:'p-sm', text: EXPERIENCE_PICKER_UI.calmHint })
+          ]),
+          el('button', { class:'card tap calm-tool', onclick:function () { calm.section = 'supports'; calm.browse = false; render(); } }, [
+            el('h2', { class:'card-title', text:SUPPORT_UI.title }),
+            el('p', { class:'p-sm', text:SUPPORT_UI.homeHint })
+          ]),
+          el('button', { class:'card tap calm-tool reset-card', onclick: resetMenuSheet }, [
+            el('h2', { class:'card-title', text: tUi('reset', 'title', RESET_UI) }),
+            el('p', { class:'p-sm', text: tUi('reset', 'homeHint', RESET_UI) })
+          ])
+        ])
+      ]));
       return;
     }
 
@@ -2005,7 +2379,7 @@
     var due = dueParkedThoughts();
     var parkQuery = journalQuery.trim().toLowerCase();
     if (due.length) {
-      v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: tUi('park', 'dueHeading', PARK_UI) }));
+      v.appendChild(el('p', { class: 'eyebrow mt-2', text: tUi('park', 'dueHeading', PARK_UI) }));
       due.filter(function (item) {
         return !parkQuery || (item.title || '').toLowerCase().indexOf(parkQuery) !== -1;
       }).forEach(function (item) {
@@ -2023,9 +2397,9 @@
     }
 
     if (!state.journal.length) {
-      v.appendChild(el('div', { class: 'card' }, [
+      v.appendChild(el('div', { class: 'card empty-state' }, [
         el('p', { class: 'p-voice', text: tUi('empty', 'journal', EMPTY_UI) }),
-        el('p', { class: 'p-sm', text: 'Write freely, add a photo, drop in a sticker, tag how the day felt. Or don’t. It’s yours.' })
+        el('button', { class: 'btn', text: EMPTY_UI.journalAction, onclick: newEntrySheet })
       ]));
     } else {
       v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:4px', text: 'Contents' }));
@@ -2216,7 +2590,7 @@
     var oldEmo = moodParent.querySelector('.je-emotion-wrap');
     if (oldEmo) oldEmo.parentNode.removeChild(oldEmo);
     var emoWrap = el('div', { class: 'je-emotion-wrap' });
-    emoWrap.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CHECKIN_UI.feeling }));
+    emoWrap.appendChild(el('p', { class: 'eyebrow mt-2', text: CHECKIN_UI.feeling }));
     emoWrap.appendChild(buildEmotionChips(draft.feelingWord || '', function (word) {
       draft.feelingWord = word;
     }));
@@ -2751,7 +3125,7 @@
       [['Feels supportive', 'supportive'], ['Costs me energy', 'drain']].forEach(function (pair) {
         panel.appendChild(el('div', {}, [el('div', { class: 'meta', text: pair[0] }), el('div', { class: 'bar' }, [el('i', { style: 'width:' + Math.round(p[pair[1]] * 100) + '%' })])]));
       });
-      panel.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: 'How close' }));
+      panel.appendChild(el('p', { class: 'eyebrow mt-2', text: 'How close' }));
       panel.appendChild(el('div', { class: 'chips' }, ringDefs().map(function (r) {
         return el('button', { class: 'chip', 'aria-pressed': p.ring === r.key ? 'true' : 'false', text: r.label.charAt(0) + r.label.slice(1).toLowerCase(),
           onclick: function () {
@@ -2765,7 +3139,7 @@
       notes.value = p.notes || '';
       wireSafetyText(notes, function () { p.notes = notes.value.trim().slice(0, 500); save(); });
       panel.appendChild(notes);
-      panel.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:8px', text: CONSTELLATION_UI.eventsHeading }));
+      panel.appendChild(el('p', { class: 'eyebrow mt-2', text: CONSTELLATION_UI.eventsHeading }));
       (p.events || []).forEach(function (ev, idx) {
         panel.appendChild(el('div', { class: 'stack constellation-event' }, [
           el('p', { class: 'p-sm', text: new Date(ev.t).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) + ' · ' + ev.label }),
@@ -2834,7 +3208,7 @@
     var v = $('#view-map'); clear(v);
     v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: 'Constellation' }), el('h1', { class: 'h-voice', text: 'The people around you.' })]));
     if (!state.people.length) {
-      v.appendChild(el('div', { class: 'card' }, [
+      v.appendChild(el('div', { class: 'card empty-state' }, [
         el('p', { class: 'p-voice', text: tUi('empty', 'map', EMPTY_UI) }),
         el('p', { class: 'p-sm', text: 'Nobody else ever sees this. It stays on your device.' }),
         el('button', { class: 'btn', text: 'Add the first person', onclick: addPersonSheet })
@@ -2868,7 +3242,7 @@
       ringDefs().forEach(function (r, i) {
         var inp = el('input', { type: 'text', placeholder: RING_DEFAULTS[i] || ('Ring ' + (i + 1)), 'aria-label': 'Ring ' + (i + 1), value: state.ringNames[r.key] || '' });
         inp.addEventListener('change', function () { var val = inp.value.trim().slice(0, 20); if (val) state.ringNames[r.key] = val; else delete state.ringNames[r.key]; save(); });
-        p.appendChild(el('div', {}, [el('p', { class: 'eyebrow', style: 'margin-top:8px', text: 'Ring ' + (i + 1) + ' (from centre)' }), inp]));
+        p.appendChild(el('div', {}, [el('p', { class: 'eyebrow mt-2', text: 'Ring ' + (i + 1) + ' (from centre)' }), inp]));
       });
       p.appendChild(el('button', { class: 'btn', text: 'Done', onclick: function () { save(); closeSheet(); render(); } }));
     });
@@ -2928,52 +3302,78 @@
         el('h2', { class: 'card-title', text: REFLECTION_UI.cardTitle }),
         el('p', { class: 'p-sm', text: pr }),
         el('button', { class: 'btn', text: REFLECTION_UI.answer, onclick: reflectionAnswerSheet }),
-        el('div', { class: 'chips', style: 'margin-top:8px' }, [
+        el('div', { class: 'chips mt-2' }, [
           el('button', { class: 'chip', text: REFLECTION_UI.skip, onclick: skipReflection }),
           el('button', { class: 'chip', text: REFLECTION_UI.dismiss, onclick: dismissReflectionForever })
         ])
       ]));
     }
-    v.appendChild(el('button', { class: 'card tap', onclick: timelineSheet }, [
-      el('h2', { class: 'card-title', text: TIMELINE_UI.title }),
-      el('p', { class: 'p-sm', text: TIMELINE_UI.cardHint })
-    ]));
+    if (shouldShowWhatsNew()) {
+      v.appendChild(el('div', { class: 'card whats-new' }, [
+        el('h2', { class: 'card-title', text: WHATS_NEW_UI.title }),
+        el('p', { class: 'p-sm', text: WHATS_NEW_UI.body }),
+        el('button', { class: 'btn ghost', text: WHATS_NEW_UI.dismiss, onclick: dismissWhatsNew })
+      ]));
+    }
+
+    // Primary: check-in → one suggestion. Everything else quieter.
+    var primary = el('div', { class: 'now-primary' });
     var states = ['Steady', 'Wired', 'Flat', 'Heavy', 'Not sure'];
     var rc = todayCheckin(), today = rc ? rc.state : null;
     if (!state.checkins.length) {
-      v.appendChild(el('p', { class: 'p-sm now-empty', text: tUi('empty', 'now', EMPTY_UI) }));
+      primary.appendChild(el('div', { class: 'card empty-state' }, [
+        el('p', { class: 'p-sm', text: tUi('empty', 'now', EMPTY_UI) })
+      ]));
     }
-    v.appendChild(el('div', {}, [
+    primary.appendChild(el('div', {}, [
       el('p', { class: 'p-voice', text: tUi('checkin', 'arrival', { arrival: 'How are you arriving right now?' }) }),
       el('div', { style: 'height:11px' }),
       el('div', { class: 'chips' }, states.map(function (s) {
         return el('button', { class: 'chip', 'aria-pressed': today === s ? 'true' : 'false', text: checkinStateLabel(s),
           onclick: function () {
             if (!recordCheckin(s)) { showCheckinSaveFailed(); return; }
-            buzz(10); render();
+            haptic('select'); render();
           } });
       }))
     ]));
     if (rc) {
       var hasDetail = Object.keys(rc.dims || {}).length || (rc.triggers || []).length || rc.need || rc.feeling;
-      v.appendChild(el('button', { class: 'btn ghost', text: hasDetail ? tUi('checkin', 'editDetail', CHECKIN_UI) : tUi('checkin', 'addDetail', CHECKIN_UI), onclick: checkinDetailSheet }));
+      primary.appendChild(el('button', { class: 'btn ghost', text: hasDetail ? tUi('checkin', 'editDetail', CHECKIN_UI) : tUi('checkin', 'addDetail', CHECKIN_UI), onclick: checkinDetailSheet }));
     }
-    var dripQ = nextDripQuestion();
-    v.appendChild(el('button', { class: 'card tap', onclick: dripSheet }, [
-      el('h2', { class: 'card-title', text: DRIP_UI.cardTitle }),
-      el('p', { class: 'p-sm', text: dripQ ? DRIP_UI.cardHint : DRIP_UI.doneToday })
-    ]));
     var pick = suggestSkill(), dm = DOMAIN_META[pick.skill.domain];
-    v.appendChild(el('div', { class: 'card' }, [
+    primary.appendChild(el('div', { class: 'card now-suggest' }, [
       el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: pick.skill.name }), el('span', { class: 'domain', style: 'color:var(' + dm.cssVar + ')', text: dm.label })]),
       el('p', { class: 'meta', text: pick.skill.mins + ' min · works offline' }),
       el('p', { class: 'reason', text: reasonText(pick) }),
       el('button', { class: 'btn', text: 'Begin', onclick: function () { startSkill(pick.skill.id); } }),
       el('button', { class: 'btn quiet', text: 'Something else', onclick: function () { calm.browse = false; selectTab('calm'); } })
     ]));
+    v.appendChild(primary);
+
+    var quiet = el('div', { class: 'now-quiet' });
+    quiet.appendChild(el('button', { class: 'card tap experience-picker-card', onclick: experiencePickerSheet }, [
+      el('h2', { class: 'card-title', text: EXPERIENCE_PICKER_UI.cardTitle }),
+      el('p', { class: 'p-sm', text: EXPERIENCE_PICKER_UI.cardHint })
+    ]));
+    if (typeof state.windDownHour === 'number' && new Date().getHours() >= state.windDownHour) {
+      quiet.appendChild(el('div', { class: 'card wind-down-card' }, [
+        el('h2', { class: 'card-title', text: WIND_DOWN_UI.nowTitle }),
+        el('p', { class: 'p-sm', text: WIND_DOWN_UI.nowHint }),
+        el('button', { class: 'btn ghost', text: WIND_DOWN_UI.openArticle, onclick: function () {
+          selectTab('calm'); calm.section = 'library'; libraryQuery = 'winding'; libraryFilter = 'articles'; render();
+          setTimeout(function () { articleSheet('wind-down-boundaries'); }, 0);
+        } }),
+        el('button', { class: 'btn quiet', text: WIND_DOWN_UI.journalNight, onclick: function () { selectTab('journal'); } })
+      ]));
+    }
+    var dripQ = nextDripQuestion();
+    quiet.appendChild(el('button', { class: 'card tap', onclick: dripSheet }, [
+      el('h2', { class: 'card-title', text: DRIP_UI.cardTitle }),
+      el('p', { class: 'p-sm', text: dripQ ? DRIP_UI.cardHint : DRIP_UI.doneToday })
+    ]));
     var person = suggestPerson();
     if (person) {
-      v.appendChild(el('div', { class: 'card' }, [
+      quiet.appendChild(el('div', { class: 'card' }, [
         el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: 'Message ' + person.name + '?' }), el('span', { class: 'domain', style: 'color:var(--connect)', text: 'Connect' })]),
         el('p', { class: 'reason', text: 'You said ' + person.name + ' usually helps when things are hard.' }),
         el('p', { class: 'p-sm', text: 'SoulCap never sends anything. This just opens your own messages.' }),
@@ -2984,11 +3384,12 @@
     if (recent.length > 1) {
       var order = { Steady: 8, 'Not sure': 18, Flat: 26, Wired: 31, Heavy: 37 };
       var pts = recent.map(function (c, i) { return (6 + i * (268 / Math.max(recent.length - 1, 1))).toFixed(0) + ',' + (order[c.state] || 20); }).join(' ');
-      v.appendChild(el('div', {}, [
+      quiet.appendChild(el('div', {}, [
         el('p', { class: 'eyebrow', text: 'Recent days · ' + recent.length }),
         el('div', { class: 'spark', html: '<svg viewBox="0 0 280 46" preserveAspectRatio="none" width="100%" height="46" aria-hidden="true"><polyline points="' + pts + '" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/></svg>' })
       ]));
     }
+    v.appendChild(quiet);
     v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
   }
 
@@ -3051,63 +3452,35 @@
     var name = (state.profile.name || '').trim();
     v.appendChild(el('div', {}, [el('p', { class: 'eyebrow', text: tUi('me', 'eyebrow', { eyebrow: 'You' }) }), el('h1', { class: 'h-voice', text: name || tUi('me', 'yourSpace', { yourSpace: 'Your space.' }) })]));
     if (!name && !historyFilled() && !state.principles.length && !state.manual.lines.length && !planFilled()) {
-      v.appendChild(el('p', { class: 'p-sm me-empty', text: tUi('empty', 'me', EMPTY_UI) }));
+      v.appendChild(el('div', { class: 'card empty-state' }, [
+        el('p', { class: 'p-sm', text: tUi('empty', 'me', EMPTY_UI) }),
+        el('button', { class: 'btn ghost', text: EMPTY_UI.meAction, onclick: profileSheet })
+      ]));
     }
 
-    // Profile card
-    v.appendChild(el('button', { class: 'card tap', onclick: profileSheet }, [
+    // About you — profile · story · what SoulCap knows
+    var about = el('div', { class: 'section-block me-about' }, [
+      el('p', { class: 'eyebrow', text: tUi('me', 'sectionAbout', { sectionAbout: 'About you' }) })
+    ]);
+    about.appendChild(el('button', { class: 'card tap', onclick: profileSheet }, [
       el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: name ? tUi('me', 'profile', { profile: 'Profile' }) : tUi('me', 'setupProfile', { setupProfile: 'Set up your profile' }) }), el('span', { class: 'pill', text: name ? tUi('me', 'edit', { edit: 'Edit' }) : tUi('me', 'add', { add: 'Add' }) })]),
       el('p', { class: 'p-sm', text: name
         ? [name, state.profile.age && state.profile.age + ' years', state.profile.pronouns].filter(Boolean).join(' · ')
         : 'Add your name so this feels like yours. Age and pronouns optional.' })
     ]));
-
-    // History / your story
     var hf = historyFilled();
-    v.appendChild(el('button', { class: 'card tap', onclick: historySheet }, [
+    about.appendChild(el('button', { class: 'card tap', onclick: historySheet }, [
       el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: tUi('me', 'yourStory', { yourStory: 'Your story' }) }), el('span', { class: 'pill', text: hf ? hf + ' / ' + HISTORY_SECTIONS.length : tUi('me', 'optional', { optional: 'Optional' }) })]),
       el('p', { class: 'p-sm', text: hf
         ? 'Family, relationships, habits, hobbies, and the harder things — SoulCap adapts to what you’ve shared.'
         : 'Tell SoulCap about your life — family, relationships, habits, hobbies, anything from your past. All optional. The more it knows, the more it fits you.' })
     ]));
-
-    // Safety plan
-    var filled = planFilled();
-    v.appendChild(el('button', { class: 'card tap', onclick: safetyPlanSheet }, [
-      el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: tUi('me', 'myPlan', { myPlan: 'My plan' }) }), el('span', { class: 'pill', text: filled + '/' + SAFETY_PLAN_STEPS.length })]),
-      el('p', { class: 'p-sm', text: filled ? 'Your warning signs, what helps, and who to tell. Tap to update.' : 'Write it while you’re steady, so it’s ready when you’re not.' })
-    ]));
-
-    // Journey
-    var runs = state.skillRuns.length, helped = state.skillRuns.filter(function (r) { return r.helpful; }).length;
-    if (runs || state.checkins.length) {
-      var top = {}; state.skillRuns.forEach(function (r) { if (r.helpful) top[r.id] = (top[r.id] || 0) + 1; });
-      var best = Object.keys(top).sort(function (a, b) { return top[b] - top[a]; })[0];
-      var bestSkill = best ? SKILLS.filter(function (s) { return s.id === best; })[0] : null;
-      v.appendChild(el('div', { class: 'card' }, [
-        el('h2', { class: 'card-title', text: 'Your journey' }),
-        el('p', { class: 'p', text: runs + ' exercise' + (runs === 1 ? '' : 's') + ' · ' + helped + ' helped · ' + state.checkins.length + ' day' + (state.checkins.length === 1 ? '' : 's') + ' checked in · ' + state.journal.length + ' journal' }),
-        bestSkill ? el('p', { class: 'reason', text: bestSkill.name + ' seems to work best for you.' }) : null,
-        el('p', { class: 'p-sm', text: 'No score, no rating. Just what’s happened.' })
-      ]));
-    }
-    var week = weeklySummary();
-    if (week) {
-      v.appendChild(el('div', { class: 'card' }, [
-        el('h2', { class: 'card-title', text: PATTERN_UI.weeklyTitle }),
-        el('p', { class: 'p', text: week.days + ' ' + PATTERN_UI.weeklySummary + ' · ' + week.common + ' ' + PATTERN_UI.weeklyCommon + '.' }),
-        week.detail.length ? el('p', { class: 'p-sm', text: week.detail.join(' · ') }) : null,
-        el('p', { class: 'reason', text: PATTERN_UI.weeklyNote })
-      ]));
-    }
-
-    // Trust tiers
-    var rows = el('div', {}); var any = false;
+    var knowRows = el('div', {}); var anyKnow = false;
     USER_MODEL_KEYS.forEach(function (meta) {
       var item = state.userModel[meta.key];
       if (!item || typeof item.value !== 'number') return;
-      any = true;
-      rows.appendChild(el('div', { class: 'row pattern-row' }, [
+      anyKnow = true;
+      knowRows.appendChild(el('div', { class: 'row pattern-row' }, [
         el('div', {}, [
           el('div', { class: 'lab', text: meta.label + ' · ' + item.value.toFixed(1) + '/5' }),
           el('div', { class: 'sub', text: confidenceLabel(item.confidence) + ' ' + DRIP_UI.confidence + ' · ' + DRIP_UI.notDiagnosis }),
@@ -3118,11 +3491,62 @@
         el('span', { class: 'tier declared', text: item.source === 'corrected' ? 'Corrected' : 'You said' })
       ]));
     });
-    state.concerns.forEach(function (c) { any = true; rows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: c }), el('div', { class: 'sub', text: 'You picked this when you started' })]), el('span', { class: 'tier declared', text: 'You said' })])); });
+    SCREENERS.forEach(function (screener) {
+      var res = state.screenerResults[screener.id];
+      if (!res) return;
+      anyKnow = true;
+      knowRows.appendChild(el('div', { class: 'row pattern-row screener-signal' }, [
+        el('div', {}, [
+          el('div', { class: 'lab', text: SCREENER_UI.knowsLabel + ' · ' + screener.name }),
+          el('div', { class: 'sub', text: SCREENER_UI.historyLine.replace('{score}', '' + res.score).replace('{band}', res.bandLabel) + ' · ' + SCREENER_UI.knowsSub }),
+          el('div', { class: 'chips pattern-actions' }, [
+            el('button', { class: 'chip', text: SCREENER_UI.retake, onclick: function () { screenerRunSheet(screener.id); } }),
+            el('button', { class: 'chip', text: SCREENER_UI.clear, onclick: function () {
+              if (!clearScreenerResult(screener.id)) return;
+              render();
+            } })
+          ])
+        ]),
+        el('span', { class: 'tier guess', text: 'Low confidence' })
+      ]));
+    });
+    state.concerns.forEach(function (c) { anyKnow = true; knowRows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: c }), el('div', { class: 'sub', text: 'You picked this when you started' })]), el('span', { class: 'tier declared', text: 'You said' })])); });
     var helpful = {}; state.skillRuns.forEach(function (r) { if (r.helpful === true) helpful[r.id] = (helpful[r.id] || 0) + 1; });
-    Object.keys(helpful).forEach(function (id) { var s = SKILLS.filter(function (x) { return x.id === id; })[0]; if (!s) return; any = true; rows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: s.name + ' seems to help' }), el('div', { class: 'sub', text: 'You said it helped ' + helpful[id] + ' time' + (helpful[id] > 1 ? 's' : '') })]), el('span', { class: 'tier observed', text: 'Observed' })])); });
+    Object.keys(helpful).forEach(function (id) { var s = SKILLS.filter(function (x) { return x.id === id; })[0]; if (!s) return; anyKnow = true; knowRows.appendChild(el('div', { class: 'row' }, [el('div', {}, [el('div', { class: 'lab', text: s.name + ' seems to help' }), el('div', { class: 'sub', text: 'You said it helped ' + helpful[id] + ' time' + (helpful[id] > 1 ? 's' : '') })]), el('span', { class: 'tier observed', text: 'Observed' })])); });
+    if (anyKnow) {
+      about.appendChild(el('p', { class: 'eyebrow', text: tUi('me', 'knowsHeading', { knowsHeading: 'What SoulCap knows' }) }));
+      about.appendChild(knowRows);
+    }
+    v.appendChild(about);
+
+    // Your insights — journey · seven-day · patterns · timeline (off Now)
+    var insights = el('div', { class: 'section-block me-insights' }, [
+      el('p', { class: 'eyebrow', text: tUi('me', 'sectionInsights', { sectionInsights: 'Your insights' }) })
+    ]);
+    var runs = state.skillRuns.length, helped = state.skillRuns.filter(function (r) { return r.helpful; }).length;
+    if (runs || state.checkins.length) {
+      var top = {}; state.skillRuns.forEach(function (r) { if (r.helpful) top[r.id] = (top[r.id] || 0) + 1; });
+      var best = Object.keys(top).sort(function (a, b) { return top[b] - top[a]; })[0];
+      var bestSkill = best ? SKILLS.filter(function (s) { return s.id === best; })[0] : null;
+      insights.appendChild(el('div', { class: 'card' }, [
+        el('h2', { class: 'card-title', text: 'Your journey' }),
+        el('p', { class: 'p', text: runs + ' exercise' + (runs === 1 ? '' : 's') + ' · ' + helped + ' helped · ' + state.checkins.length + ' day' + (state.checkins.length === 1 ? '' : 's') + ' checked in · ' + state.journal.length + ' journal' }),
+        bestSkill ? el('p', { class: 'reason', text: bestSkill.name + ' seems to work best for you.' }) : null,
+        el('p', { class: 'p-sm', text: 'No score, no rating. Just what’s happened.' })
+      ]));
+    }
+    var week = weeklySummary();
+    if (week) {
+      insights.appendChild(el('div', { class: 'card' }, [
+        el('h2', { class: 'card-title', text: PATTERN_UI.weeklyTitle }),
+        el('p', { class: 'p', text: week.days + ' ' + PATTERN_UI.weeklySummary + ' · ' + week.common + ' ' + PATTERN_UI.weeklyCommon + '.' }),
+        week.detail.length ? el('p', { class: 'p-sm', text: week.detail.join(' · ') }) : null,
+        el('p', { class: 'reason', text: PATTERN_UI.weeklyNote })
+      ]));
+    }
+    var patternRows = el('div', {}); var anyPattern = false;
     derivePatterns().forEach(function (pattern) {
-      any = true;
+      anyPattern = true;
       var decision = state.patternPrefs.decisions[pattern.id];
       var actions = [
         el('button', { class: 'chip', text: tUi('pattern', 'evidence', PATTERN_UI), onclick: function () { patternSheet(pattern); } })
@@ -3132,7 +3556,7 @@
         actions.push(el('button', { class: 'chip', text: tUi('pattern', 'reject', PATTERN_UI), onclick: function () { setPatternDecision(pattern.id, 'rejected'); } }));
       }
       actions.push(el('button', { class: 'chip', text: tUi('pattern', 'hide', PATTERN_UI), onclick: function () { setPatternDecision(pattern.id, 'hidden'); } }));
-      rows.appendChild(el('div', { class: 'row pattern-row' }, [
+      patternRows.appendChild(el('div', { class: 'row pattern-row' }, [
         el('div', {}, [
           el('div', { class: 'lab', text: pattern.title }),
           el('div', { class: 'sub', text: pattern.summary + ' Based on ' + pattern.count + ' ' + PATTERN_UI.dayBasis + '.' + (patternConfidenceLabel(pattern.count) ? ' ' + patternConfidenceLabel(pattern.count) + '.' : '') }),
@@ -3141,7 +3565,35 @@
         el('span', { class: decision === 'confirmed' ? 'tier declared' : 'tier guess', text: decision === 'confirmed' ? tUi('pattern', 'confirmed', PATTERN_UI) : tUi('pattern', 'guess', PATTERN_UI) })
       ]));
     });
-    if (any) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:6px', text: 'What SoulCap knows' })); v.appendChild(rows); }
+    if (anyPattern) insights.appendChild(patternRows);
+    insights.appendChild(el('button', { class: 'card tap timeline-card', onclick: timelineSheet }, [
+      el('h2', { class: 'card-title', text: TIMELINE_UI.title }),
+      el('p', { class: 'p-sm', text: TIMELINE_UI.cardHint })
+    ]));
+    v.appendChild(insights);
+
+    // Your tools — plan · screener · principles · manual
+    var tools = el('div', { class: 'section-block me-tools' }, [
+      el('p', { class: 'eyebrow', text: tUi('me', 'sectionTools', { sectionTools: 'Your tools' }) })
+    ]);
+    var filled = planFilled();
+    tools.appendChild(el('button', { class: 'card tap', onclick: safetyPlanSheet }, [
+      el('div', { class: 'card-head' }, [el('h2', { class: 'card-title', text: tUi('me', 'myPlan', { myPlan: 'My plan' }) }), el('span', { class: 'pill', text: filled + '/' + SAFETY_PLAN_STEPS.length })]),
+      el('p', { class: 'p-sm', text: filled ? 'Your warning signs, what helps, and who to tell. Tap to update.' : 'Write it while you’re steady, so it’s ready when you’re not.' })
+    ]));
+    tools.appendChild(el('button', { class: 'card tap screener-card', onclick: screenerPickSheet }, [
+      el('h2', { class: 'card-title', text: SCREENER_UI.cardTitle }),
+      el('p', { class: 'p-sm', text: SCREENER_UI.cardHint })
+    ]));
+    tools.appendChild(el('button', { class: 'card tap', onclick: principlesSheet }, [
+      el('h2', { class: 'card-title', text: PRINCIPLES_UI.title }),
+      el('p', { class: 'p-sm', text: state.principles.length ? state.principles.slice(0, 2).join(' · ') : PRINCIPLES_UI.cardHint })
+    ]));
+    tools.appendChild(el('button', { class: 'card tap manual-card', onclick: manualSheet }, [
+      el('h2', { class: 'card-title', text: MANUAL_UI.title }),
+      el('p', { class: 'p-sm', text: state.manual.lines.length ? (state.manual.lines.length + ' line' + (state.manual.lines.length === 1 ? '' : 's')) : MANUAL_UI.cardHint })
+    ]));
+    v.appendChild(tools);
 
     if (state.locale === 'rui' && !clinicalNoticeDismissed()) {
       v.appendChild(el('div', { class: 'notice' }, [
@@ -3156,21 +3608,6 @@
         el('span', { class: 'pill', text: tUi('settingsCard', 'open', { open: 'Open' }) })
       ]),
       el('p', { class: 'p-sm', text: tUi('settingsCard', 'hint', { hint: 'Appearance, language, accessibility, constellation pace, guided exercises, and your data.' }) })
-    ]));
-
-    v.appendChild(el('button', { class: 'card tap', onclick: timelineSheet }, [
-      el('h2', { class: 'card-title', text: TIMELINE_UI.title }),
-      el('p', { class: 'p-sm', text: TIMELINE_UI.cardHint })
-    ]));
-
-    v.appendChild(el('button', { class: 'card tap', onclick: principlesSheet }, [
-      el('h2', { class: 'card-title', text: PRINCIPLES_UI.title }),
-      el('p', { class: 'p-sm', text: state.principles.length ? state.principles.slice(0, 2).join(' · ') : PRINCIPLES_UI.cardHint })
-    ]));
-
-    v.appendChild(el('button', { class: 'card tap manual-card', onclick: manualSheet }, [
-      el('h2', { class: 'card-title', text: MANUAL_UI.title }),
-      el('p', { class: 'p-sm', text: state.manual.lines.length ? (state.manual.lines.length + ' line' + (state.manual.lines.length === 1 ? '' : 's')) : MANUAL_UI.cardHint })
     ]));
 
     v.appendChild(el('button', { class: 'help-btn', text: t('helpNow'), onclick: openPanic }));
@@ -3273,7 +3710,7 @@
       p.appendChild(el('button', { class: 'btn quiet', text: tUi('principles', 'close', PRINCIPLES_UI), onclick: closeSheet }));
     });
   }
-  var APP_VERSION = '1.8.0';
+  var APP_VERSION = '2.0.1';
   function settingsGroup(v, title, kids) { v.appendChild(el('p', { class: 'eyebrow', style: 'margin-top:var(--space-3)', text: title })); kids.forEach(function (k) { if (k) v.appendChild(k); }); }
   function toggleBtn(label, on, fn) {
     return el('button', { class: 'btn ghost', style: 'display:flex;justify-content:space-between', onclick: fn,
@@ -3338,7 +3775,7 @@
       [['Speed', 'rate', 0.5, 1.2, 0.05], ['Pitch', 'pitch', 0.7, 1.3, 0.05]].forEach(function (cfg) {
         var r = el('input', { type: 'range', min: cfg[2], max: cfg[3], step: cfg[4], value: state.voice[cfg[1]], 'aria-label': cfg[0] });
         r.addEventListener('change', function () { state.voice[cfg[1]] = parseFloat(r.value); state.voice.on = true; save(); speak('Breathe out, slowly.'); });
-        p.appendChild(el('div', {}, [el('p', { class: 'eyebrow', style: 'margin-top:8px', text: cfg[0] }), r]));
+        p.appendChild(el('div', {}, [el('p', { class: 'eyebrow mt-2', text: cfg[0] }), r]));
       });
       p.appendChild(el('button', { class: 'btn ghost', text: 'Hear a preview', onclick: function () { state.voice.on = true; speak('Breathe in through your nose. Hold. And slowly out through your mouth.'); } }));
       p.appendChild(el('button', { class: 'btn', text: 'Done', onclick: function () { hushVoice(); closeSheet(); render(); } }));
@@ -3412,7 +3849,11 @@
     }
     v.appendChild(el('button', { class: 'help-btn', style: 'margin-top:auto', text: t('helpNow'), onclick: openPanic }));
   }
-  function finishOnboarding() { state.onboarded = true; save(); render(); }
+  function finishOnboarding() {
+    if (!state.notices) state.notices = clone(DEFAULT.notices);
+    state.notices.seenVersion = APP_VERSION;
+    state.onboarded = true; save(); render();
+  }
 
   /* ── Router ────────────────────────────────────────────────────────────── */
   var tab = 'now';
@@ -3444,6 +3885,7 @@
     state = clone(DEFAULT);
     state.welcomed = true; state.onboarded = true; state.ageOk = true;
     state.consent = true;
+    state.notices.seenVersion = APP_VERSION;
     state.profile = { name: 'Shamikh', age: '', pronouns: '' };
     state.history = { status: 'Single', household: 'with my family', hobbies: 'cricket, cooking, long drives' };
     state.concerns = ['Hard to switch off', 'Low mood'];
@@ -3492,7 +3934,7 @@
     $('#runClose').addEventListener('click', closeRunner);
     $('#runGuide').addEventListener('click', toggleGuide);
     $('#sheetScrim').addEventListener('click', closeSheet);
-    $('#fab').addEventListener('click', function () { buzz(14); openPanic(); });
+    $('#fab').addEventListener('click', function () { haptic('done'); openPanic(); });
 
     // Journal editor
     $('#jeCancel').addEventListener('click', closeEditor);
@@ -3517,7 +3959,7 @@
       var pEl = $('#jePrompt'); pEl.textContent = pr; pEl.classList.add('on'); $('#jeBody').focus();
     });
 
-    Array.prototype.forEach.call($('#tabs').children, function (b) { b.addEventListener('click', function () { buzz(8); selectTab(b.dataset.tab); }); });
+    Array.prototype.forEach.call($('#tabs').children, function (b) { b.addEventListener('click', function () { haptic('tick'); selectTab(b.dataset.tab); }); });
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Tab' && $('#sheet').classList.contains('on')) {
@@ -3541,6 +3983,8 @@
     if (queryValue('panic') === '1') {
       $('#splash').classList.add('gone');
       openPanic();
+    } else if (requestedTab === 'journal' && queryValue('new') === '1' && state.onboarded) {
+      setTimeout(function () { newEntrySheet(); }, 400);
     }
 
     var splash = $('#splash'), dismiss = function () { splash.classList.add('gone'); };
@@ -3553,7 +3997,22 @@
   window.__soulcap = {
     assessRisk: assessRisk, suggestSkill: suggestSkill, suggestPerson: suggestPerson,
     getState: function () { return state; }, skillCount: SKILLS.length,
-    skillIds: SKILLS.map(function (skill) { return skill.id; }), version: '1.8.0',
+    skillIds: SKILLS.map(function (skill) { return skill.id; }),     version: '2.0.1',
+    experienceIds: EXPERIENCES.map(function (item) { return item.id; }),
+    experienceHelpsOk: function () {
+      return EXPERIENCES.every(function (exp) {
+        return (exp.helps || []).every(function (hid) {
+          return SKILLS.some(function (s) { return s.id === hid; });
+        });
+      });
+    },
+    openExperience: experienceSheet,
+    openExperiencePicker: experiencePickerSheet,
+    openScreener: screenerPickSheet,
+    runScreener: screenerRunSheet,
+    saveScreenerResult: saveScreenerResult,
+    clearScreenerResult: clearScreenerResult,
+    completeScreener: screenerFinish,
     nextDripQuestion: nextDripQuestion, estimateValue: estimateValue,
     answerDrip: answerDrip, skipDrip: skipDrip, correctEstimate: correctEstimate,
     clearEstimate: clearEstimate, setTheme: setTheme, setLocale: setLocale,
@@ -3570,7 +4029,14 @@
       });
     },
     derivePatterns: derivePatterns, maybeQueueReflection: maybeQueueReflection,
-    buildManualDrafts: buildManualDrafts, refreshManual: refreshManual
+    buildManualDrafts: buildManualDrafts, refreshManual: refreshManual,
+    dismissWhatsNew: dismissWhatsNew,
+    setSeenVersion: function (v) {
+      if (!state.notices) state.notices = clone(DEFAULT.notices);
+      state.notices.seenVersion = v;
+      save();
+      selectTab('now');
+    }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
