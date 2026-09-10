@@ -1,0 +1,25 @@
+{
+  "name": "shamikhahmed.github.io",
+  "version": "1.2.1",
+  "description": "Capricorn Systems hub — marketing site for eight Cap apps.",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shamikhahmed/shamikhahmed.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/shamikhahmed/shamikhahmed.github.io/issues"
+  },
+  "homepage": "https://github.com/shamikhahmed/shamikhahmed.github.io#readme",
+  "devDependencies": {
+    "playwright": "^1.60.0",
+    "sharp": "^0.35.0"
+  }
+}

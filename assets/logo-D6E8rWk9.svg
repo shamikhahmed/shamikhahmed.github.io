@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <!-- Capricorn master mark: horn spiral rising to a star -->
+  <path d="M14 38 C14 24 18 12 30 10 C37 9 40 14 38 19 C36 23 31 23 29 20 C27.5 17.5 29 14.5 32 14" stroke="#C9A227" stroke-width="3" stroke-linecap="round"/>
+  <path d="M14 38 C20 38 27 36 32 31" stroke="#F4F0E8" stroke-width="2.2" stroke-linecap="round" opacity=".55"/>
+  <circle cx="40.5" cy="8.5" r="2.6" fill="#C9A227"/>
+  <circle cx="14" cy="38" r="1.6" fill="#F4F0E8" opacity=".8"/>
+</svg>
