@@ -15,8 +15,8 @@ const S = {
       services: [],
       fuel: [],
       docs: [],
-      settings: { demo: false, units: 'metric' },
-      meta: { onboarded: false, created: new Date().toISOString() }
+      settings: { demo: false, units: 'metric', notifyReminders: false },
+      meta: { onboarded: false, created: new Date().toISOString(), schemaVersion: 2 }
     };
   },
 
@@ -31,9 +31,43 @@ const S = {
     if (!this.d.services) this.d.services = [];
     if (!this.d.fuel) this.d.fuel = [];
     if (!this.d.docs) this.d.docs = [];
-    if (!this.d.settings) this.d.settings = { demo: false, units: 'metric' };
-    if (!this.d.meta) this.d.meta = { onboarded: false, created: new Date().toISOString() };
+    if (!this.d.settings) this.d.settings = { demo: false, units: 'metric', notifyReminders: false };
+    if (this.d.settings.notifyReminders == null) this.d.settings.notifyReminders = false;
+    if (!this.d.meta) this.d.meta = { onboarded: false, created: new Date().toISOString(), schemaVersion: 1 };
+    this._migrateToV2();
     return this.d;
+  },
+
+  /**
+   * G-6 schema migration: add photoId on docs + schemaVersion 2.
+   * Backup key excluded from exports; removed after 2 successful launches.
+   */
+  _migrateToV2() {
+    const from = Number(this.d.meta.schemaVersion) || 1;
+    if (from >= 2) {
+      this._maybeClearPremigrationBackup();
+      return;
+    }
+    try {
+      const raw = localStorage.getItem(this._key);
+      if (raw) localStorage.setItem('carcap_premigration_backup_1', raw);
+    } catch (e) { /* ignore quota */ }
+    this.d.docs.forEach((doc) => {
+      if (doc.photoId === undefined) doc.photoId = null;
+    });
+    this.d.meta.schemaVersion = 2;
+    this.d.meta.migrationLaunches = 0;
+    this.save();
+  },
+
+  _maybeClearPremigrationBackup() {
+    const launches = Number(this.d.meta.migrationLaunches) || 0;
+    if (launches < 2) {
+      this.d.meta.migrationLaunches = launches + 1;
+      this.save();
+      return;
+    }
+    try { localStorage.removeItem('carcap_premigration_backup_1'); } catch (e) { /* ignore */ }
   },
 
   save() {
@@ -43,6 +77,9 @@ const S = {
   reset() {
     this.d = this._blank();
     this.save();
+    if (window.Photos && typeof Photos.clearAll === 'function') {
+      Photos.clearAll().catch(() => {});
+    }
   },
 
   uid(prefix) {
@@ -94,6 +131,7 @@ const S = {
   },
 
   deleteVehicle(id) {
+    const photoIds = this.d.docs.filter((d) => d.vehicleId === id && d.photoId).map((d) => d.photoId);
     this.d.vehicles = this.d.vehicles.filter((v) => v.id !== id);
     this.d.services = this.d.services.filter((s) => s.vehicleId !== id);
     this.d.fuel = this.d.fuel.filter((f) => f.vehicleId !== id);
@@ -102,6 +140,9 @@ const S = {
       this.d.activeVehicleId = this.d.vehicles[0] ? this.d.vehicles[0].id : null;
     }
     this.save();
+    if (window.Photos) {
+      photoIds.forEach((pid) => Photos.del(pid).catch(() => {}));
+    }
   },
 
   vehicleLabel(v) {
@@ -119,7 +160,7 @@ const S = {
   },
 
   upcomingReminders(daysAhead) {
-    const ahead = daysAhead == null ? 60 : daysAhead;
+    const ahead = daysAhead == null ? 30 : daysAhead;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const end = new Date(today);
@@ -128,10 +169,45 @@ const S = {
       .filter((s) => s.reminderDate)
       .map((s) => {
         const d = new Date(s.reminderDate + 'T00:00:00');
-        return { service: s, due: d, overdue: d < today };
+        return { kind: 'service', service: s, due: d, overdue: d < today, vehicleId: s.vehicleId };
       })
       .filter((x) => x.due <= end)
       .sort((a, b) => a.due - b.due);
+  },
+
+  /** P-CAR-1: service + insurance/registration within 30 days (plus overdue). */
+  comingUp(daysAhead, vehicleId) {
+    const ahead = daysAhead == null ? 30 : daysAhead;
+    const services = this.upcomingReminders(ahead)
+      .filter((r) => !vehicleId || r.vehicleId === vehicleId)
+      .map((r) => ({
+        kind: 'service',
+        id: r.service.id,
+        vehicleId: r.service.vehicleId,
+        title: r.service.type,
+        meta: 'Service due',
+        date: r.service.reminderDate,
+        due: r.due,
+        overdue: r.overdue
+      }));
+    const docs = this.expiringDocs(ahead)
+      .filter((r) => !vehicleId || r.doc.vehicleId === vehicleId)
+      .filter((r) => {
+        const t = (r.doc.type || '').toLowerCase();
+        return t === 'insurance' || t === 'registration' || r.overdue;
+      })
+      .map((r) => ({
+        kind: 'doc',
+        id: r.doc.id,
+        vehicleId: r.doc.vehicleId,
+        title: r.doc.title,
+        meta: r.overdue ? 'Document expired' : 'Expires soon',
+        date: r.doc.expiry,
+        due: r.due,
+        overdue: r.overdue,
+        docType: r.doc.type
+      }));
+    return services.concat(docs).sort((a, b) => a.due - b.due);
   },
 
   addService(data) {
@@ -232,6 +308,7 @@ const S = {
       type: (data.type || 'other').trim(),
       notes: (data.notes || '').trim(),
       expiry: data.expiry || null,
+      photoId: data.photoId || null,
       created: new Date().toISOString()
     };
     this.d.docs.push(doc);
@@ -239,13 +316,28 @@ const S = {
     return doc;
   },
 
+  updateDoc(id, patch) {
+    const doc = this.d.docs.find((d) => d.id === id);
+    if (!doc) return null;
+    if (patch.title != null) doc.title = String(patch.title).trim();
+    if (patch.type != null) doc.type = String(patch.type).trim();
+    if (patch.notes != null) doc.notes = String(patch.notes).trim();
+    if (patch.expiry !== undefined) doc.expiry = patch.expiry || null;
+    if (patch.photoId !== undefined) doc.photoId = patch.photoId || null;
+    this.save();
+    return doc;
+  },
+
   deleteDoc(id) {
+    const doc = this.d.docs.find((d) => d.id === id);
+    const photoId = doc && doc.photoId;
     this.d.docs = this.d.docs.filter((d) => d.id !== id);
     this.save();
+    if (photoId && window.Photos) Photos.del(photoId).catch(() => {});
   },
 
   expiringDocs(daysAhead) {
-    const ahead = daysAhead == null ? 60 : daysAhead;
+    const ahead = daysAhead == null ? 30 : daysAhead;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const end = new Date(today);
@@ -350,6 +442,7 @@ const S = {
         type: 'insurance',
         notes: 'Policy #INS-77821 · Full coverage',
         expiry: iso(90),
+        photoId: null,
         created: new Date().toISOString()
       },
       {
@@ -359,6 +452,7 @@ const S = {
         type: 'title',
         notes: 'Clean title · Lien free',
         expiry: null,
+        photoId: null,
         created: new Date().toISOString()
       },
       {
@@ -368,6 +462,17 @@ const S = {
         type: 'registration',
         notes: 'Annual renew',
         expiry: iso(25),
+        photoId: null,
+        created: new Date().toISOString()
+      },
+      {
+        id: 'doc_demo_4',
+        vehicleId: veh.id,
+        title: 'Old insurance card',
+        type: 'insurance',
+        notes: 'Previous policy — expired',
+        expiry: iso(-12),
+        photoId: null,
         created: new Date().toISOString()
       }
     ];
@@ -384,19 +489,25 @@ const S = {
   },
 
   importBlob(data) {
-    if (!data || typeof data !== 'object') throw new Error('Invalid backup file');
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      throw new Error('Invalid backup JSON. Choose a CarCap export file.');
+    }
     if (!Array.isArray(data.vehicles) || !Array.isArray(data.services) ||
         !Array.isArray(data.fuel) || !Array.isArray(data.docs)) {
-      throw new Error('Not a CarCap backup');
+      throw new Error('Not a CarCap backup. Expected vehicles, services, fuel, and docs arrays.');
     }
     this.d = {
       vehicles: data.vehicles,
       activeVehicleId: data.activeVehicleId || (data.vehicles[0] && data.vehicles[0].id) || null,
       services: data.services,
       fuel: data.fuel,
-      docs: data.docs,
-      settings: Object.assign({ demo: false, units: 'metric' }, data.settings || {}),
-      meta: Object.assign({ onboarded: false, created: new Date().toISOString() }, data.meta || {})
+      docs: data.docs.map((doc) => Object.assign({ photoId: null }, doc)),
+      settings: Object.assign({ demo: false, units: 'metric', notifyReminders: false }, data.settings || {}),
+      meta: Object.assign(
+        { onboarded: false, created: new Date().toISOString(), schemaVersion: 2 },
+        data.meta || {},
+        { schemaVersion: 2 }
+      )
     };
     if (this.d.vehicles.length) this.d.meta.onboarded = true;
     this.save();

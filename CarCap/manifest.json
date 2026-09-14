@@ -1,13 +1,12 @@
 {
   "name": "CarCap",
   "short_name": "CarCap",
-  "description": "Vehicle garage, service log, fuel & docs — offline-first by Capricorn Systems.",
+  "description": "Service, fuel and documents for your cars.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0c0b09",
   "theme_color": "#0c0b09",
-  "orientation": "portrait-primary",
   "categories": ["lifestyle", "utilities"],
   "icons": [
     {

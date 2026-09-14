@@ -1,12 +1,16 @@
 'use strict';
 
-const CACHE = 'carcap-v6';
+const CACHE = 'carcap-v7';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './privacy.html',
+  './changelog.html',
   './css/app.css',
   './js/storage.js',
+  './js/photos.js',
+  './js/dialogs.js',
   './js/app.js',
   './icons/mark.svg',
   './icons/favicon.svg',

@@ -1,11 +1,12 @@
 'use strict';
 
-window.APP_VERSION = '0.2.3';
+window.APP_VERSION = '1.0.0';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
-const SW_CACHE = 'carcap-v6';
+const SW_CACHE = 'carcap-v7';
+const PHOTO_MAX_LABEL = '2 MB';
 
 /* ── Utils ── */
 function esc(s) {
@@ -38,15 +39,24 @@ function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function isStandalonePwa() {
+  try {
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (typeof navigator !== 'undefined' && navigator.standalone) return true;
+  } catch (e) { /* ignore */ }
+  return false;
+}
+
 function toast(msg) {
   const existing = document.querySelector('.toast');
   if (existing) existing.remove();
   const el = document.createElement('div');
   el.className = 'toast';
+  el.setAttribute('role', 'status');
   el.textContent = msg;
   document.body.appendChild(el);
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.remove(), 2200);
+  toastTimer = setTimeout(() => el.remove(), 4000);
 }
 
 function closeModal() {
@@ -59,8 +69,8 @@ function openModal(title, bodyHtml, onMount, opts) {
   const dismissible = !(opts && opts.noDismiss);
   root.innerHTML =
     '<div class="modal-backdrop" id="modal-backdrop">' +
-      '<div class="modal-sheet" role="dialog" aria-modal="true" aria-label="' + esc(title) + '">' +
-        '<div class="modal-title">' + esc(title) + '</div>' +
+      '<div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title">' +
+        '<div class="modal-title" id="modal-title" tabindex="-1">' + esc(title) + '</div>' +
         bodyHtml +
       '</div>' +
     '</div>';
@@ -70,7 +80,16 @@ function openModal(title, bodyHtml, onMount, opts) {
       if (e.target === backdrop) closeModal();
     });
   }
+  const titleEl = document.getElementById('modal-title');
+  if (titleEl) titleEl.focus();
   if (typeof onMount === 'function') onMount();
+}
+
+async function confirmAction(opts) {
+  if (typeof window.CapConfirm !== 'function') {
+    throw new Error('ConfirmDialog unavailable');
+  }
+  return CapConfirm(opts);
 }
 
 /* ── Header ── */
@@ -81,7 +100,7 @@ function updateHeader() {
   sub.textContent = v ? S.vehicleLabel(v) : 'Add a vehicle to start';
   if (S.isDemo()) {
     pill.hidden = false;
-    pill.textContent = 'Demo';
+    pill.textContent = 'Sample data';
     pill.className = 'pill';
   } else {
     pill.hidden = true;
@@ -104,6 +123,25 @@ function vehiclePickerHtml(selectedId) {
   );
 }
 
+function comingUpCards(items) {
+  if (!items.length) {
+    return '<div class="card"><div class="card-title">All clear</div><div class="card-meta">Nothing coming up in the next 30 days.</div></div>';
+  }
+  return items.map((r) =>
+    '<div class="card' + (r.overdue ? ' card--alert' : '') + '">' +
+      '<div class="card-row">' +
+        '<div>' +
+          '<div class="card-title">' + esc(r.title) + '</div>' +
+          '<div class="card-meta">' + esc(r.meta) + ' · ' + fmtDate(r.date) + '</div>' +
+        '</div>' +
+        '<span class="pill ' + (r.overdue ? 'danger' : 'warn') + '">' +
+          (r.overdue ? (r.kind === 'doc' ? 'Expired' : 'Overdue') : 'Coming up') +
+        '</span>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+}
+
 /* ── Screens ── */
 function renderToday() {
   const v = S.activeVehicle();
@@ -111,13 +149,13 @@ function renderToday() {
     return (
       '<div class="screen">' +
         '<h1 class="page-title">Today</h1>' +
-        '<p class="page-sub">Your car command center.</p>' +
+        '<p class="page-sub">Service, fuel and documents for your cars.</p>' +
         '<div class="empty">' +
           '<strong>No vehicles yet</strong>' +
-          'Add a car in Garage, or load demo data from Settings.' +
+          'Add a car in Garage, or load sample data from Settings.' +
           '<div class="btn-row" style="justify-content:center">' +
             '<button type="button" class="btn btn-primary" data-go="garage">Open Garage</button>' +
-            '<button type="button" class="btn" data-action="demo">Try demo</button>' +
+            '<button type="button" class="btn" data-action="demo">Try sample</button>' +
           '</div>' +
         '</div>' +
       '</div>'
@@ -126,36 +164,14 @@ function renderToday() {
 
   const odo = S.latestOdometer(v.id);
   const fuel = S.fuelStats(v.id);
-  const reminders = S.upcomingReminders(60).filter((r) => r.service.vehicleId === v.id);
-  const docs = S.expiringDocs(60).filter((r) => r.doc.vehicleId === v.id);
-  const overdue = reminders.filter((r) => r.overdue).length + docs.filter((r) => r.overdue).length;
-
-  let alerts = '';
-  if (!reminders.length && !docs.length) {
-    alerts = '<div class="card"><div class="card-title">All clear</div><div class="card-meta">No reminders in the next 60 days.</div></div>';
-  } else {
-    alerts = reminders.map((r) =>
-      '<div class="card">' +
-        '<div class="card-row">' +
-          '<div>' +
-            '<div class="card-title">' + esc(r.service.type) + '</div>' +
-            '<div class="card-meta">Service reminder · ' + fmtDate(r.service.reminderDate) + '</div>' +
-          '</div>' +
-          '<span class="pill ' + (r.overdue ? 'danger' : 'warn') + '">' + (r.overdue ? 'Overdue' : 'Due') + '</span>' +
-        '</div>' +
-      '</div>'
-    ).join('') + docs.map((r) =>
-      '<div class="card">' +
-        '<div class="card-row">' +
-          '<div>' +
-            '<div class="card-title">' + esc(r.doc.title) + '</div>' +
-            '<div class="card-meta">Doc expiry · ' + fmtDate(r.doc.expiry) + '</div>' +
-          '</div>' +
-          '<span class="pill ' + (r.overdue ? 'danger' : 'warn') + '">' + (r.overdue ? 'Expired' : 'Expiring') + '</span>' +
-        '</div>' +
-      '</div>'
-    ).join('');
-  }
+  const coming = S.comingUp(30, v.id);
+  const overdue = coming.filter((r) => r.overdue).length;
+  const economyNote = fuel.count < 2
+    ? '<div class="state-banner" role="status"><strong>Economy needs more fills</strong> Log at least two full-tank fill-ups with a rising odometer to see average L/100.</div>'
+    : '';
+  const overdueNote = overdue
+    ? '<div class="state-banner state-banner--danger" role="status"><strong>' + overdue + ' overdue</strong> Check service or documents below.</div>'
+    : '';
 
   const recentFuel = S.fuelFor(v.id).slice(0, 2);
   const recentSvc = S.servicesFor(v.id).slice(0, 2);
@@ -166,19 +182,21 @@ function renderToday() {
       '<h1 class="page-title">Today</h1>' +
       '<p class="page-sub">' + esc(S.vehicleLabel(v)) + (v.plate ? ' · ' + esc(v.plate) : '') + '</p>' +
       vehiclePickerHtml(v.id) +
+      overdueNote +
+      economyNote +
       '<div class="today-bay-layout">' +
         '<div class="today-bay-main">' +
           '<div class="bay-slot">' +
             '<div class="bay-slot__label">Service bay</div>' +
             '<div class="stat-grid">' +
               '<div class="stat"><div class="stat-label">Odometer</div><div class="stat-value accent odo">' + (odo != null ? fmtNum(odo) + ' km' : '—') + '</div></div>' +
-              '<div class="stat"><div class="stat-label">Alerts</div><div class="stat-value">' + overdue + '</div></div>' +
+              '<div class="stat"><div class="stat-label">Overdue</div><div class="stat-value">' + overdue + '</div></div>' +
               '<div class="stat"><div class="stat-label">Fuel fills</div><div class="stat-value">' + fuel.count + '</div></div>' +
               '<div class="stat"><div class="stat-label">Avg L/100</div><div class="stat-value">' + (fuel.avgLPer100 != null ? fmtNum(fuel.avgLPer100, 1) : '—') + '</div></div>' +
             '</div>' +
           '</div>' +
-          '<div class="section-label">Reminders</div>' +
-          alerts +
+          '<div class="section-label">Coming up</div>' +
+          comingUpCards(coming) +
           '<div class="btn-row">' +
             '<button type="button" class="btn btn-primary" data-go="fuel">Log fuel</button>' +
             '<button type="button" class="btn" data-go="service">Add service</button>' +
@@ -221,7 +239,7 @@ function renderGarage() {
               '<div class="list-actions">' +
                 (!active ? '<button type="button" class="btn btn-sm" data-set-vehicle="' + esc(v.id) + '">Use</button>' : '') +
                 '<button type="button" class="btn btn-sm" data-edit-vehicle="' + esc(v.id) + '">Edit</button>' +
-                '<button type="button" class="btn btn-sm btn-danger" data-del-vehicle="' + esc(v.id) + '">Del</button>' +
+                '<button type="button" class="btn btn-sm btn-danger" data-del-vehicle="' + esc(v.id) + '">Delete</button>' +
               '</div>' +
             '</div>' +
           '</div>'
@@ -234,7 +252,7 @@ function renderGarage() {
       '<h1 class="page-title">Garage</h1>' +
       '<p class="page-sub">Make, model, year, plate.</p>' +
       cards +
-      '<button type="button" class="btn btn-primary btn-block" data-action="add-vehicle">Add vehicle</button>' +
+      '<button type="button" class="btn btn-primary btn-block" data-action="add-vehicle">Add car</button>' +
     '</div>'
   );
 }
@@ -245,6 +263,12 @@ function renderService() {
     return '<div class="screen"><h1 class="page-title">Service</h1><div class="empty"><strong>Pick a vehicle</strong><button type="button" class="btn btn-primary" data-go="garage" style="margin-top:12px">Garage</button></div></div>';
   }
   const list = S.servicesFor(v.id);
+  const overdue = S.upcomingReminders(30).filter((r) => r.vehicleId === v.id && r.overdue);
+  const overdueBanner = overdue.length
+    ? '<div class="state-banner state-banner--danger" role="status"><strong>Overdue service</strong> ' +
+      overdue.map((r) => esc(r.service.type) + ' was due ' + fmtDate(r.service.reminderDate)).join(' · ') +
+      '</div>'
+    : '';
   const cards = list.length
     ? list.map((s) =>
         '<div class="card">' +
@@ -259,7 +283,7 @@ function renderService() {
               '</div>' +
               (s.notes ? '<div class="card-notes">' + esc(s.notes) + '</div>' : '') +
             '</div>' +
-            '<button type="button" class="btn btn-sm btn-danger" data-del-service="' + esc(s.id) + '">Del</button>' +
+            '<button type="button" class="btn btn-sm btn-danger" data-del-service="' + esc(s.id) + '">Delete</button>' +
           '</div>' +
         '</div>'
       ).join('')
@@ -270,6 +294,7 @@ function renderService() {
       '<h1 class="page-title">Service</h1>' +
       '<p class="page-sub">' + esc(S.vehicleLabel(v)) + '</p>' +
       vehiclePickerHtml(v.id) +
+      overdueBanner +
       cards +
       '<button type="button" class="btn btn-primary btn-block" data-action="add-service">Log service</button>' +
     '</div>'
@@ -283,6 +308,9 @@ function renderFuel() {
   }
   const stats = S.fuelStats(v.id);
   const list = S.fuelFor(v.id);
+  const economyBanner = stats.count < 2
+    ? '<div class="state-banner" role="status"><strong>Not enough fill-ups yet</strong> Average L/100 appears after two full-tank entries with a rising odometer.</div>'
+    : '';
   const cards = list.length
     ? list.map((f) =>
         '<div class="card">' +
@@ -295,7 +323,7 @@ function renderFuel() {
                 (f.cost != null ? ' · ' + fmtMoney(f.cost) : '') +
               '</div>' +
             '</div>' +
-            '<button type="button" class="btn btn-sm btn-danger" data-del-fuel="' + esc(f.id) + '">Del</button>' +
+            '<button type="button" class="btn btn-sm btn-danger" data-del-fuel="' + esc(f.id) + '">Delete</button>' +
           '</div>' +
         '</div>'
       ).join('')
@@ -306,6 +334,7 @@ function renderFuel() {
       '<h1 class="page-title">Fuel</h1>' +
       '<p class="page-sub">' + esc(S.vehicleLabel(v)) + '</p>' +
       vehiclePickerHtml(v.id) +
+      economyBanner +
       '<div class="stat-grid">' +
         '<div class="stat"><div class="stat-label">Total cost</div><div class="stat-value">' + fmtMoney(stats.totalCost) + '</div></div>' +
         '<div class="stat"><div class="stat-label">Liters</div><div class="stat-value">' + fmtNum(stats.totalLiters, 1) + '</div></div>' +
@@ -325,29 +354,52 @@ function renderDocs() {
   }
   const list = S.docsFor(v.id);
   const typeLabel = { title: 'Title', insurance: 'Insurance', registration: 'Registration', other: 'Other' };
+  const expired = list.filter((d) => {
+    if (!d.expiry) return false;
+    const due = new Date(d.expiry + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return due < today;
+  });
+  const expiredBanner = expired.length
+    ? '<div class="state-banner state-banner--danger" role="status"><strong>Expired document</strong> ' +
+      expired.map((d) => esc(d.title) + ' expired ' + fmtDate(d.expiry)).join(' · ') +
+      '</div>'
+    : '';
   const cards = list.length
-    ? list.map((d) =>
-        '<div class="card">' +
-          '<div class="card-row">' +
-            '<div>' +
-              '<div class="card-title">' + esc(d.title) + '</div>' +
-              '<div class="card-meta">' +
-                esc(typeLabel[d.type] || d.type) +
-                (d.expiry ? ' · expires ' + fmtDate(d.expiry) : '') +
+    ? list.map((d) => {
+        const isExpired = expired.some((x) => x.id === d.id);
+        return (
+          '<div class="card' + (isExpired ? ' card--alert' : '') + '" data-doc-card="' + esc(d.id) + '">' +
+            '<div class="card-row">' +
+              '<div>' +
+                '<div class="card-title">' + esc(d.title) +
+                  (isExpired ? ' <span class="pill danger">Expired</span>' : '') +
+                  (d.photoId ? ' <span class="pill">Photo</span>' : '') +
+                '</div>' +
+                '<div class="card-meta">' +
+                  esc(typeLabel[d.type] || d.type) +
+                  (d.expiry ? ' · expires ' + fmtDate(d.expiry) : '') +
+                '</div>' +
+                (d.notes ? '<div class="card-notes">' + esc(d.notes) + '</div>' : '') +
+                '<div class="doc-photo-slot" data-photo-slot="' + esc(d.id) + '"></div>' +
               '</div>' +
-              (d.notes ? '<div class="card-notes">' + esc(d.notes) + '</div>' : '') +
+              '<div class="list-actions">' +
+                '<button type="button" class="btn btn-sm" data-view-doc="' + esc(d.id) + '">Open</button>' +
+                '<button type="button" class="btn btn-sm btn-danger" data-del-doc="' + esc(d.id) + '">Delete</button>' +
+              '</div>' +
             '</div>' +
-            '<button type="button" class="btn btn-sm btn-danger" data-del-doc="' + esc(d.id) + '">Del</button>' +
-          '</div>' +
-        '</div>'
-      ).join('')
-    : '<div class="empty"><strong>Docs wallet empty</strong>Text &amp; expiry meta only — no photo uploads yet. Title, insurance, registration notes stay on this device.</div>';
+          '</div>'
+        );
+      }).join('')
+    : '<div class="empty"><strong>Docs wallet empty</strong>Add title, insurance or registration. Optional photos stay on this device (max ' + PHOTO_MAX_LABEL + ' each).</div>';
 
   return (
     '<div class="screen">' +
       '<h1 class="page-title">Docs</h1>' +
-      '<p class="page-sub">' + esc(S.vehicleLabel(v)) + ' · text wallet (no photos yet)</p>' +
+      '<p class="page-sub">' + esc(S.vehicleLabel(v)) + ' · notes and optional photos</p>' +
       vehiclePickerHtml(v.id) +
+      expiredBanner +
       cards +
       '<button type="button" class="btn btn-primary btn-block" data-action="add-doc">Add document</button>' +
     '</div>'
@@ -356,34 +408,45 @@ function renderDocs() {
 
 function renderSettings() {
   const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const notifyOn = !!(S.d.settings && S.d.settings.notifyReminders);
   return (
     '<div class="screen">' +
       '<h1 class="page-title">Settings</h1>' +
-      '<p class="page-sub">CarCap v' + esc(window.APP_VERSION) + ' · offline PWA</p>' +
+      '<p class="page-sub">Offline PWA · Capricorn Systems</p>' +
       '<div class="card">' +
         '<div class="card-title">Appearance</div>' +
-        '<div class="card-meta">Service booklet — light paper or dark ink.</div>' +
+        '<div class="card-meta">Light paper or dark ink.</div>' +
         '<div class="btn-row">' +
           '<button type="button" class="btn' + (theme === 'light' ? ' btn-primary' : '') + '" data-action="theme-light">Light</button>' +
           '<button type="button" class="btn' + (theme !== 'light' ? ' btn-primary' : '') + '" data-action="theme-dark">Dark</button>' +
         '</div>' +
       '</div>' +
       '<div class="card">' +
-        '<div class="card-title">Demo mode</div>' +
+        '<div class="card-title">Reminders</div>' +
+        '<div class="card-meta">Coming up on Today shows service due and insurance or registration expiry within 30 days.</div>' +
+        '<div class="card-meta">Reminders work while CarCap is installed on your Home Screen. Your phone may delay them.</div>' +
+        '<div class="btn-row">' +
+          '<button type="button" class="btn' + (notifyOn ? ' btn-primary' : '') + '" data-action="notify-toggle" aria-pressed="' + (notifyOn ? 'true' : 'false') + '">' +
+            (notifyOn ? 'Notifications on' : 'Enable notifications') +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card">' +
+        '<div class="card-title">Sample data</div>' +
         '<div class="card-meta">Seeds one Toyota Corolla with sample service, fuel, and docs. Replaces current local data.</div>' +
         '<div class="btn-row">' +
           (S.isDemo()
-            ? '<button type="button" class="btn btn-danger" data-action="clear-demo">Clear demo data</button>'
-            : '<button type="button" class="btn btn-primary" data-action="demo">Load demo</button>') +
+            ? '<button type="button" class="btn btn-danger" data-action="clear-demo">Clear sample data</button>'
+            : '<button type="button" class="btn btn-primary" data-action="demo">Load sample</button>') +
         '</div>' +
       '</div>' +
       '<div class="card">' +
         '<div class="card-title">Data</div>' +
-        '<div class="card-meta">Everything stays in this browser (localStorage key <code>carcap_v1</code>). No account, no cloud.</div>' +
+        '<div class="card-meta">Vehicles, service, fuel and document notes stay in this browser. Photos stay in IndexedDB on this device. No account, no cloud.</div>' +
         '<div class="btn-row">' +
           '<button type="button" class="btn btn-primary" data-action="export">Export JSON</button>' +
           '<button type="button" class="btn" data-action="import-pick">Import JSON</button>' +
-          '<button type="button" class="btn btn-danger" data-action="reset">Reset all data</button>' +
+          '<button type="button" class="btn btn-danger" data-action="reset">Erase all data</button>' +
         '</div>' +
         '<input type="file" id="import-file" accept="application/json,.json" hidden>' +
       '</div>' +
@@ -393,7 +456,12 @@ function renderSettings() {
       '</div>' +
       '<div class="card">' +
         '<div class="card-title">About</div>' +
-        '<div class="card-meta">CarCap by Capricorn Systems · Cap family · SW ' + esc(SW_CACHE) + '</div>' +
+        '<div class="card-meta">CarCap v' + esc(window.APP_VERSION) + ' · SW ' + esc(SW_CACHE) + '</div>' +
+        '<div class="card-meta">Service, fuel and documents for your cars.</div>' +
+        '<div class="btn-row">' +
+          '<a class="btn" href="privacy.html">Privacy</a>' +
+          '<a class="btn" href="https://shamikhahmed.github.io/support.html" target="_blank" rel="noopener">Support</a>' +
+        '</div>' +
       '</div>' +
     '</div>'
   );
@@ -429,18 +497,22 @@ function go(tab) {
   document.getElementById('content').innerHTML = SCREENS[tab]();
   window.scrollTo(0, 0);
   document.getElementById('content').scrollTop = 0;
+  if (tab === 'docs') hydrateDocPhotos();
+  maybeNotifyComingUp();
 }
 
-function showFirstRunSheet() {
-  openModal('Welcome to CarCap',
-    '<p class="first-run-copy">Offline garage for service, fuel, and docs. Data stays on this device — no account.</p>' +
-    '<div class="btn-row" style="margin-top:4px">' +
-      '<button type="button" class="btn btn-primary" data-action="first-add">Add car</button>' +
-      '<button type="button" class="btn" data-action="demo">Try demo</button>' +
-    '</div>',
-    null,
-    { noDismiss: true }
-  );
+async function hydrateDocPhotos() {
+  const slots = document.querySelectorAll('[data-photo-slot]');
+  for (const slot of slots) {
+    const id = slot.getAttribute('data-photo-slot');
+    const doc = S.d.docs.find((d) => d.id === id);
+    if (!doc || !doc.photoId) continue;
+    try {
+      const url = await Photos.objectUrl(doc.photoId);
+      if (!url) continue;
+      slot.innerHTML = '<img class="doc-photo-thumb" src="' + url + '" alt="Photo for ' + esc(doc.title) + '">';
+    } catch (e) { /* ignore */ }
+  }
 }
 
 function exportJson() {
@@ -456,7 +528,7 @@ function exportJson() {
     URL.revokeObjectURL(url);
     toast('Backup exported');
   } catch (err) {
-    toast('Export failed');
+    toast('Couldn’t export backup. Try again.');
   }
 }
 
@@ -464,24 +536,37 @@ function importJson(input) {
   const file = input && input.files && input.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = () => {
+  reader.onload = async () => {
+    let data;
     try {
-      const data = JSON.parse(String(reader.result || ''));
-      if (!confirm('Import this backup? It replaces all CarCap data on this device.')) {
-        input.value = '';
-        return;
-      }
+      data = JSON.parse(String(reader.result || ''));
+    } catch (err) {
+      toast('Invalid backup JSON. Choose a CarCap export file.');
+      input.value = '';
+      return;
+    }
+    const ok = await confirmAction({
+      title: 'Import this backup?',
+      body: 'This replaces all CarCap data on this device and can’t be undone.',
+      confirmLabel: 'Import backup',
+      destructive: true
+    });
+    if (!ok) {
+      input.value = '';
+      return;
+    }
+    try {
       S.importBlob(data);
       toast('Backup imported');
       closeModal();
       go(currentTab);
     } catch (err) {
-      toast(err && err.message ? err.message : 'Invalid backup file');
+      toast(err && err.message ? err.message : 'Invalid backup JSON. Choose a CarCap export file.');
     }
     input.value = '';
   };
   reader.onerror = () => {
-    toast('Could not read file');
+    toast('Couldn’t read that file. Try again.');
     input.value = '';
   };
   reader.readAsText(file);
@@ -490,7 +575,7 @@ function importJson(input) {
 /* ── Forms / modals ── */
 function modalVehicle(existing) {
   const v = existing || {};
-  openModal(existing ? 'Edit vehicle' : 'Add vehicle',
+  openModal(existing ? 'Edit vehicle' : 'Add car',
     '<form id="veh-form">' +
       '<div class="form-group"><label class="form-label" for="v-nick">Nickname (optional)</label><input class="form-input" id="v-nick" value="' + esc(v.nickname || '') + '" placeholder="Daily Driver"></div>' +
       '<div class="form-grid-2">' +
@@ -503,7 +588,7 @@ function modalVehicle(existing) {
       '</div>' +
       '<div class="btn-row">' +
         '<button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>' +
-        '<button type="submit" class="btn btn-primary">' + (existing ? 'Save' : 'Add') + '</button>' +
+        '<button type="submit" class="btn btn-primary">' + (existing ? 'Save' : 'Add car') + '</button>' +
       '</div>' +
     '</form>',
     () => {
@@ -517,7 +602,7 @@ function modalVehicle(existing) {
           plate: document.getElementById('v-plate').value
         };
         if (!data.make.trim() || !data.model.trim()) {
-          toast('Make and model required');
+          toast('Make and model are required.');
           return;
         }
         if (existing) {
@@ -553,7 +638,7 @@ function modalService() {
       '<div class="form-group"><label class="form-label" for="s-notes">Notes</label><textarea class="form-textarea" id="s-notes" placeholder="Parts, shop, etc."></textarea></div>' +
       '<div class="btn-row">' +
         '<button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>' +
-        '<button type="submit" class="btn btn-primary">Save</button>' +
+        '<button type="submit" class="btn btn-primary">Save visit</button>' +
       '</div>' +
     '</form>',
     () => {
@@ -615,49 +700,132 @@ function modalFuel() {
   );
 }
 
-function modalDoc() {
+function modalDoc(existing) {
   const v = S.activeVehicle();
   if (!v) return;
-  openModal('Add document',
+  const d = existing || {};
+  openModal(existing ? 'Document' : 'Add document',
     '<form id="doc-form">' +
-      '<div class="form-group"><label class="form-label" for="d-title">Title</label><input class="form-input" id="d-title" required placeholder="Insurance policy"></div>' +
+      '<div class="form-group"><label class="form-label" for="d-title">Title</label><input class="form-input" id="d-title" required placeholder="Insurance policy" value="' + esc(d.title || '') + '"></div>' +
       '<div class="form-grid-2">' +
         '<div class="form-group"><label class="form-label" for="d-type">Type</label>' +
           '<select class="form-select" id="d-type">' +
-            '<option value="title">Title</option>' +
-            '<option value="insurance" selected>Insurance</option>' +
-            '<option value="registration">Registration</option>' +
-            '<option value="other">Other</option>' +
+            ['title', 'insurance', 'registration', 'other'].map((t) =>
+              '<option value="' + t + '"' + ((d.type || 'insurance') === t ? ' selected' : '') + '>' +
+              ({ title: 'Title', insurance: 'Insurance', registration: 'Registration', other: 'Other' }[t]) +
+              '</option>'
+            ).join('') +
           '</select></div>' +
-        '<div class="form-group"><label class="form-label" for="d-expiry">Expiry</label><input class="form-input" id="d-expiry" type="date"></div>' +
+        '<div class="form-group"><label class="form-label" for="d-expiry">Expiry</label><input class="form-input" id="d-expiry" type="date" value="' + esc(d.expiry || '') + '"></div>' +
       '</div>' +
-      '<div class="form-group"><label class="form-label" for="d-notes">Notes</label><textarea class="form-textarea" id="d-notes" placeholder="Policy number, insurer, etc."></textarea></div>' +
+      '<div class="form-group"><label class="form-label" for="d-notes">Notes</label><textarea class="form-textarea" id="d-notes" placeholder="Policy number, insurer, etc.">' + esc(d.notes || '') + '</textarea></div>' +
+      '<div class="form-group">' +
+        '<label class="form-label" for="d-photo">Photo (optional, max ' + PHOTO_MAX_LABEL + ')</label>' +
+        '<input class="form-input" id="d-photo" type="file" accept="image/*">' +
+        (d.photoId ? '<div class="card-meta" id="d-photo-status">A photo is saved on this device.</div>' : '<div class="card-meta" id="d-photo-status">Photos stay on this device only.</div>') +
+      '</div>' +
       '<div class="btn-row">' +
         '<button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>' +
+        (d.photoId ? '<button type="button" class="btn" data-action="remove-photo" data-doc-id="' + esc(d.id) + '">Remove photo</button>' : '') +
         '<button type="submit" class="btn btn-primary">Save</button>' +
       '</div>' +
     '</form>',
     () => {
-      document.getElementById('doc-form').addEventListener('submit', (e) => {
+      document.getElementById('doc-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        S.addDoc({
+        const payload = {
           vehicleId: v.id,
           title: document.getElementById('d-title').value,
           type: document.getElementById('d-type').value,
           expiry: document.getElementById('d-expiry').value || null,
           notes: document.getElementById('d-notes').value
-        });
-        closeModal();
-        toast('Document saved');
-        go('docs');
+        };
+        const fileInput = document.getElementById('d-photo');
+        const file = fileInput && fileInput.files && fileInput.files[0];
+        try {
+          let doc = existing;
+          if (existing) {
+            S.updateDoc(existing.id, payload);
+            doc = S.d.docs.find((x) => x.id === existing.id);
+          } else {
+            doc = S.addDoc(payload);
+          }
+          if (file) {
+            if (file.size > Photos.MAX_BYTES) {
+              toast('Photo is too large. Choose an image under ' + PHOTO_MAX_LABEL + '.');
+              return;
+            }
+            const photoId = doc.photoId || S.uid('photo');
+            await Photos.put(photoId, file);
+            S.updateDoc(doc.id, { photoId: photoId });
+          }
+          closeModal();
+          toast('Document saved');
+          go('docs');
+        } catch (err) {
+          toast(err && err.message ? err.message : 'Couldn’t save document photo.');
+        }
       });
     }
   );
 }
 
+async function toggleNotifications() {
+  const currently = !!(S.d.settings && S.d.settings.notifyReminders);
+  if (currently) {
+    S.d.settings.notifyReminders = false;
+    S.save();
+    toast('Notifications off');
+    go('settings');
+    return;
+  }
+  if (!('Notification' in window)) {
+    toast('Notifications aren’t available in this browser.');
+    return;
+  }
+  if (!isStandalonePwa()) {
+    toast('Reminders work while CarCap is installed on your Home Screen. Your phone may delay them.');
+  }
+  let perm = Notification.permission;
+  if (perm === 'default') {
+    perm = await Notification.requestPermission();
+  }
+  if (perm !== 'granted') {
+    toast('Notification permission wasn’t granted. Coming up still shows in Today.');
+    return;
+  }
+  S.d.settings.notifyReminders = true;
+  S.save();
+  toast('Notifications on');
+  go('settings');
+  maybeNotifyComingUp(true);
+}
+
+function maybeNotifyComingUp(force) {
+  if (!S.d.settings || !S.d.settings.notifyReminders) return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  if (!isStandalonePwa() && !force) return;
+  const items = S.comingUp(30).filter((r) => r.overdue || true).slice(0, 3);
+  if (!items.length) return;
+  const key = 'carcap-notify-' + todayISO();
+  if (!force) {
+    try {
+      if (localStorage.getItem(key) === '1') return;
+    } catch (e) { /* ignore */ }
+  }
+  const overdue = items.filter((r) => r.overdue);
+  const body = overdue.length
+    ? overdue.map((r) => r.title + ' · overdue').join(', ')
+    : items.map((r) => r.title + ' · ' + fmtDate(r.date)).join(', ');
+  try {
+    new Notification('CarCap · Coming up', { body: body, tag: 'carcap-coming-up' });
+    try { localStorage.setItem(key, '1'); } catch (e) { /* ignore */ }
+  } catch (e) { /* ignore */ }
+}
+
 /* ── Events ── */
 function onClick(e) {
-  const t = e.target.closest('[data-tab],[data-go],[data-action],[data-set-vehicle],[data-edit-vehicle],[data-del-vehicle],[data-del-service],[data-del-fuel],[data-del-doc],[data-close-modal]');
+  const t = e.target.closest('[data-tab],[data-go],[data-action],[data-set-vehicle],[data-edit-vehicle],[data-del-vehicle],[data-del-service],[data-del-fuel],[data-del-doc],[data-view-doc],[data-close-modal]');
   if (!t) return;
 
   if (t.hasAttribute('data-close-modal')) {
@@ -682,12 +850,23 @@ function onClick(e) {
     if (v) modalVehicle(v);
     return;
   }
+  if (t.hasAttribute('data-view-doc')) {
+    const doc = S.d.docs.find((x) => x.id === t.getAttribute('data-view-doc'));
+    if (doc) modalDoc(doc);
+    return;
+  }
   if (t.hasAttribute('data-del-vehicle')) {
-    if (confirm('Delete this vehicle and its service, fuel, and docs?')) {
+    confirmAction({
+      title: 'Delete this vehicle?',
+      body: 'This removes its service, fuel, and docs. This can’t be undone.',
+      confirmLabel: 'Delete vehicle',
+      destructive: true
+    }).then((ok) => {
+      if (!ok) return;
       S.deleteVehicle(t.getAttribute('data-del-vehicle'));
       toast('Vehicle deleted');
       go('garage');
-    }
+    });
     return;
   }
   if (t.hasAttribute('data-del-service')) {
@@ -703,20 +882,45 @@ function onClick(e) {
     return;
   }
   if (t.hasAttribute('data-del-doc')) {
-    S.deleteDoc(t.getAttribute('data-del-doc'));
-    toast('Document removed');
-    go('docs');
+    confirmAction({
+      title: 'Delete this document?',
+      body: 'Notes and any photo for this document will be removed. This can’t be undone.',
+      confirmLabel: 'Delete document',
+      destructive: true
+    }).then((ok) => {
+      if (!ok) return;
+      S.deleteDoc(t.getAttribute('data-del-doc'));
+      toast('Document removed');
+      go('docs');
+    });
     return;
   }
 
   const action = t.getAttribute('data-action');
   if (action === 'theme-light' || action === 'theme-dark') {
     const mode = action === 'theme-light' ? 'light' : 'dark';
-    try { localStorage.setItem('carcap-theme', mode); } catch (e) {}
+    try { localStorage.setItem('carcap-theme', mode); } catch (err) {}
     document.documentElement.setAttribute('data-theme', mode);
     const meta = document.getElementById('themeColorMeta') || document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', mode === 'light' ? '#f4f0e8' : '#0c0b09');
     go('settings');
+    return;
+  }
+  if (action === 'notify-toggle') {
+    toggleNotifications();
+    return;
+  }
+  if (action === 'remove-photo') {
+    const docId = t.getAttribute('data-doc-id');
+    const doc = S.d.docs.find((x) => x.id === docId);
+    if (doc && doc.photoId) {
+      const pid = doc.photoId;
+      S.updateDoc(docId, { photoId: null });
+      Photos.del(pid).catch(() => {});
+      toast('Photo removed');
+      closeModal();
+      go('docs');
+    }
     return;
   }
   if (action === 'add-vehicle') modalVehicle(null);
@@ -727,28 +931,58 @@ function onClick(e) {
   }
   else if (action === 'add-service') modalService();
   else if (action === 'add-fuel') modalFuel();
-  else if (action === 'add-doc') modalDoc();
+  else if (action === 'add-doc') modalDoc(null);
   else if (action === 'export') exportJson();
   else if (action === 'import-pick') {
     const input = document.getElementById('import-file');
     if (input) input.click();
   }
   else if (action === 'demo') {
-    if (S.vehicles().length && !S.isDemo()) {
-      if (!confirm('Load demo? This replaces your current CarCap data on this device.')) return;
-    }
-    S.loadDemo();
-    closeModal();
-    toast('Demo loaded');
-    go('today');
+    (async () => {
+      if (S.vehicles().length && !S.isDemo()) {
+        const ok = await confirmAction({
+          title: 'Load sample data?',
+          body: 'This replaces your current CarCap data on this device.',
+          confirmLabel: 'Load sample',
+          destructive: true
+        });
+        if (!ok) return;
+      }
+      S.loadDemo();
+      closeModal();
+      toast('Sample data loaded');
+      go('today');
+    })();
   } else if (action === 'clear-demo' || action === 'reset') {
-    const msg = action === 'clear-demo' ? 'Clear demo data?' : 'Reset all CarCap data on this device?';
-    if (!confirm(msg)) return;
-    S.reset();
-    toast('Data cleared');
-    go('today');
-    if (!S.d.meta.onboarded) showFirstRunSheet();
+    (async () => {
+      const erase = action === 'reset';
+      const ok = await confirmAction({
+        title: erase ? 'Erase all data?' : 'Clear sample data?',
+        body: erase
+          ? 'This removes everything stored on this device and can’t be undone.'
+          : 'This clears the sample garage from this device.',
+        confirmLabel: erase ? 'Erase all data' : 'Clear sample',
+        destructive: true
+      });
+      if (!ok) return;
+      S.reset();
+      toast('Data cleared');
+      go('today');
+      if (!S.d.meta.onboarded) showFirstRunSheet();
+    })();
   }
+}
+
+function showFirstRunSheet() {
+  openModal('Welcome to CarCap',
+    '<p class="first-run-copy">Service, fuel and documents for your cars. Data stays on this device — no account.</p>' +
+    '<div class="btn-row" style="margin-top:4px">' +
+      '<button type="button" class="btn btn-primary" data-action="first-add">Add car</button>' +
+      '<button type="button" class="btn" data-action="demo">Try sample</button>' +
+    '</div>',
+    null,
+    { noDismiss: true }
+  );
 }
 
 function syncOnline() {
@@ -808,6 +1042,13 @@ function boot() {
 
   document.addEventListener('click', onClick);
   document.addEventListener('change', onChange);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.querySelector('#modal-backdrop, #confirm-backdrop')) {
+      const confirmBackdrop = document.getElementById('confirm-backdrop');
+      if (confirmBackdrop) return;
+      closeModal();
+    }
+  });
   window.addEventListener('online', syncOnline);
   window.addEventListener('offline', syncOnline);
   syncOnline();

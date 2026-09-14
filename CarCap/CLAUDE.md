@@ -1,9 +1,10 @@
 # CarCap — agent notes
 
 ## Truth
-- Version: 0.2.3 · SW: `carcap-v3`
+- Version: 1.0.0 · SW: `carcap-v7`
+- Path: `/Users/shamikhahmed/Projects/Cap/Cap-Apps/CarCap`
 - Offline PWA only · vanilla JS · no bundler
-- Live: https://shamikhahmed.github.io/CarCap/ (rsync from this repo)
+- Live: https://shamikhahmed.github.io/CarCap/ (rsync into hub)
 - Brain: `~/Capricorn-Brain/01 Projects/CarCap.md`
 
 ## Checks
@@ -13,3 +14,4 @@
 
 ## Naming
 - Cap family product. No fake AI marketing.
+- Description: "Service, fuel and documents for your cars."
