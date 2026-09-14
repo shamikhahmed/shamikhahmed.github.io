@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PrismCap — 39 games. One phone. Zero Wi‑Fi.</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#c77dff;
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;
+  --acc:#C77DFF;--acc2:#FF2D78;--cyan:#00E5FF;
+  --green:#00E676;--amber:#FFD60A;--violet:#C77DFF;--pink:#FF2D78;
+  --txt:#fff;--muted:rgba(255,255,255,.48);--dim:rgba(255,255,255,.25);
+  --border:rgba(255,255,255,.09);--glass:rgba(255,255,255,.06);
+  --card-border:rgba(255,255,255,.12);--glow:rgba(199,125,255,.35);
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;
+  overflow:hidden;user-select:none;-webkit-user-select:none;
+  -webkit-font-smoothing:antialiased}
+
+#orb-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#progress{position:fixed;top:0;left:0;height:3px;z-index:200;width:4%;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  box-shadow:0 0 14px var(--glow);transition:width .5s cubic-bezier(.4,0,.2,1)}
+#deck{position:fixed;inset:0;z-index:10}
+
+.slide{
+  position:absolute;inset:0;opacity:0;transform:translateX(100%);
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:56px 36px 88px;overflow:hidden}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.slide.active .a1{animation:fadeUp .6s .08s both}
+.slide.active .a2{animation:fadeUp .6s .16s both}
+.slide.active .a3{animation:fadeUp .6s .24s both}
+.slide.active .a4{animation:fadeUp .6s .32s both}
+.slide.active .a5{animation:fadeUp .6s .4s both}
+.slide.active .a6{animation:fadeUp .6s .48s both}
+.slide.active .a7{animation:fadeUp .6s .56s both}
+.slide.active .a8{animation:fadeUp .6s .64s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{box-shadow:0 0 40px rgba(199,125,255,.25),0 0 80px rgba(255,45,120,.15)}
+  50%{box-shadow:0 0 70px rgba(199,125,255,.5),0 0 120px rgba(255,45,120,.3)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes popIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:none}}
+@keyframes bracketGlow{0%,100%{border-color:rgba(199,125,255,.2)}50%{border-color:rgba(199,125,255,.55)}}
+
+#counter{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;
+  font-size:12px;color:var(--muted);letter-spacing:.1em;background:rgba(10,10,15,.85);
+  padding:6px 16px;border-radius:20px;border:1px solid var(--border);backdrop-filter:blur(12px)}
+#arrow-left,#arrow-right{position:fixed;bottom:20px;z-index:200;width:44px;height:44px;
+  border-radius:50%;border:1px solid var(--border);background:rgba(10,10,15,.85);
+  backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--muted);transition:all .2s}
+#arrow-left{left:20px}#arrow-right{right:20px}
+#arrow-left:hover,#arrow-right:hover{border-color:var(--acc);color:var(--acc);box-shadow:0 0 16px var(--glow)}
+#fullscreen-btn{position:fixed;top:14px;right:14px;z-index:200;width:36px;height:36px;
+  border-radius:10px;border:1px solid var(--border);background:rgba(10,10,15,.85);
+  backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--muted);transition:all .2s}
+#fullscreen-btn:hover{border-color:var(--acc);color:var(--acc)}
+
+.overline{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);
+  margin-bottom:14px;font-weight:700}
+.headline{font-size:clamp(1.5rem,3.8vw,2.6rem);font-weight:800;letter-spacing:-.03em;
+  margin-bottom:8px;text-align:center;line-height:1.1}
+.sub{font-size:clamp(.85rem,1.8vw,1.05rem);color:var(--muted);text-align:center;
+  max-width:560px;line-height:1.55;margin-bottom:6px}
+.grad{background:linear-gradient(135deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-cyan{background:linear-gradient(135deg,var(--cyan),var(--acc));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:18px;backdrop-filter:blur(12px)}
+.card-violet{border-color:rgba(199,125,255,.28);box-shadow:0 0 24px rgba(199,125,255,.08)}
+.card-pink{border-color:rgba(255,45,120,.28);box-shadow:0 0 24px rgba(255,45,120,.08)}
+.card-cyan{border-color:rgba(0,229,255,.28);box-shadow:0 0 24px rgba(0,229,255,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:680px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:720px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:760px}
+
+/* ── phone mock ── */
+.phone-wrap{position:relative;width:280px;height:560px;flex-shrink:0}
+.phone-frame{width:100%;height:100%;border-radius:44px;border:3px solid rgba(255,255,255,.14);
+  background:linear-gradient(180deg,#0d0d14,#0a0a0f);overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(199,125,255,.12),inset 0 1px 0 rgba(255,255,255,.08)}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;
+  background:#000;border-radius:0 0 18px 18px;z-index:5}
+.phone-screen{padding:38px 14px 24px;height:100%;overflow:hidden;display:flex;flex-direction:column}
+.phone-status{font-size:9px;color:var(--dim);display:flex;justify-content:space-between;margin-bottom:10px;padding:0 4px}
+
+/* ── lcard / mcard ── */
+.lcard{border-radius:18px;padding:13px 11px;min-height:108px;display:flex;flex-direction:column;
+  justify-content:space-between;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.lcard:active{transform:scale(.94)}
+.lcard-icon{font-size:1.6rem;margin-bottom:4px}
+.lcard-title{font-size:.78rem;font-weight:800;line-height:1.2}
+.lcard-type{font-size:.48rem;opacity:.4;text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.lcard-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,.07);
+  border-radius:100px;padding:2px 7px;font-size:.52rem;font-weight:700;margin-top:4px}
+.mcard{height:100px;width:130px;border-radius:18px;flex-shrink:0;padding:12px 10px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1)}
+.mcard-icon{font-size:1.5rem}
+.mcard-title{font-size:.72rem;font-weight:800;line-height:1.15}
+.mscroll{display:flex;gap:10px;overflow-x:auto;padding:4px 0;width:100%;max-width:720px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.mscroll::-webkit-scrollbar{display:none}
+
+/* ── pass & play ── */
+.pchip{display:flex;align-items:center;gap:9px;padding:10px 12px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;margin-bottom:7px}
+.pchip-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.pinp{flex:1;font-size:.82rem;font-weight:600;color:#fff;background:transparent;border:none;outline:none}
+.bot-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.bot-btn{padding:6px 12px;border-radius:100px;font-size:.65rem;font-weight:700;
+  background:rgba(199,125,255,.12);border:1px solid rgba(199,125,255,.3);color:var(--acc)}
+.player-count{display:flex;gap:6px;margin:10px 0}
+.pc-btn{width:32px;height:32px;border-radius:10px;border:1px solid var(--border);
+  background:var(--glass);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.pc-btn.on{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;color:#fff}
+
+/* ── XP bar ── */
+.xp-panel{width:100%;max-width:420px;padding:18px 20px;border-radius:18px;
+  background:var(--glass);border:1px solid var(--border)}
+.xp-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.xp-av{width:48px;height:48px;border-radius:50%;background:rgba(199,125,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:2px solid rgba(199,125,255,.35)}
+.xp-info{flex:1}
+.xp-name{font-size:.95rem;font-weight:800}
+.xp-rank{font-size:.68rem;color:var(--acc);font-weight:700;margin-top:2px}
+.xp-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-top:6px}
+.xp-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--acc),var(--acc2));width:62%}
+.xp-meta{display:flex;justify-content:space-between;font-size:.58rem;color:var(--dim);margin-top:5px}
+
+/* ── achievement toast ── */
+.ach-toast{position:relative;width:100%;max-width:380px;padding:16px 18px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(199,125,255,.18),rgba(255,45,120,.12));
+  border:1px solid rgba(199,125,255,.35);box-shadow:0 12px 40px rgba(199,125,255,.2);
+  animation:popIn .7s .3s both;display:flex;align-items:center;gap:14px}
+.ach-icon{font-size:2rem}
+.ach-body{flex:1;text-align:left}
+.ach-label{font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:var(--acc);font-weight:700}
+.ach-name{font-size:1rem;font-weight:800;margin:2px 0}
+.ach-desc{font-size:.72rem;color:var(--muted)}
+.ach-xp{font-size:.85rem;font-weight:800;color:var(--amber)}
+
+/* ── theme tiles ── */
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:480px}
+.theme-tile{border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;
+  border:2px solid transparent;transition:transform .2s,border-color .2s}
+.theme-tile.on{border-color:var(--acc);transform:scale(1.04)}
+.theme-tile-icon{font-size:1.4rem;margin-bottom:4px}
+.theme-tile-name{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+/* ── mutator chips ── */
+.mut-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px}
+.mut-chip{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:100px;
+  font-size:.72rem;font-weight:700;border:1px solid rgba(255,255,255,.12);background:var(--glass)}
+.mut-chip.on{border-color:var(--acc);background:rgba(199,125,255,.15);color:var(--acc)}
+
+/* ── eco toggle ── */
+.settings-panel{width:100%;max-width:400px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;
+  background:var(--glass);border:1px solid var(--border);border-radius:14px;margin-bottom:8px}
+.setting-label{font-size:.85rem;font-weight:700}
+.setting-sub{font-size:.65rem;color:var(--muted);margin-top:2px}
+.toggle{width:48px;height:28px;border-radius:14px;background:rgba(255,255,255,.1);
+  position:relative;cursor:pointer;border:1px solid var(--border)}
+.toggle.on{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent}
+.toggle-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:#fff;transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle.on .toggle-knob{transform:translateX(20px)}
+
+/* ── bracket ── */
+.bracket{width:100%;max-width:520px}
+.bracket-round{font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:8px;text-align:center}
+.bracket-match{display:flex;align-items:center;gap:8px;padding:10px 12px;
+  background:var(--glass);border:1px solid var(--border);border-radius:12px;margin-bottom:6px;
+  animation:bracketGlow 3s ease infinite}
+.bracket-player{flex:1;text-align:center}
+.bracket-player .av{font-size:1.2rem}
+.bracket-player .nm{font-size:.62rem;font-weight:700;margin-top:2px}
+.bracket-vs{font-size:.65rem;color:var(--dim);font-weight:700}
+.bracket-win{color:var(--green);font-size:.6rem;font-weight:700}
+
+/* ── device grid ── */
+.dev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%}
+.dev-opt{padding:10px 8px;border-radius:12px;text-align:center;font-size:.68rem;font-weight:700;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);cursor:pointer}
+.dev-opt.on{background:rgba(199,125,255,.15);border-color:rgba(199,125,255,.45);color:var(--acc)}
+
+/* ── stats ── */
+.stat-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;
+  padding:22px 14px;text-align:center}
+.stat-num{font-size:clamp(2rem,4.5vw,3rem);font-weight:900;line-height:1}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+.pain-card{display:flex;align-items:flex-start;gap:12px;background:var(--glass);
+  border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;width:100%}
+.pain-icon{font-size:26px;flex-shrink:0}
+.pain-text h3{font-size:14px;font-weight:700;margin-bottom:3px}
+.pain-text p{font-size:12px;color:var(--muted);line-height:1.45}
+
+.terminal{background:#06060c;border:1px solid rgba(199,125,255,.22);border-radius:14px;
+  padding:20px 22px;font-family:'SF Mono',Menlo,monospace;font-size:12px;line-height:1.85;
+  max-width:540px;width:100%;text-align:left}
+.terminal .path{color:var(--acc);font-weight:600}
+.terminal .dim{color:var(--muted)}
+.terminal .hl{color:var(--green)}
+
+.tech-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;
+  padding:14px 10px;text-align:center}
+.tech-card .icon{font-size:26px;margin-bottom:6px}
+.tech-card h3{font-size:13px;font-weight:700;color:var(--acc)}
+.tech-card p{font-size:10px;color:var(--muted);margin-top:2px}
+
+.link-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:14px;
+  font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all .25s}
+.link-btn-primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;
+  box-shadow:0 8px 32px rgba(199,125,255,.35)}
+.link-btn-primary:hover{transform:translateY(-2px);filter:brightness(1.1)}
+
+.slide-split{display:flex;gap:28px;align-items:center;max-width:900px;width:100%;flex-wrap:wrap;justify-content:center}
+.slide-split-text{flex:1;min-width:240px;text-align:left}
+.slide-split-mock{flex-shrink:0}
+
+@media(max-width:640px){
+  .slide{padding:48px 20px 80px}
+  .grid4{grid-template-columns:repeat(2,1fr)}
+  .phone-wrap{width:240px;height:480px}
+  .grid3{grid-template-columns:repeat(2,1fr)}
+}
+
+.deck-shot{display:block;width:100%;height:auto;margin:0;object-fit:cover;object-position:top center}
+.phone-b:has(.deck-shot),.phone-body:has(.deck-shot),.phone-screen:has(.deck-shot),.phone-inner:has(.deck-shot),.term-b:has(.deck-shot){padding:0!important;min-height:0!important;overflow:hidden}
+.term-b .deck-shot{border-radius:0 0 12px 12px}
+.deck-shot-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:1.5rem 0}
+.deck-shot-frame{width:min(100%,280px);border-radius:24px;overflow:hidden;border:2px solid rgba(255,255,255,.12);box-shadow:0 20px 50px rgba(0,0,0,.35)}
+
+</style>
+
+  <link rel="stylesheet" href="css/capricorn-core.css">
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/capricorn-scene.js"></script>
+</head>
+<body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+<canvas id="orb-canvas"></canvas>
+<div id="progress"></div>
+<button id="fullscreen-btn" title="Fullscreen (F)">⛶</button>
+<div id="counter">1 / 24</div>
+<button id="arrow-left" onclick="prev()">←</button>
+<button id="arrow-right" onclick="next()">→</button>
+
+<div id="deck">
+
+<!-- SLIDE 1 — TITLE -->
+<div class="slide active" id="s1" style="background:radial-gradient(ellipse 80% 60% at 50% 35%,rgba(199,125,255,.14) 0%,transparent 70%)">
+  <div class="overline a1">Party arcade · Offline-first</div>
+  <div class="headline a2" style="font-size:clamp(2.8rem,7vw,5rem);animation:pulse 3s ease-in-out infinite">
+    <span class="grad">PrismCap</span>
+  </div>
+  <div class="sub a3" style="color:var(--txt);font-weight:600">39 games. One phone. Zero Wi‑Fi.</div>
+  <div class="sub a4">Pass the phone, not your data. Solo to 10+ players · game bots · eco performance · zero servers.</div>
+  <div class="a5" style="margin-top:20px;font-family:ui-monospace,Menlo,monospace;font-size:clamp(12px,2vw,16px);color:var(--acc)">
+    shamikhahmed.github.io/PrismCap/
+  </div>
+  <div class="a6" style="margin-top:28px;font-size:12px;color:rgba(0,229,255,.5);letter-spacing:.08em;animation:float 2.5s ease-in-out infinite">
+    Press → or tap right to begin
+  </div>
+</div>
+
+<!-- SLIDE 2 — PROBLEM -->
+<div class="slide" id="s2">
+  <div class="overline a1">Why We Built This</div>
+  <div class="headline a2">The <span class="grad">Problem</span></div>
+  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:600px;margin-top:18px">
+    <div class="pain-card a3"><div class="pain-icon">📱</div><div class="pain-text"><h3>App store games want accounts and ads</h3><p>Sign up, subscribe, watch ads — before you even play with friends.</p></div></div>
+    <div class="pain-card a4"><div class="pain-icon">👥</div><div class="pain-text"><h3>Pass-and-play is rare on mobile</h3><p>Party games need props, hosts, and Wi‑Fi. Phones should be enough.</p></div></div>
+    <div class="pain-card a5"><div class="pain-icon">🔥</div><div class="pain-text"><h3>Janky performance kills the fun</h3><p>Heavy frameworks drain battery and lag during fast reflex games.</p></div></div>
+    <div class="pain-card a6"><div class="pain-icon">☁️</div><div class="pain-text"><h3>Cloud-dependent — dead at the campsite</h3><p>No signal? No game night. Offline should be the default.</p></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 3 — SOLUTION -->
+<div class="slide" id="s3">
+  <div class="overline a1">Our Answer</div>
+  <div class="headline a2">The <span class="grad">Solution</span></div>
+  <div class="sub a3" style="margin-bottom:20px">A pocket arcade — 39 games, one device, zero internet.</div>
+  <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:580px">
+    <div class="card card-violet a4" style="display:flex;align-items:center;gap:14px;padding:18px 20px">
+      <span style="font-size:30px">🎮</span>
+      <div><div style="font-weight:700;margin-bottom:3px">39 games in one PWA</div><div style="font-size:12px;color:var(--muted)">Deception, reflex, board, puzzle — all offline after first load.</div></div>
+    </div>
+    <div class="card card-pink a5" style="display:flex;align-items:center;gap:14px;padding:18px 20px">
+      <span style="font-size:30px">👥</span>
+      <div><div style="font-weight:700;margin-bottom:3px">Pass &amp; Play for 1–10+ players</div><div style="font-size:12px;color:var(--muted)">Private reveals, handoffs, bot fill — one phone, whole party.</div></div>
+    </div>
+    <div class="card card-cyan a6" style="display:flex;align-items:center;gap:14px;padding:18px 20px">
+      <span style="font-size:30px">🔒</span>
+      <div><div style="font-weight:700;margin-bottom:3px">No account. No server. Ever.</div><div style="font-size:12px;color:var(--muted)">XP, settings, suspended games — all in localStorage on your device.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 — TECH -->
+<div class="slide" id="s4">
+  <div class="overline a1">Engineering</div>
+  <div class="headline a2">Zero Dependencies. <span class="grad">Maximum Games.</span></div>
+  <div class="grid3 a3" style="margin-top:20px">
+    <div class="tech-card"><div class="icon">📄</div><h3>HTML5 PWA</h3><p>Install to home screen</p></div>
+    <div class="tech-card"><div class="icon">🎨</div><h3>CSS3</h3><p>10 themes, glass UI</p></div>
+    <div class="tech-card"><div class="icon">⚙️</div><h3>Vanilla JS</h3><p>5,600+ lines app.js</p></div>
+    <div class="tech-card"><div class="icon">💾</div><h3>localStorage</h3><p>XP, saves, settings</p></div>
+    <div class="tech-card"><div class="icon">⚡</div><h3>Service Worker</h3><p>Full offline cache</p></div>
+    <div class="tech-card"><div class="icon">🎵</div><h3>Web Audio</h3><p>Synthesized music &amp; SFX</p></div>
+  </div>
+  <div class="a4" style="margin-top:16px;font-size:12px;color:var(--muted)">No framework. No CDN. No build step required.</div>
+</div>
+
+<!-- SLIDE 5 — ARCHITECTURE -->
+<div class="slide" id="s5">
+  <div class="overline a1">File Structure</div>
+  <div class="headline a2"><span class="grad">Architecture</span></div>
+  <div class="terminal a3" style="margin-top:18px">
+    <div><span class="path">index.html</span> <span class="dim">— shell + nav tabs</span></div>
+    <div><span class="dim">├── css/</span> <span class="hl">base.css</span> · <span class="hl">layout.css</span> · <span class="hl">components.css</span></div>
+    <div><span class="dim">├── js/</span> <span class="hl">app.js</span> <span class="dim">(39 games, Drama Engine, bots)</span></div>
+    <div><span class="dim">├── </span><span class="path">sw.js</span> <span class="dim">— offline asset cache</span></div>
+    <div><span class="dim">├── </span><span class="path">manifest.json</span> <span class="dim">— PWA install</span></div>
+    <div><span class="dim">└── docs/</span> <span class="hl">GUIDE.md</span> · <span class="hl">PRESENTATION.md</span></div>
+  </div>
+  <div class="a4" style="margin-top:14px;font-size:12px;color:var(--muted)">Drama Engine · Director Engine · Persona Engine · QR Transfer · Tournament brackets</div>
+</div>
+
+<!-- SLIDE 6 — DEVICE SELECTION -->
+<div class="slide" id="s6">
+  <div class="slide-split">
+    <div class="slide-split-text">
+      <div class="overline a1">Onboarding</div>
+      <div class="headline a2" style="text-align:left">Device <span class="grad">Selection</span></div>
+      <div class="sub a3" style="text-align:left;margin-bottom:0">Pick your exact iPhone, iPad, or Mac. Safe areas and Dynamic Island spacing calibrate automatically.</div>
+      <div class="a4" style="margin-top:16px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)">
+        <div>✓ iPhone 16 Pro · 15 · 13 · SE</div>
+        <div>✓ iPad Pro · iPad Air</div>
+        <div>✓ Mac / Browser layout</div>
+      </div>
+    </div>
+    <div class="phone-wrap a5">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen"><img class="deck-shot" src="https://shamikhahmed.github.io/assets/screenshots/prismcap-2.png" alt="PrismCap party game hub" width="280" height="606" loading="lazy" decoding="async"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 — WELCOME FLOW -->
+<div class="slide" id="s7">
+  <div class="overline a1">First Launch</div>
+  <div class="headline a2">Welcome <span class="grad">Flow</span></div>
+  <div class="sub a3">Name · age · gender theme · playstyle scan · operator profile</div>
+  <div class="grid2 a4" style="margin-top:18px;max-width:580px">
+    <div class="card card-violet" style="text-align:center;padding:20px"><div style="font-size:28px;margin-bottom:8px">👤</div><div style="font-weight:700;font-size:14px">Identity</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Name, avatar, theme preference</div></div>
+    <div class="card card-pink" style="text-align:center;padding:20px"><div style="font-size:28px;margin-bottom:8px">🔍</div><div style="font-weight:700;font-size:14px">Playstyle Scan</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Deceptive · Strategic · Aggressive</div></div>
+    <div class="card card-cyan" style="text-align:center;padding:20px"><div style="font-size:28px;margin-bottom:8px">🎭</div><div style="font-weight:700;font-size:14px">Persona Engine</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Operative type assigned at boot</div></div>
+    <div class="card" style="text-align:center;padding:20px"><div style="font-size:28px;margin-bottom:8px">🏅</div><div style="font-weight:700;font-size:14px">Starting Rank</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Rookie · Level 1 · 0 XP</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 8 — GAME LIBRARY -->
+<div class="slide" id="s8">
+  <div class="overline a1">Library Tab</div>
+  <div class="headline a2">Game <span class="grad">Library</span></div>
+  <div class="sub a3" style="margin-bottom:14px">39 games · Fully offline · Filter by category</div>
+  <div class="grid4 a4" style="max-width:680px">
+    <div class="lcard" style="background:rgba(255,45,85,.07);border:1px solid rgba(255,45,85,.16)">
+      <div><div class="lcard-icon">🕵️</div><div class="lcard-title">Shadow Protocol</div><div class="lcard-type">deduction</div></div>
+      <div class="lcard-badge">👥 3-10p</div>
+    </div>
+    <div class="lcard" style="background:rgba(255,214,10,.07);border:1px solid rgba(255,214,10,.16)">
+      <div><div class="lcard-icon">🏦</div><div class="lcard-title">The Heist</div><div class="lcard-type">strategy</div></div>
+      <div class="lcard-badge">👥 3-8p</div>
+    </div>
+    <div class="lcard" style="background:rgba(100,210,255,.07);border:1px solid rgba(100,210,255,.16)">
+      <div><div class="lcard-icon">♟️</div><div class="lcard-title">Chess</div><div class="lcard-type">strategy</div></div>
+      <div class="lcard-badge">👥 2p · 🤖 bot</div>
+    </div>
+    <div class="lcard" style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.16)">
+      <div><div class="lcard-icon">🎲</div><div class="lcard-title">Ludo</div><div class="lcard-type">board</div></div>
+      <div class="lcard-badge">👥 2-4p · 🤖 bot</div>
+    </div>
+    <div class="lcard" style="background:rgba(48,209,88,.07);border:1px solid rgba(48,209,88,.16)">
+      <div><div class="lcard-icon">👁️</div><div class="lcard-title">Spy Hunt</div><div class="lcard-type">deduction</div></div>
+      <div class="lcard-badge">👥 3-10p</div>
+    </div>
+    <div class="lcard" style="background:rgba(100,210,255,.07);border:1px solid rgba(100,210,255,.16)">
+      <div><div class="lcard-icon">⚡</div><div class="lcard-title">Neon Reflex</div><div class="lcard-type">reflex</div></div>
+      <div class="lcard-badge">🎮 Solo</div>
+    </div>
+    <div class="lcard" style="background:rgba(191,90,242,.07);border:1px solid rgba(191,90,242,.16)">
+      <div><div class="lcard-icon">🎭</div><div class="lcard-title">Split Truth</div><div class="lcard-type">bluffing</div></div>
+      <div class="lcard-badge">👥 2-10p</div>
+    </div>
+    <div class="lcard" style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.16)">
+      <div><div class="lcard-icon">🃏</div><div class="lcard-title">Chaos Cards</div><div class="lcard-type">party</div></div>
+      <div class="lcard-badge">👥 2-10p</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 — FEATURED SCROLL (mcard) -->
+<div class="slide" id="s9">
+  <div class="overline a1">Home Tab</div>
+  <div class="headline a2">Featured <span class="grad">Scroll</span></div>
+  <div class="sub a3" style="margin-bottom:16px">Horizontal mcard carousel — tap to launch</div>
+  <div class="mscroll a4">
+    <div class="mcard" style="background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.22)"><div class="mcard-icon">🕵️</div><div class="mcard-title">Shadow Protocol</div></div>
+    <div class="mcard" style="background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.22)"><div class="mcard-icon">🏦</div><div class="mcard-title">The Heist</div></div>
+    <div class="mcard" style="background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.22)"><div class="mcard-icon">📻</div><div class="mcard-title">Imposter Frequency</div></div>
+    <div class="mcard" style="background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.22)"><div class="mcard-icon">⚡</div><div class="mcard-title">Blitz Duel</div></div>
+    <div class="mcard" style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.22)"><div class="mcard-icon">🔤</div><div class="mcard-title">Word Assassin</div></div>
+    <div class="mcard" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.22)"><div class="mcard-icon">🧠</div><div class="mcard-title">Mind Meld</div></div>
+  </div>
+  <div class="a5" style="margin-top:18px;font-size:12px;color:var(--muted)">Cinematic intro before every game launch · Drama Engine wired</div>
+</div>
+
+<!-- SLIDE 10 — PASS & PLAY SETUP -->
+<div class="slide" id="s10">
+  <div class="slide-split">
+    <div class="slide-split-text">
+      <div class="overline a1">Multiplayer</div>
+      <div class="headline a2" style="text-align:left">Pass &amp; <span class="grad">Play Setup</span></div>
+      <div class="sub a3" style="text-align:left">1–10 players · name each seat · add bots to fill empty slots</div>
+      <div class="a4 bot-row"><span class="bot-btn">🤖 Add Bot</span><span class="bot-btn">🤖 Fill All</span><span class="bot-btn">🎲 Random Names</span></div>
+    </div>
+    <div class="card card-violet a5" style="width:300px;padding:16px">
+      <div style="font-size:.9rem;font-weight:800;margin-bottom:2px">🕵️ Shadow Protocol</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-bottom:12px">Hidden roles. Social deduction. Betrayal.</div>
+      <div style="font-size:.55rem;opacity:.35;letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px">Players (4/10)</div>
+      <div class="player-count">
+        <div class="pc-btn">−</div>
+        <div style="flex:1;text-align:center;font-size:.85rem;font-weight:800;padding-top:6px">4</div>
+        <div class="pc-btn">+</div>
+      </div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(255,45,85,.15)">😎</div><div class="pinp">Alex</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(255,107,0,.15)">🦊</div><div class="pinp">Sam</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(191,90,242,.15)">🐺</div><div class="pinp">Jordan</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(0,212,255,.15)">🦁</div><div class="pinp">Bot Alpha 🤖</div></div>
+      <div style="margin-top:10px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:12px;padding:11px;text-align:center;font-size:.78rem;font-weight:800">▶ Start Game</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11 — SOCIAL DECEPTION -->
+<div class="slide" id="s11">
+  <div class="overline a1">Pillar 1</div>
+  <div class="headline a2">Social <span class="grad">Deception</span></div>
+  <div class="grid3 a3" style="margin-top:18px">
+    <div class="card card-pink" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">🕵️</div><div style="font-weight:700;font-size:13px">Shadow Protocol</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Hidden roles · voting rounds</div></div>
+    <div class="card card-violet" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">🏦</div><div style="font-weight:700;font-size:13px">The Heist</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Co-op vault · one mole</div></div>
+    <div class="card card-cyan" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">👁️</div><div style="font-weight:700;font-size:13px">Spy Hunt</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Find the spy · locations</div></div>
+    <div class="card" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">📻</div><div style="font-weight:700;font-size:13px">Imposter Frequency</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Same topic — except imposters</div></div>
+    <div class="card" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">💼</div><div style="font-weight:700;font-size:13px">Dead Drop</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Pass intel · double agent</div></div>
+    <div class="card" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">🗳️</div><div style="font-weight:700;font-size:13px">Silent Vote</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Secret agendas · elimination</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 12 — REFLEX & SPEED -->
+<div class="slide" id="s12">
+  <div class="overline a1">Pillar 2</div>
+  <div class="headline a2">Reflex &amp; <span class="grad-cyan">Speed</span></div>
+  <div class="grid3 a3" style="margin-top:18px">
+    <div class="card card-cyan" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">⚡</div><div style="font-weight:700;font-size:13px">Neon Reflex</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Sub-200ms achievements</div></div>
+    <div class="card card-pink" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">🪜</div><div style="font-weight:700;font-size:13px">Reflex Ladder</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Endless tiers · ghost run</div></div>
+    <div class="card card-violet" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">🎵</div><div style="font-weight:700;font-size:13px">Rhythm Pulse</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Tap to the beat</div></div>
+    <div class="card" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">👆</div><div style="font-weight:700;font-size:13px">Quick Tap</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Maximum tap speed</div></div>
+    <div class="card" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">💣</div><div style="font-weight:700;font-size:13px">Hot Device</div><div style="font-size:10px;color:var(--muted);margin-top:4px">Pass before it explodes</div></div>
+    <div class="card" style="text-align:center;padding:16px"><div style="font-size:32px;margin-bottom:8px">⚡</div><div style="font-weight:700;font-size:13px">Blitz Duel</div><div style="font-size:10px;color:var(--muted);margin-top:4px">1v1 reaction · best of 5</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 13 — BOARD GAMES -->
+<div class="slide" id="s13">
+  <div class="overline a1">Pillar 3</div>
+  <div class="headline a2">Board <span class="grad">Classics</span></div>
+  <div class="sub a3">Pass-and-play + game bot opponents on one device</div>
+  <div class="mscroll a4" style="margin-top:16px;justify-content:center">
+    <div class="mcard" style="background:rgba(100,210,255,.1);border:1px solid rgba(100,210,255,.22);width:150px;height:120px"><div class="mcard-icon">♟️</div><div class="mcard-title">Chess</div><div style="font-size:.55rem;color:var(--muted);margin-top:4px">🤖 Bot · 2p</div></div>
+    <div class="mcard" style="background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.22);width:150px;height:120px"><div class="mcard-icon">⚫</div><div class="mcard-title">Draughts</div><div style="font-size:.55rem;color:var(--muted);margin-top:4px">🤖 Bot · 2p</div></div>
+    <div class="mcard" style="background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.22);width:150px;height:120px"><div class="mcard-icon">🔴</div><div class="mcard-title">Four in a Row</div><div style="font-size:.55rem;color:var(--muted);margin-top:4px">🤖 Bot · 2p</div></div>
+    <div class="mcard" style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.22);width:150px;height:120px"><div class="mcard-icon">⭕</div><div class="mcard-title">Tic-Tac-Toe</div><div style="font-size:.55rem;color:var(--muted);margin-top:4px">🤖 Bot · 2p</div></div>
+    <div class="mcard" style="background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.22);width:150px;height:120px"><div class="mcard-icon">🎲</div><div class="mcard-title">Ludo</div><div style="font-size:.55rem;color:var(--muted);margin-top:4px">🤖 Bot · 2-4p</div></div>
+    <div class="mcard" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.22);width:150px;height:120px"><div class="mcard-icon">🐍</div><div class="mcard-title">Snakes &amp; Ladders</div><div style="font-size:.55rem;color:var(--muted);margin-top:4px">🤖 Bot · 2-4p</div></div>
+  </div>
+  <div class="a5" style="margin-top:16px;font-size:12px;color:var(--muted)">BOT_BOARD_GAMES: chess, draughts, ttt, c4, blitz, ludo, snl</div>
+</div>
+
+<!-- SLIDE 14 — STRATEGY & PUZZLES -->
+<div class="slide" id="s14">
+  <div class="overline a1">Pillar 4</div>
+  <div class="headline a2">Strategy &amp; <span class="grad">Puzzles</span></div>
+  <div class="grid3 a3" style="margin-top:18px">
+    <div class="card card-violet" style="padding:14px"><div style="font-size:24px;margin-bottom:6px">🤖</div><div style="font-weight:700;font-size:13px">Survival Mode</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Procedural director scenarios</div></div>
+    <div class="card card-cyan" style="padding:14px"><div style="font-size:24px;margin-bottom:6px">🌀</div><div style="font-weight:700;font-size:13px">Infinite Maze</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Endless generated mazes</div></div>
+    <div class="card card-pink" style="padding:14px"><div style="font-size:24px;margin-bottom:6px">🧠</div><div style="font-weight:700;font-size:13px">Memory Matrix</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Pattern recall under pressure</div></div>
+    <div class="card" style="padding:14px"><div style="font-size:24px;margin-bottom:6px">🔐</div><div style="font-weight:700;font-size:13px">Signal Decode</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Crack transmissions in time</div></div>
+    <div class="card" style="padding:14px"><div style="font-size:24px;margin-bottom:6px">💢</div><div style="font-weight:700;font-size:13px">Pressure Cooker</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Tap before pressure explodes</div></div>
+    <div class="card" style="padding:14px"><div style="font-size:24px;margin-bottom:6px">🔲</div><div style="font-weight:700;font-size:13px">Cyber Tiles</div><div style="font-size:10px;color:var(--muted);margin-top:3px">Tile-merge chain reactions</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 15 — PARTY & CHAOS -->
+<div class="slide" id="s15">
+  <div class="overline a1">Pillar 5</div>
+  <div class="headline a2">Party &amp; <span class="grad">Chaos</span></div>
+  <div class="grid2 a3" style="margin-top:18px;max-width:560px">
+    <div class="card card-pink" style="display:flex;gap:12px;align-items:center;padding:16px"><span style="font-size:28px">🃏</span><div><div style="font-weight:700">Chaos Cards</div><div style="font-size:11px;color:var(--muted)">Procedural party challenges</div></div></div>
+    <div class="card card-violet" style="display:flex;gap:12px;align-items:center;padding:16px"><span style="font-size:28px">🎭</span><div><div style="font-weight:700">Split Truth</div><div style="font-size:11px;color:var(--muted)">Truth or lie detection</div></div></div>
+    <div class="card card-cyan" style="display:flex;gap:12px;align-items:center;padding:16px"><span style="font-size:28px">🔤</span><div><div style="font-weight:700">Word Assassin</div><div style="font-size:11px;color:var(--muted)">Forbidden word clues</div></div></div>
+    <div class="card" style="display:flex;gap:12px;align-items:center;padding:16px"><span style="font-size:28px">🧠</span><div><div style="font-weight:700">Mind Meld</div><div style="font-size:11px;color:var(--muted)">Think the same thought</div></div></div>
+    <div class="card" style="display:flex;gap:12px;align-items:center;padding:16px"><span style="font-size:28px">⚔️</span><div><div style="font-weight:700">One Device Dungeon</div><div style="font-size:11px;color:var(--muted)">Roguelike alliances &amp; betrayals</div></div></div>
+    <div class="card" style="display:flex;gap:12px;align-items:center;padding:16px"><span style="font-size:28px">⚡</span><div><div style="font-weight:700">Chain Reaction</div><div style="font-size:11px;color:var(--muted)">Escalating combo chaos</div></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 16 — XP & RANKS -->
+<div class="slide" id="s16">
+  <div class="overline a1">Progression</div>
+  <div class="headline a2">XP &amp; <span class="grad">Ranks</span></div>
+  <div class="sub a3">10 ranks from Rookie to Legend · XP on every game</div>
+  <div class="xp-panel a4" style="margin-top:16px">
+    <div class="xp-header">
+      <div class="xp-av">😎</div>
+      <div class="xp-info">
+        <div class="xp-name">Alex</div>
+        <div class="xp-rank">Specialist · Level 4</div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill"></div></div>
+        <div class="xp-meta"><span>520 XP</span><span>Next: Veteran @ 700</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px">
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Rookie</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Operative</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Agent</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(199,125,255,.2);color:var(--acc);font-weight:700">Specialist</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Veteran</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Elite</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Phantom</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Shadow</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)">Ghost</span>
+      <span style="font-size:.58rem;padding:3px 8px;border-radius:100px;background:rgba(255,214,10,.15);color:var(--amber);font-weight:700">Legend</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17 — ACHIEVEMENTS -->
+<div class="slide" id="s17">
+  <div class="overline a1">Achievements</div>
+  <div class="headline a2">16 <span class="grad">Achievements</span></div>
+  <div class="sub a3" style="margin-bottom:18px">Unlock through gameplay milestones · toast popup on unlock</div>
+  <div class="ach-toast a4">
+    <div class="ach-icon">🏆</div>
+    <div class="ach-body">
+      <div class="ach-label">Achievement Unlocked</div>
+      <div class="ach-name">Champion</div>
+      <div class="ach-desc">Win 10 games</div>
+    </div>
+    <div class="ach-xp">+250 XP</div>
+  </div>
+  <div class="grid4 a5" style="margin-top:20px;max-width:560px">
+    <div style="text-align:center;padding:10px"><div style="font-size:22px">🎮</div><div style="font-size:10px;font-weight:700;margin-top:4px">First Launch</div></div>
+    <div style="text-align:center;padding:10px"><div style="font-size:22px">🗡️</div><div style="font-size:10px;font-weight:700;margin-top:4px">Betrayer</div></div>
+    <div style="text-align:center;padding:10px"><div style="font-size:22px">🔥</div><div style="font-size:10px;font-weight:700;margin-top:4px">On Fire</div></div>
+    <div style="text-align:center;padding:10px"><div style="font-size:22px">⚡</div><div style="font-size:10px;font-weight:700;margin-top:4px">Lightning</div></div>
+    <div style="text-align:center;padding:10px;opacity:.3"><div style="font-size:22px">🎰</div><div style="font-size:10px;font-weight:700;margin-top:4px">Explorer</div></div>
+    <div style="text-align:center;padding:10px;opacity:.3"><div style="font-size:22px">🌙</div><div style="font-size:10px;font-weight:700;margin-top:4px">Night Owl</div></div>
+    <div style="text-align:center;padding:10px;opacity:.3"><div style="font-size:22px">📅</div><div style="font-size:10px;font-weight:700;margin-top:4px">Daily Grinder</div></div>
+    <div style="text-align:center;padding:10px;opacity:.3"><div style="font-size:22px">🛡️</div><div style="font-size:10px;font-weight:700;margin-top:4px">Survivor</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 18 — THEMES -->
+<div class="slide" id="s18">
+  <div class="overline a1">Customisation</div>
+  <div class="headline a2">10 <span class="grad">Themes</span></div>
+  <div class="sub a3" style="margin-bottom:16px">Unlock Cyber, Horror, Gold, Synth, Glitch via XP &amp; wins</div>
+  <div class="theme-grid a4">
+    <div class="theme-tile on" style="background:linear-gradient(135deg,#001a0e,#003320)"><div class="theme-tile-icon">🟢</div><div class="theme-tile-name" style="color:#00E676">Cyber</div></div>
+    <div class="theme-tile" style="background:linear-gradient(135deg,#050000,#200000)"><div class="theme-tile-icon">🔴</div><div class="theme-tile-name" style="color:#FF0000">Horror</div></div>
+    <div class="theme-tile" style="background:linear-gradient(135deg,#000,#001a1a)"><div class="theme-tile-icon">👾</div><div class="theme-tile-name" style="color:#00FFFF">Glitch</div></div>
+    <div class="theme-tile" style="background:linear-gradient(135deg,#0d001a,#1a0033)"><div class="theme-tile-icon">🟣</div><div class="theme-tile-name" style="color:#FF00FF">Neon</div></div>
+    <div class="theme-tile" style="background:linear-gradient(135deg,#0a0800,#1a1400)"><div class="theme-tile-icon">🟡</div><div class="theme-tile-name" style="color:#FFD700">Gold</div></div>
+    <div class="theme-tile" style="background:linear-gradient(135deg,#0d0010,#1a0020)"><div class="theme-tile-icon">🩷</div><div class="theme-tile-name" style="color:#FF4081">Synth</div></div>
+  </div>
+  <div class="a5" style="margin-top:14px;font-size:12px;color:var(--muted)">Also: Terminal · Deep Space · Midnight · Red Alert · Minimal</div>
+</div>
+
+<!-- SLIDE 19 — MUTATORS -->
+<div class="slide" id="s19">
+  <div class="overline a1">Game Modifiers</div>
+  <div class="headline a2"><span class="grad">Mutators</span></div>
+  <div class="sub a3" style="margin-bottom:18px">Stack up to 3 before launch · remix any game</div>
+  <div class="mut-row a4">
+    <span class="mut-chip on">⏱️ Speed Round</span>
+    <span class="mut-chip">🤫 Silent Mode</span>
+    <span class="mut-chip on">💀 Sudden Death</span>
+    <span class="mut-chip">🙈 Blind</span>
+    <span class="mut-chip">🔥 Elite Mode</span>
+    <span class="mut-chip">👾 Corrupted</span>
+    <span class="mut-chip">🌀 Double Chaos</span>
+  </div>
+  <div class="card a5" style="margin-top:20px;max-width:480px;text-align:left;padding:16px 18px">
+    <div style="font-size:.72rem;color:var(--acc);font-weight:700;margin-bottom:6px">ACTIVE: Speed Round + Sudden Death</div>
+    <div style="font-size:.78rem;color:var(--muted);line-height:1.5">Timers halved · One miss = eliminated · Triple XP if Elite stacked</div>
+  </div>
+</div>
+
+<!-- SLIDE 20 — ECO MODE -->
+<div class="slide" id="s20">
+  <div class="slide-split">
+    <div class="slide-split-text">
+      <div class="overline a1">Performance</div>
+      <div class="headline a2" style="text-align:left">Eco Mode <span class="grad">Default</span></div>
+      <div class="sub a3" style="text-align:left">Battery-friendly by default. Particles, grid, and wake lock tuned for long game nights.</div>
+    </div>
+    <div class="settings-panel a4">
+      <div class="setting-row">
+        <div><div class="setting-label">Eco Mode</div><div class="setting-sub">Reduced particles · 8 vs 22</div></div>
+        <div class="toggle on"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Low Power</div><div class="setting-sub">Disables background grid</div></div>
+        <div class="toggle on"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Background FX</div><div class="setting-sub">Ambient particle field</div></div>
+        <div class="toggle"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Haptic Feedback</div><div class="setting-sub">Vibration on tap &amp; events</div></div>
+        <div class="toggle on"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Synthesized Music</div><div class="setting-sub">Web Audio · tap 🔇 to toggle</div></div>
+        <div class="toggle"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21 — TOURNAMENT -->
+<div class="slide" id="s21">
+  <div class="overline a1">Competitive</div>
+  <div class="headline a2">Tournament <span class="grad">Bracket</span></div>
+  <div class="sub a3" style="margin-bottom:16px">4-player bracket across any game · game night ready</div>
+  <div class="bracket a4">
+    <div class="bracket-round">Semi-Finals</div>
+    <div class="bracket-match">
+      <div class="bracket-player"><div class="av">😎</div><div class="nm">Alex</div></div>
+      <div class="bracket-vs">vs</div>
+      <div class="bracket-player"><div class="av">🦊</div><div class="nm">Sam</div></div>
+      <div class="bracket-win">✓ Alex</div>
+    </div>
+    <div class="bracket-match">
+      <div class="bracket-player"><div class="av">🐺</div><div class="nm">Jordan</div></div>
+      <div class="bracket-vs">vs</div>
+      <div class="bracket-player"><div class="av">🦁</div><div class="nm">Riley</div></div>
+      <div class="bracket-win">✓ Jordan</div>
+    </div>
+    <div class="bracket-round" style="margin-top:12px">Final — Blitz Duel</div>
+    <div class="bracket-match" style="border-color:rgba(255,214,10,.3)">
+      <div class="bracket-player"><div class="av">😎</div><div class="nm">Alex</div></div>
+      <div class="bracket-vs">vs</div>
+      <div class="bracket-player"><div class="av">🐺</div><div class="nm">Jordan</div></div>
+      <div style="font-size:.65rem;color:var(--amber);font-weight:700">LIVE</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22 — DRAMA ENGINE -->
+<div class="slide" id="s22">
+  <div class="overline a1">Smart engines</div>
+  <div class="headline a2">Drama &amp; <span class="grad">Director</span></div>
+  <div class="grid2 a3" style="margin-top:18px;max-width:580px">
+    <div class="card card-pink" style="padding:18px"><div style="font-size:13px;font-weight:700;color:var(--acc2);margin-bottom:8px">🎭 Drama Engine</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Tracks tension &amp; trust across sessions. Betrayal events spike paranoia. Announcer calls out chaos.</div></div>
+    <div class="card card-violet" style="padding:18px"><div style="font-size:13px;font-weight:700;color:var(--acc);margin-bottom:8px">🎬 Director Engine</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Adapts difficulty and pacing automatically. Procedural events per game type.</div></div>
+    <div class="card card-cyan" style="padding:18px"><div style="font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:8px">🧠 Persona Engine</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Smart Assistant reads wins, betrayals, and bluffs — assigns playstyle: Deceptive, Strategic, Aggressive.</div></div>
+    <div class="card" style="padding:18px"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📡 QR Transfer</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Suspend any game → export via QR → scan on second device. No cloud needed.</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 23 — PWA OFFLINE -->
+<div class="slide" id="s23">
+  <div class="overline a1">Platform</div>
+  <div class="headline a2">Built as a <span class="grad">PWA</span></div>
+  <div class="grid2 a3" style="margin-top:20px;max-width:560px">
+    <div class="card card-violet" style="text-align:center;padding:22px"><div style="font-size:36px;margin-bottom:10px">📴</div><div style="font-weight:700;font-size:14px">100% offline after first load</div></div>
+    <div class="card card-pink" style="text-align:center;padding:22px"><div style="font-size:36px;margin-bottom:10px">📲</div><div style="font-weight:700;font-size:14px">Add to Home Screen</div></div>
+    <div class="card card-cyan" style="text-align:center;padding:22px"><div style="font-size:36px;margin-bottom:10px">🔒</div><div style="font-weight:700;font-size:14px">Wake lock during games</div></div>
+    <div class="card" style="text-align:center;padding:22px"><div style="font-size:36px;margin-bottom:10px">💾</div><div style="font-weight:700;font-size:14px">Suspend &amp; resume any game</div></div>
+  </div>
+  <div class="a4" style="margin-top:16px;font-size:13px;color:var(--muted)">No app store · No account · No subscription · No ads</div>
+</div>
+
+<!-- SLIDE 24 — STATS & CLOSING -->
+<div class="slide" id="s24">
+  <div class="overline a1">By The Numbers</div>
+  <div class="headline a2"><span class="grad">39 Games</span> · One Platform</div>
+  <div class="grid3 a3" style="margin-top:20px;max-width:620px">
+    <div class="stat-card"><div class="stat-num grad">38</div><div class="stat-label">Games</div></div>
+    <div class="stat-card"><div class="stat-num grad-cyan">16</div><div class="stat-label">Achievements</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--green)">10</div><div class="stat-label">Themes</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--amber)">10</div><div class="stat-label">Ranks</div></div>
+    <div class="stat-card"><div class="stat-num grad">7</div><div class="stat-label">Mutators</div></div>
+    <div class="stat-card"><div class="stat-num grad-cyan">0</div><div class="stat-label">Dependencies</div></div>
+  </div>
+  <div class="a4" style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;justify-content:center">
+    <a class="link-btn link-btn-primary" href="https://shamikhahmed.github.io/PrismCap/" target="_blank" rel="noopener">🌐 Open PrismCap</a>
+    <a class="link-btn" style="background:var(--glass);border:1px solid var(--border);color:#fff" href="pitch.html">📊 Pitch Deck</a>
+  </div>
+  <div class="a5" style="margin-top:16px;font-size:12px;color:var(--muted)">Built by Shamikh Ahmed · © 2026</div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+(function(){
+'use strict';
+var canvas=document.getElementById('orb-canvas'),ctx=canvas.getContext('2d'),orbs=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+function initOrbs(){
+  var cols=['rgba(199,125,255,','rgba(255,45,120,','rgba(0,229,255,','rgba(199,125,255,','rgba(255,45,120,','rgba(0,229,255,','rgba(255,214,10,','rgba(199,125,255,'];
+  orbs=[];for(var i=0;i<8;i++)orbs.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:110+Math.random()*160,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,color:cols[i],alpha:.035+Math.random()*.05});
+}
+function animOrbs(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  orbs.forEach(function(o){
+    o.x+=o.vx;o.y+=o.vy;
+    if(o.x<-o.r)o.x=canvas.width+o.r;if(o.x>canvas.width+o.r)o.x=-o.r;
+    if(o.y<-o.r)o.y=canvas.height+o.r;if(o.y>canvas.height+o.r)o.y=-o.r;
+    var g=ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r);
+    g.addColorStop(0,o.color+o.alpha+')');g.addColorStop(1,o.color+'0)');
+    ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  });
+  requestAnimationFrame(animOrbs);
+}
+resize();initOrbs();animOrbs();
+window.addEventListener('resize',function(){resize();initOrbs()});
+
+var current=0,total=24,slides=Array.from(document.querySelectorAll('.slide'));
+var progressEl=document.getElementById('progress'),counterEl=document.getElementById('counter'),isAnimating=false;
+
+function goTo(n){
+  if(isAnimating||n<0||n>=total||n===current)return;
+  isAnimating=true;
+  var outSlide=slides[current],inSlide=slides[n],fwd=n>current;
+  inSlide.style.transition='none';
+  inSlide.style.transform=fwd?'translateX(100%)':'translateX(-100%)';
+  inSlide.style.opacity='0';inSlide.classList.remove('active');
+  inSlide.getBoundingClientRect();
+  inSlide.style.transition='';outSlide.style.transition='';
+  outSlide.style.transform=fwd?'translateX(-100%)':'translateX(100%)';outSlide.style.opacity='0';
+  inSlide.style.transform='translateX(0)';inSlide.style.opacity='1';inSlide.classList.add('active');
+  current=n;
+  setTimeout(function(){outSlide.classList.remove('active');outSlide.style.transform='';outSlide.style.opacity='';outSlide.style.transition='';isAnimating=false},520);
+  progressEl.style.width=((current+1)/total*100)+'%';
+  counterEl.textContent=(current+1)+' / '+total;
+}
+function next(){goTo(current+1)}function prev(){goTo(current-1)}
+window.next=next;window.prev=prev;
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next()}
+  if(e.key==='ArrowLeft'){e.preventDefault();prev()}
+  if(e.key==='f'||e.key==='F')toggleFS();
+});
+document.getElementById('deck').addEventListener('click',function(e){
+  if(e.target.closest('a,button'))return;
+  if(e.clientX>window.innerWidth/2)next();else prev();
+});
+var touchX=0;
+document.addEventListener('touchstart',function(e){touchX=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>50){if(dx<0)next();else prev()}},{passive:true});
+function toggleFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen().catch(function(){})}
+document.getElementById('fullscreen-btn').addEventListener('click',toggleFS);
+progressEl.style.width=(1/total*100)+'%';
+})();
+</script>
+</body>
+</html>

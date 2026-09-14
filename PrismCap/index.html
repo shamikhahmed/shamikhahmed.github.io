@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#000">
+<meta name="author" content="Capricorn Systems">
+<meta name="description" content="Party games for one phone, passed around the room.">
+<title>PrismCap</title>
+<link rel="canonical" href="https://shamikhahmed.github.io/PrismCap/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Capricorn Systems">
+<meta property="og:title" content="PrismCap">
+<meta property="og:description" content="Party games for one phone, passed around the room.">
+<meta property="og:url" content="https://shamikhahmed.github.io/PrismCap/">
+<meta property="og:image" content="https://shamikhahmed.github.io/assets/screenshots/prismcap.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PrismCap">
+<meta name="twitter:description" content="Party games for one phone, passed around the room.">
+<meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/prismcap.png">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon-180.png" sizes="180x180">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" href="css/base.css" as="style">
+<link rel="preload" href="css/components.css" as="style">
+<link rel="stylesheet" href="css/capricorn-core.css">
+<style>:root{--cap-accent:#FF00FF}</style>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/identity.css">
+</head>
+<body data-cap-app="1">
+<script>window.APP_VERSION='4.5.0';</script>
+<a href="#app" class="cap-skip-link">Skip to content</a>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+<div class="cap-ambient" aria-hidden="true"></div>
+<canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
+<div id="app">
+<canvas id="bg"></canvas>
+<div id="music-ind" title="Toggle Music">🔇</div>
+<div id="turn-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+<div id="cap-dialog-root"></div>
+
+<!-- DEVICE SELECTION removed for Tier 1 (P-PRSM-1); kept hidden for legacy DOM refs -->
+<div id="device-sel" hidden aria-hidden="true" style="display:none!important"></div>
+
+<div id="tension-bar"></div>
+
+<!-- LOADER — arcade cabinet / cartridge insert ritual -->
+<div id="loader" class="crt-stage">
+  <div class="crt-vignette" aria-hidden="true"></div>
+  <div class="cab-ritual" aria-hidden="true">
+    <div class="cab-shell">
+      <div class="cab-marquee"><span class="cab-marquee-dot"></span><span class="cab-marquee-dot"></span><span class="cab-marquee-dot"></span></div>
+      <div class="cab-screen-frame">
+        <div class="cab-doors">
+          <div class="cab-door cab-door--l"></div>
+          <div class="cab-door cab-door--r"></div>
+        </div>
+        <div class="cab-screen-inner">
+          <canvas id="lcan" width="64" height="64"></canvas>
+          <div class="loader-title">PrismCap</div>
+          <div class="loader-tagline">39 games. Offline.</div>
+        </div>
+      </div>
+      <div class="cab-slot">
+        <div class="cab-cartridge"><span class="cab-cart-label">PRISM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="lscan lscan--coin" id="lscan" aria-live="polite">INSERT COIN</div>
+</div>
+
+<!-- WELCOME (multi-step) -->
+<div id="welcome" class="crt-stage">
+  <div class="crt-vignette" aria-hidden="true"></div>
+  <div class="cart-shell crt-screen">
+    <div class="wprog" style="justify-content:center" id="wprog">
+      <div class="wprogdot on"></div><div class="wprogdot"></div><div class="wprogdot"></div><div class="wprogdot"></div><div class="wprogdot"></div><div class="wprogdot"></div>
+    </div>
+    <!-- Step 1: Name -->
+    <div class="wstep active" id="ws1">
+      <canvas id="wcan" width="100" height="100" style="margin-bottom:20px"></canvas>
+      <div class="wstep-title">PrismCap</div>
+      <div class="wstep-sub">39 games. Fully offline. Always fun.</div>
+      <input id="wname" placeholder="What's your name?" class="cart-input" autocorrect="off">
+      <button class="btn bw bf blg" onclick="W.next()">Continue →</button>
+    </div>
+    <!-- Step 2: Gender (for theme suggestions) -->
+    <div class="wstep" id="ws2">
+      <div class="wstep-title">How do you identify?</div>
+      <div class="wstep-sub">Helps us suggest themes you'll love</div>
+      <div class="cart-chip-col">
+        <div class="pchip" style="cursor:pointer;justify-content:center;font-size:.92rem" onclick="W.setGender('girl',this)">Girl / Woman</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center;font-size:.92rem" onclick="W.setGender('boy',this)">Boy / Man</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center;font-size:.92rem" onclick="W.setGender('other',this)">Non-binary / Other</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center;font-size:.92rem" onclick="W.setGender('skip',this)">Prefer not to say</div>
+      </div>
+      <button class="btn bw bf" onclick="W.next()">Continue →</button>
+    </div>
+    <!-- Step 3: Avatar -->
+    <div class="wstep" id="ws3">
+      <div class="wstep-title">Pick your vibe</div>
+      <div class="wstep-sub">Your avatar across all games</div>
+      <div id="wavs" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px"></div>
+      <button class="btn bw bf" onclick="W.next()">Continue →</button>
+    </div>
+    <!-- Step 4: Style -->
+    <div class="wstep" id="ws4r">
+      <div class="wstep-title">Your gaming style?</div>
+      <div class="wstep-sub">Personalizes everything for you</div>
+      <div class="cart-chip-col" id="wstyles">
+        <div class="pchip" style="cursor:pointer;justify-content:center" onclick="W.setStyle('deception',this)">Deception & Betrayal</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center" onclick="W.setStyle('strategy',this)">Strategy & Mind Games</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center" onclick="W.setStyle('reflex',this)">Reflex & Speed</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center" onclick="W.setStyle('chaos',this)">Pure Chaos</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center" onclick="W.setStyle('party',this)">Party Games</div>
+        <div class="pchip" style="cursor:pointer;justify-content:center" onclick="W.setStyle('creative',this)">Creative & Artistic</div>
+      </div>
+      <button class="btn bw bf" onclick="W.next()">Continue →</button>
+    </div>
+    <!-- Step 5: Scanning -->
+    <div class="wstep" id="ws5">
+      <div class="wstep-title wstep-title--sm">Analyzing profile...</div>
+      <div id="wscan-msg" class="wscan-msg"></div>
+      <div class="cart-progress"><div id="wscan-bar" class="cart-progress-fill"></div></div>
+      <div id="wscan-result" class="wscan-result"></div>
+    </div>
+    <!-- Step 6: First game picker -->
+    <div class="wstep" id="ws6">
+      <div class="wstep-title">Pick your first game</div>
+      <div class="wstep-sub">Matched to your style — tap to launch instantly</div>
+      <div id="wgame-grid" class="wgame-grid"></div>
+      <button class="btn bg bf" style="margin-bottom:8px" onclick="W.skipGamePicker()">Browse all games →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<!-- MODAL -->
+<div id="ov"><div class="modal" id="modal"><div class="mh"></div><div id="mc"></div></div></div>
+<!-- PASS -->
+<div id="pass">
+  <div class="pass-priv"></div>
+  <div id="pass-c" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px">
+    <div style="font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;opacity:.28;margin-bottom:16px">Pass to</div>
+    <div id="pav" style="font-size:4rem;margin-bottom:9px"></div>
+    <div id="pnm" style="font-size:1.9rem;font-weight:800;letter-spacing:-.03em;margin-bottom:4px"></div>
+    <div id="prl" style="font-size:.8rem;opacity:.38;margin-bottom:30px"></div>
+    <div style="font-size:.68rem;opacity:.2;margin-bottom:14px">Shield screen from others</div>
+    <button class="btn bw bf" style="max-width:250px" onclick="PP.reveal()">Tap to Reveal →</button>
+  </div>
+  <div id="pass-rv" style="display:none;width:100%;max-width:360px"></div>
+</div>
+
+<!-- HOME -->
+<div class="screen active" id="home-screen">
+  <div class="home-cabinet">
+    <div class="home-cab-side home-cab-side--l" aria-hidden="true"></div>
+    <div class="home-cab-layout">
+      <div class="home-cab-main">
+        <div class="home-cart-marquee" aria-hidden="true"><span class="home-cart-label">PRISM</span><span class="home-cart-led"></span><span class="home-cart-led"></span><span class="home-cart-led"></span></div>
+        <div class="screen-header" style="display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-size:1.25rem;font-weight:800;letter-spacing:-.03em">Prism<span style="opacity:.2">Cap</span></div><div id="home-greeting" style="font-size:.6rem;opacity:.25;margin-top:1px">Good evening</div></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:100px;padding:4px 10px;cursor:pointer" onclick="Nav.go('profile')">
+              <span id="hlvl" style="font-size:.68rem;font-weight:800;color:var(--amber)">LV1</span>
+              <div style="width:48px;height:2px;background:rgba(255,255,255,.09);border-radius:1px;overflow:hidden"><div id="hxp" style="height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:1px;width:0%;transition:width 1s ease"></div></div>
+            </div>
+            <div id="hav" onclick="Nav.go('profile')" style="width:31px;height:31px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer">👤</div>
+          </div>
+        </div>
+        <div id="hw-area" style="padding:6px 0 0"></div>
+        <div class="home-feat-wrap">
+          <div class="feat" id="feat" onclick="GL.launchFeat()">
+            <div id="feat-bg" style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(100,210,255,.26),rgba(100,210,255,.05))"></div>
+            <div style="position:relative;z-index:2;padding:18px;height:100%;display:flex;flex-direction:column;justify-content:space-between">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start"><span id="feat-badge" style="background:rgba(255,255,255,.12);border-radius:100px;padding:3px 10px;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Featured</span><span id="feat-icon" style="font-size:2.2rem">🎮</span></div>
+              <div><div id="feat-type" style="font-size:.58rem;opacity:.48;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px"></div><div id="feat-title" style="font-size:1.6rem;font-weight:800;letter-spacing:-.03em;line-height:1.05">Loading...</div><div id="feat-desc" style="font-size:.78rem;opacity:.48;margin-top:4px"></div><div style="margin-top:11px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.88);color:#000;border-radius:100px;padding:7px 15px;font-size:.78rem;font-weight:700">▶ Play Now</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="shdr"><div class="sec">🔥 Multiplayer</div><div style="font-size:.73rem;opacity:.28;cursor:pointer" onclick="Nav.go('library')">See All</div></div>
+        <div class="hscroll noscroll" id="mp-row"></div>
+        <div class="shdr" style="margin-top:6px"><div class="sec">⚡ Solo</div><div style="font-size:.73rem;opacity:.28;cursor:pointer" onclick="Nav.go('library')">See All</div></div>
+        <div class="hscroll noscroll" id="solo-row"></div>
+      </div>
+      <aside class="home-cab-rail" aria-label="Scoreboard">
+        <div class="home-cab-rail__label">Scoreboard</div>
+        <div class="home-stats-block"><div class="sec" style="margin-bottom:9px">📊 Stats</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div class="glass" style="padding:11px 9px;text-align:center;border-radius:12px"><div id="sg" style="font-size:1.45rem;font-weight:800">0</div><div style="font-size:.52rem;opacity:.33;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Games</div></div>
+            <div class="glass" style="padding:11px 9px;text-align:center;border-radius:12px"><div id="sw" style="font-size:1.45rem;font-weight:800;color:var(--green)">0</div><div style="font-size:.52rem;opacity:.33;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Wins</div></div>
+            <div class="glass" style="padding:11px 9px;text-align:center;border-radius:12px"><div id="ss" style="font-size:1.45rem;font-weight:800;color:var(--amber)">0</div><div style="font-size:.52rem;opacity:.33;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Streak</div></div>
+          </div>
+        </div>
+        <div class="shdr"><div class="sec">🕐 Recent</div></div>
+        <div class="home-recent-wrap" id="recent"></div>
+      </aside>
+    </div>
+    <div class="home-cab-side home-cab-side--r" aria-hidden="true"></div>
+  </div>
+</div>
+
+<!-- LIBRARY -->
+<div class="screen" id="library-screen">
+  <div class="screen-header" style="padding-bottom:9px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <div style="font-size:1.25rem;font-weight:800;letter-spacing:-.02em">🎮 Games</div>
+      <div style="font-size:.73rem;opacity:.28" id="lib-count">39 games</div>
+    </div>
+    <div style="position:relative;margin-bottom:0">
+      <input id="game-search" placeholder="🔍  Search games..." autocorrect="off" oninput="GL.search(this.value)" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);font-size:.88rem;color:#fff;outline:none">
+    </div>
+  </div>
+  <div style="display:flex;gap:6px;padding:0 15px 12px;overflow-x:auto;scrollbar-width:none;touch-action:pan-x;-webkit-overflow-scrolling:touch" class="noscroll" id="cats">
+    <div class="pill on" data-c="all" onclick="GL.filter('all')">All</div>
+    <div class="pill" data-c="multiplayer" onclick="GL.filter('multiplayer')">Multiplayer</div>
+    <div class="pill" data-c="solo" onclick="GL.filter('solo')">Solo</div>
+    <div class="pill" data-c="deduction" onclick="GL.filter('deduction')">Deduction</div>
+    <div class="pill" data-c="reflex" onclick="GL.filter('reflex')">Reflex</div>
+    <div class="pill" data-c="puzzle" onclick="GL.filter('puzzle')">Puzzle</div>
+    <div class="pill" data-c="strategy" onclick="GL.filter('strategy')">Strategy</div>
+    <div class="pill" data-c="party" onclick="GL.filter('party')">Party</div>
+  </div>
+  <div class="lgrid" id="lib"></div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="dashboard-screen">
+  <div class="screen-header"><div style="font-size:1.25rem;font-weight:800;letter-spacing:-.02em">Intelligence</div><div style="font-size:.78rem;opacity:.3;margin-top:2px">Your gaming analytics</div></div>
+  <!-- XP Card -->
+  <div style="margin:0 15px 14px"><div class="glass" style="padding:15px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div><div id="drank" style="font-size:1.05rem;font-weight:800">Rookie</div><div style="font-size:.6rem;opacity:.33;margin-top:1px">Level <span id="dlvl">1</span></div></div>
+      <div style="text-align:right"><div id="dxp" style="font-size:1.45rem;font-weight:800;color:var(--amber)">0</div><div style="font-size:.6rem;opacity:.33">Total XP</div></div>
+    </div>
+    <div class="xbar"><div class="xfill" id="dxpb" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:.6rem;opacity:.3;margin-top:4px"><span>Lv<span id="dlc">1</span></span><span id="dnxt">100 XP to next</span></div>
+  </div></div>
+  <!-- Stat Grid -->
+  <div id="most-played-dash" style="padding:0 15px;margin-bottom:12px"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 15px;margin-bottom:12px">
+    <div class="stile"><div class="sv" id="dtg">0</div><div class="sl">Games</div></div>
+    <div class="stile"><div class="sv sv--green" id="dtw">0</div><div class="sl">Wins</div></div>
+    <div class="stile"><div class="sv sv--amber" id="dts">0</div><div class="sl">Best Streak</div></div>
+    <div class="stile"><div class="sv" id="dtt">0m</div><div class="sl">Play Time</div></div>
+    <div class="stile"><div class="sv sv--cyan" id="dtr">—</div><div class="sl">Best Reflex</div></div>
+    <div class="stile"><div class="sv sv--red" id="dtb">0</div><div class="sl">Betrayals</div></div>
+  </div>
+  <!-- Charts -->
+  <div style="padding:0 15px;margin-bottom:14px">
+    <div class="sec" style="margin-bottom:9px">📈 Win Trend</div>
+    <div class="glass" style="padding:14px"><canvas id="wchart" width="300" height="60" style="width:100%;display:block"></canvas></div>
+  </div>
+  <!-- Playstyle Radar -->
+  <div style="padding:0 15px;margin-bottom:14px">
+    <div class="sec" style="margin-bottom:9px">🎭 Playstyle Profile</div>
+    <div class="glass" style="padding:14px;display:flex;gap:14px;align-items:center">
+      <canvas id="radar" width="100" height="100"></canvas>
+      <div id="persona-block"></div>
+    </div>
+  </div>
+  <!-- Achievements -->
+  <div style="padding:0 15px"><div class="sec" style="margin-bottom:9px">🏆 Achievements</div><div id="achl"></div></div>
+  <!-- History -->
+  <div style="padding:0 15px;margin-top:14px"><div class="sec" style="margin-bottom:9px">📋 History</div><div id="hlist"></div></div>
+  <!-- High Scores -->
+  <div style="padding:0 15px;margin-top:14px;margin-bottom:8px"><div class="sec" style="margin-bottom:9px">🏆 High Scores</div><div id="records-list"></div></div>
+  <!-- Unlock progress -->
+  <div style="padding:0 15px;margin-top:14px;margin-bottom:20px"><div class="sec" style="margin-bottom:9px">🔓 Unlock Progress</div><div id="unlock-list"></div></div>
+</div>
+
+<!-- ARCADE (5th tab) -->
+<div class="screen" id="arcade-screen">
+  <div class="screen-header"><div style="font-size:1.25rem;font-weight:800;letter-spacing:-.02em">Arcade</div><div style="font-size:.78rem;opacity:.3;margin-top:2px">Modes, daily, custom games</div></div>
+  <!-- Daily Challenge -->
+  <div style="padding:0 15px;margin-bottom:16px">
+    <div class="sec" style="margin-bottom:9px">🎯 Daily Challenge</div>
+    <div id="daily-widget" class="holo" style="border-radius:16px;padding:15px;cursor:pointer"></div>
+  </div>
+  <!-- Tournament -->
+  <div style="padding:0 15px;margin-bottom:16px">
+    <div class="sec" style="margin-bottom:9px">🏆 Tournament</div>
+    <div id="tourney-widget"></div>
+  </div>
+  <!-- Custom Game Creator -->
+  <div style="padding:0 15px;margin-bottom:16px">
+    <div class="sec" style="margin-bottom:9px">⚙️ Custom Game Creator</div>
+    <div id="custom-creator"></div>
+  </div>
+  <!-- Vault -->
+  <div style="padding:0 15px;margin-bottom:16px">
+    <div class="sec" style="margin-bottom:9px">🔓 Vault</div>
+    <div id="vault-list"></div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="profile-screen">
+  <div class="screen-header" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:18px">
+    <div id="pav2" style="width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.7rem;margin-bottom:12px;border:1px solid var(--border);background:rgba(255,255,255,.05)">👤</div>
+    <div id="pnm2" style="font-size:1.65rem;font-weight:800;letter-spacing:-.03em">Player</div>
+    <div id="prk2" style="font-size:.73rem;opacity:.3;margin-top:3px">Rookie · Level 1</div>
+    <div id="pbadges" style="display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:10px 0"></div>
+    <button class="btn bg bsm" style="margin-top:4px" onclick="GL.editProfile()">Edit Profile</button>
+  </div>
+  <!-- Themes -->
+  <div style="padding:0 15px"><div class="sec" style="margin-bottom:9px">🎨 Themes</div><div id="tgrid"></div></div>
+  <!-- Performance -->
+  <div style="padding:0 15px;margin-top:18px"><div class="sec" style="margin-bottom:9px">📈 Performance</div>
+    <div class="glass" style="padding:14px">
+      <div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:.76rem;font-weight:600">Win Rate</span><span id="pwr" style="font-size:.73rem;opacity:.48">0%</span></div><div class="btrack"><div class="bfill" id="pwrb" style="width:0%;background:var(--acc)"></div></div></div>
+      <div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:.76rem;font-weight:600">Bluff Score</span><span id="pbl" style="font-size:.73rem;opacity:.48">0</span></div><div class="btrack"><div class="bfill" id="pblb" style="width:0%;background:var(--violet)"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:.76rem;font-weight:600">Reflex</span><span id="prf" style="font-size:.73rem;opacity:.48">—</span></div><div class="btrack"><div class="bfill" id="prfb" style="width:0%;background:var(--cyan)"></div></div></div>
+    </div>
+  </div>
+  <!-- Settings -->
+  <div style="padding:14px 15px"><div class="sec" style="margin-bottom:9px">⚙️ Settings</div>
+    <div class="glass" style="border-radius:15px;overflow:hidden">
+      <div class="srow"><span style="font-size:.84rem;font-weight:600">🔊 Sound Effects</span><div class="tog on" id="tsfx" onclick="GL.togSet('sfx',this)"></div></div>
+      <div class="srow"><span style="font-size:.84rem;font-weight:600">📳 Haptics</span><div class="tog on" id="thap" onclick="GL.togSet('haptic',this)"></div></div>
+      <div class="srow"><span style="font-size:.84rem;font-weight:600">🌟 Animated BG</span><div class="tog on" id="tbg" onclick="GL.togSet('bg',this)"></div></div>
+      <div class="srow"><span style="font-size:.84rem;font-weight:600">🔔 Notifications</span><div class="tog on" id="tnotif" onclick="GL.togSet('notif',this)"></div></div>
+      <div class="srow"><span style="font-size:.84rem;font-weight:600">👆 Larger Tap Targets</span><div class="tog" id="tlargetap" onclick="GL.togSet('largeTap',this)"></div></div>
+      <div class="srow"><span style="font-size:.84rem;font-weight:600">🎨 Color-Blind Mode</span><div class="tog" id="tcb" onclick="GL.togSet('colorBlind',this)"></div></div>
+      <div class="srow" style="border:none"><span style="font-size:.84rem;font-weight:600">💾 Auto-Save</span><div class="tog on" id="tsv" onclick="GL.togSet('save',this)"></div></div>
+    </div>
+    <div style="margin-top:12px;padding:12px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:12px;margin-bottom:10px">
+      <div style="font-size:.72rem;opacity:.45;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">Try demo</div>
+      <div style="font-size:.65rem;opacity:.35;line-height:1.4">Open with <strong>?demo=1</strong> for sample XP stats. PrismCap v4.0.0</div>
+    </div>
+    <button class="btn bg bf" style="margin-top:4px" onclick="GL.resetData()">Reset All Data</button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div class="screen" id="game-screen">
+  <div id="game-progress"><div id="game-progress-fill"></div></div>
+  <div class="ghdr" style="gap:8px">
+    <button type="button" onclick="GL.requestExit()" style="min-width:44px;min-height:44px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0" title="Back (Esc)" aria-label="Leave game">←</button>
+    <div id="gtitle" style="font-size:.9rem;font-weight:700;letter-spacing:-.01em;flex:1;text-align:center"></div>
+    <div id="gright" style="display:flex;gap:5px;align-items:center">
+      <button type="button" id="ghint-btn" onclick="GL.showHint()" style="min-width:44px;min-height:44px;border-radius:50%;background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.25);display:none;align-items:center;justify-content:center;font-size:.8rem" title="Hint" aria-label="Hint">💡</button>
+      <button type="button" onclick="GL.showGameSettings()" style="min-width:44px;min-height:44px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:.8rem" title="Settings" aria-label="Settings">⚙️</button>
+    </div>
+  </div>
+  <div class="gbody" id="gbody"></div>
+</div>
+
+<!-- NAV (5 tabs) -->
+<nav id="nav" aria-label="Main navigation">
+  <div class="ni on" data-s="home" onclick="Nav.go('home')" role="button" aria-label="Home"><span class="nic" aria-hidden="true">⬡</span><span class="nil">Home</span></div>
+  <div class="ni" data-s="library" onclick="Nav.go('library')" role="button" aria-label="Games"><span class="nic" aria-hidden="true">◫</span><span class="nil">Games</span></div>
+  <div class="ni" data-s="arcade" onclick="Nav.go('arcade')" role="button" aria-label="Arcade"><span class="nic" aria-hidden="true">◈</span><span class="nil">Arcade</span></div>
+  <div class="ni" data-s="dashboard" onclick="Nav.go('dashboard')" role="button" aria-label="Stats"><span class="nic" aria-hidden="true">▦</span><span class="nil">Stats</span></div>
+  <div class="ni" data-s="profile" onclick="Nav.go('profile')" role="button" aria-label="Profile"><span class="nic" aria-hidden="true">◉</span><span class="nil">Profile</span></div>
+</nav>
+</div>
+<script src="js/dialogs.js"></script>
+<script src="js/games/example-game.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

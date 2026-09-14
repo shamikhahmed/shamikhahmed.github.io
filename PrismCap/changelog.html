@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#a855f7">
+<title>Changelog — PrismCap</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0a12;color:#eee;line-height:1.65;padding:24px;max-width:720px;margin:0 auto}
+a{color:#a855f7}
+nav{margin-bottom:28px;font-size:14px}
+nav a{margin-right:12px;color:#888}
+h1{font-size:1.75rem;margin:24px 0 12px;letter-spacing:-.02em}
+h2{font-size:1.15rem;margin:20px 0 8px;color:#a855f7}
+h3{font-size:1rem;margin:16px 0 6px}
+p,li{font-size:15px;color:#888;margin-bottom:10px}
+ul{margin:8px 0 16px 20px}
+code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-size:.9em}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#888}
+</style>
+
+  <link rel="stylesheet" href="css/capricorn-core.css">
+</head>
+<body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+<nav>
+  <a href="landing.html">← PrismCap</a>
+  <a href="index.html">App</a>
+  <a href="presentation.html">Presentation</a>
+  <a href="pitch.html">Pitch</a>
+</nav>
+<h2>4.5.0</h2>
+<ul><li>Tier 1 finish — D-06 renames, device gate removal, ConfirmDialog, SW prismcap-v450</li></ul>
+<article><h1>Changelog — PrismCap</h1>
+<h2>4.1.6 (2026-06-16)</h2>
+<ul>
+<li><strong>4.3.7</strong> — Home truth: Smart Hub LV/XP, demo seed after registry, Mac layout fix</li><li>Portfolio CTO pass: PWA icons (192/512 maskable), service worker cache bump (<code>PrismCap-shell-v4</code>)</li>
+<li>Truth sprint: docs aligned with shipped features</li>
+<li>Truth Bomb party game, 39-game daily challenges fixed</li>
+<p></ul></p></article>
+<footer>© 2026 Shamikh Ahmed · <a href="https://github.com/shamikhahmed/PrismCap">GitHub</a></footer>
+
+  <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/capricorn-scene.js"></script>
+  <script src="js/capricorn-motion.js"></script>
+  <script src="js/capricorn-cinematic.js"></script>
+  <script>document.addEventListener('DOMContentLoaded',function(){if(window.CapCinematic)CapCinematic.init({canvas:'#cap-scene'});});</script>
+</body>
+</html>

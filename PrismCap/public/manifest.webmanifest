@@ -1,0 +1,12 @@
+{
+  "name": "PrismCap",
+  "short_name": "PrismCap",
+  "description": "Party games for one phone, passed around the room.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080b14",
+  "theme_color": "#080b14",
+  "icons": [
+    { "src": "/public/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

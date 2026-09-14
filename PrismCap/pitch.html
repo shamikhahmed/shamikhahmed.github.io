@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PrismCap — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#c77dff;
+  --acc:#C77DFF;--acc2:#FF2D78;--cyan:#00E5FF;
+  --green:#00E676;--amber:#FFD60A;
+  --muted:rgba(255,255,255,.52);--dim:rgba(255,255,255,.25);
+  font-size:16px;
+}
+html{scroll-behavior:smooth}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;background:#000;color:#fff;overflow-x:hidden}
+::selection{background:rgba(199,125,255,.35)}
+
+.slide{position:relative;width:100%;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:80px 48px}
+@media(max-width:600px){.slide{padding:64px 24px}}
+
+.reveal{opacity:0;transform:translateY(48px) scale(.97);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:none}
+.reveal-scale{opacity:0;transform:scale(.82);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.35s}
+.delay-4{transition-delay:.5s}.delay-5{transition-delay:.65s}.delay-6{transition-delay:.8s}
+
+#nav-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:1000;display:flex;flex-direction:column;gap:10px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .3s;border:none;padding:0}
+.nav-dot.active{background:#fff;transform:scale(1.4)}
+.nav-dot:hover{background:rgba(255,255,255,.6)}
+#export-btn{position:fixed;top:20px;right:20px;z-index:1000;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;padding:10px 18px;border-radius:100px;font-size:.8rem;font-weight:600;cursor:pointer;backdrop-filter:blur(12px);letter-spacing:.04em;font-family:inherit;transition:background .2s}
+#export-btn:hover{background:rgba(255,255,255,.15)}
+@media(max-width:600px){#nav-dots{right:10px}.nav-dot{width:6px;height:6px}#export-btn{display:none}}
+
+h1{font-size:clamp(3.2rem,13vw,8rem);font-weight:900;letter-spacing:-.05em;line-height:1}
+h2{font-size:clamp(1.7rem,4.5vw,3rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem;line-height:1.1}
+.sub{color:var(--muted);font-size:clamp(.95rem,2.2vw,1.15rem);max-width:580px;line-height:1.65;margin:0 auto 2rem}
+.grad{background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.badge{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:10px 18px;font-size:.85rem;font-weight:600}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:760px;width:100%;margin-top:2rem;text-align:left}
+@media(max-width:600px){.cards{grid-template-columns:1fr}}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px;transition:border-color .3s,transform .3s}
+.card:hover{border-color:rgba(199,125,255,.35);transform:translateY(-3px)}
+.card h3{font-size:1rem;margin-bottom:.4rem;font-weight:700}
+.card p{font-size:.85rem;color:var(--muted);line-height:1.55}
+.card-icon{font-size:1.8rem;margin-bottom:.6rem;display:block}
+
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:2rem}
+.btn{padding:16px 28px;border-radius:99px;font-weight:700;font-size:.95rem;text-decoration:none;border:none;cursor:pointer;font-family:inherit;transition:transform .2s,filter .2s}
+.btn-p{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 8px 28px rgba(199,125,255,.35)}
+.btn-s{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+
+/* ── SECTION 1 OPENER ── */
+#s1{background:#0a0a0f;text-align:center;flex-direction:column}
+#s1-grad{position:absolute;inset:0;background:
+  radial-gradient(ellipse 80% 60% at 50% 55%,rgba(199,125,255,.22) 0%,transparent 70%),
+  radial-gradient(ellipse 50% 40% at 75% 25%,rgba(255,45,120,.15) 0%,transparent 60%),
+  radial-gradient(ellipse 40% 40% at 15% 80%,rgba(0,229,255,.1) 0%,transparent 60%);
+  animation:gradshift 8s ease-in-out infinite alternate}
+@keyframes gradshift{0%{opacity:.75;transform:scale(1)}100%{opacity:1;transform:scale(1.04)}}
+#canvas-particles{position:absolute;inset:0;z-index:1}
+.s1-content{position:relative;z-index:2}
+.s1-logo{font-size:clamp(4rem,12vw,7rem);animation:float 4s ease-in-out infinite;display:block;margin-bottom:.2em}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.s1-tagline{font-size:clamp(1rem,2.5vw,1.35rem);font-weight:300;color:var(--muted);letter-spacing:.04em;margin-bottom:2.5rem}
+.s1-scroll{font-size:.82rem;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ── SECTION 2 PROBLEM ── */
+#s2{background:radial-gradient(ellipse 100% 80% at 50% 100%,rgba(80,0,40,.5) 0%,transparent 70%),#080508;flex-direction:column;text-align:center}
+.pain-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:800px}
+.pain-card{background:rgba(255,45,120,.05);border:1px solid rgba(255,45,120,.18);border-radius:20px;padding:24px 26px;min-width:200px;flex:1;max-width:240px;text-align:left}
+.pain-emoji{font-size:2rem;margin-bottom:.6rem;display:block}
+.pain-card h3{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.pain-card p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* ── SECTION 3 SOLUTION ── */
+#s3{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(199,125,255,.15) 0%,transparent 70%),#0a0a0f;flex-direction:column;text-align:center}
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:1.5rem}
+.stat-box{background:rgba(255,255,255,.04);border:1px solid rgba(199,125,255,.2);border-radius:16px;padding:20px 28px;min-width:120px;text-align:center}
+.stat-val{font-size:2.2rem;font-weight:900;color:var(--acc);line-height:1}
+.stat-key{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+/* ── SECTION 4 PILLARS ── */
+#s4{background:#050508;flex-direction:column;text-align:center}
+.pillar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;width:100%}
+@media(max-width:800px){.pillar-grid{grid-template-columns:repeat(2,1fr)}}
+.pillar{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px 18px;text-align:center;transition:transform .3s,border-color .3s}
+.pillar:hover{transform:translateY(-5px);border-color:rgba(199,125,255,.35)}
+.pillar-icon{font-size:2.2rem;margin-bottom:.75rem;display:block}
+.pillar-title{font-size:.95rem;font-weight:800;margin-bottom:.35rem}
+.pillar-sub{font-size:.78rem;color:var(--muted);line-height:1.45}
+
+/* ── SECTION 5 DECEPTION ── */
+#s5{background:radial-gradient(ellipse 70% 50% at 30% 60%,rgba(255,45,85,.12) 0%,transparent 70%),#0a0008;flex-direction:column;text-align:center}
+.game-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:720px;margin-top:1.5rem}
+.game-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:14px;font-size:.82rem;font-weight:600;background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.2)}
+.game-chip span{font-size:1.1rem}
+
+/* ── SECTION 6 REFLEX ── */
+#s6{background:radial-gradient(ellipse 70% 50% at 70% 40%,rgba(0,229,255,.1) 0%,transparent 70%),#000810;flex-direction:column;text-align:center}
+.game-chip.cyan{background:rgba(0,229,255,.07);border-color:rgba(0,229,255,.2)}
+
+/* ── SECTION 7 BOARD ── */
+#s7{background:#080808;flex-direction:column;text-align:center}
+.board-scroll{display:flex;gap:14px;overflow-x:auto;padding:8px 0;max-width:860px;width:100%;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.board-scroll::-webkit-scrollbar{display:none}
+.board-card{flex-shrink:0;width:160px;border-radius:20px;padding:20px 16px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
+.board-card .icon{font-size:2.4rem;margin-bottom:10px;display:block}
+.board-card h3{font-size:.9rem;font-weight:800;margin-bottom:4px}
+.board-card p{font-size:.72rem;color:var(--muted)}
+
+/* ── SECTION 8 PASS & PLAY ── */
+#s8{background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(199,125,255,.12) 0%,transparent 70%),#0a0a0f;flex-direction:column;text-align:center}
+.flow-steps{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0;max-width:860px;margin-top:2rem}
+.step{background:rgba(255,255,255,.04);border:1px solid rgba(199,125,255,.2);border-radius:18px;padding:22px 20px;min-width:150px;flex:1;max-width:190px;text-align:center;position:relative;margin:8px}
+.step::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:1.4rem}
+.step:last-child::after{display:none}
+@media(max-width:700px){.step::after{display:none}}
+.step-num{font-size:2.8rem;font-weight:900;color:var(--acc);opacity:.25;line-height:1;margin-bottom:.4rem}
+.step-icon{font-size:1.8rem;margin-bottom:.6rem;display:block}
+.step h3{font-size:.95rem;font-weight:700;margin-bottom:.35rem}
+.step p{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+/* mock modal */
+.pp-modal{background:rgba(18,18,26,.95);border:1px solid rgba(199,125,255,.25);border-radius:22px;padding:24px;max-width:340px;width:100%;margin-top:2rem;text-align:left;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.pp-title{font-size:1rem;font-weight:800;margin-bottom:2px}
+.pp-sub{font-size:.75rem;color:var(--muted);margin-bottom:14px}
+.pchip{display:flex;align-items:center;gap:9px;padding:10px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;margin-bottom:7px}
+.pchip-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.pchip-name{font-size:.85rem;font-weight:600;flex:1}
+.bot-pills{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.bot-pill{padding:6px 12px;border-radius:100px;font-size:.68rem;font-weight:700;background:rgba(199,125,255,.12);border:1px solid rgba(199,125,255,.3);color:var(--acc)}
+
+/* ── SECTION 9 BOTS ── */
+#s9{background:#050510;flex-direction:column;text-align:center}
+.bot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:640px;width:100%;margin-top:1.5rem;text-align:left}
+@media(max-width:500px){.bot-grid{grid-template-columns:1fr}}
+.bot-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px}
+.bot-card h3{font-size:.92rem;font-weight:700;margin-bottom:.35rem;display:flex;align-items:center;gap:8px}
+.bot-card p{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+/* ── SECTION 10 DRAMA ── */
+#s10{background:radial-gradient(ellipse 70% 50% at 50% 40%,rgba(255,45,120,.1) 0%,transparent 70%),#0f0008;flex-direction:column;text-align:center}
+.engine-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:860px;width:100%;margin-top:1.5rem;text-align:left}
+@media(max-width:700px){.engine-cards{grid-template-columns:1fr}}
+.engine-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px}
+.engine-card h3{font-size:.95rem;font-weight:700;color:var(--acc);margin-bottom:.5rem}
+.engine-card p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* ── SECTION 11 ECO ── */
+#s11{background:#0a0a0f;flex-direction:column;text-align:center}
+.perf-demo{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:flex-start;margin-top:2rem;max-width:720px;width:100%}
+.perf-panel{flex:1;min-width:260px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px;text-align:left}
+.perf-panel.eco{border-color:rgba(0,230,118,.25)}
+.perf-panel.boost{border-color:rgba(255,45,120,.25);opacity:.7}
+.perf-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:14px}
+.perf-panel.eco .perf-label{color:var(--green)}
+.perf-panel.boost .perf-label{color:var(--acc2)}
+.perf-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.85rem}
+.perf-item:last-child{border:none}
+.perf-val{font-weight:700;color:var(--acc)}
+
+/* ── SECTION 12 THEMES ── */
+#s12{background:#000;flex-direction:column;text-align:center}
+.themes-row{display:flex;width:100%;max-width:860px;height:220px;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.08);margin-top:2rem}
+.theme-panel{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:flex .5s cubic-bezier(.22,1,.36,1);padding:14px 8px;cursor:pointer}
+.theme-panel:hover{flex:1.6}
+.theme-panel.cyber{background:linear-gradient(160deg,#001a0e,#003320)}
+.theme-panel.horror{background:linear-gradient(160deg,#050000,#200000)}
+.theme-panel.glitch{background:linear-gradient(160deg,#000,#001a1a)}
+.theme-panel.neon{background:linear-gradient(160deg,#0d001a,#1a0033)}
+.theme-panel.gold{background:linear-gradient(160deg,#0a0800,#1a1400)}
+.theme-dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.2)}
+.cyber .theme-dot{background:#00E676}.horror .theme-dot{background:#FF0000}
+.glitch .theme-dot{background:#00FFFF}.neon .theme-dot{background:#FF00FF}.gold .theme-dot{background:#FFD700}
+.theme-name{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;writing-mode:vertical-rl}
+
+/* ── SECTION 13 MUTATORS ── */
+#s13{background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(199,125,255,.1) 0%,transparent 70%),#080510;flex-direction:column;text-align:center}
+.mut-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:680px;margin-top:1.5rem}
+.mut-chip{padding:10px 18px;border-radius:100px;font-size:.82rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+.mut-chip.on{background:rgba(199,125,255,.15);border-color:rgba(199,125,255,.4);color:var(--acc)}
+
+/* ── SECTION 14 ACHIEVEMENTS ── */
+#s14{background:#0a0a0f;flex-direction:column;text-align:center}
+.ach-showcase{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:2rem;max-width:800px;width:100%}
+.ach-toast{background:linear-gradient(135deg,rgba(199,125,255,.18),rgba(255,45,120,.1));border:1px solid rgba(199,125,255,.35);border-radius:18px;padding:20px 22px;display:flex;align-items:center;gap:16px;box-shadow:0 16px 48px rgba(199,125,255,.2);max-width:380px;flex:1;min-width:280px;text-align:left}
+.ach-icon{font-size:2.4rem}
+.ach-body{flex:1}
+.ach-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--acc);font-weight:700}
+.ach-name{font-size:1.1rem;font-weight:800;margin:3px 0}
+.ach-desc{font-size:.78rem;color:var(--muted)}
+.ach-xp{font-size:.95rem;font-weight:800;color:var(--amber)}
+.xp-demo{flex:1;min-width:260px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px;text-align:left}
+.xp-bar{height:8px;background:rgba(255,255,255,.06);border-radius:4px;margin:10px 0;overflow:hidden}
+.xp-fill{height:100%;width:58%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:4px}
+.rank-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.rank-pill{font-size:.62rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim)}
+
+/* ── SECTION 15 TOURNAMENT ── */
+#s15{background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(255,214,10,.08) 0%,transparent 70%),#0a0800;flex-direction:column;text-align:center}
+.bracket-wrap{max-width:520px;width:100%;margin-top:2rem;text-align:left}
+.br-match{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;margin-bottom:8px}
+.br-player{flex:1;text-align:center}
+.br-player .av{font-size:1.3rem}
+.br-player .nm{font-size:.68rem;font-weight:700;margin-top:2px}
+.br-vs{font-size:.7rem;color:var(--dim);font-weight:700}
+.br-win{color:var(--green);font-size:.65rem;font-weight:700}
+
+/* ── SECTION 16 OFFLINE ── */
+#s16{background:#030508;flex-direction:column;text-align:center}
+.offline-flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0;max-width:800px;margin:2rem auto}
+.off-node{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:16px;padding:18px 20px;min-width:130px;text-align:center;margin:6px}
+.off-node-icon{font-size:1.6rem;display:block;margin-bottom:.4rem}
+.off-node-label{font-size:.78rem;font-weight:700}
+.off-arrow{color:rgba(0,229,255,.4);font-size:1.4rem;padding:0 6px}
+@media(max-width:600px){.off-arrow{display:none}}
+
+/* ── SECTION 17 PWA ── */
+#s17{background:#000;flex-direction:column;text-align:center}
+.pwa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:800px;width:100%;margin-top:1.5rem}
+@media(max-width:600px){.pwa-grid{grid-template-columns:repeat(2,1fr)}}
+.pwa-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px 16px;text-align:center}
+.pwa-card .icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.pwa-card h3{font-size:.85rem;font-weight:700}
+
+/* ── SECTION 18 TECH ── */
+#s18{background:radial-gradient(ellipse 70% 50% at 30% 60%,rgba(199,125,255,.1) 0%,transparent 70%),#0a0a0f;flex-direction:column;text-align:center}
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:720px;width:100%;margin-top:1.5rem}
+@media(max-width:600px){.tech-grid{grid-template-columns:repeat(2,1fr)}}
+.tech-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 14px;text-align:center}
+.tech-item .icon{font-size:1.6rem;margin-bottom:.5rem;display:block}
+.tech-item h3{font-size:.82rem;font-weight:700;color:var(--acc)}
+.tech-item p{font-size:.72rem;color:var(--muted);margin-top:3px}
+
+/* ── SECTION 19 WHO ── */
+#s19{background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(255,45,120,.08) 0%,transparent 70%),#080508;flex-direction:column;text-align:center}
+.persona-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:760px;width:100%;margin-top:1.5rem;text-align:left}
+@media(max-width:600px){.persona-grid{grid-template-columns:1fr}}
+.persona{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px;transition:border-color .3s,transform .3s}
+.persona:hover{border-color:rgba(199,125,255,.3);transform:translateY(-4px)}
+.persona-emoji{font-size:2rem;margin-bottom:.6rem;display:block}
+.persona-role{font-size:1rem;font-weight:800;margin-bottom:.4rem}
+.persona-desc{font-size:.84rem;color:var(--muted);line-height:1.55}
+
+/* ── SECTION 20 METRICS ── */
+#s20{background:#0a0a0f;flex-direction:column;text-align:center}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;width:100%;margin-top:2rem}
+@media(max-width:500px){.metrics-grid{grid-template-columns:repeat(2,1fr)}}
+.metric{background:rgba(255,255,255,.04);border:1px solid rgba(199,125,255,.15);border-radius:18px;padding:28px 16px;text-align:center}
+.metric-num{font-size:clamp(2.2rem,5vw,3.2rem);font-weight:900;line-height:1;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metric-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+
+/* ── SECTION 21 CTA ── */
+#s21{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(199,125,255,.2) 0%,transparent 70%),#0a0a0f;flex-direction:column;text-align:center}
+.cta-url{font-family:ui-monospace,Menlo,monospace;font-size:clamp(.9rem,2vw,1.1rem);color:var(--acc);margin-top:1.5rem;letter-spacing:.02em}
+
+@media(max-width:600px){.cards[style*="repeat(3"]{grid-template-columns:1fr!important}}
+
+/* ── device mock ── */
+.device-section{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:2rem;max-width:860px;width:100%}
+.phone-mock{width:260px;height:500px;border-radius:40px;border:3px solid rgba(255,255,255,.12);background:linear-gradient(180deg,#0d0d14,#0a0a0f);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(199,125,255,.1);flex-shrink:0}
+.phone-notch-mock{width:100px;height:24px;background:#000;border-radius:0 0 14px 14px;margin:0 auto}
+.phone-inner{padding:32px 14px 20px}
+.dev-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dev-pick{padding:9px 6px;border-radius:10px;text-align:center;font-size:.65rem;font-weight:700;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.dev-pick.active{background:rgba(199,125,255,.15);border-color:rgba(199,125,255,.4);color:var(--acc)}
+.device-copy{flex:1;min-width:240px;text-align:left;max-width:380px}
+.device-copy li{font-size:.85rem;color:var(--muted);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);list-style:none;display:flex;gap:8px;align-items:center}
+.device-copy li::before{content:'✓';color:var(--acc);font-weight:700}
+
+@media print{#nav-dots,#export-btn{display:none!important}.slide{page-break-after:always;min-height:100vh}.reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1!important;transform:none!important}}
+
+.deck-shot{display:block;width:100%;height:auto;margin:0;object-fit:cover;object-position:top center}
+.phone-b:has(.deck-shot),.phone-body:has(.deck-shot),.phone-screen:has(.deck-shot),.phone-inner:has(.deck-shot),.term-b:has(.deck-shot){padding:0!important;min-height:0!important;overflow:hidden}
+.term-b .deck-shot{border-radius:0 0 12px 12px}
+.deck-shot-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:1.5rem 0}
+.deck-shot-frame{width:min(100%,280px);border-radius:24px;overflow:hidden;border:2px solid rgba(255,255,255,.12);box-shadow:0 20px 50px rgba(0,0,0,.35)}
+
+
+.qr-section{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:1.75rem}
+.qr-box{width:168px;height:168px;background:#fffaf3;border-radius:18px;padding:8px;display:flex;align-items:center;justify-content:center;border:2px solid #c9a227;box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 0 1px rgba(201,162,39,.28)}
+.qr-box img{width:148px;height:148px;display:block;border-radius:10px}
+.qr-label{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase}
+
+</style>
+
+  <link rel="stylesheet" href="css/capricorn-core.css">
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/capricorn-scene.js"></script>
+  </head>
+<body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+
+<div id="nav-dots"></div>
+<button id="export-btn" onclick="window.print()">⬇ Export PDF</button>
+
+<!-- SECTION 1 — CINEMATIC OPENER -->
+<section class="slide" id="s1">
+  <div id="s1-grad"></div>
+  <canvas id="canvas-particles"></canvas>
+  <div class="s1-content">
+    <span class="s1-logo reveal">✨</span>
+    <h1 class="reveal delay-1"><span class="grad">PrismCap</span></h1>
+    <p class="s1-tagline reveal delay-2">39 games. One phone. Zero Wi‑Fi.</p>
+    <p class="reveal delay-3" style="color:var(--dim);font-size:.88rem;max-width:480px;margin:0 auto 2rem;line-height:1.6">Pass the phone, not your data. Solo to 10+ players · game bots · eco performance · zero servers.</p>
+    <div class="badges reveal delay-4">
+      <span class="badge">📱 PWA</span>
+      <span class="badge">🔒 Private</span>
+      <span class="badge">✈️ Offline</span>
+      <span class="badge">🤖 Bots</span>
+    </div>
+    <p class="s1-scroll reveal delay-5" style="margin-top:3rem">Scroll to explore ↓</p>
+  </div>
+</section>
+
+<!-- SECTION 2 — PROBLEM -->
+<section class="slide" id="s2">
+  <div style="max-width:860px;width:100%;text-align:center">
+    <h2 class="reveal">Mobile games are <span style="color:var(--accent,inherit)">broken.</span></h2>
+    <p class="sub reveal delay-1">Board game nights need setup and rules nobody remembers. Party apps harvest contacts for "social features."</p>
+    <div class="pain-grid">
+      <div class="pain-card reveal delay-1"><span class="pain-emoji">📱</span><h3>Accounts &amp; ads</h3><p>App store games gate fun behind sign-ups, subscriptions, and interruptive ads.</p></div>
+      <div class="pain-card reveal delay-2"><span class="pain-emoji">👥</span><h3>No pass-and-play</h3><p>Mobile rarely supports multiple players on one device with private reveals.</p></div>
+      <div class="pain-card reveal delay-3"><span class="pain-emoji">🔥</span><h3>Performance lag</h3><p>Heavy frameworks drain battery and stutter during fast reflex games.</p></div>
+      <div class="pain-card reveal delay-4"><span class="pain-emoji">☁️</span><h3>Cloud-dependent</h3><p>No signal at the campsite or on a flight? Game night is cancelled.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 — SOLUTION -->
+<section class="slide" id="s3">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <h2 class="reveal">Introducing <span class="grad">PrismCap</span></h2>
+    <p class="sub reveal delay-1">A pocket arcade — 39 games, one device, zero internet.</p>
+    <div class="stat-row reveal delay-2">
+      <div class="stat-box"><div class="stat-val">36</div><div class="stat-key">Games</div></div>
+      <div class="stat-box"><div class="stat-val">0</div><div class="stat-key">Servers</div></div>
+      <div class="stat-box"><div class="stat-val">100%</div><div class="stat-key">Offline</div></div>
+      <div class="stat-box"><div class="stat-val">10+</div><div class="stat-key">Players</div></div>
+    </div>
+    <div class="badges reveal delay-3" style="margin-top:2rem">
+      <span class="badge">Install once · Play anywhere</span>
+      <span class="badge">No account required</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 — CORE PILLARS -->
+<section class="slide" id="s4">
+  <div style="max-width:920px;width:100%;text-align:center">
+    <h2 class="reveal">Four <span class="grad">pillars</span></h2>
+    <p class="sub reveal delay-1">Every genre a party needs — deception, reflex, board, and brain fuel.</p>
+    <div class="pillar-grid">
+      <div class="pillar reveal delay-1"><span class="pillar-icon">🎭</span><div class="pillar-title">Social Deception</div><div class="pillar-sub">Shadow Protocol, Heist, Spy Hunt, Dead Drop</div></div>
+      <div class="pillar reveal delay-2"><span class="pillar-icon">⚡</span><div class="pillar-title">Reflex &amp; Speed</div><div class="pillar-sub">Neon Reflex, Reflex Ladder, Rhythm Pulse, Blitz Duel</div></div>
+      <div class="pillar reveal delay-3"><span class="pillar-icon">♟️</span><div class="pillar-title">Board Classics</div><div class="pillar-sub">Chess, Ludo, Four in a Row, Snakes &amp; Ladders + bots</div></div>
+      <div class="pillar reveal delay-4"><span class="pillar-icon">🧠</span><div class="pillar-title">Strategy &amp; Puzzles</div><div class="pillar-sub">Survival Mode, Infinite Maze, Memory Matrix, Signal Decode</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 — DECEPTION GAMES -->
+<section class="slide" id="s5">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <h2 class="reveal">Social <span class="grad">deception</span></h2>
+    <p class="sub reveal delay-1">Hidden roles, secret votes, moles in the vault — trust no one.</p>
+    <div class="game-chips reveal delay-2">
+      <div class="game-chip"><span>🕵️</span> Shadow Protocol</div>
+      <div class="game-chip"><span>🏦</span> The Heist</div>
+      <div class="game-chip"><span>👁️</span> Spy Hunt</div>
+      <div class="game-chip"><span>📻</span> Imposter Frequency</div>
+      <div class="game-chip"><span>💼</span> Dead Drop</div>
+      <div class="game-chip"><span>🗳️</span> Silent Vote</div>
+      <div class="game-chip"><span>♟️</span> Betrayal Grid</div>
+      <div class="game-chip"><span>📡</span> Last Signal</div>
+    </div>
+    <p class="reveal delay-3" style="margin-top:2rem;font-size:.85rem;color:var(--muted);max-width:520px;margin-left:auto;margin-right:auto">Drama Engine tracks tension and trust. Betrayals spike paranoia. Announcer calls out chaos in real time.</p>
+  </div>
+</section>
+
+<!-- SECTION 6 — REFLEX GAMES -->
+<section class="slide" id="s6">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <h2 class="reveal">Reflex &amp; <span style="color:var(--cyan)">speed</span></h2>
+    <p class="sub reveal delay-1">Sub-200ms achievements. Combo chains. Pass-the-bomb chaos.</p>
+    <div class="game-chips reveal delay-2">
+      <div class="game-chip cyan"><span>⚡</span> Neon Reflex</div>
+      <div class="game-chip cyan"><span>🪜</span> Reflex Ladder</div>
+      <div class="game-chip cyan"><span>🎵</span> Rhythm Pulse</div>
+      <div class="game-chip cyan"><span>👆</span> Quick Tap</div>
+      <div class="game-chip cyan"><span>💣</span> Hot Device</div>
+      <div class="game-chip cyan"><span>⚡</span> Blitz Duel</div>
+      <div class="game-chip cyan"><span>⚡</span> Chain Reaction</div>
+      <div class="game-chip cyan"><span>💢</span> Pressure Cooker</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 — BOARD GAMES -->
+<section class="slide" id="s7">
+  <div style="max-width:900px;width:100%;text-align:center">
+    <h2 class="reveal">Board <span class="grad">classics</span></h2>
+    <p class="sub reveal delay-1">Pass-and-play on one device. Game bots fill empty seats.</p>
+    <div class="board-scroll reveal delay-2">
+      <div class="board-card" style="background:rgba(100,210,255,.1);border:1px solid rgba(100,210,255,.22)"><span class="icon">♟️</span><h3>Chess</h3><p>🤖 Bot · 2 players</p></div>
+      <div class="board-card" style="background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.22)"><span class="icon">⚫</span><h3>Draughts</h3><p>🤖 Bot · 2 players</p></div>
+      <div class="board-card" style="background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.22)"><span class="icon">🔴</span><h3>Four in a Row</h3><p>🤖 Bot · 2 players</p></div>
+      <div class="board-card" style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.22)"><span class="icon">⭕</span><h3>Tic-Tac-Toe</h3><p>🤖 Bot · 2 players</p></div>
+      <div class="board-card" style="background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.22)"><span class="icon">🎲</span><h3>Ludo</h3><p>🤖 Bot · 2–4 players</p></div>
+      <div class="board-card" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.22)"><span class="icon">🐍</span><h3>Snakes &amp; Ladders</h3><p>🤖 Bot · 2–4 players</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8 — PASS & PLAY FLOW -->
+<section class="slide" id="s8">
+  <div style="max-width:900px;width:100%;text-align:center">
+    <h2 class="reveal">Pass &amp; <span class="grad">Play</span></h2>
+    <p class="sub reveal delay-1">One phone. Many players. Private handoffs. Zero setup friction.</p>
+    <div class="flow-steps reveal delay-2">
+      <div class="step"><div class="step-num">1</div><span class="step-icon">🎮</span><h3>Pick a game</h3><p>Browse 36 titles. Filter by category or search.</p></div>
+      <div class="step"><div class="step-num">2</div><span class="step-icon">👥</span><h3>Name players</h3><p>1–10 seats. Add bots to fill gaps instantly.</p></div>
+      <div class="step"><div class="step-num">3</div><span class="step-icon">🤫</span><h3>Private reveals</h3><p>Hand the phone. Role, vote, answer — hidden from others.</p></div>
+      <div class="step"><div class="step-num">4</div><span class="step-icon">🏆</span><h3>Results &amp; XP</h3><p>Winners crowned. XP saved locally. Achievements unlock.</p></div>
+    </div>
+    <div class="pp-modal reveal delay-3" style="margin-left:auto;margin-right:auto">
+      <div class="pp-title">🕵️ Shadow Protocol</div>
+      <div class="pp-sub">Hidden roles. Social deduction. Betrayal.</div>
+      <div style="font-size:.58rem;opacity:.35;letter-spacing:.09em;text-transform:uppercase;margin-bottom:7px">Players (5/10)</div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(255,45,85,.15)">😎</div><div class="pchip-name">Alex</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(255,107,0,.15)">🦊</div><div class="pchip-name">Sam</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(191,90,242,.15)">🐺</div><div class="pchip-name">Jordan</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(0,212,255,.15)">🦁</div><div class="pchip-name">Riley</div></div>
+      <div class="pchip"><div class="pchip-av" style="background:rgba(48,209,88,.15)">🤖</div><div class="pchip-name">Bot Alpha</div></div>
+      <div class="bot-pills"><span class="bot-pill">🤖 Add Bot</span><span class="bot-pill">🤖 Fill All</span><span class="bot-pill">🎲 Random Names</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 — PARTY & CHAOS -->
+<section class="slide" id="s9">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <h2 class="reveal">Party &amp; <span class="grad">chaos</span></h2>
+    <p class="sub reveal delay-1">Procedural cards, bluffing, word games — built for loud rooms.</p>
+    <div class="cards reveal delay-2" style="grid-template-columns:repeat(3,1fr);max-width:860px">
+      <div class="card"><span class="card-icon">🃏</span><h3>Chaos Cards</h3><p>Infinite procedural party challenges — sabotage, alliances, speed rounds.</p></div>
+      <div class="card"><span class="card-icon">🎭</span><h3>Split Truth</h3><p>Read two statements — one true, one lie. Others guess which you picked.</p></div>
+      <div class="card"><span class="card-icon">🔤</span><h3>Word Assassin</h3><p>Give clues without saying forbidden words. One slip ends your turn.</p></div>
+      <div class="card"><span class="card-icon">🧠</span><h3>Mind Meld</h3><p>Think the same thought. More players agree — more points scored.</p></div>
+      <div class="card"><span class="card-icon">⚔️</span><h3>One Device Dungeon</h3><p>Pass-and-play roguelike. Alliances, gold, and betrayals on every floor.</p></div>
+      <div class="card"><span class="card-icon">🤝</span><h3>Trust Fall</h3><p>Cooperate or defect? Prisoner's dilemma at party scale.</p></div>
+    </div>
+    <p class="reveal delay-3" style="margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Chaos Cards draws from 12+ procedural event types · Director Engine escalates each round</p>
+  </div>
+</section>
+
+<!-- SECTION 10 — BOTS -->
+<section class="slide" id="s10">
+  <div style="max-width:720px;width:100%;text-align:center">
+    <h2 class="reveal">Game <span class="grad">bots</span></h2>
+    <p class="sub reveal delay-1">Never play alone. Smart Assistant bots fill party games and board seats — rules-based, offline.</p>
+    <div class="bot-grid reveal delay-2">
+      <div class="bot-card"><h3>♟️ Board bots</h3><p>Chess, Draughts, Tic-Tac-Toe, Four in a Row, Blitz Duel, Ludo, Snakes &amp; Ladders — smart move selection at multiple difficulty levels.</p></div>
+      <div class="bot-card"><h3>🎭 Party fill</h3><p>Shadow Protocol, Heist, Spy Hunt, Chaos Cards, Imposter Frequency, Mind Meld, Dead Drop — bots join as named players with avatars.</p></div>
+      <div class="bot-card"><h3>➕ One tap add</h3><p>"Add Bot" or "Fill All" in the player setup modal. No configuration needed — instant game start.</p></div>
+      <div class="bot-card"><h3>🎮 Solo fallback</h3><p>Every multiplayer game supports bot fill so a group of 3 can still play a 5-player deception game.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11 — DRAMA ENGINE -->
+<section class="slide" id="s11">
+  <div style="max-width:900px;width:100%;text-align:center">
+    <h2 class="reveal">Drama &amp; <span class="grad">Director</span></h2>
+    <p class="sub reveal delay-1">Procedural engines that make every session feel different — no LLM required.</p>
+    <div class="engine-cards reveal delay-2">
+      <div class="engine-card"><h3>🎭 Drama Engine</h3><p>Tracks tension and trust across the session. Betrayal events spike paranoia. Dynamic announcer lines at chaos threshold.</p></div>
+      <div class="engine-card"><h3>🎬 Director Engine</h3><p>Adapts difficulty and pacing automatically. Procedural events per game type — shadow votes, dungeon rooms, chaos cards.</p></div>
+      <div class="engine-card"><h3>🧠 Persona Engine</h3><p>Smart Assistant reads wins, betrayals, and bluffs over time. Assigns playstyle: Deceptive, Strategic, Aggressive, Chaotic, Survivor.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 12 — ECO PERFORMANCE -->
+<section class="slide" id="s12">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <h2 class="reveal">Eco <span style="color:var(--green)">performance</span></h2>
+    <p class="sub reveal delay-1">Battery-friendly by default. Long game nights without drain.</p>
+    <div class="perf-demo reveal delay-2">
+      <div class="perf-panel eco">
+        <div class="perf-label">✓ Eco Mode (default)</div>
+        <div class="perf-item"><span>Particles</span><span class="perf-val" style="color:var(--green)">8</span></div>
+        <div class="perf-item"><span>Background grid</span><span class="perf-val" style="color:var(--green)">Off</span></div>
+        <div class="perf-item"><span>Particle speed</span><span class="perf-val" style="color:var(--green)">0.008</span></div>
+        <div class="perf-item"><span>Battery impact</span><span class="perf-val" style="color:var(--green)">Minimal</span></div>
+      </div>
+      <div class="perf-panel boost">
+        <div class="perf-label">Boost Mode</div>
+        <div class="perf-item"><span>Particles</span><span class="perf-val">22</span></div>
+        <div class="perf-item"><span>Background grid</span><span class="perf-val">On</span></div>
+        <div class="perf-item"><span>Particle speed</span><span class="perf-val">0.012</span></div>
+        <div class="perf-item"><span>Battery impact</span><span class="perf-val">Higher</span></div>
+      </div>
+    </div>
+    <p class="reveal delay-3" style="margin-top:1.5rem;font-size:.85rem;color:var(--muted)">PrismPerf.apply() toggles eco-mode class · Wake lock during active games · Haptics optional</p>
+  </div>
+</section>
+
+<!-- SECTION 13 — THEMES -->
+<section class="slide" id="s13">
+  <div style="max-width:900px;width:100%;text-align:center">
+    <h2 class="reveal">10 <span class="grad">themes</span></h2>
+    <p class="sub reveal delay-1">Unlock Cyber, Horror, Gold, Synth, and legendary Glitch via XP and wins.</p>
+    <div class="themes-row reveal delay-2">
+      <div class="theme-panel cyber"><div class="theme-dot"></div><div class="theme-name" style="color:#00E676">Cyber</div></div>
+      <div class="theme-panel horror"><div class="theme-dot"></div><div class="theme-name" style="color:#FF0000">Horror</div></div>
+      <div class="theme-panel glitch"><div class="theme-dot"></div><div class="theme-name" style="color:#00FFFF">Glitch</div></div>
+      <div class="theme-panel neon"><div class="theme-dot"></div><div class="theme-name" style="color:#FF00FF">Neon</div></div>
+      <div class="theme-panel gold"><div class="theme-dot"></div><div class="theme-name" style="color:#FFD700">Gold</div></div>
+    </div>
+    <p class="reveal delay-3" style="margin-top:1.5rem;font-size:.85rem;color:var(--muted)">Also: Terminal · Deep Space · Midnight · Red Alert · Synthwave · Minimal</p>
+  </div>
+</section>
+
+<!-- SECTION 14 — MUTATORS -->
+<section class="slide" id="s14">
+  <div style="max-width:760px;width:100%;text-align:center">
+    <h2 class="reveal"><span class="grad">Mutators</span></h2>
+    <p class="sub reveal delay-1">Stack up to 3 before launch. Remix any game for a fresh challenge.</p>
+    <div class="mut-grid reveal delay-2">
+      <span class="mut-chip on">⏱️ Speed Round</span>
+      <span class="mut-chip">🤫 Silent Mode</span>
+      <span class="mut-chip on">💀 Sudden Death</span>
+      <span class="mut-chip">🙈 Blind</span>
+      <span class="mut-chip">🔥 Elite Mode</span>
+      <span class="mut-chip">👾 Corrupted</span>
+      <span class="mut-chip">🌀 Double Chaos</span>
+    </div>
+    <div class="cards reveal delay-3" style="margin-top:2rem;grid-template-columns:1fr">
+      <div class="card"><h3>Speed Round</h3><p>Timers halved — reflex games become brutal. Stack with Sudden Death for elimination rounds.</p></div>
+      <div class="card"><h3>Elite Mode</h3><p>Triple XP reward. Higher stakes for ranked progression toward Legend status.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 15 — ACHIEVEMENTS & XP -->
+<section class="slide" id="s15">
+  <div style="max-width:860px;width:100%;text-align:center">
+    <h2 class="reveal">XP &amp; <span class="grad">achievements</span></h2>
+    <p class="sub reveal delay-1">10 ranks from Rookie to Legend · 16 achievements · daily challenges</p>
+    <div class="ach-showcase reveal delay-2">
+      <div class="ach-toast">
+        <div class="ach-icon">👑</div>
+        <div class="ach-body">
+          <div class="ach-label">Achievement Unlocked</div>
+          <div class="ach-name">Champion</div>
+          <div class="ach-desc">Win 10 games</div>
+        </div>
+        <div class="ach-xp">+250 XP</div>
+      </div>
+      <div class="xp-demo">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(199,125,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:2px solid rgba(199,125,255,.35)">😎</div>
+          <div><div style="font-weight:800;font-size:.95rem">Alex</div><div style="font-size:.72rem;color:var(--acc);font-weight:700">Agent · Level 3</div></div>
+        </div>
+        <div class="xp-bar"><div class="xp-fill"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--dim)"><span>340 XP</span><span>Specialist @ 450</span></div>
+        <div class="rank-pills">
+          <span class="rank-pill">Rookie</span><span class="rank-pill">Operative</span>
+          <span class="rank-pill" style="background:rgba(199,125,255,.2);color:var(--acc)">Agent</span>
+          <span class="rank-pill">Specialist</span><span class="rank-pill">Veteran</span>
+          <span class="rank-pill">Legend</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 16 — TOURNAMENT -->
+<section class="slide" id="s16">
+  <div style="max-width:640px;width:100%;text-align:center">
+    <h2 class="reveal">Tournament <span class="grad">mode</span></h2>
+    <p class="sub reveal delay-1">4-player bracket across any game. Perfect for game night.</p>
+    <div class="bracket-wrap reveal delay-2">
+      <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:8px;text-align:center">Semi-Finals · Blitz Duel</div>
+      <div class="br-match">
+        <div class="br-player"><div class="av">😎</div><div class="nm">Alex</div></div>
+        <div class="br-vs">vs</div>
+        <div class="br-player"><div class="av">🦊</div><div class="nm">Sam</div></div>
+        <div class="br-win">✓ Alex</div>
+      </div>
+      <div class="br-match">
+        <div class="br-player"><div class="av">🐺</div><div class="nm">Jordan</div></div>
+        <div class="br-vs">vs</div>
+        <div class="br-player"><div class="av">🦁</div><div class="nm">Riley</div></div>
+        <div class="br-win">✓ Jordan</div>
+      </div>
+      <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin:14px 0 8px;text-align:center">Final</div>
+      <div class="br-match" style="border-color:rgba(255,214,10,.3)">
+        <div class="br-player"><div class="av">😎</div><div class="nm">Alex</div></div>
+        <div class="br-vs">vs</div>
+        <div class="br-player"><div class="av">🐺</div><div class="nm">Jordan</div></div>
+        <div style="font-size:.65rem;color:var(--amber);font-weight:700">LIVE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 17 — QR TRANSFER & OFFLINE -->
+<section class="slide" id="s17">
+  <div style="max-width:860px;width:100%;text-align:center">
+    <h2 class="reveal">Offline &amp; <span style="color:var(--cyan)">device transfer</span></h2>
+    <p class="sub reveal delay-1">Suspend any game. Copy a transfer code. Paste on a second device — no cloud, no scannable QR.</p>
+    <div class="offline-flow reveal delay-2">
+      <div class="off-node"><span class="off-node-icon">💾</span><div class="off-node-label">Suspend game</div></div>
+      <div class="off-arrow">→</div>
+      <div class="off-node"><span class="off-node-icon">📡</span><div class="off-node-label">Copy transfer code</div></div>
+      <div class="off-arrow">→</div>
+      <div class="off-node"><span class="off-node-icon">📱</span><div class="off-node-label">Paste on device 2</div></div>
+      <div class="off-arrow">→</div>
+      <div class="off-node"><span class="off-node-icon">▶</span><div class="off-node-label">Resume instantly</div></div>
+    </div>
+    <p class="reveal delay-3" style="margin-top:2rem;font-size:.85rem;color:var(--muted)">Service worker caches all assets · localStorage persists XP, settings, suspended games</p>
+  </div>
+</section>
+
+<!-- SECTION 18 — PWA -->
+<section class="slide" id="s18">
+  <div style="max-width:860px;width:100%;text-align:center">
+    <h2 class="reveal">Built as a <span class="grad">PWA</span></h2>
+    <p class="sub reveal delay-1">Share → Add to Home Screen. Full-screen. No app store.</p>
+    <div class="pwa-grid reveal delay-2">
+      <div class="pwa-card"><span class="icon">📴</span><h3>100% offline</h3></div>
+      <div class="pwa-card"><span class="icon">📲</span><h3>Home screen install</h3></div>
+      <div class="pwa-card"><span class="icon">🔒</span><h3>Wake lock in games</h3></div>
+      <div class="pwa-card"><span class="icon">🎵</span><h3>Web Audio music</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 19 — TECH -->
+<section class="slide" id="s19">
+  <div style="max-width:760px;width:100%;text-align:center">
+    <h2 class="reveal">Zero dependencies. <span class="grad">Maximum games.</span></h2>
+    <p class="sub reveal delay-1">Vanilla HTML, CSS, JS — 5,600+ lines of game logic in one file.</p>
+    <div class="tech-grid reveal delay-2">
+      <div class="tech-item"><span class="icon">📄</span><h3>HTML5 PWA</h3><p>manifest.json</p></div>
+      <div class="tech-item"><span class="icon">🎨</span><h3>CSS3</h3><p>10 themes, safe areas</p></div>
+      <div class="tech-item"><span class="icon">⚙️</span><h3>Vanilla JS</h3><p>39 games, 0 npm</p></div>
+      <div class="tech-item"><span class="icon">💾</span><h3>localStorage</h3><p>XP, saves, settings</p></div>
+      <div class="tech-item"><span class="icon">⚡</span><h3>Service Worker</h3><p>Offline cache</p></div>
+      <div class="tech-item"><span class="icon">📳</span><h3>Haptics</h3><p>Vibration API</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 20 — DEVICE CALIBRATION -->
+<section class="slide" id="s20">
+  <div style="max-width:920px;width:100%;text-align:center">
+    <h2 class="reveal">Device <span class="grad">calibration</span></h2>
+    <p class="sub reveal delay-1">Pick your exact iPhone model on first launch. Dynamic Island and notch spacing adjust automatically.</p>
+    <div class="device-section reveal delay-2">
+      <div class="phone-mock">
+        <div class="phone-notch-mock"></div>
+        <div class="phone-inner"><img class="deck-shot" src="https://shamikhahmed.github.io/assets/screenshots/prismcap-2.png" alt="PrismCap party game hub" width="280" height="606" loading="lazy" decoding="async"></div>
+        </div>
+      </div>
+      <ul class="device-copy">
+        <li>Per-model safe area insets (--sat, --sab)</li>
+        <li>Dynamic Island vs notch vs SE home button</li>
+        <li>iPad orientation toggle for board games</li>
+        <li>Mac layout with wider mcard / lcard sizes</li>
+        <li>Re-select anytime from Profile → Device</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 21 — DAILY & RIVALRY -->
+<section class="slide" id="s21">
+  <div style="max-width:760px;width:100%;text-align:center">
+    <h2 class="reveal">Daily challenges &amp; <span class="grad">rivalry</span></h2>
+    <p class="sub reveal delay-1">New challenge every calendar day. Track wins against named opponents.</p>
+    <div class="cards reveal delay-2">
+      <div class="card"><span class="card-icon">📅</span><h3>Daily Challenges</h3><p>8 rotating objectives — Lightning Hands, Matrix Mind, Spy Hunter win, Tap God, and more. Complete 5 for the Daily Grinder achievement.</p></div>
+      <div class="card"><span class="card-icon">⚔️</span><h3>Friends Rivalry</h3><p>Memory tracks wins against named opponents. Betrayal index and bluff count feed into Persona Engine over time.</p></div>
+      <div class="card"><span class="card-icon">📊</span><h3>Game History</h3><p>Last 12 sessions on profile. Replay any game from history. Win rate, streak, and total time tracked.</p></div>
+      <div class="card"><span class="card-icon">🏅</span><h3>High Score Table</h3><p>Solo game records ranked on the dashboard. Top 12 scores per title with medal placement.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 22 — WHO IT'S FOR -->
+<section class="slide" id="s22">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <h2 class="reveal">Who it's <span class="grad">for</span></h2>
+    <p class="sub reveal delay-1">Friends at a table, solo commutes, family game night.</p>
+    <div class="persona-grid reveal delay-2">
+      <div class="persona"><span class="persona-emoji">🎉</span><div class="persona-role">Party hosts</div><div class="persona-desc">Shadow Protocol, Chaos Cards, Heist — no props, no host guide, no Wi‑Fi needed.</div></div>
+      <div class="persona"><span class="persona-emoji">🚗</span><div class="persona-role">Road trippers</div><div class="persona-desc">Fully offline after first load. Pass &amp; Play keeps everyone engaged in the car.</div></div>
+      <div class="persona"><span class="persona-emoji">👨‍👩‍👧</span><div class="persona-role">Families</div><div class="persona-desc">Chess, Ludo, Snakes &amp; Ladders with bots. Safe, private, no accounts for kids.</div></div>
+      <div class="persona"><span class="persona-emoji">🎮</span><div class="persona-role">Solo players</div><div class="persona-desc">Neon Reflex, Survival Mode, Infinite Maze — rank up from Rookie to Legend alone.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 23 — METRICS -->
+<section class="slide" id="s23">
+  <div style="max-width:760px;width:100%;text-align:center">
+    <h2 class="reveal">By the <span class="grad">numbers</span></h2>
+    <div class="metrics-grid reveal delay-1">
+      <div class="metric"><div class="metric-num">36</div><div class="metric-label">Games</div></div>
+      <div class="metric"><div class="metric-num">16</div><div class="metric-label">Achievements</div></div>
+      <div class="metric"><div class="metric-num">10</div><div class="metric-label">Themes</div></div>
+      <div class="metric"><div class="metric-num">10</div><div class="metric-label">Ranks</div></div>
+      <div class="metric"><div class="metric-num">7</div><div class="metric-label">Mutators</div></div>
+      <div class="metric"><div class="metric-num">0</div><div class="metric-label">Dependencies</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 24 — CTA -->
+<section class="slide" id="s24">
+  <div style="max-width:700px;width:100%;text-align:center">
+    <h2 class="reveal">The living room becomes an <span class="grad">arcade.</span></h2>
+    <p class="sub reveal delay-1">Install once and you have 39 games — XP, achievements, pass-and-play, all in airplane mode.</p>
+    <div class="btn-row reveal delay-2">
+      <a class="btn btn-p" href="https://shamikhahmed.github.io/PrismCap/" target="_blank" rel="noopener">Open PrismCap</a>
+      <a class="btn btn-s" href="presentation.html">📊 Presentation</a>
+      <a class="btn btn-s" href="landing.html">🌐 Landing</a>
+      <a class="btn btn-s" href="docs/GUIDE.md">📖 Guide</a>
+      <a class="btn btn-s" href="https://github.com/shamikhahmed/PrismCap" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="qr-section reveal delay-3">
+      <div class="qr-box">
+        <img src="assets/qr-prismcap.png" width="148" height="148" alt="QR code — open PrismCap on your phone" decoding="async">
+      </div>
+      <span class="qr-label">Scan to open on your phone</span>
+    </div>
+    <p class="cta-url reveal delay-3">shamikhahmed.github.io/PrismCap/</p>
+    <p class="reveal delay-4" style="margin-top:2.5rem;font-size:.75rem;color:var(--dim)">© 2026 Shamikh Ahmed · Built with vanilla JS · Zero dependencies</p>
+  </div>
+</section>
+
+<script>
+(function(){
+'use strict';
+
+/* ── particle canvas (opener) ── */
+var cvs=document.getElementById('canvas-particles');
+if(cvs){
+  var cx=cvs.getContext('2d'),pts=[],W,H;
+  function resize(){W=cvs.width=window.innerWidth;H=cvs.height=window.innerHeight}
+  function init(){
+    pts=[];var cols=['rgba(199,125,255,','rgba(255,45,120,','rgba(0,229,255,'];
+    for(var i=0;i<60;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:1+Math.random()*2,c:cols[i%3]});
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    pts.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      cx.fillStyle=p.c+(0.15+Math.random()*.1)+')';cx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();init();draw();
+  window.addEventListener('resize',function(){resize();init()});
+}
+
+/* ── nav dots ── */
+var sections=document.querySelectorAll('.slide');
+var dotsEl=document.getElementById('nav-dots');
+sections.forEach(function(s,i){
+  var d=document.createElement('button');
+  d.className='nav-dot';d.setAttribute('aria-label','Section '+(i+1));
+  d.onclick=function(){s.scrollIntoView({behavior:'smooth'})};
+  dotsEl.appendChild(d);
+});
+var dots=document.querySelectorAll('.nav-dot');
+
+/* ── intersection observer: reveals + active dot ── */
+var revealEls=document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale');
+var revealObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.12});
+revealEls.forEach(function(el){revealObs.observe(el)});
+
+var sectionObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var idx=Array.from(sections).indexOf(e.target);
+      dots.forEach(function(d,i){d.classList.toggle('active',i===idx)});
+    }
+  });
+},{threshold:.45});
+sections.forEach(function(s){sectionObs.observe(s)});
+
+/* ── keyboard nav ── */
+var secArr=Array.from(sections);
+document.addEventListener('keydown',function(e){
+  var idx=secArr.findIndex(function(s){return s.getBoundingClientRect().top>=-100&&s.getBoundingClientRect().top<innerHeight/2});
+  if(idx<0)idx=0;
+  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();if(secArr[idx+1])secArr[idx+1].scrollIntoView({behavior:'smooth'})}
+  if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();if(secArr[idx-1])secArr[idx-1].scrollIntoView({behavior:'smooth'})}
+});
+
+})();
+</script>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/capricorn-scene.js"></script>
+  <script src="js/capricorn-pitch.js"></script>
+</body>
+</html>

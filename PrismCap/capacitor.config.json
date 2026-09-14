@@ -1,0 +1,12 @@
+{
+  "appId": "com.shamikhahmed.PrismCap",
+  "appName": "PrismCap",
+  "webDir": ".",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "scrollEnabled": true
+  }
+}

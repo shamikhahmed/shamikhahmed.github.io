@@ -1,0 +1,67 @@
+{
+  "app": "PrismCap",
+  "version": "4.4.1",
+  "generated": "2026-07-20T10:48:56.250Z",
+  "shots": [
+    {
+      "file": "desktop-01-home.png",
+      "label": "Home",
+      "route": "Nav.go('home')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-02-library.png",
+      "label": "Library",
+      "route": "Nav.go('library')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-03-dashboard.png",
+      "label": "Dashboard",
+      "route": "Nav.go('dashboard')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-04-arcade.png",
+      "label": "Arcade",
+      "route": "Nav.go('arcade')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-05-profile.png",
+      "label": "Profile",
+      "route": "Nav.go('profile')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "mobile-01-home.png",
+      "label": "Home",
+      "route": "Nav.go('home')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-02-library.png",
+      "label": "Library",
+      "route": "Nav.go('library')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-03-dashboard.png",
+      "label": "Dashboard",
+      "route": "Nav.go('dashboard')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-04-arcade.png",
+      "label": "Arcade",
+      "route": "Nav.go('arcade')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-05-profile.png",
+      "label": "Profile",
+      "route": "Nav.go('profile')",
+      "viewport": "mobile"
+    }
+  ]
+}

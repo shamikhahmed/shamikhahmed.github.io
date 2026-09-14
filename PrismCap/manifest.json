@@ -1,0 +1,22 @@
+{
+  "name": "PrismCap",
+  "short_name": "PrismCap",
+  "description": "Party games for one phone, passed around the room.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "categories": ["games", "entertainment"],
+  "shortcuts": [
+    { "name": "All Games", "short_name": "Games", "url": "./?screen=home", "icons": [{"src": "icon-192.png", "sizes": "192x192"}] },
+    { "name": "Quick Play", "short_name": "Play", "url": "./?screen=quick", "icons": [{"src": "icon-192.png", "sizes": "192x192"}] }
+  ],
+  "icons": [
+    { "src": "public/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "public/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "public/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

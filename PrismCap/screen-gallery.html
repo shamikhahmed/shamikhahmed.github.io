@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PrismCap — Screen Gallery</title>
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --surface: #141418;
+      --border: #2a2a32;
+      --text: #f4f4f6;
+      --muted: #9a9aa8;
+      --accent: #f472b6;
+      --accent-dim: rgba(244, 114, 182, 0.15);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 12, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+    }
+    h1 { margin: 0 0 4px; font-size: 1.35rem; font-weight: 650; }
+    .sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+    main { padding: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .grid.desktop-view { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+    figure {
+      margin: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+    figure img { width: 100%; display: block; }
+    figcaption { padding: 10px 12px; font-size: 0.8rem; }
+    figcaption .route { color: var(--muted); font-family: ui-monospace, monospace; font-size: 0.72rem; }
+    #lightbox {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0, 0, 0, 0.92);
+      display: none; align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 94vw; max-height: 94vh; border-radius: 8px; }
+    .empty { color: var(--muted); padding: 40px; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PrismCap — Screen Gallery</h1>
+    <p class="sub" id="meta">Loading manifest…</p>
+    <div class="toolbar" id="filters"></div>
+  </header>
+  <main>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      No screenshots yet. Run <code>npm run gallery</code> first.
+    </div>
+  </main>
+  <div id="lightbox"><img alt="" /></div>
+  <script>
+    const DIR = 'docs/screenshots/gallery/';
+    const grid = document.getElementById('grid');
+    const filters = document.getElementById('filters');
+    const meta = document.getElementById('meta');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    let shots = [];
+    let viewport = 'mobile';
+
+    function render() {
+      grid.className = 'grid' + (viewport === 'desktop' ? ' desktop-view' : '');
+      grid.innerHTML = '';
+      const visible = shots.filter((s) => s.viewport === viewport);
+      document.getElementById('empty').hidden = visible.length > 0;
+      for (const s of visible) {
+        const fig = document.createElement('figure');
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = DIR + s.file;
+        img.alt = s.label;
+        const cap = document.createElement('figcaption');
+        cap.innerHTML = `<strong>${s.label}</strong><br /><span class="route">${s.route}</span>`;
+        fig.append(img, cap);
+        fig.addEventListener('click', () => {
+          lightboxImg.src = img.src;
+          lightbox.classList.add('open');
+        });
+        grid.append(fig);
+      }
+    }
+
+    function renderFilters() {
+      filters.innerHTML = '';
+      for (const v of ['mobile', 'desktop']) {
+        const btn = document.createElement('button');
+        btn.className = 'btn' + (v === viewport ? ' active' : '');
+        btn.textContent = v[0].toUpperCase() + v.slice(1);
+        btn.addEventListener('click', () => { viewport = v; renderFilters(); render(); });
+        filters.append(btn);
+      }
+    }
+
+    lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
+    fetch(DIR + 'gallery-manifest.json')
+      .then((r) => r.json())
+      .then((m) => {
+        shots = m.shots;
+        meta.textContent = `v${m.version} · ${m.shots.length} shots · generated ${new Date(m.generated).toLocaleString()}`;
+        renderFilters();
+        render();
+      })
+      .catch(() => {
+        meta.textContent = 'Manifest missing.';
+        document.getElementById('empty').hidden = false;
+      });
+  </script>
+</body>
+</html>

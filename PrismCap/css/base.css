@@ -1,0 +1,212 @@
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;height:100dvh;overflow:hidden;background:#050508;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:16px;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+button{border:none;background:none;color:inherit;font:inherit;cursor:pointer;outline:none}
+input,select,textarea{border:none;background:none;color:inherit;font:inherit;outline:none}
+
+/* ── ROOT VARIABLES ── */
+:root {
+  /* Safe area insets — device picker overrides per model */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+
+  /* Core palette — LOUD arcade neon on near-black */
+  --red:    #FF0055;  --orange: #FF6600;  --amber:  #FFE600;
+  --green:  #00FF88;  --cyan:   #00FFFF;  --violet: #FF00FF;
+  --pink:   #FF00CC;  --rose:   #FF0088;  --lime:   #CCFF00;  --sky: #0088FF;
+  --ice:    #88FFFF;
+
+  /* Utility tints */
+  --white: #fff;
+  --dim:   rgba(0,255,255,.78);
+  --faint: rgba(255,255,255,.07);
+  --border: rgba(255,0,255,.28);
+
+  /* Dynamic accent — magenta / cyan */
+  --acc:   #FF00FF;
+  --acc2:  #00FFFF;
+  --glow:  rgba(255,0,255,.55);
+  --glow2: rgba(0,255,255,.45);
+
+  /* Card surfaces */
+  --card:        rgba(255,255,255,.1);
+  --card-border: rgba(255,255,255,.22);
+  --el: #231638;
+
+  /* Visual language */
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --shadow-soft: 0 14px 34px rgba(13,8,30,.38);
+  --shadow-neon: 0 0 0 1px rgba(255,0,255,.35), 0 0 24px rgba(255,0,255,.28), 0 0 48px rgba(0,255,255,.12);
+
+  /* Arcade cabinet craft tokens */
+  --bezel-chrome: linear-gradient(145deg, rgba(255,0,255,.35) 0%, rgba(80,80,90,.55) 40%, rgba(20,20,28,.85) 100%);
+  --bezel-inset: inset 0 1px 0 rgba(0,255,255,.22), inset 0 -2px 6px rgba(0,0,0,.55);
+  --cart-board: linear-gradient(168deg, #1a1420 0%, #121018 48%, #0a0810 100%);
+  --cart-plastic: linear-gradient(155deg, rgba(255,0,255,.22) 0%, rgba(0,255,255,.08) 40%, rgba(0,0,0,.25) 100%);
+
+  /* App sizing */
+  --app-max:  480px;
+  --safe-bg:  #000;
+}
+
+/* ── BODY ── */
+body {
+  background:
+    radial-gradient(80% 80% at 15% 12%, rgba(255,0,255,.18) 0%, rgba(255,0,255,0) 58%),
+    radial-gradient(85% 70% at 88% 16%, rgba(0,255,255,.14) 0%, rgba(0,255,255,0) 60%),
+    radial-gradient(95% 80% at 50% 104%, rgba(0,255,255,.08) 0%, rgba(0,255,255,0) 62%),
+    linear-gradient(158deg, #050508 0%, #080810 40%, #0a0812 100%);
+  overscroll-behavior: none;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,.22) 0px,
+    rgba(0,0,0,.22) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: .28;
+}
+
+/* Light mode — cardboard arcade / plastic cartridge craft */
+body.light {
+  --safe-bg: #f4efe8;
+  --border: rgba(80,60,40,.18);
+  --card: rgba(255,255,255,.72);
+  --card-border: rgba(80,60,40,.14);
+  --dim: rgba(40,32,28,.62);
+  --faint: rgba(40,32,28,.06);
+  --bezel-chrome: linear-gradient(145deg, rgba(255,255,255,.95) 0%, rgba(210,198,180,.75) 40%, rgba(140,128,112,.55) 100%);
+  --cart-board: linear-gradient(168deg, #e8dfd4 0%, #d8cfc4 48%, #c8bfb4 100%);
+  color: #1a1410;
+}
+body.light {
+  background:
+    radial-gradient(80% 70% at 20% 8%, rgba(176,88,232,.08) 0%, transparent 55%),
+    radial-gradient(70% 60% at 85% 90%, rgba(232,72,176,.06) 0%, transparent 50%),
+    linear-gradient(168deg, #f8f4ee 0%, #f0ebe3 50%, #e8e2d8 100%);
+}
+body.light::before { opacity: .12; mix-blend-mode: multiply; }
+body.light #loader { background: #ebe4da; }
+body.light #welcome { background: #ebe4da; }
+body.light .cart-shell {
+  background: var(--cart-board);
+  border-color: rgba(80,60,40,.16);
+  box-shadow: 0 12px 40px rgba(60,48,36,.12), inset 0 1px 0 rgba(255,255,255,.65);
+}
+body.light .cart-input { background: rgba(255,255,255,.75); color: #1a1410; border-color: rgba(80,60,40,.14); }
+body.light .screen-header { background: linear-gradient(180deg, rgba(248,244,238,.96) 0%, rgba(248,244,238,.88) 72%, transparent 100%); }
+body.light #nav { background: linear-gradient(180deg, rgba(248,244,238,.92), rgba(240,234,226,.98)) !important; border-top-color: rgba(80,60,40,.12) !important; }
+body.light .ni.on .nil { color: var(--acc); }
+body.light .glass { background: rgba(255,255,255,.72) !important; border-color: rgba(80,60,40,.12) !important; }
+body.light .mcard { background: rgba(255,255,255,.78) !important; border-color: rgba(80,60,40,.12) !important; }
+body.light .sec { background: linear-gradient(90deg, rgba(26,20,16,.88), rgba(120,80,160,.75), rgba(40,120,140,.7)); -webkit-background-clip: text; background-clip: text; }
+
+/* ── SCROLLBAR HIDE ── */
+* { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+*::-webkit-scrollbar { display: none !important; }
+
+/* ── THEMES ── */
+body.t-cyber  { --acc: #00E676; --acc2: #00BFA5; --glow: rgba(0,230,118,.4); }
+body.t-neon   { --acc: #FF00FF; --acc2: #7B00FF; --glow: rgba(255,0,255,.4); }
+body.t-term   { --acc: #00FF00; --glow: rgba(0,255,0,.26); }
+body.t-horror { --acc: #FF0000; --glow: rgba(255,0,0,.26); }
+body.t-space  { --acc: #00E5FF; --acc2: #2979FF; --glow: rgba(0,229,255,.4); }
+body.t-gold   { --acc: #FFD700; --acc2: #FF8F00; --glow: rgba(255,215,0,.4); }
+body.t-synth  { --acc: #FF4081; --acc2: #7C4DFF; --glow: rgba(255,64,129,.4); }
+body.t-mid    { --acc: #8888FF; --glow: rgba(136,136,255,.26); }
+body.t-red    { --acc: #FF2D55; --glow: rgba(255,45,85,.26); }
+body.t-glitch { --acc: #00FFFF; --acc2: #FF00FF; --glow: rgba(0,255,255,.4); animation: gltbody 8s ease infinite; }
+
+body.t-pink {
+  --acc: #FF2D78; --acc2: #FF85C2; --glow: rgba(255,45,120,.4); --glow2: rgba(255,133,194,.35);
+  background: radial-gradient(ellipse at 30% 10%, rgba(255,45,120,.15), transparent 50%),
+              radial-gradient(ellipse at 70% 90%, rgba(255,133,194,.1), transparent 50%),
+              #0f0008 !important;
+}
+body.t-pink #nav { background: rgba(15,0,8,.95) !important; border-top-color: rgba(255,45,120,.2) !important; }
+body.t-pink .bw  { background: linear-gradient(135deg, #FF2D78, #FF85C2) !important; color: #fff !important; }
+
+body.t-purple {
+  --acc: #C77DFF; --acc2: #9D4EDD; --glow: rgba(199,125,255,.45); --glow2: rgba(157,78,221,.35);
+  background: radial-gradient(ellipse at 20% 20%, rgba(199,125,255,.18), transparent 55%),
+              radial-gradient(ellipse at 80% 80%, rgba(157,78,221,.12), transparent 55%),
+              #0d0015 !important;
+}
+body.t-purple #nav { background: rgba(13,0,21,.95) !important; border-top-color: rgba(199,125,255,.2) !important; }
+
+body.t-rose {
+  --acc: #FF6B9D; --acc2: #FF4081; --glow: rgba(255,107,157,.4); --glow2: rgba(255,64,129,.35);
+  background: radial-gradient(ellipse at 40% 20%, rgba(255,107,157,.15), transparent 55%),
+              radial-gradient(ellipse at 60% 80%, rgba(255,64,129,.1), transparent 55%),
+              #100005 !important;
+}
+
+body.t-uni {
+  --acc: #B388FF; --acc2: #FF80AB; --glow: rgba(179,136,255,.4); --glow2: rgba(255,128,171,.35);
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(179,136,255,.15), transparent 45%),
+    radial-gradient(ellipse at 80% 60%, rgba(255,128,171,.12), transparent 45%),
+    radial-gradient(ellipse at 50% 90%, rgba(128,203,196,.08), transparent 40%),
+    #0a0015 !important;
+}
+
+body.t-horror #app::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.05) 2px, rgba(0,0,0,.05) 4px);
+  pointer-events: none; z-index: 1;
+}
+
+@keyframes gltbody {
+  0%,92%,100% { filter: none; transform: none; }
+  93% { filter: hue-rotate(20deg); transform: translate(2px,0); }
+  94% { filter: hue-rotate(-10deg); transform: translate(-2px,0); }
+  95% { filter: none; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #toast, .toast { animation: os-rise .3s cubic-bezier(.22,1,.36,1); }
+  #boot-scan .scan-line { transition: opacity .25s ease; }
+  @keyframes os-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+}
+
+/* Accessibility — larger tap targets (global setting) */
+body.large-tap .btn { min-height: 48px; padding-top: 12px; padding-bottom: 12px; }
+body.large-tap .ni { min-height: 52px; padding-top: 8px; padding-bottom: 8px; }
+body.large-tap .mcard,
+body.large-tap .lcard,
+body.large-tap .pill,
+body.large-tap .vopt,
+body.large-tap .pchip { min-height: 48px; }
+body.large-tap .tog { min-width: 52px; min-height: 30px; }
+body.large-tap #gbody button,
+body.large-tap #gbody [onclick] { min-height: 48px; min-width: 48px; }
+
+/* Color-blind friendly palette (deuteranopia-safe) */
+body.color-blind {
+  --red: #E69F00;
+  --orange: #D55E00;
+  --amber: #F0E442;
+  --green: #009E73;
+  --cyan: #56B4E9;
+  --violet: #CC79A7;
+  --pink: #CC79A7;
+  --acc: #0072B2;
+  --acc2: #009E73;
+}
+body.color-blind #app { filter: contrast(1.05) saturate(0.85); }
+body.color-blind .lcard,
+body.color-blind .mcard { border-width: 2px; }

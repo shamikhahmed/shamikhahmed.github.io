@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#a855f7">
+<title>Privacy Policy — PrismCap</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0a12;color:#eee;line-height:1.65;padding:24px;max-width:720px;margin:0 auto}
+a{color:#a855f7}
+nav{margin-bottom:28px;font-size:14px}
+nav a{margin-right:12px;color:#888}
+h1{font-size:1.75rem;margin:24px 0 12px;letter-spacing:-.02em}
+h2{font-size:1.15rem;margin:20px 0 8px;color:#a855f7}
+p,li{font-size:15px;color:#888;margin-bottom:10px}
+ul{margin:8px 0 16px 20px}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#888}
+</style>
+<link rel="stylesheet" href="css/capricorn-core.css">
+</head>
+<body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
+<nav>
+  <a href="landing.html">← PrismCap</a>
+  <a href="index.html">App</a>
+  <a href="presentation.html">Presentation</a>
+  <a href="pitch.html">Pitch</a>
+</nav>
+<article>
+  <h1>PrismCap — Privacy Policy</h1>
+  <p><strong>Last updated:</strong> July 19, 2026</p>
+  <p>PrismCap is an offline-first Progressive Web App. <strong>Your game data stays on your device</strong> unless you explicitly export or copy it.</p>
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>Nothing by default.</strong> No accounts, analytics SDKs, or third-party trackers ship in this app.</li>
+    <li>No login. No Capricorn cloud sync for saves.</li>
+  </ul>
+  <h2>Storage</h2>
+  <ul>
+    <li>Profile, XP, preferences, and recent-play data use <strong>localStorage</strong> in your browser.</li>
+    <li>Clearing site data or removing the PWA deletes local copies.</li>
+  </ul>
+  <h2>Network</h2>
+  <ul>
+    <li>Core play works <strong>fully offline</strong> after assets are cached by the service worker.</li>
+    <li>GitHub Pages serves static files only — Capricorn cannot read your local saves.</li>
+  </ul>
+  <h2>Children</h2>
+  <ul>
+    <li>Party / pass-and-play entertainment. Supervise younger players.</li>
+  </ul>
+  <h2>App Store nutrition (planned native wrap)</h2>
+  <ul>
+    <li><strong>Data Not Collected</strong> — local-only progress.</li>
+  </ul>
+  <h2>Contact</h2>
+  <p>Built by Capricorn Systems — issues via the <a href="https://github.com/shamikhahmed/PrismCap">PrismCap GitHub repository</a>.</p>
+</article>
+<footer>© 2026 Capricorn Systems · <a href="https://github.com/shamikhahmed/PrismCap">GitHub</a></footer>
+<canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/capricorn-scene.js"></script>
+<script src="js/capricorn-cinematic.js"></script>
+<script src="js/capricorn-premium-nav.js"></script>
+</body>
+</html>
