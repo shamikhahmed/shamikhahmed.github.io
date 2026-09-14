@@ -1,5 +1,5 @@
 :HL["/TravelCap/_next/static/media/7b89a4fd5e90ede0-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/TravelCap/_next/static/media/9cf9c6e84ed13b5e-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/TravelCap/_next/static/css/481eed4db770912f.css","style"]
-:HL["/TravelCap/_next/static/css/c42e6951b5e0c5c1.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(app)","param":null,"prefetchHints":0,"slots":{"children":{"name":"trips","param":null,"prefetchHints":0,"slots":{"children":{"name":"id","param":{"type":"d","key":"demo","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"0_b_4JzzVU5hfO1VesnNC"}
+:HL["/TravelCap/_next/static/css/e142cf5746c8dcbe.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(app)","param":null,"prefetchHints":0,"slots":{"children":{"name":"trips","param":null,"prefetchHints":0,"slots":{"children":{"name":"id","param":{"type":"d","key":"demo","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}}}},"staleTime":300,"buildId":"exXrhoKtl9a8Npc9InkzK"}

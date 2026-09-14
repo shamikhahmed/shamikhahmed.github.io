@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy — TravelCap</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:720px;margin:0 auto;padding:24px;line-height:1.6;color:#1a1a1a;background:#f7f0e6}
+h1{font-size:1.6rem}h2{font-size:1.1rem;margin-top:1.5rem}p,li{color:#444}
+a{color:#0b5fff}
+</style>
+</head>
+<body>
+<h1>TravelCap privacy</h1>
+<p><strong>Last updated:</strong> 15 September 2026</p>
+<p>TravelCap is an offline-first travel organizer. Trip data, packing lists, memories and documents are stored on your device (IndexedDB). There is no TravelCap account.</p>
+<h2>Optional network services</h2>
+<ul>
+<li><strong>Nominatim (OpenStreetMap)</strong> — place search / geocoding when you look up locations.</li>
+<li><strong>REST Countries</strong> — country reference data.</li>
+<li><strong>Open-Meteo</strong> — weather forecasts for trip cities.</li>
+<li><strong>Frankfurter</strong> — currency conversion rates.</li>
+<li><strong>AviationStack</strong> — optional flight lookup. You may paste your own API key in Settings. The key stays on your device for static hosting; many AviationStack plans block browser CORS or HTTPS from the free tier — TravelCap shows a plain error and offers manual entry.</li>
+</ul>
+<p>Those providers receive normal request metadata (IP, user agent) when a feature calls them.</p>
+<h2>Documents and OCR</h2>
+<p>Document photos stay on your device. Optional scan uses on-device OCR (Tesseract) loaded only when you tap Scan.</p>
+<h2>App lock</h2>
+<p>Optional passcode lock can encrypt travel documents on this device. If you forget the passcode, protected documents cannot be recovered — export a backup first.</p>
+<h2>Disclaimer</h2>
+<p>TravelCap helps you organize trips and documents. It is not a substitute for official travel advice, visas, or airline information. Verify times and requirements with carriers and authorities.</p>
+</body>
+</html>

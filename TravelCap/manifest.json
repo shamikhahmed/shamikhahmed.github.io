@@ -1,7 +1,7 @@
 {
-  "name": "TravelOS — Travel Operating System",
-  "short_name": "TravelOS",
-  "description": "TravelOS by Capricorn Systems — trips, packing, documents, flights.",
+  "name": "TravelCap",
+  "short_name": "TravelCap",
+  "description": "TravelCap \u2014 trips, packing, documents, flights. Offline-first.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F5F5F7",
@@ -40,7 +40,11 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["travel", "lifestyle", "productivity"],
+  "categories": [
+    "travel",
+    "lifestyle",
+    "productivity"
+  ],
   "lang": "en",
   "dir": "ltr"
 }
