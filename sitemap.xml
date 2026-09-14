@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.w3.org/2000/schemas/sitemap/0.9">
   <url><loc>https://shamikhahmed.github.io/</loc><priority>1.0</priority></url>
-  <url><loc>https://shamikhahmed.github.io/vaultcap.html</loc><priority>0.9</priority></url>
-  <url><loc>https://shamikhahmed.github.io/pulsecap.html</loc><priority>0.9</priority></url>
-  <url><loc>https://shamikhahmed.github.io/prismcap.html</loc><priority>0.9</priority></url>
-  <url><loc>https://shamikhahmed.github.io/steadycap.html</loc><priority>0.9</priority></url>
-  <url><loc>https://shamikhahmed.github.io/ledgercap.html</loc><priority>0.9</priority></url>
-  <url><loc>https://shamikhahmed.github.io/deeponycap.html</loc><priority>0.9</priority></url>
-  <url><loc>https://shamikhahmed.github.io/scentcap.html</loc><priority>0.8</priority></url>
-  <url><loc>https://shamikhahmed.github.io/auracap.html</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/support.html</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/privacy.html</loc><priority>0.9</priority></url>
   <url><loc>https://shamikhahmed.github.io/about.html</loc><priority>0.7</priority></url>
   <url><loc>https://shamikhahmed.github.io/sovereignty.html</loc><priority>0.7</priority></url>
-  <url><loc>https://shamikhahmed.github.io/solutions.html</loc><priority>0.7</priority></url>
-  <url><loc>https://shamikhahmed.github.io/enterprise.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/investor.html</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/pitch.html</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/vaultcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/pulsecap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/prismcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/steadycap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/ledgercap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/deeponycap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/scentcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/auracap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/soulcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/travelcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/ideacap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/carcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/masterycap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/cookcap.html</loc><priority>0.6</priority></url>
+  <url><loc>https://shamikhahmed.github.io/VaultCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/PulseCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/PrismCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/SteadyCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/LedgerCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/DeePonyCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/ScentCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/AuraCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/SoulCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/TravelCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/IdeaCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/CarCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/MasteryCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/CookCap/</loc><priority>0.9</priority></url>
 </urlset>
