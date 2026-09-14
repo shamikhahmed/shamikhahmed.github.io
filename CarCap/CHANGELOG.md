@@ -1,3 +1,9 @@
+## 0.2.3 — 2026-09-14
+- Release (C-01): version + SW `carcap-v6` so installed PWAs receive Phase 0 splash/gallery fixes.
+
+## 0.2.2 — 2026-07-20
+- Today remint: service-bay layout + receipt rail (desktop); garage bay cards. SW `carcap-v5`.
+
 ## [0.2.0] — 2026-07-20
 
 ### Beauty — service booklet / key fob

@@ -1,11 +1,11 @@
 'use strict';
 
-window.APP_VERSION = '0.2.0';
+window.APP_VERSION = '0.2.3';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
-const SW_CACHE = 'carcap-v3';
+const SW_CACHE = 'carcap-v6';
 
 /* ── Utils ── */
 function esc(s) {
@@ -161,30 +161,40 @@ function renderToday() {
   const recentSvc = S.servicesFor(v.id).slice(0, 2);
 
   return (
-    '<div class="screen">' +
+    '<div class="screen today-bay">' +
+      '<div class="bay-keyfob" aria-hidden="true"></div>' +
       '<h1 class="page-title">Today</h1>' +
       '<p class="page-sub">' + esc(S.vehicleLabel(v)) + (v.plate ? ' · ' + esc(v.plate) : '') + '</p>' +
       vehiclePickerHtml(v.id) +
-      '<div class="stat-grid">' +
-        '<div class="stat"><div class="stat-label">Odometer</div><div class="stat-value accent">' + (odo != null ? fmtNum(odo) + ' km' : '—') + '</div></div>' +
-        '<div class="stat"><div class="stat-label">Alerts</div><div class="stat-value">' + overdue + '</div></div>' +
-        '<div class="stat"><div class="stat-label">Fuel fills</div><div class="stat-value">' + fuel.count + '</div></div>' +
-        '<div class="stat"><div class="stat-label">Avg L/100</div><div class="stat-value">' + (fuel.avgLPer100 != null ? fmtNum(fuel.avgLPer100, 1) : '—') + '</div></div>' +
-      '</div>' +
-      '<div class="section-label">Reminders</div>' +
-      alerts +
-      '<div class="section-label">Recent</div>' +
-      (recentSvc.length || recentFuel.length
-        ? recentSvc.map((s) =>
-            '<div class="card"><div class="card-title">' + esc(s.type) + '</div><div class="card-meta">Service · ' + fmtDate(s.date) + (s.cost != null ? ' · ' + fmtMoney(s.cost) : '') + '</div></div>'
-          ).join('') +
-          recentFuel.map((f) =>
-            '<div class="card"><div class="card-title">Fuel ' + (f.liters != null ? fmtNum(f.liters, 1) + ' L' : '') + '</div><div class="card-meta">' + fmtDate(f.date) + (f.cost != null ? ' · ' + fmtMoney(f.cost) : '') + '</div></div>'
-          ).join('')
-        : '<div class="card"><div class="card-meta">No recent activity yet.</div></div>') +
-      '<div class="btn-row">' +
-        '<button type="button" class="btn btn-primary" data-go="fuel">Log fuel</button>' +
-        '<button type="button" class="btn" data-go="service">Add service</button>' +
+      '<div class="today-bay-layout">' +
+        '<div class="today-bay-main">' +
+          '<div class="bay-slot">' +
+            '<div class="bay-slot__label">Service bay</div>' +
+            '<div class="stat-grid">' +
+              '<div class="stat"><div class="stat-label">Odometer</div><div class="stat-value accent odo">' + (odo != null ? fmtNum(odo) + ' km' : '—') + '</div></div>' +
+              '<div class="stat"><div class="stat-label">Alerts</div><div class="stat-value">' + overdue + '</div></div>' +
+              '<div class="stat"><div class="stat-label">Fuel fills</div><div class="stat-value">' + fuel.count + '</div></div>' +
+              '<div class="stat"><div class="stat-label">Avg L/100</div><div class="stat-value">' + (fuel.avgLPer100 != null ? fmtNum(fuel.avgLPer100, 1) : '—') + '</div></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="section-label">Reminders</div>' +
+          alerts +
+          '<div class="btn-row">' +
+            '<button type="button" class="btn btn-primary" data-go="fuel">Log fuel</button>' +
+            '<button type="button" class="btn" data-go="service">Add service</button>' +
+          '</div>' +
+        '</div>' +
+        '<aside class="today-bay-rail" aria-label="Recent activity">' +
+          '<div class="section-label">Receipt rail</div>' +
+          (recentSvc.length || recentFuel.length
+            ? recentSvc.map((s) =>
+                '<div class="card receipt-card"><div class="card-title">' + esc(s.type) + '</div><div class="card-meta">Service · ' + fmtDate(s.date) + (s.cost != null ? ' · ' + fmtMoney(s.cost) : '') + '</div></div>'
+              ).join('') +
+              recentFuel.map((f) =>
+                '<div class="card receipt-card"><div class="card-title">Fuel ' + (f.liters != null ? fmtNum(f.liters, 1) + ' L' : '') + '</div><div class="card-meta">' + fmtDate(f.date) + (f.cost != null ? ' · ' + fmtMoney(f.cost) : '') + '</div></div>'
+              ).join('')
+            : '<div class="card receipt-card"><div class="card-meta">No recent activity yet.</div></div>') +
+        '</aside>' +
       '</div>' +
     '</div>'
   );
@@ -197,7 +207,8 @@ function renderGarage() {
         const active = S.d.activeVehicleId === v.id;
         const odo = S.latestOdometer(v.id);
         return (
-          '<div class="card">' +
+          '<div class="card bay-card' + (active ? ' bay-card--active' : '') + '">' +
+            '<div class="bay-card__door" aria-hidden="true"></div>' +
             '<div class="card-row">' +
               '<div>' +
                 '<div class="card-title">' + esc(S.vehicleLabel(v)) + (active ? ' <span class="pill">Active</span>' : '') + '</div>' +
@@ -298,7 +309,7 @@ function renderFuel() {
       '<div class="stat-grid">' +
         '<div class="stat"><div class="stat-label">Total cost</div><div class="stat-value">' + fmtMoney(stats.totalCost) + '</div></div>' +
         '<div class="stat"><div class="stat-label">Liters</div><div class="stat-value">' + fmtNum(stats.totalLiters, 1) + '</div></div>' +
-        '<div class="stat"><div class="stat-label">Odometer</div><div class="stat-value accent">' + (stats.odometer != null ? fmtNum(stats.odometer) : '—') + '</div></div>' +
+        '<div class="stat"><div class="stat-label">Odometer</div><div class="stat-value accent odo">' + (stats.odometer != null ? fmtNum(stats.odometer) : '—') + '</div></div>' +
         '<div class="stat"><div class="stat-label">Avg L/100</div><div class="stat-value">' + (stats.avgLPer100 != null ? fmtNum(stats.avgLPer100, 1) : '—') + '</div></div>' +
       '</div>' +
       cards +
@@ -748,17 +759,46 @@ function onChange(e) {
   if (e.target && e.target.id === 'import-file') importJson(e.target);
 }
 
+function markAppReady() {
+  try {
+    window.__APP_READY__ = true;
+    document.documentElement.dataset.appReady = 'true';
+  } catch (_) { /* ignore */ }
+}
+
+function dismissSplash(immediate) {
+  const splash = document.getElementById('car-splash');
+  if (!splash) {
+    markAppReady();
+    return;
+  }
+  if (immediate) {
+    splash.remove();
+    markAppReady();
+    return;
+  }
+  splash.classList.add('hide');
+  setTimeout(() => {
+    splash.remove();
+    markAppReady();
+  }, 350);
+}
+
 function boot() {
   S.init();
-  setTimeout(() => {
-    const splash = document.getElementById('car-splash');
-    if (splash) {
-      splash.classList.add('hide');
-      setTimeout(() => splash.remove(), 500);
-    }
-  }, 1200);
 
   const params = new URLSearchParams(location.search);
+  const forceSplash = params.get('splash') === '1';
+  const firstLaunch = !localStorage.getItem('carcap-splash-seen');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // First launch only, ≤600ms; skip under reduced motion / returning users (CAR-P0-01 / FLT-07).
+  if (forceSplash || (firstLaunch && !reduceMotion)) {
+    try { localStorage.setItem('carcap-splash-seen', '1'); } catch (_) { /* ignore */ }
+    setTimeout(() => dismissSplash(false), 500);
+  } else {
+    dismissSplash(true);
+  }
+
   if (params.get('demo') === '1') {
     S.loadDemo();
   }

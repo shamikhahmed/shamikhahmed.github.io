@@ -1,6 +1,6 @@
 {
   "name": "carcap",
-  "version": "0.1.1",
+  "version": "0.2.3",
   "private": true,
   "description": "CarCap — vehicle garage, service, fuel & docs. Offline PWA by Capricorn Systems.",
   "scripts": {
