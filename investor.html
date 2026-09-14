@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#0a0e17">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <title>Investor pack — Capricorn Systems</title>
-  <meta name="description" content="Portfolio and acquisition one-pager for Capricorn Systems — 13 Cap apps, Device Sovereignty, live demos. No funding ask.">
+  <meta name="description" content="Portfolio and acquisition one-pager for Capricorn Systems — 15 Cap apps, Device Sovereignty, live demos. No funding ask.">
   <link rel="canonical" href="https://shamikhahmed.github.io/investor.html">
   <meta property="og:title" content="Investor pack — Capricorn Systems">
-  <meta property="og:description" content="Thirteen Caps. Offline-first. Live demos. Portfolio / acquisition ready.">
+  <meta property="og:description" content="Fifteen Caps. Offline-first. Live demos. Portfolio / acquisition ready.">
   <meta property="og:url" content="https://shamikhahmed.github.io/investor.html">
   <meta property="og:image" content="https://shamikhahmed.github.io/icon-1024.png">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -63,8 +63,8 @@
 <main id="main" class="inv">
   <p class="inv-badge">Portfolio · Acquisition ready</p>
   <p class="inv-meta">Capricorn Systems · One-pager · 2026-07-19 · No funding ask</p>
-  <h1>Thirteen Caps. One device rule.</h1>
-  <p class="lead">Premium personal software that lives on the phone — offline after first load, no mandatory cloud account. Built by Capricorn Systems (Shamikh Ahmed). Separate from NEWS / MTX / TheSolution360.</p>
+  <h1>Fifteen Caps. One device rule.</h1>
+  <p class="lead">Premium personal software that lives on the phone — offline after first load, no mandatory cloud account. Published by Capricorn Systems, Karachi, Pakistan. Separate from NEWS / MTX / TheSolution360.</p>
 
   <div class="inv-actions">
     <a class="inv-primary" href="https://shamikhahmed.github.io/">Open live hub</a>
@@ -87,7 +87,7 @@
   <div class="inv-grid" id="invGrid"></div>
 
   <h2>Screenshot kit</h2>
-  <p class="lead" style="font-size:.95rem;margin-bottom:0">Hub · pitch · all 13 Caps (live demos). Print this page (⌘P) for a PDF.</p>
+  <p class="lead" style="font-size:.95rem;margin-bottom:0">Hub · pitch · finished Caps (live demos). Print this page (⌘P) for a PDF.</p>
   <div class="inv-shots" id="invShots">
     <figure><img src="assets/investor/hub.png" alt="Capricorn hub" loading="lazy"><figcaption>hub</figcaption></figure>
     <figure><img src="assets/investor/pitch.png" alt="Pitch page" loading="lazy"><figcaption>pitch</figcaption></figure>
@@ -142,15 +142,18 @@
 (function(){
   var grid=document.getElementById('invGrid');
   if(!grid||typeof PRODUCTS==='undefined')return;
-  var order=['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','ideacap','soulcap','carcap'];
+  var order=['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','ideacap','soulcap','carcap','cookcap','deefoodie'];
   var demoSlugs={vaultcap:1,pulsecap:1,prismcap:1,steadycap:1,ledgercap:1,deeponycap:1,scentcap:1,auracap:1,soulcap:1,carcap:1};
   grid.innerHTML=order.map(function(slug){
     var p=PRODUCTS[slug]; if(!p)return'';
+    if(p.privateBeta || slug==='deefoodie'){
+      return '<div class="inv-card"><strong>'+p.name+'</strong><span>'+p.tagline+'</span><div style="margin-top:10px">Private beta</div></div>';
+    }
     var href=p.url||'#';
     var label='Open ↗';
     if(demoSlugs[slug]){ href=href+(href.indexOf('?')>=0?'&':'?')+'demo=1'; label='Live demo ↗'; }
     else if(slug==='masterycap'){ label='Open · Settings → demo'; }
-    return '<div class="inv-card"><strong>'+p.name+'</strong><span>'+p.tagline+'</span><div style="margin-top:10px"><a href="'+href+'" target="_blank" rel="noopener">'+label+'</a></div></div>';
+    return '<div class="inv-card"><strong>'+p.name+'</strong><span>'+p.tagline+' · v'+p.ver+'</span><div style="margin-top:10px"><a href="'+href+'" target="_blank" rel="noopener">'+label+'</a></div></div>';
   }).join('');
 })();
 </script>
