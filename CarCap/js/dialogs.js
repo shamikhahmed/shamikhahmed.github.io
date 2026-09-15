@@ -1,5 +1,5 @@
 'use strict';
-/* ConfirmDialog — replaces window.confirm (CAR-P1-02). */
+/* ConfirmDialog — replaces native confirm dialogs (CAR-P1-02). */
 (function () {
   function mountConfirm(opts) {
     opts = opts || {};

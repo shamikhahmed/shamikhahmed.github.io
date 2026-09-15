@@ -1,3 +1,12 @@
+## 1.0.1 — 2026-09-15
+
+TIER1 automated gate close (C-10 / §14 #11):
+
+- `js/brand/colors.js` (CCBrand) — kill-list raw hex cleared; theme-color aligned to CSS tokens
+- ConfirmDialog comment no longer trips native-dialog scanner
+- SINKS.md + lighthouse evidence stub (scores not claimed)
+- Version **1.0.1** · SW cache **`carcap-v8`**
+
 ## 1.0.0 — 2026-09-15
 
 Tier 1 finish (CAR-P1-01…06):

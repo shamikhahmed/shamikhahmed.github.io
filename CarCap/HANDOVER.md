@@ -7,10 +7,10 @@
 Offline-first car garage PWA (Cap family). Vehicles, service + reminders, fuel/odometer, docs wallet with optional photos.
 
 ## Facts
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Live:** https://shamikhahmed.github.io/CarCap/ (rsync from this repo into hub)  
 **Repo:** shamikhahmed/CarCap  
-**Stack:** vanilla JS PWA — `index.html`, `css/`, `js/app.js` + `js/storage.js` + `js/photos.js` + `js/dialogs.js`, `manifest.json`, `sw.js` (`carcap-v7`)  
+**Stack:** vanilla JS PWA — `index.html`, `css/`, `js/brand/colors.js` + `js/app.js` + `js/storage.js` + `js/photos.js` + `js/dialogs.js`, `manifest.json`, `sw.js` (`carcap-v8`)  
 **Data:** `localStorage` key `carcap_v1` via `S`; photos in IndexedDB `carcap_photos`
 
 ## Run & verify

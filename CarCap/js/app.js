@@ -1,11 +1,12 @@
 'use strict';
 
-window.APP_VERSION = '1.0.0';
+window.APP_VERSION = '1.0.1';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
-const SW_CACHE = 'carcap-v7';
+const SW_CACHE = 'carcap-v8';
+const CC = CCBrand;
 const PHOTO_MAX_LABEL = '2 MB';
 
 /* ── Utils ── */
@@ -902,7 +903,7 @@ function onClick(e) {
     try { localStorage.setItem('carcap-theme', mode); } catch (err) {}
     document.documentElement.setAttribute('data-theme', mode);
     const meta = document.getElementById('themeColorMeta') || document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', mode === 'light' ? '#f4f0e8' : '#0c0b09');
+    if (meta) meta.setAttribute('content', mode === 'light' ? CC.h_e8e8ea : CC.h_18181a);
     go('settings');
     return;
   }

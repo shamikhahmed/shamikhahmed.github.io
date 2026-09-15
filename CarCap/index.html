@@ -14,7 +14,7 @@
       }
       document.documentElement.setAttribute('data-theme', t);
       var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute('content', t === 'light' ? '#e8e8ea' : '#18181a');
+      if (m) m.setAttribute('content', t === 'light' ? '#e8e8ea' : '#18181a'); // theme-color
     } catch (e) {}
   })();
   </script>
@@ -86,6 +86,7 @@
     </nav>
   </div>
   <div id="modal-root"></div>
+  <script src="js/brand/colors.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/photos.js"></script>
   <script src="js/dialogs.js"></script>

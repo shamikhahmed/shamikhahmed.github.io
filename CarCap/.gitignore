@@ -8,3 +8,6 @@ playwright-report/
 dist/
 *.log
 test-results/
+
+# Finish-matrix screenshots (generated)
+qa/finish-loop/shots/

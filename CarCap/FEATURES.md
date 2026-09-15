@@ -14,7 +14,7 @@
 - ConfirmDialog (no native confirm)
 - Reduced-motion CSS
 - Privacy page
-- PWA icons + offline SW (`carcap-v7`)
+- PWA icons + offline SW (`carcap-v8`)
 - Playwright smoke + P1 regression suite
 - GitHub Pages live path for rsync
 
