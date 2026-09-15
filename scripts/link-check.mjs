@@ -15,9 +15,9 @@ for (const f of required) {
 }
 const catalog = readFileSync(join(HUB, 'js/products-data.js'), 'utf8');
 for (const [slug, ver] of Object.entries({
-  vaultcap:'5.2.1', pulsecap:'6.43.0', prismcap:'4.5.0', steadycap:'2.5.1',
+  vaultcap:'5.2.1', pulsecap:'6.43.0', prismcap:'4.5.0', steadycap:'2.5.2',
   ledgercap:'3.57.0', deeponycap:'3.8.0', scentcap:'2.1.0', soulcap:'8.2.0',
-  travelcap:'1.0.0', auracap:'5.4.0', masterycap:'51.9.0', ideacap:'2.0.0',
+  travelcap:'1.0.1', auracap:'5.4.0', masterycap:'51.9.0', ideacap:'2.0.0',
   carcap:'1.0.0', cookcap:'3.5.0', deefoodie:'1.0.0+3',
 })) {
   const re = new RegExp(`${slug}:[\\s\\S]*?ver:\\s*'([^']+)'`);

@@ -1,3 +1,7 @@
+## 1.3.1 — 2026-09-15
+
+- C-15: Remove TravelOS user-facing copy (TravelCap only); absolute redirect URLs so Hub CI `links` passes for sibling Pages apps; catalog TravelCap 1.0.1 / SteadyCap 2.5.2.
+
 ## Fleet leftovers — 2026-07-20
 - Honesty + pitch theme sync · Steady 2.4.1 · DeePony 3.7.1 · Aura 5.3.1 · Mastery 42.2.1
 
