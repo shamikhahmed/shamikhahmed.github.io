@@ -736,7 +736,7 @@ const PRODUCTS = {
     slug: 'carcap',
     name: 'CarCap',
     category: 'Lifestyle',
-    ver: '1.0.0',
+    ver: '1.0.1',
     forSale: true,
     symbol: '▣',
     tagline: 'Service, fuel and documents for your cars.',

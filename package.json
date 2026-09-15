@@ -1,7 +1,7 @@
 {
   "name": "shamikhahmed.github.io",
-  "version": "1.2.1",
-  "description": "Capricorn Systems hub — Capricorn OS + Cap redirects (D-13)",
+  "version": "1.3.2",
+  "description": "Capricorn Systems hub \u2014 Capricorn OS + Cap redirects (D-13)",
   "main": "sw.js",
   "scripts": {
     "test": "node scripts/link-check.mjs"
