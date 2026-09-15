@@ -1,3 +1,7 @@
+## 1.3.2 — 2026-09-15
+
+- Catalog sync for closed Caps (Soul/Scent/Mastery/Vault/Cook/Pulse/Steady/Travel/Ledger + fleet); Capricorn OS redeploy from lab 1.0.3. Galleries regenerating in parallel.
+
 ## 1.3.1 — 2026-09-15
 
 - C-15: Remove TravelOS user-facing copy (TravelCap only); absolute redirect URLs so Hub CI `links` passes for sibling Pages apps; catalog TravelCap 1.0.1 / SteadyCap 2.5.2.
