@@ -1,0 +1,18 @@
+/* PrismCap runtime chrome — brandOk css/app* */
+.dice.rolling{animation:diceRoll .5s ease}
+@keyframes diceRoll{0%{transform:rotate(0) scale(1)}25%{transform:rotate(-15deg) scale(1.12)}50%{transform:rotate(10deg) scale(.93)}75%{transform:rotate(-8deg) scale(1.07)}100%{transform:rotate(0) scale(1)}}
+#music-ind{position:fixed;top:calc(var(--sat) + 8px);right:14px;z-index:180;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer;backdrop-filter:blur(16px);transition:all .2s}
+#music-ind.playing{border-color:var(--acc);box-shadow:0 0 8px var(--glow)}
+body.eco-mode .lring-anim,body.eco-mode .ldot,body.eco-mode #tension-bar,body.eco-mode .screen.active>*{animation:none!important}
+body.eco-mode .feat,body.eco-mode .glass{backdrop-filter:none!important}
+body.low-power *{scroll-behavior:auto!important}
+#board-row{display:flex;gap:10px;padding:0 14px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x}
+.ludo-movable{cursor:pointer}
+#confetti-container{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+#ach-pop{bottom:calc(var(--sab) + 80px) !important}
+#toast{bottom:calc(var(--sab) + 80px) !important}
+#nav{padding-bottom:var(--sab) !important}
+.shdr+div[id="board-row"]{margin-bottom:6px}
+.mcard:active,.lcard:active,.btn:active{opacity:.85}
+#ds-step2{display:none}
+#ds-step1{display:flex;flex-direction:column;gap:9px;width:100%;max-width:310px}

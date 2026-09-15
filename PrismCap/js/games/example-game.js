@@ -11,7 +11,7 @@ window.PRISM_GAME_FACTORIES.push(function() {
     icon: '⭕',
     type: 'strategy',
     cat: 'multiplayer',
-    col: '#30D158',
+    col: PCBrand.h_30d158,
     mp: true,
     min: 2,
     max: 2,
@@ -45,7 +45,7 @@ window.PRISM_GAME_FACTORIES.push(function() {
     var gs = this.gs;
     var self = this;
     var marks = ['X', 'O'];
-    var colors = ['#FF2D55', '#00D4FF'];
+    var colors = [PCBrand.h_ff2d55, PCBrand.h_00d4ff];
     var curMark = marks[gs.turn];
     var curColor = colors[gs.turn];
     var curPlayer = gs.players[gs.turn];

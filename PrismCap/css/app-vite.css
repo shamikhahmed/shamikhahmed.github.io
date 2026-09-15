@@ -1,0 +1,318 @@
+:root {
+  color-scheme: dark;
+  --bg: #06080f;
+  --card: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.15);
+  --text: #f5f7ff;
+  --acc: #00d4ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: radial-gradient(circle at 20% 15%, #1a1130 0%, var(--bg) 50%);
+  color: var(--text);
+  font-family: Inter, -apple-system, system-ui, sans-serif;
+}
+
+body.theme-neon {
+  --acc: #ff4fe1;
+}
+
+body.theme-midnight {
+  --acc: #6aa2ff;
+}
+
+.app-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: max(14px, env(safe-area-inset-top)) 14px calc(90px + env(safe-area-inset-bottom));
+}
+
+.topbar,
+.card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(14px);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar h1 {
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.topbar p {
+  margin: 2px 0 0;
+  opacity: 0.65;
+  font-size: 0.8rem;
+}
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.panel h2,
+.panel h3,
+.panel h4 {
+  margin: 0 0 8px;
+}
+
+.muted {
+  opacity: 0.65;
+  font-size: 0.85rem;
+}
+
+.cards {
+  display: grid;
+  gap: 8px;
+}
+
+.game-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.game-card h4 {
+  margin: 0 0 4px;
+}
+
+.game-card p {
+  margin: 0;
+  opacity: 0.62;
+  font-size: 0.78rem;
+}
+
+.row {
+  display: flex;
+  gap: 6px;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 6px;
+}
+
+.nav-btn {
+  border: none;
+  color: var(--text);
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  opacity: 0.55;
+}
+
+.nav-btn.on {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-btn small {
+  font-size: 0.62rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: rgba(127, 212, 255, 0.15);
+  color: #e9f6ff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn.ghost {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.setting-row,
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.setting-row:last-child,
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.toggle {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+
+.toggle.on {
+  background: color-mix(in srgb, var(--acc) 28%, transparent);
+}
+
+.profile-edit {
+  display: grid;
+  gap: 8px;
+}
+
+input,
+select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 10px;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  z-index: 999;
+}
+
+.overlay-card {
+  width: min(640px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.overlay-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.arena {
+  position: relative;
+  height: 320px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.target {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 212, 255, 0.8);
+  background: rgba(0, 212, 255, 0.2);
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.memory-grid button {
+  height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.memory-grid button.on {
+  background: color-mix(in srgb, var(--acc) 42%, transparent);
+}
+
+.ttt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.ttt-grid button {
+  height: 72px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 1.4rem;
+}
+
+@media (min-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+

@@ -1,0 +1,18 @@
+/* PrismCap accent + chrome tokens — Tier 1 brandOk (css/app*). */
+:root {
+  --cap-accent: #ff00ff;
+  --pc-play-fg: #000;
+  --pc-search-fg: #fff;
+}
+
+#device-sel[hidden] {
+  display: none;
+}
+
+#game-search {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+#game-search:focus-visible {
+  outline-color: var(--cap-accent);
+}

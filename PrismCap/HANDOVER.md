@@ -7,7 +7,7 @@
 39 offline Pass & Play games PWA (former PrismCap / Prism branding merged in).
 
 ## Facts
-**Version:** 4.5.0 / SW `prismcap-v450`
+**Version:** 4.5.2 / SW `prismcap-v452`
 **Live:** https://shamikhahmed.github.io/PrismCap
 **Repo:** https://github.com/shamikhahmed/PrismCap
 **Stack:** Vanilla JS PWA. Game registry pattern (`js/games/`). Playwright tests.

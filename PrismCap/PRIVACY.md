@@ -24,3 +24,7 @@ PrismCap is an offline-first Progressive Web App. **Your game data stays on your
 
 ## Contact
 Built by Capricorn Systems — issues via the [PrismCap GitHub repository](https://github.com/shamikhahmed/PrismCap).
+
+## Fonts
+
+Typography is self-hosted (woff2 in-repo). No Google Fonts requests.

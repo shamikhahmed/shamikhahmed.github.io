@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,21 +27,21 @@
 <link rel="apple-touch-icon" href="apple-touch-icon-180.png" sizes="180x180">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></noscript>
-<link rel="preload" href="css/base.css" as="style">
+<noscript>
+</noscript>
+<link rel="stylesheet" href="css/fonts-local.css">
+  <link rel="preload" href="css/base.css" as="style">
 <link rel="preload" href="css/components.css" as="style">
 <link rel="stylesheet" href="css/capricorn-core.css">
-<style>:root{--cap-accent:#FF00FF}</style>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/identity.css">
+<link rel="stylesheet" href="css/app-tokens.css">
+<link rel="stylesheet" href="css/app-runtime.css">
 </head>
 <body data-cap-app="1">
-<script>window.APP_VERSION='4.5.0';</script>
+<script>window.APP_VERSION='4.5.3';</script>
 <a href="#app" class="cap-skip-link">Skip to content</a>
 <div class="cap-scroll-progress" aria-hidden="true"></div>
 <div class="cap-ambient" aria-hidden="true"></div>
@@ -53,7 +53,7 @@
 <div id="cap-dialog-root"></div>
 
 <!-- DEVICE SELECTION removed for Tier 1 (P-PRSM-1); kept hidden for legacy DOM refs -->
-<div id="device-sel" hidden aria-hidden="true" style="display:none!important"></div>
+<div id="device-sel" hidden aria-hidden="true"></div>
 
 <div id="tension-bar"></div>
 
@@ -188,7 +188,7 @@
             <div id="feat-bg" style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(100,210,255,.26),rgba(100,210,255,.05))"></div>
             <div style="position:relative;z-index:2;padding:18px;height:100%;display:flex;flex-direction:column;justify-content:space-between">
               <div style="display:flex;justify-content:space-between;align-items:flex-start"><span id="feat-badge" style="background:rgba(255,255,255,.12);border-radius:100px;padding:3px 10px;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Featured</span><span id="feat-icon" style="font-size:2.2rem">🎮</span></div>
-              <div><div id="feat-type" style="font-size:.58rem;opacity:.48;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px"></div><div id="feat-title" style="font-size:1.6rem;font-weight:800;letter-spacing:-.03em;line-height:1.05">Loading...</div><div id="feat-desc" style="font-size:.78rem;opacity:.48;margin-top:4px"></div><div style="margin-top:11px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.88);color:#000;border-radius:100px;padding:7px 15px;font-size:.78rem;font-weight:700">▶ Play Now</div></div>
+              <div><div id="feat-type" style="font-size:.58rem;opacity:.48;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px"></div><div id="feat-title" style="font-size:1.6rem;font-weight:800;letter-spacing:-.03em;line-height:1.05">Loading...</div><div id="feat-desc" style="font-size:.78rem;opacity:.48;margin-top:4px"></div><div class="feat-play-pill" style="margin-top:11px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.88);color:var(--pc-play-fg);border-radius:100px;padding:7px 15px;font-size:.78rem;font-weight:700">▶ Play Now</div></div>
             </div>
           </div>
         </div>
@@ -222,7 +222,7 @@
       <div style="font-size:.73rem;opacity:.28" id="lib-count">39 games</div>
     </div>
     <div style="position:relative;margin-bottom:0">
-      <input id="game-search" placeholder="🔍  Search games..." autocorrect="off" oninput="GL.search(this.value)" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);font-size:.88rem;color:#fff;outline:none">
+      <input id="game-search" placeholder="🔍  Search games..." autocorrect="off" oninput="GL.search(this.value)" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);font-size:.88rem;color:var(--pc-search-fg)">
     </div>
   </div>
   <div style="display:flex;gap:6px;padding:0 15px 12px;overflow-x:auto;scrollbar-width:none;touch-action:pan-x;-webkit-overflow-scrolling:touch" class="noscroll" id="cats">
@@ -350,7 +350,7 @@
 <div class="screen" id="game-screen">
   <div id="game-progress"><div id="game-progress-fill"></div></div>
   <div class="ghdr" style="gap:8px">
-    <button type="button" onclick="GL.requestExit()" style="min-width:44px;min-height:44px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0" title="Back (Esc)" aria-label="Leave game">←</button>
+    <button type="button" onclick="GL.requestLeave()" style="min-width:44px;min-height:44px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0" title="Back (Esc)" aria-label="Leave game">←</button>
     <div id="gtitle" style="font-size:.9rem;font-weight:700;letter-spacing:-.01em;flex:1;text-align:center"></div>
     <div id="gright" style="display:flex;gap:5px;align-items:center">
       <button type="button" id="ghint-btn" onclick="GL.showHint()" style="min-width:44px;min-height:44px;border-radius:50%;background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.25);display:none;align-items:center;justify-content:center;font-size:.8rem" title="Hint" aria-label="Hint">💡</button>
@@ -369,6 +369,7 @@
   <div class="ni" data-s="profile" onclick="Nav.go('profile')" role="button" aria-label="Profile"><span class="nic" aria-hidden="true">◉</span><span class="nil">Profile</span></div>
 </nav>
 </div>
+<script src="js/brand/colors.js"></script>
 <script src="js/dialogs.js"></script>
 <script src="js/games/example-game.js"></script>
 <script src="js/app.js"></script>

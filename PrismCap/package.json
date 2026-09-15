@@ -1,7 +1,7 @@
 {
   "name": "prismcap",
   "private": true,
-  "version": "4.5.0",
+  "version": "4.5.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,9 @@
     "test:e2e": "playwright test tests/smoke.spec.js tests/games.spec.js tests/games-play.spec.js tests/tier1.spec.js",
     "verify": "npm run test:e2e",
     "gallery": "CAPTURE_GALLERY=1 playwright test tests/gallery.spec.js",
-    "gallery:view": "python3 -m http.server 8767"
+    "gallery:view": "python3 -m http.server 8767",
+    "tier1": "node ../capricorn-tooling/shared/testing/tier1.mjs",
+    "test:matrix": "FINISH_MATRIX=1 playwright test tests/finish-matrix.spec.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",

@@ -1,4 +1,4 @@
-const CACHE = 'prismcap-v450';
+const CACHE = 'prismcap-v453';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
@@ -9,11 +9,14 @@ const ASSETS = [
   './manifest.json',
   './js/games/example-game.js',
   './js/dialogs.js',
+  './js/brand/colors.js',
   './js/app.js',
   './css/base.css',
   './css/layout.css',
   './css/components.css',
   './css/identity.css',
+  './css/app-tokens.css',
+  './css/app-runtime.css',
   './public/favicon.svg',
   './public/mark.svg',
   './public/icon-maskable-192.png',

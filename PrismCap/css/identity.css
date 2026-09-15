@@ -62,7 +62,7 @@ body, .wstep-sub, .cart-input, .wscan-msg, .lscan, .sl, .ttile .ttile-name, .btn
 .cap-dialog-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 900;
+  z-index: 1200;
   background: rgba(0,0,0,.74);
   backdrop-filter: blur(16px);
   display: flex;

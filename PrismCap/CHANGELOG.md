@@ -1,3 +1,22 @@
+## 4.5.3 — 2026-09-15
+
+- Fix e2e fixture: literal hist color (PCBrand unavailable in addInitScript)
+- CapConfirm backdrop z-index 1200 (above game header)
+- SW `prismcap-v453`
+
+## 4.5.2 — 2026-09-15
+
+TIER1 automated gate close (§14 #12):
+
+- `js/brand/colors.js` (PCBrand) — kill-list raw hex cleared
+- SINKS.md + lighthouse stub (scores not claimed) + finish-matrix spec
+- SW `prismcap-v452`
+
+## 4.5.1 — 2026-09-15
+- C-16: Self-host Press Start 2P (Inter on pitch); remove Google Fonts + CSP font CDN entries.
+- C-20: Set `window.__APP_READY__` after arcade boot splash dismiss.
+- SW `prismcap-v451`.
+
 ## 4.5.0 — 2026-09-14
 - Tier 1 finish: D-06 renames (Four in a Row · Clue Grid · Word Dodge), device gate removed, system UI fonts (pixel logo-only), manifests PrismCap, game exit ConfirmDialog + aria-live turns, native dialogs replaced. SW `prismcap-v450`.
 
