@@ -1,0 +1,6 @@
+{
+  "app": "TravelCap",
+  "version": "1.0.1",
+  "updated": "2026-09-15",
+  "notes": "C-11 lockfile npm ci; C-12 remove suppressions; C-13 PWA basePath for Pages"
+}
