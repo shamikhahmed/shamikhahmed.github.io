@@ -1,3 +1,7 @@
+## 1.3.3 — 2026-09-16
+
+- Pages: switch from legacy `main/` to Actions deploy of an allowlisted `_site` (excludes `.cursor/`, `qa/`, hub `docs/`, `scripts/`, tooling configs). Keeps Cursor rules in git; public URLs unchanged.
+
 ## 1.3.2 — 2026-09-15
 
 - Catalog sync for closed Caps (Soul/Scent/Mastery/Vault/Cook/Pulse/Steady/Travel/Ledger + fleet); Capricorn OS redeploy from lab 1.0.3. Galleries regenerating in parallel.

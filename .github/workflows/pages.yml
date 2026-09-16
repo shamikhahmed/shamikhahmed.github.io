@@ -1,10 +1,8 @@
 name: Deploy Pages
 
-# Hub publishes repo root via Actions so internals (.cursor, .github, node_modules)
-# are never served (C-53 / C-57). Replaces legacy branch-root Pages.
+# Kept as a manual/emergency path. Normal deploys run from Hub CI after links pass
+# (C-02 / C-53 / C-57). Publishes allowlisted _site only — never .cursor/.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -24,26 +22,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Stage public site
+        run: bash scripts/stage-site.sh _site
       - uses: actions/configure-pages@v5
-      - name: Stage site excluding internals
-        run: |
-          mkdir -p _site
-          rsync -a \
-            --exclude '.git' \
-            --exclude '.github' \
-            --exclude '.claude' \
-            --exclude '.cursor' \
-            --exclude '.venv' \
-            --exclude 'node_modules' \
-            --exclude 'test-results' \
-            --exclude 'playwright-report' \
-            --exclude 'tests' \
-            --exclude 'qa' \
-            --exclude '_site' \
-            --exclude 'scripts' \
-            --exclude 'package.json' \
-            --exclude 'package-lock.json' \
-            ./ _site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

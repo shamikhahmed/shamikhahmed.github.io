@@ -1,11 +1,13 @@
 {
   "name": "shamikhahmed.github.io",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Capricorn Systems hub \u2014 Capricorn OS + Cap redirects (D-13)",
   "main": "sw.js",
   "scripts": {
-    "test": "node scripts/link-check.mjs"
+    "test": "node scripts/link-check.mjs",
+    "stage": "bash scripts/stage-site.sh"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shamikhahmed/shamikhahmed.github.io.git"

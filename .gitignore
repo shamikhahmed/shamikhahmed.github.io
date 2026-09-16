@@ -2,6 +2,7 @@ node_modules/
 package-lock.json
 scripts/_capture.mjs
 .DS_Store
+_site/
 
 # Environment / secrets — never commit
 .env
