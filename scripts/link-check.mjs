@@ -14,16 +14,21 @@ for (const f of required) {
   else console.log('ok', f);
 }
 const catalog = readFileSync(join(HUB, 'js/products-data.js'), 'utf8');
-for (const [slug, ver] of Object.entries({
-  vaultcap:'5.2.1', pulsecap:'6.43.0', prismcap:'4.5.0', steadycap:'2.5.2',
-  ledgercap:'3.57.0', deeponycap:'3.8.0', scentcap:'2.1.0', soulcap:'8.2.0',
-  travelcap:'1.0.1', auracap:'5.4.0', masterycap:'51.9.0', ideacap:'2.0.0',
-  carcap:'1.0.0', cookcap:'3.5.0', deefoodie:'1.0.0+3',
-})) {
+
+// Legacy pages (products-data.js) must match the deployed Capricorn OS bundle,
+// whose fallback versions come from capricorn-lab js/products.js (deploy:hub).
+const index = readFileSync(join(HUB, 'index.html'), 'utf8');
+const bundleRef = index.match(/src="\/?(assets\/index-[\w-]+\.js)"/)?.[1];
+const bundle = bundleRef && existsSync(join(HUB, bundleRef)) ? readFileSync(join(HUB, bundleRef), 'utf8') : '';
+if (!bundle) { console.error('missing OS bundle', bundleRef); fail++; }
+const osVer = Object.fromEntries([...bundle.matchAll(/slug:"([a-z]+)"[\s\S]{0,200}?ver:"([^"]+)"/g)].map((m) => [m[1], m[2]]));
+const SLUGS = ['vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'soulcap', 'travelcap', 'auracap', 'masterycap', 'ideacap', 'carcap', 'cookcap', 'deefoodie'];
+for (const slug of SLUGS) {
   const re = new RegExp(`${slug}:[\\s\\S]*?ver:\\s*'([^']+)'`);
-  const m = catalog.match(re);
-  if (!m || m[1] !== ver) { console.error('ver', slug, m?.[1]); fail++; }
-  else console.log('ver', slug, ver);
+  const legacy = catalog.match(re)?.[1];
+  const os = osVer[slug];
+  if (!legacy || !os || legacy !== os) { console.error('ver', slug, 'legacy', legacy, '≠ OS', os); fail++; }
+  else console.log('ver', slug, legacy);
 }
 if (!catalog.includes('privateBeta: true') && !catalog.includes("Private beta")) {
   // deefoodie block has privateBeta

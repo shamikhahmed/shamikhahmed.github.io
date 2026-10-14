@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root {
   --bg: #050508;
@@ -9,9 +8,9 @@
   --dim: #8b8ba8;
   --accent: #7b5fff;
   --cyan: #00d5ff;
-  --font: 'IBM Plex Sans', system-ui, sans-serif;
-  --display: 'Syne', system-ui, sans-serif;
-  --mono: 'JetBrains Mono', monospace;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --safe-t: env(safe-area-inset-top);
   --safe-b: env(safe-area-inset-bottom);
 }
