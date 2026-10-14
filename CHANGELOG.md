@@ -1,3 +1,11 @@
+## 1.4.0 — 2026-10-14
+
+- **Capricorn OS 1.1.0** deployed from capricorn-lab: ten themes (Capricorn, Capricorn Night, Aurora, Synthwave, Terminal, Truck Art, Mughal, Paper, Pixel 95, Brutal), iPad mode, phone dock/app sheets, Run here, live catalog from each Cap's VERSION.json, Privacy Monitor, honest copy. Lighthouse (prod build, local): Performance 100 · Accessibility 100 · Best Practices 100, mobile + desktop.
+- **No third-party requests anywhere** — removed Google Fonts from about, sovereignty, solutions, pitch, investor, enterprise and `css/site.css` (system font stacks instead).
+- Classic catalog (`js/products-data.js`) synced to live: PulseCap 6.44.0, SoulCap 8.3.2, ScentCap 2.1.4.
+- `npm test` no longer hardcodes September versions — compares classic catalog with the deployed OS bundle. `stage-site.sh` derives required assets from `index.html` instead of a stale bundle hash (both gates were red before this release).
+- Docs rewritten: README, HANDOVER, ROADMAP, ANNOUNCE, DESIGN_IDENTITY.
+
 ## 1.3.3 — 2026-09-16
 
 - Pages: switch from legacy `main/` to Actions deploy of an allowlisted `_site` (excludes `.cursor/`, `qa/`, hub `docs/`, `scripts/`, tooling configs). Keeps Cursor rules in git; public URLs unchanged.

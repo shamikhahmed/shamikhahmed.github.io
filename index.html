@@ -18,11 +18,25 @@
   <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/og.png">
   <title>Capricorn OS</title>
   <script>
-    try {
-      document.documentElement.dataset.theme = localStorage.getItem('cap-theme') === 'dark' ? 'dark' : 'light';
-      const m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.content = document.documentElement.dataset.theme === 'dark' ? '#121110' : '#e8e2d6';
-    } catch (e) {}
+    // Paint the right skin before first frame (full registry lives in js/theme.js).
+    (function () {
+      var MODES = { 'capricorn-light': 'light', 'capricorn-dark': 'dark', aurora: 'dark', synthwave: 'dark', terminal: 'dark', truckart: 'light', mughal: 'dark', paper: 'light', pixel: 'light', brutal: 'light' };
+      var META = { 'capricorn-light': '#e8e2d6', 'capricorn-dark': '#121110', aurora: '#040714', synthwave: '#12022b', terminal: '#020a04', truckart: '#12183a', mughal: '#0a1f4d', paper: '#f3f0e8', pixel: '#0e7c7b', brutal: '#f1efe8' };
+      var ALIAS = { light: 'capricorn-light', dark: 'capricorn-dark', capricorn: 'capricorn-light', night: 'capricorn-dark', crt: 'terminal', neon: 'synthwave', truck: 'truckart', tile: 'mughal', eink: 'paper', retro: 'pixel', '95': 'pixel', brutalist: 'brutal' };
+      var skin = null;
+      try {
+        var q = new URLSearchParams(location.search).get('theme');
+        if (q) { q = q.toLowerCase(); skin = MODES[q] ? q : ALIAS[q] || null; }
+        if (!skin) { var s = localStorage.getItem('cap-skin'); if (MODES[s]) skin = s; }
+        if (!skin && localStorage.getItem('cap-theme') === 'dark') skin = 'capricorn-dark';
+      } catch (e) {}
+      skin = skin || 'capricorn-light';
+      var root = document.documentElement;
+      root.dataset.skin = skin;
+      root.dataset.theme = MODES[skin];
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.content = META[skin];
+    })();
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
     }
@@ -37,15 +51,16 @@
       line-height: 1.5;
     }
   </style>
-  <script type="module" crossorigin src="/assets/index-DYhGqgLA.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DwUHhSy1.css">
+  <script type="module" crossorigin src="/assets/index-DAObwerZ.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BzwAdIcg.css">
 </head>
 <body>
   <noscript>
     <article class="seo-fallback">
       <h1>Capricorn OS</h1>
-      <p>Capricorn Systems builds sovereign software — ten apps for finance, performance, recovery, wealth, travel, and wellness. Encrypted on your device. No cloud rent. No analytics.</p>
-      <p>Built by Shamikh Ahmed. VaultCap, PulseCap, PrismCap, SteadyCap, LedgerCap, DeePonyCap, ScentCap, SoulCap, TravelCap, AuraCap.</p>
+      <p>Capricorn Systems builds sovereign software — fifteen Cap apps for money, training, play, recovery, wealth, travel, wellness, learning, cooking and more. Stored on your device. No cloud rent. No analytics.</p>
+      <p>Built by Shamikh Ahmed. VaultCap, PulseCap, PrismCap, SteadyCap, LedgerCap, DeePonyCap, ScentCap, SoulCap, TravelCap, AuraCap, MasteryCap, IdeaCap, CarCap, CookCap, and DeeFoodie (private beta).</p>
+      <p><a href="https://shamikhahmed.github.io/support.html">Support</a> · <a href="https://shamikhahmed.github.io/privacy.html">Privacy</a> · <a href="https://github.com/shamikhahmed">GitHub</a></p>
     </article>
   </noscript>
   <div id="lockScreen" class="lock-screen" hidden role="dialog" aria-label="Lock screen" aria-modal="true"></div>
@@ -63,14 +78,14 @@
   </div>
 
   <div id="mobile" class="ios" hidden aria-hidden="true">
-    <div class="ios-wallpaper" aria-hidden="true"></div>
+    <canvas id="iosWallpaper" class="ios-wallpaper" aria-hidden="true"></canvas>
     <header class="ios-status">
       <time id="iosClock">--:--</time>
       <div class="ios-status__right">
         <button type="button" class="ios-lock-btn" id="iosLockBtn" aria-label="Lock screen" title="Lock screen">
           <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-7 8.73V17h2v-.27a2 2 0 1 0-2 0zM9 8V6a3 3 0 1 1 6 0v2H9z"/></svg>
         </button>
-        <button type="button" class="ios-theme-btn" id="iosThemeToggle" aria-label="Toggle appearance">◐</button>
+        <button type="button" class="ios-theme-btn skin-dot" id="iosThemeToggle" aria-label="Themes"><i></i><i></i></button>
         <span class="ios-signal" aria-hidden="true"></span>
         <span class="ios-wifi" aria-hidden="true"></span>
         <span class="ios-battery" aria-hidden="true"></span>
@@ -114,6 +129,8 @@
           <div id="appleMenu" class="apple-menu" hidden role="menu">
             <button type="button" role="menuitem" data-am="about">About This Mac…</button>
             <button type="button" role="menuitem" data-am="prefs">System Preferences…</button>
+            <button type="button" role="menuitem" data-am="appearance">Appearance…</button>
+            <button type="button" role="menuitem" data-am="privacy">Privacy Monitor…</button>
             <button type="button" role="menuitem" data-am="lock">Lock Screen…</button>
             <hr>
             <button type="button" role="menuitem" data-am="restart">Restart…</button>
@@ -132,7 +149,7 @@
             <path fill="currentColor" d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-7 8.73V17h2v-.27a2 2 0 1 0-2 0zM9 8V6a3 3 0 1 1 6 0v2H9z"/>
           </svg>
         </button>
-        <button type="button" class="menubar-theme" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">☾</button>
+        <button type="button" class="menubar-theme skin-dot" data-theme-toggle aria-label="Appearance" title="Appearance"><i></i><i></i></button>
         <button type="button" class="menubar-cc" id="ccToggle" aria-label="Control Center" aria-expanded="false">
           <svg class="menubar-cc__ico" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
             <rect x="2.5" y="3" width="13" height="4.5" rx="2.25" fill="currentColor" opacity="0.9"/>
@@ -157,20 +174,19 @@
           <span>Bluetooth</span><em>On</em>
         </button>
         <button type="button" class="cc-tile is-on cc-tile--wide" data-cc="focus"><span>Focus</span><em>Sovereign</em></button>
-        <button type="button" class="cc-tile is-on cc-tile--wide cc-tile--appearance" data-cc="appearance" aria-label="Appearance mode"><span>Appearance</span><em>Light</em></button>
+        <button type="button" class="cc-tile is-on cc-tile--wide cc-tile--appearance" data-cc="appearance" aria-label="Open Appearance"><span>Appearance</span><em>Capricorn</em></button>
         <button type="button" class="cc-tile cc-tile--wide is-on" data-cc="sound" aria-pressed="true"><span>Sound</span><em class="cc-toggle__knob">On</em></button>
       </div>
       <div class="cc-volume">
         <span class="cc-volume__label">Volume</span>
         <input type="range" id="ccVolume" min="0" max="1" step="0.05" value="0.8" aria-label="Volume">
       </div>
-      <div class="cc-wallpaper" role="group" aria-label="Wallpaper">
-        <span class="cc-volume__label">Wallpaper</span>
-        <div class="cc-wallpaper__swatches">
-          <button type="button" data-wallpaper="warm" class="cc-swatch cc-swatch--warm" aria-label="Warm wallpaper"></button>
-          <button type="button" data-wallpaper="cool" class="cc-swatch cc-swatch--cool" aria-label="Cool wallpaper"></button>
-          <button type="button" data-wallpaper="mono" class="cc-swatch cc-swatch--mono" aria-label="Mono wallpaper"></button>
+      <div class="cc-skins" role="group" aria-label="Theme">
+        <div class="cc-skins__head">
+          <span class="cc-volume__label">Theme</span>
+          <button type="button" class="cc-skins__more" data-cc-more>All themes →</button>
         </div>
+        <div class="cc-skins__row" id="ccSkins"></div>
       </div>
       <p class="cc-note">No cloud. No analytics. By design.</p>
     </div>
@@ -191,11 +207,12 @@
         </section>
         <section class="widget widget-ecosystem" aria-labelledby="widgetEcoTitle">
           <p class="widget-eyebrow">Ecosystem</p>
-          <h2 id="widgetEcoTitle"><span class="num">15</span> apps · <span class="num">0</span> servers</h2>
+          <h2 id="widgetEcoTitle"><span class="num">15</span> apps · <span class="num">0</span> trackers</h2>
           <ul class="eco-stats">
             <li><span>Storage</span><strong>On-device</strong></li>
-            <li><span>Sync</span><strong>None</strong></li>
-            <li><span>Accounts</span><strong>Optional</strong></li>
+            <li><span>Analytics</span><strong>None</strong></li>
+            <li><span>Accounts</span><strong>Not required</strong></li>
+            <li><span>Themes</span><strong>10</strong></li>
           </ul>
         </section>
         <section class="widget widget-social" aria-labelledby="widgetSocialTitle">

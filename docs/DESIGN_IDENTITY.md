@@ -10,7 +10,7 @@ Visual expression: the **⬡ On-Device** seal on product pages and About screens
 
 ---
 
-## Six different experiences
+## Fifteen different experiences
 
 | App | Personality | Aesthetic | Feels like |
 |-----|-------------|-----------|------------|
@@ -19,7 +19,18 @@ Visual expression: the **⬡ On-Device** seal on product pages and About screens
 | **PrismCap** | Neon party arcade | Holographic purple/pink | Jackbox × Apple Arcade |
 | **SteadyCap** | Clinical warmth | Orange + teal, breathing space | Recovery clinic × Headspace |
 | **LedgerCap** | Terminal finance | Gold on charcoal, ticker density | Bloomberg × local brokerage |
-| **DeePonyCap** | Toy-shelf joy | Pastel pink, bouncy radii | Collector catalog × Fisher-Price |
+| **DeePonyCap** | Toy-shelf joy | Pastel pink, bouncy radii | Collector catalog × toy shop |
+| **ScentCap** | Perfume wardrobe | Warm amber on espresso, serif | Fragrance counter × wardrobe |
+| **SoulCap** | Quiet room | Soft violet, low contrast, slow motion | Journal × breathing coach (not therapy) |
+| **TravelCap** | Passport desk | Cream + burgundy, stamped details | Boarding pass × travel folder |
+| **AuraCap** | Setup studio | Indigo/violet glass | Device setup report |
+| **MasteryCap** | Night school | Mint on near-black, bilingual | Course workbook (EN · Roman Urdu) |
+| **IdeaCap** | Idea board | Gold on midnight | Voice memo × corkboard |
+| **CarCap** | Garage | Coral on charcoal | Service book × glovebox |
+| **CookCap** | Family cookbook | Terracotta, paper texture | Hand-written recipe book |
+| **DeeFoodie** | Karachi food diary | Gold on deep green | Private food journal (beta) |
+
+The hub itself (Capricorn OS) is the one place a single UI frames them all — and it ships **ten themes** so even the frame isn't one look.
 
 ## What must NOT be shared
 
@@ -28,9 +39,9 @@ Visual expression: the **⬡ On-Device** seal on product pages and About screens
 - Same dashboard grid structure
 - Same empty-state copy pattern
 
-## Portfolio site flow
+## Hub flow (Capricorn OS)
 
-1. **index.html** — marketing home, animations, skills, philosophy
-2. **app.html?a=slug** — product detail before launch
-3. **Launch button** — opens live GitHub Pages PWA
-4. **enterprise.html** — investor walkthrough with Info + Launch per app
+1. **Lock screen** — time, Cap marks orbit, measured privacy line, Unlock
+2. **Desktop / iPad / phone home** — widgets per Cap, dock, Spotlight (⌘K), Appearance
+3. **Cap window / sheet** — pitch, features, screenshot → **Run here** (real app in place) or **Launch** (new tab, installable PWA)
+4. **Classic site** — about / sovereignty / pitch / investor pages for people who want a plain web page

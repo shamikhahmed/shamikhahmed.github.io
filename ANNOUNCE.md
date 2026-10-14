@@ -2,11 +2,14 @@
 
 **Share this with family & friends.** No funding ask. Just try the software.
 
-**Hub (Cap Store):** https://shamikhahmed.github.io/  
+**Hub (Capricorn OS):** https://shamikhahmed.github.io/  
+**Pick a look:** [Synthwave](https://shamikhahmed.github.io/?theme=synthwave) · [Truck Art](https://shamikhahmed.github.io/?theme=truckart) · [Aurora](https://shamikhahmed.github.io/?theme=aurora) · [Terminal](https://shamikhahmed.github.io/?theme=terminal) · [Mughal](https://shamikhahmed.github.io/?theme=mughal) — ten in all  
 **Pitch:** https://shamikhahmed.github.io/pitch.html  
 **Investor one-pager:** https://shamikhahmed.github.io/investor.html  
 
-Thirteen Caps. Offline-first PWAs. Your phone, your data. Built by Capricorn Systems (Shamikh Ahmed).
+Fifteen Caps (fourteen live, DeeFoodie in private beta). Offline-first PWAs. Your phone, your data. Built by Capricorn Systems (Shamikh Ahmed).
+
+Every live Cap can be tried **inside** the hub — open it and tap **Run here** / **Try it here**.
 
 ---
 
@@ -21,7 +24,7 @@ Thirteen Caps. Offline-first PWAs. Your phone, your data. Built by Capricorn Sys
 | **SoulCap** | https://shamikhahmed.github.io/SoulCap/?demo=1 |
 | **IdeaCap** | https://shamikhahmed.github.io/IdeaCap/?demo=1 |
 
-More Caps live from the hub: Ledger · DeePony · Scent · Aura · Travel · Car · Mastery.
+More Caps live from the hub: Ledger · DeePony · Scent · Aura · Travel · Car · Mastery · Cook.
 
 ---
 

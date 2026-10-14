@@ -1,33 +1,26 @@
 # shamikhahmed.github.io — Roadmap
 
-> Updated 2026-07-11. Fleet order & standard: `capricorn-tooling/shared/CAP-STANDARD.md`.
+> Updated 2026-10-14. Fleet order & standard: `capricorn-tooling/shared/CAP-STANDARD.md`.
 
-## Now — v0.10.1 (Capricorn OS)
-Current shipped state. See `CHANGELOG.md` for how we got here.
+## Now — hub 1.4.0 / Capricorn OS 1.1.0
 
-## Cap Standard gaps
-| Cap Standard item | Status |
-|---|---|
-| Docs pack | 🟡 |
-| Screen gallery | ❌ |
-| Version discipline | ✅ |
-| QA / e2e | ❌ |
-| CI gate | ❌ |
-| PWA polish | ✅ |
-| Demo mode | ❌ |
+Ten themes, iPad mode, phone dock + app sheets, Run here, live catalog, Privacy Monitor, honest copy, no third-party requests on any page. See `CHANGELOG.md`.
 
 ## Next (ordered)
-1. Catalog sync automation: app versions/screenshots on catalog pages drift from app repos — script to pull VERSION.json + latest gallery shots from each app
-2. CI: link checker + Pages deploy workflow (currently direct push, no checks)
-3. Add ScentCap v1.3.0 + MasteryCap + IdeaCap to catalog if missing
-4. Prune the three backup dirs once OS homepage is stable (they live outside git)
+
+1. **VERSION.json for AuraCap + CookCap** — the two Caps the live catalog can't read yet (they fall back to `products.js`).
+2. **Fresh screenshots** — hub shots lag the apps (PulseCap shows v4.5.1). Regenerate per Cap (`scripts/capture-screenshots.mjs`) and redeploy the OS; CookCap still uses a placeholder.
+3. **Classic site refresh** — `about.html` / `sovereignty.html` / `solutions.html` use the 2026-06 design system; give them the OS theme tokens (or one shared light theme) so "Classic site" doesn't feel like a different company.
+4. **OG image per theme** — `?theme=` links share a themed preview.
+5. **Theme ideas backlog** — seasonal (Eid lanterns, monsoon), user-built accent picker, per-Cap themes inside each app (see capricorn-lab HANDOVER).
 
 ## Later
+
 - Custom domain decision
-- Analytics-free visit counter?
+- Self-hosted, privacy-preserving visit counter (no third party) — only if it can be shown in Privacy Monitor
 
 ## Ground rules
+
 - No dirty trees: commit or discard before ending a session.
 - CI green before tag; tag `vX.Y.Z` per release.
-- Bump SW cache with any asset change (PWA apps).
-- Never commit `.env` / secrets.
+- Never commit `.env` / secrets. Never add third-party scripts, fonts or trackers.

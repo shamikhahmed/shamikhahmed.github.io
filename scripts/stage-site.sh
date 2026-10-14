@@ -79,8 +79,6 @@ for need in \
   "$DEST/.nojekyll" \
   "$DEST/privacy.html" \
   "$DEST/support.html" \
-  "$DEST/assets/logo-D6E8rWk9.svg" \
-  "$DEST/assets/index-DYhGqgLA.js" \
   "$DEST/js/products-data.js" \
   "$DEST/CarCap/index.html" \
   "$DEST/CarCap/docs/pitch.html" \
@@ -94,6 +92,16 @@ do
     fail=1
   fi
 done
+
+# Every asset the Capricorn OS entry page references (hashed bundles change
+# on each deploy:hub) must be staged.
+while IFS= read -r ref; do
+  [[ -z "$ref" ]] && continue
+  if [[ ! -e "$DEST/$ref" ]]; then
+    echo "FAIL: index.html references missing asset: $ref" >&2
+    fail=1
+  fi
+done < <(grep -oE '(src|href)="/?(\./)?assets/[^"?#]+' "$ROOT/index.html" | sed -E 's#^(src|href)="/?(\./)?##' | sort -u)
 
 if [[ "$fail" -ne 0 ]]; then
   exit 1
