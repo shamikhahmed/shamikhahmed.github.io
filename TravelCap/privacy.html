@@ -12,22 +12,32 @@ a{color:#0b5fff}
 </head>
 <body>
 <h1>TravelCap privacy</h1>
-<p><strong>Last updated:</strong> 15 September 2026</p>
-<p>TravelCap is an offline-first travel organizer. Trip data, packing lists, memories and documents are stored on your device (IndexedDB). There is no TravelCap account.</p>
-<h2>Optional network services</h2>
+<p><strong>Last updated:</strong> 14 October 2026</p>
+<p>TravelCap is an offline-first travel organizer. Trip data, packing lists, memories and documents are stored on your device (IndexedDB). There is no TravelCap account and no TravelCap analytics.</p>
+
+<h2>On this device</h2>
 <ul>
-<li><strong>Nominatim (OpenStreetMap)</strong> — place search / geocoding when you look up locations.</li>
-<li><strong>REST Countries</strong> — country reference data.</li>
-<li><strong>Open-Meteo</strong> — weather forecasts for trip cities.</li>
-<li><strong>Frankfurter</strong> — currency conversion rates.</li>
-<li><strong>AviationStack</strong> — optional flight lookup. You may paste your own API key in Settings. The key stays on your device for static hosting; many AviationStack plans block browser CORS or HTTPS from the free tier — TravelCap shows a plain error and offers manual entry.</li>
+<li><strong>IndexedDB / Dexie</strong> — trips, transit, packing, party, memories (including photo blobs), preferences.</li>
+<li><strong>Service worker (optional)</strong> — when the browser allows it, TravelCap registers a service worker under this app’s path to cache the app shell for offline use. Registration is skipped or fails safely if Service Workers are unavailable or blocked; the app still works online. Cache names follow the release SW tag (G-8).</li>
+<li><strong>App lock (optional)</strong> — passcode can protect documents on this device. Forgotten passcodes cannot unlock protected data — export a backup first.</li>
+<li><strong>OCR (optional)</strong> — Tesseract runs on-device only when you tap Scan; document images stay local.</li>
 </ul>
-<p>Those providers receive normal request metadata (IP, user agent) when a feature calls them.</p>
-<h2>Documents and OCR</h2>
-<p>Document photos stay on your device. Optional scan uses on-device OCR (Tesseract) loaded only when you tap Scan.</p>
-<h2>App lock</h2>
-<p>Optional passcode lock can encrypt travel documents on this device. If you forget the passcode, protected documents cannot be recovered — export a backup first.</p>
+
+<h2>Optional network destinations</h2>
+<p>These run only when you use the related feature. Providers see normal request metadata (IP, user agent).</p>
+<ul>
+<li><strong>Nominatim (nominatim.openstreetmap.org)</strong> — place, hotel, and airport search / geocoding.</li>
+<li><strong>OpenStreetMap tiles (*.tile.openstreetmap.org)</strong> — map imagery on the passport world map.</li>
+<li><strong>REST Countries (restcountries.com)</strong> — country reference data.</li>
+<li><strong>Open-Meteo (api.open-meteo.com)</strong> — weather for packing hints.</li>
+<li><strong>Frankfurter (api.frankfurter.app)</strong> — currency conversion rates.</li>
+<li><strong>AviationStack (api.aviationstack.com)</strong> — optional flight lookup. You may paste your own API key in Settings; it stays on your device for static hosting. Many free-tier plans block browser CORS or HTTPS — TravelCap shows a plain error and offers manual entry. Non-export local builds may use a server proxy with <code>AVIATIONSTACK_ACCESS_KEY</code> in <code>.env.local</code> (key never shipped to the static Pages build).</li>
+</ul>
+<p>There is no Capricorn “sync server” for TravelCap trip data. Static GitHub Pages hosting has no flight API backend.</p>
+
 <h2>Disclaimer</h2>
-<p>TravelCap helps you organize trips and documents. It is not a substitute for official travel advice, visas, or airline information. Verify times and requirements with carriers and authorities.</p>
+<p>TravelCap helps you organize trips and documents. It is not a substitute for official travel advice, visas, or airline information. Verify times and requirements with carriers and authorities. Explore catalogs are curated on-device references — not live booking inventories.</p>
+
+<p><a href="https://shamikhahmed.github.io/support.html">Support</a> · No personal support email is published (G-4).</p>
 </body>
 </html>

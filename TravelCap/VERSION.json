@@ -1,6 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.0.2",
-  "updated": "2026-09-15",
-  "notes": "Tier1 kill-list TCBrand + docs lock UI"
+  "version": "1.1.0",
+  "updated": "2026-10-14",
+  "swCache": "travelcap-v3",
+  "notes": "Perfection Loop v3 Wave A–H — Passport desk, SW guard, gallery v3"
 }
