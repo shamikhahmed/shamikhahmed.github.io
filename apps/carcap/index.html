@@ -10,7 +10,8 @@
   <meta property="og:description" content="Service, fuel and documents for your cars.">
   <meta property="og:url" content="https://shamikhahmed.github.io/apps/carcap/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://shamikhahmed.github.io/apps/carcap/assets/gallery/dark_ipad_garage--garage--demo.webp">
   <link rel="stylesheet" href="/apps/assets/minisite.css">
   <style>:root{--accent:#ff6b4a;--accent2:#c43d22;--bg:#0c0908;}</style>
   <script type="application/ld+json">
@@ -29,19 +30,20 @@
       <div>
         <h1 id="app-name">CarCap</h1>
         <p class="hero__desc">Service, fuel and documents for your cars.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/CarCap/VERSION.json">v1.0.1</span>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/CarCap/VERSION.json">v1.1.0</span>
         <div class="ctas">
         <a class="btn btn--primary" href="https://shamikhahmed.github.io/CarCap/">Open CarCap</a>
         <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=carcap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="/support.html">Support</a>
         <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
       </div>
       </div>
     </section>
 
     <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screen gallery</h2>
-      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
-      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+      <h2 id="gallery-h">Screenshots</h2>
+      <p class="section__lead">A few screens from the shipped app (light/dark and device sizes in the full gallery).</p>
+    <div class="gallery-grid" role="list"><figure class="gallery-shot"><img src="/apps/carcap/assets/gallery/dark_ipad_garage--garage--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/carcap/assets/gallery/dark_ipad_garage--today--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/carcap/assets/gallery/dark_ipad_maintenance--fuel--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/carcap/assets/gallery/dark_ipad_maintenance--service--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/carcap/assets/gallery/dark_ipad_system--settings--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/carcap/assets/gallery/dark_ipad_wallet--docs--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure></div>
     </section>
 
     <section class="section" id="features" aria-labelledby="features-h">
@@ -77,6 +79,10 @@
     <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
       <h2 id="changelog-h">What's new</h2>
       <article>
+          <h3>v1.1.0</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>Screen gallery v3: shared viewer + 36 WebP shots (6 tabs × light/dark × iphone/ipad/mac), schema v2</li><li>`qa/perfection/` scaffold + baseline device-qa **7/7 hard-clean** (no open P0; CAR-V3-1/2 FIXED)</li><li>Hub rsync (CAR-V3-3) as part of Phase I release into `shamikhahmed.github.io/CarCap/`</li><li>SW cache **`carcap-v9`**</li></ul>
+        </article><article>
           <h3>v1.0.1</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>`js/brand/colors.js` (CCBrand) — kill-list raw hex cleared; theme-color aligned to CSS tokens</li><li>ConfirmDialog comment no longer trips native-dialog scanner</li><li>SINKS.md + lighthouse evidence stub (scores not claimed)</li><li>Version **1.0.1** · SW cache **`carcap-v8`**</li></ul>
@@ -92,10 +98,6 @@
           <h3>v0.2.2</h3>
           <time datetime="2026-07-20">2026-07-20</time>
           <ul class="list"><li>Today remint: service-bay layout + receipt rail (desktop); garage bay cards. SW `carcap-v5`.</li></ul>
-        </article><article>
-          <h3>v0.2.0</h3>
-          <time datetime="2026-07-20">2026-07-20</time>
-          <ul class="list"><li>Splash key-fob moment; brass/ink tokens light+dark</li><li>Settings Appearance toggle; SW `carcap-v3`</li></ul>
         </article>
       <p><a href="https://github.com/shamikhahmed/CarCap">Full changelog / source on GitHub</a></p>
     </section>
@@ -108,7 +110,7 @@
         <a href="https://github.com/shamikhahmed/CarCap">GitHub</a>
         <a href="/apps/">All Caps</a>
       </nav>
-      <p>Capricorn Systems · CarCap mini-site (skeleton)</p>
+      <p>Capricorn Systems · CarCap</p>
       <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
     </footer>
   </div>

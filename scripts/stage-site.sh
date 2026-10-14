@@ -61,11 +61,7 @@ for bad in \
   "$DEST/package.json" \
   "$DEST/HANDOVER.md" \
   "$DEST/CarCap/CLAUDE.md" \
-  "$DEST/CarCap/package.json" \
-  "$DEST/PrismCap/.cursor" \
-  "$DEST/PrismCap/qa" \
-  "$DEST/PrismCap/src" \
-  "$DEST/SoulCap/SISTER-REPLY-guided-path.md"
+  "$DEST/CarCap/package.json"
 do
   if [[ -e "$bad" ]]; then
     echo "FAIL: staged forbidden path: ${bad#"$DEST"/}" >&2

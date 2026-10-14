@@ -10,7 +10,8 @@
   <meta property="og:description" content="Your fragrance collection, and what to wear today.">
   <meta property="og:url" content="https://shamikhahmed.github.io/apps/scentcap/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://shamikhahmed.github.io/apps/scentcap/assets/gallery/dark_ipad_daily--today--demo.webp">
   <link rel="stylesheet" href="/apps/assets/minisite.css">
   <style>:root{--accent:#c9a87c;--accent2:#8b6914;--bg:#1a1614;}</style>
   <script type="application/ld+json">
@@ -29,19 +30,20 @@
       <div>
         <h1 id="app-name">ScentCap</h1>
         <p class="hero__desc">Your fragrance collection, and what to wear today.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/ScentCap/VERSION.json">v2.1.4</span>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/ScentCap/VERSION.json">v2.2.0</span>
         <div class="ctas">
         <a class="btn btn--primary" href="https://shamikhahmed.github.io/ScentCap/">Open ScentCap</a>
         <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=scentcap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="/support.html">Support</a>
         <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
       </div>
       </div>
     </section>
 
     <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screen gallery</h2>
-      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
-      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+      <h2 id="gallery-h">Screenshots</h2>
+      <p class="section__lead">A few screens from the shipped app (light/dark and device sizes in the full gallery).</p>
+    <div class="gallery-grid" role="list"><figure class="gallery-shot"><img src="/apps/scentcap/assets/gallery/dark_ipad_daily--today--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/scentcap/assets/gallery/dark_ipad_first-run--onboarding--welcome.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/scentcap/assets/gallery/dark_ipad_insights--advisor--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/scentcap/assets/gallery/dark_ipad_insights--analytics--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/scentcap/assets/gallery/dark_ipad_insights--calendar--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/scentcap/assets/gallery/dark_ipad_lab--layering-lab--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure></div>
     </section>
 
     <section class="section" id="features" aria-labelledby="features-h">
@@ -77,6 +79,10 @@
     <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
       <h2 id="changelog-h">What's new</h2>
       <article>
+          <h3>v2.2.0</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>Perfection Loop v3 Phase I (G-8): SW `scentcap-v220`</li><li>SCN-V3-1: tip CI green — demo e2e asserts offline SVG bottle art (not Fraganty HTTPS)</li><li>SCN-V3-2: brand captions ≥ 12px; remove flacon etched SVG brand strings that scaled &amp;lt; 11px</li><li>SCN-V3-3: DemoBanner “Use my collection” tap target ≥ 44×44</li></ul>
+        </article><article>
           <h3>v2.1.1</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>C-16: Self-host Inter on pitch.html; remove Google Fonts.</li><li>C-20: Set `window.__APP_READY__` when boot finishes (after splash/boot screen).</li></ul>
@@ -92,10 +98,6 @@
           <h3>v2.0.9</h3>
           <time datetime="2026-07-30">2026-07-30</time>
           <ul class="list"><li>Stricter backup import validation (notes/scores/bottleLevel)</li><li>Catalog `pickImage` skips perfume-nobg; enrich gate uses placeholder helper only</li><li>Home/Advisor pick race guards; FragranceDetail load cancel + photo URL revoke</li><li>Kill unused `BottleVisual`; hex fallbacks where alpha-suffix colors need real hex</li></ul>
-        </article><article>
-          <h3>v2.0.8</h3>
-          <time datetime="2026-07-30">2026-07-30</time>
-          <ul class="list"><li>Demo/wardrobe hydrate real Fraganty product photos (SVG placeholders no longer block refresh)</li><li>`needsCatalogImageRefresh` treats `data:image/svg` + perfume-nobg as stale art</li><li>`ensureFragranceCatalogEntry` preserves local fragrance ids (no demo→frag id swap)</li><li>E2E proves ≥6 bottles get `https://` catalog images after demo load</li></ul>
         </article>
       <p><a href="https://github.com/shamikhahmed/ScentCap">Full changelog / source on GitHub</a></p>
     </section>
@@ -108,7 +110,7 @@
         <a href="https://github.com/shamikhahmed/ScentCap">GitHub</a>
         <a href="/apps/">All Caps</a>
       </nav>
-      <p>Capricorn Systems · ScentCap mini-site (skeleton)</p>
+      <p>Capricorn Systems · ScentCap</p>
       <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
     </footer>
   </div>

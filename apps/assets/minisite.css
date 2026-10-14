@@ -151,6 +151,20 @@ img { max-width: 100%; height: auto; }
   background: color-mix(in srgb, var(--accent) 12%, var(--card));
   border-radius: var(--radius); padding: 1rem 1.15rem; margin-top: 1rem;
 }
+.gallery-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.gallery-shot {
+  margin: 0; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; background: var(--card);
+}
+.gallery-shot img {
+  display: block; width: 100%; height: auto; aspect-ratio: 9 / 19.5; object-fit: cover; object-position: top;
+}
+.gallery-shot figcaption {
+  padding: .5rem .75rem; font-size: .82rem; color: var(--muted);
+}
 .index-grid {
   display: grid; gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

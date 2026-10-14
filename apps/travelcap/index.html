@@ -10,7 +10,8 @@
   <meta property="og:description" content="Trips, tickets and travel documents in one place.">
   <meta property="og:url" content="https://shamikhahmed.github.io/apps/travelcap/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://shamikhahmed.github.io/apps/travelcap/assets/gallery/dark_ipad_documents--documents--empty.webp">
   <link rel="stylesheet" href="/apps/assets/minisite.css">
   <style>:root{--accent:#007aff;--accent2:#38bdf8;--bg:#051a33;}</style>
   <script type="application/ld+json">
@@ -29,19 +30,20 @@
       <div>
         <h1 id="app-name">TravelCap</h1>
         <p class="hero__desc">Trips, tickets and travel documents in one place.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/TravelCap/VERSION.json">v1.0.2</span>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/TravelCap/VERSION.json">v1.1.1</span>
         <div class="ctas">
         <a class="btn btn--primary" href="https://shamikhahmed.github.io/TravelCap/">Open TravelCap</a>
         <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=travelcap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="/support.html">Support</a>
         <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
       </div>
       </div>
     </section>
 
     <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screen gallery</h2>
-      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
-      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+      <h2 id="gallery-h">Screenshots</h2>
+      <p class="section__lead">A few screens from the shipped app (light/dark and device sizes in the full gallery).</p>
+    <div class="gallery-grid" role="list"><figure class="gallery-shot"><img src="/apps/travelcap/assets/gallery/dark_ipad_documents--documents--empty.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/travelcap/assets/gallery/dark_ipad_explore--explore--default.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/travelcap/assets/gallery/dark_ipad_more--budget--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/travelcap/assets/gallery/dark_ipad_more--emergency--default.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/travelcap/assets/gallery/dark_ipad_more--more--default.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure><figure class="gallery-shot"><img src="/apps/travelcap/assets/gallery/dark_ipad_more--packing--demo.webp" alt="App screen" width="390" height="844" loading="lazy" decoding="async"><figcaption></figcaption></figure></div>
     </section>
 
     <section class="section" id="features" aria-labelledby="features-h">
@@ -77,6 +79,18 @@
     <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
       <h2 id="changelog-h">What's new</h2>
       <article>
+          <h3>v1.1.1</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>CI typecheck: type `writeMatrixResults` failures as `string[]` (never[] inference from JS default)</li><li>Vendor gallery `capture-helpers` into `e2e/helpers/` so CI (no sibling tooling) resolves the module</li><li>G-8: VERSION / package / About / SW `travelcap-v311` / register `?v=1.1.1`</li></ul>
+        </article><article>
+          <h3>v1.1.0</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>TRV-V3-1: guard PWA register when SW blocked/undefined (no `.waiting` pageerror on `/trips`)</li><li>TRV-V3-2: sidebar tag **Passport desk** (G-3; never “Passport OS”)</li><li>TRV-V3-3 / TRV-V3-4: ≥11px type; collapse control 44px target</li><li>TRV-V3-5: `finish/travelcap-stepR` merged in Phase 0</li></ul>
+        </article><article>
+          <h3>v1.0.2</h3>
+          <time datetime="2026-09-15">2026-09-15</time>
+          <ul class="list"><li>Tier 1 kill-list TCBrand + docs lock UI (pre-v3)</li></ul>
+        </article><article>
           <h3>v1.0.1</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>C-11: regenerate package-lock so `@jridgewell/trace-mapping` resolves to published `0.3.31` (lock previously pointed at non-existent `0.3.41`); `npm ci` works on clean cache</li><li>C-12: remove `eslint-disable react-hooks/set-state-in-effect`, `@ts-ignore`, and `@ts-expect-error`; fix splash/tip via `useSyncExternalStore`, transit prefill during render, Dexie `db.table()`, typed local-lock import</li><li>C-13: enable PWA for static export with `basePath` `/TravelCap`; register SW under basePath; `npm run test:precache` asserts every Workbox precache URL returns 200 under `/TravelCap`</li></ul>
@@ -84,18 +98,6 @@
           <h3>v1.0.0</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>Tier 1: TravelCap naming (G-3); tabs Trips · Explore · Documents · More; home → trips; lazy OCR with progress/cancel; documents app lock; privacy.html; AviationStack HTTPS/CORS plain errors; Bureau/Bearer jargon removed; §4.2 disclaimer</li><li>**Violation recorded:** v1.0.0 was released while CI on `main` was red (`npm ci` 404 on `@jridgewell/trace-mapping@0.3.41`). Corrected in 1.0.1.</li></ul>
-        </article><article>
-          <h3>v0.3.6</h3>
-          <time datetime="2026-09-14">2026-09-14</time>
-          <ul class="list"><li>Release (C-01): patch bump after Phase 0 splash first-launch-only fix. Hub publish in C-03.</li></ul>
-        </article><article>
-          <h3>v0.3.5</h3>
-          <time datetime="2026-07-20">2026-07-20</time>
-          <ul class="list"><li>Home deep: passport bureau MOBILE≠DESKTOP — cover rail / journey desk / counter stamps ≥900px.</li></ul>
-        </article><article>
-          <h3>v0.3.4</h3>
-          <time datetime="2026-07-20">2026-07-20</time>
-          <ul class="list"><li>Passport desk polish: desktop agent-counter layout (cover left · CTA right) on splash + WelcomeHero.</li><li>`accent2` gold foil token `#D4AF37`; burgundy splash ritual unchanged.</li></ul>
         </article>
       <p><a href="https://github.com/shamikhahmed/TravelCap">Full changelog / source on GitHub</a></p>
     </section>
@@ -108,7 +110,7 @@
         <a href="https://github.com/shamikhahmed/TravelCap">GitHub</a>
         <a href="/apps/">All Caps</a>
       </nav>
-      <p>Capricorn Systems · TravelCap mini-site (skeleton)</p>
+      <p>Capricorn Systems · TravelCap</p>
       <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
     </footer>
   </div>

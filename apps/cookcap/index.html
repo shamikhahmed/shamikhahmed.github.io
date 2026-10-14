@@ -10,7 +10,8 @@
   <meta property="og:description" content="Your family cookbook, kept like a real book.">
   <meta property="og:url" content="https://shamikhahmed.github.io/apps/cookcap/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  
   <link rel="stylesheet" href="/apps/assets/minisite.css">
   <style>:root{--accent:#c4784a;--accent2:#8b4513;--bg:#1a120e;}</style>
   <script type="application/ld+json">
@@ -29,19 +30,20 @@
       <div>
         <h1 id="app-name">CookCap</h1>
         <p class="hero__desc">Your family cookbook, kept like a real book.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/CookCap/VERSION.json">v3.5.1</span>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/CookCap/VERSION.json">v3.6.1</span>
         <div class="ctas">
         <a class="btn btn--primary" href="https://shamikhahmed.github.io/CookCap/">Open CookCap</a>
         <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=cookcap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="/support.html">Support</a>
         <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
       </div>
       </div>
     </section>
 
     <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screen gallery</h2>
-      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
-      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+      <h2 id="gallery-h">Screenshots</h2>
+      <p class="section__lead">Screenshots from the v3 gallery land here as they are published.</p>
+      <div class="placeholder">Open the live app to explore every screen.</div>
     </section>
 
     <section class="section" id="features" aria-labelledby="features-h">
@@ -77,6 +79,14 @@
     <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
       <h2 id="changelog-h">What's new</h2>
       <article>
+          <h3>v3.6.1</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>Harden hydration against React #418 on live Pages (edition/ideas gated until post-mount)</li><li>SW → `cookcap-v42`</li></ul>
+        </article><article>
+          <h3>v3.6.0</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>CK-V3-1: Fix React hydration #418 — client-only kitchen ideas + Appearance portal mount gate</li><li>CK-V3-2: Page-scrub tap target ≥44px on android; hide ±5 jumps below `sm`; on-demand file inputs; NameGate min-h-11</li><li>CK-V3-3: Publish `public/VERSION.json` on Pages export</li><li>CK-V3-4: Phase 0 `finish/cookcap-stepR` already on main lineage</li></ul>
+        </article><article>
           <h3>v3.5.1</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>C-16: Remove `scripts/tmp-ff/` Google Fonts scratch files.</li><li>C-20: Set `window.__APP_READY__` when splash dismisses (first real screen).</li></ul>
@@ -88,14 +98,6 @@
           <h3>v3.4.1</h3>
           <time datetime="2026-08-04">2026-08-04</time>
           <ul class="list"><li>**Animation bible §9 micros** — heart spring+glow; star stagger 40ms + bounce; step ✓ pop + strike clip; fly-to-cart + badge bump; servings odo + qty flash; quick-facts / spice-pip stagger; `micro-press` settle</li><li>Shared tokens in `src/lib/motion.ts` (`flyToCart`, `CART_BUMP_EVENT`, `EASE_SPRING`); Shell `[data-cart-fly-target]`</li><li>Reduced-motion: instant state, no fly/pop</li><li>`scripts/record-onboard-flip.mjs` + `npm run record:onboard-flip`</li></ul>
-        </article><article>
-          <h3>v3.4.0</h3>
-          <time datetime="2026-08-04">2026-08-04</time>
-          <ul class="list"><li>**Type scale** — recipe body ≥16px; UI floor ≥12px (`--text-floor`); sticker/tab/chrome labels raised</li><li>**Tap targets** — interactive hits ≥44px (heart, stars, steps, steppers, chips, scrub track, shopping rows)</li><li>**What's new** — corner toast, deferred, backdrop-dismiss; never covers recipe hero</li><li>**Recipe hero** — stronger scrim, title clears heart (`pr-14`)</li></ul>
-        </article><article>
-          <h3>v3.3.2</h3>
-          <time datetime="2026-08-04">2026-08-04</time>
-          <ul class="list"><li>**Cover open (animation bible §6)** — leather hinge `rotateY 0→−160°` over 620ms `--e-page`; paper inside cover past −90°; cast shadow peaks mid-swing; right-edge page fan (4 sheets, 20ms stagger); spine gutter deepens</li><li>Reduced-motion: 200ms cross-fade cover → first spread</li><li>Capricorn + HANDOVER sync</li><li>Full pack + gallery regen (desktop/mobile + checkpoints)</li></ul>
         </article>
       <p><a href="https://github.com/shamikhahmed/CookCap">Full changelog / source on GitHub</a></p>
     </section>
@@ -108,7 +110,7 @@
         <a href="https://github.com/shamikhahmed/CookCap">GitHub</a>
         <a href="/apps/">All Caps</a>
       </nav>
-      <p>Capricorn Systems · CookCap mini-site (skeleton)</p>
+      <p>Capricorn Systems · CookCap</p>
       <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
     </footer>
   </div>

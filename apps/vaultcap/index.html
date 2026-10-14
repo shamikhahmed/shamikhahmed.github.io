@@ -10,7 +10,8 @@
   <meta property="og:description" content="Everything you own, encrypted on your device.">
   <meta property="og:url" content="https://shamikhahmed.github.io/apps/vaultcap/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  
   <link rel="stylesheet" href="/apps/assets/minisite.css">
   <style>:root{--accent:#5b8dee;--accent2:#3d5a9e;--bg:#070b14;}</style>
   <script type="application/ld+json">
@@ -29,19 +30,20 @@
       <div>
         <h1 id="app-name">VaultCap</h1>
         <p class="hero__desc">Everything you own, encrypted on your device.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/VaultCap/VERSION.json">v5.2.2</span>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/VaultCap/VERSION.json">v5.3.0</span>
         <div class="ctas">
         <a class="btn btn--primary" href="https://shamikhahmed.github.io/VaultCap/">Open VaultCap</a>
         <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=vaultcap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="/support.html">Support</a>
         <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
       </div>
       </div>
     </section>
 
     <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screen gallery</h2>
-      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
-      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+      <h2 id="gallery-h">Screenshots</h2>
+      <p class="section__lead">Screenshots from the v3 gallery land here as they are published.</p>
+      <div class="placeholder">Open the live app to explore every screen.</div>
     </section>
 
     <section class="section" id="features" aria-labelledby="features-h">
@@ -77,6 +79,10 @@
     <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
       <h2 id="changelog-h">What's new</h2>
       <article>
+          <h3>v5.3.0</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>Perfection Loop v3 Wave B: VLT-V3-1 44px skip-link (off-screen park); VLT-V3-2 wip LCP / P-VLT-1 canvas remove / demo splash skip / lazy LLM bundle</li><li>VLT-V3-5: critical CSS for demo Exit + panic 44×44 before layout.css</li><li>SW `vaultcap-v93` · register query `sw-v51.js?v=5.3.0`</li></ul>
+        </article><article>
           <h3>v5.2.2</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>C-16: Self-host Cinzel, Space Grotesk, IBM Plex Mono; remove Google Fonts + CSP font CDN entries (index/pitch/widget).</li><li>C-20: Set `window.__APP_READY__` after splash dismiss.</li><li>SW `vaultcap-v92`.</li></ul>
@@ -92,10 +98,6 @@
           <h3>v5.1.27</h3>
           <time datetime="2026-09-14">2026-09-14</time>
           <ul class="list"><li>Fix (C-02): SW install no longer fails on missing gitignored `widget-data.json`; resilient precache; cache `vaultcap-v89`</li><li>Release (C-01): version + SW register query bump so installed PWAs receive Phase 0 security vendoring</li><li>CI: Pages deploy waits for green CI (`workflow_run`)</li></ul>
-        </article><article>
-          <h3>v5.1.26</h3>
-          <time datetime="2026-07-31">2026-07-31</time>
-          <ul class="list"><li>Fix: `#pgLock` safe-bottom dual-path (`env` + `--cap-safe-b`) — no invented 24–28px home-indicator gap on home-button SE; short-height media same</li><li>QA: device-matrix loop re-verify; SW `vaultcap-v88`</li></ul>
         </article>
       <p><a href="https://github.com/shamikhahmed/VaultCap">Full changelog / source on GitHub</a></p>
     </section>
@@ -108,7 +110,7 @@
         <a href="https://github.com/shamikhahmed/VaultCap">GitHub</a>
         <a href="/apps/">All Caps</a>
       </nav>
-      <p>Capricorn Systems · VaultCap mini-site (skeleton)</p>
+      <p>Capricorn Systems · VaultCap</p>
       <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
     </footer>
   </div>

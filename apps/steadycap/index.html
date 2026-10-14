@@ -10,7 +10,8 @@
   <meta property="og:description" content="Routines, medicines and support for recovery.">
   <meta property="og:url" content="https://shamikhahmed.github.io/apps/steadycap/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://shamikhahmed.github.io/apps/steadycap/assets/gallery/mobile-01-onboarding.png">
   <link rel="stylesheet" href="/apps/assets/minisite.css">
   <style>:root{--accent:#c9652b;--accent2:#2f8e88;--bg:#1a110e;}</style>
   <script type="application/ld+json">
@@ -29,19 +30,20 @@
       <div>
         <h1 id="app-name">SteadyCap</h1>
         <p class="hero__desc">Routines, medicines and support for recovery.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/SteadyCap/VERSION.json">v2.5.6</span>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/SteadyCap/VERSION.json">v2.6.0</span>
         <div class="ctas">
         <a class="btn btn--primary" href="https://shamikhahmed.github.io/SteadyCap/">Open SteadyCap</a>
         <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=steadycap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="/support.html">Support</a>
         <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
       </div>
       </div>
     </section>
 
     <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screen gallery</h2>
-      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
-      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+      <h2 id="gallery-h">Screenshots</h2>
+      <p class="section__lead">A few screens from the shipped app (light/dark and device sizes in the full gallery).</p>
+    <div class="gallery-grid" role="list"><figure class="gallery-shot"><img src="/apps/steadycap/assets/gallery/mobile-01-onboarding.png" alt="Onboarding" width="390" height="844" loading="lazy" decoding="async"><figcaption>Onboarding</figcaption></figure><figure class="gallery-shot"><img src="/apps/steadycap/assets/gallery/mobile-02-dashboard.png" alt="Dashboard" width="390" height="844" loading="lazy" decoding="async"><figcaption>Dashboard</figcaption></figure><figure class="gallery-shot"><img src="/apps/steadycap/assets/gallery/mobile-03-recovery.png" alt="Recovery" width="390" height="844" loading="lazy" decoding="async"><figcaption>Recovery</figcaption></figure><figure class="gallery-shot"><img src="/apps/steadycap/assets/gallery/mobile-04-emergency.png" alt="Emergency" width="390" height="844" loading="lazy" decoding="async"><figcaption>Emergency</figcaption></figure><figure class="gallery-shot"><img src="/apps/steadycap/assets/gallery/desktop-01-onboarding.png" alt="Onboarding" width="390" height="844" loading="lazy" decoding="async"><figcaption>Onboarding</figcaption></figure><figure class="gallery-shot"><img src="/apps/steadycap/assets/gallery/desktop-02-dashboard.png" alt="Dashboard" width="390" height="844" loading="lazy" decoding="async"><figcaption>Dashboard</figcaption></figure></div>
     </section>
 
     <section class="section" id="features" aria-labelledby="features-h">
@@ -77,9 +79,13 @@
     <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
       <h2 id="changelog-h">What's new</h2>
       <article>
+          <h3>v2.6.0</h3>
+          <time datetime="2026-10-14">2026-10-14</time>
+          <ul class="list"><li>Perfection Loop v3 Phase I (next minor). STD-V3-1..4 Auditor ✅ VERIFIED.</li><li>Mood chip labels `max(11px, 0.75rem)` + 44px targets; Open journal `btn-open-journal` ≥48px.</li><li>Demo-seed + skip-reseed + splash 220ms from wip (MODULE_CHAIN deferred — SOS stays eager); G-9 fonts; light teal AA; G-3 og title; insights.js apostrophe fix; G-10 local-lock + G-6 fixture.</li><li>G-8: VERSION **2.6.0** / SW `steadycap-v60` / register `?v=60` / CHANGELOG aligned. SOS content unchanged.</li></ul>
+        </article><article>
           <h3>v2.5.6</h3>
           <time datetime="2026-10-14">2026-10-14</time>
-          <ul class="list"><li>Perfection v3 (STD-V3-1/2): mood chip labels `max(11px, 0.75rem)` + 44px mood targets; Open journal `btn-open-journal` ≥48px.</li><li>STD-V3-3: port `demo-seed.js` + MODULE_CHAIN (Today cold path) from `wip/steadycap-2026-09`; keep self-hosted fonts (G-9); light-theme teal AA; G-3 og title no longer says &quot;OS&quot;.</li><li>STD-V3-4: confirm G-10 `js/vendor/local-lock.js` ≡ shared; app-lock Playwright fixture.</li><li>G-8: VERSION / SW `steadycap-v56` / register `?v=56` / CHANGELOG aligned.</li></ul>
+          <ul class="list"><li>Perfection v3 (STD-V3-1/2): mood chip labels `max(11px, 0.75rem)` + 44px mood targets; Open journal `btn-open-journal` ≥48px.</li><li>STD-V3-3: port `demo-seed.js` + skip-reseed + splash timing from `wip/steadycap-2026-09` (MODULE_CHAIN deferred — SOS must stay eager); keep self-hosted fonts (G-9); light-theme teal AA; G-3 og title no longer says &quot;OS&quot;; fix insights.js apostrophe pageerror.</li><li>STD-V3-4: confirm G-10 `js/vendor/local-lock.js` ≡ shared; app-lock Playwright fixture.</li><li>G-8: VERSION / SW `steadycap-v56` / register `?v=56` / CHANGELOG aligned.</li></ul>
         </article><article>
           <h3>v2.5.5</h3>
           <time datetime="2026-09-23">2026-09-23</time>
@@ -92,10 +98,6 @@
           <h3>v2.5.3</h3>
           <time datetime="2026-09-15">2026-09-15</time>
           <ul class="list"><li>C-16: Self-host Source Sans 3 + IBM Plex Mono (Inter on pitch); remove Google Fonts + CSP font CDN entries.</li><li>C-20: Set `window.__APP_READY__` after splash dismiss.</li><li>SW `steadycap-v53`.</li></ul>
-        </article><article>
-          <h3>v2.5.2</h3>
-          <time datetime="2026-09-15">2026-09-15</time>
-          <ul class="list"><li>C-17 / P-STDY-1: remove streak language from product UI — `{habit}: {duration} so far`, &quot;shortest stretch so far&quot;; onboarding &quot;Recovery is a system, not a count.&quot; (`steadycap-v52`)</li></ul>
         </article>
       <p><a href="https://github.com/shamikhahmed/SteadyCap">Full changelog / source on GitHub</a></p>
     </section>
@@ -108,7 +110,7 @@
         <a href="https://github.com/shamikhahmed/SteadyCap">GitHub</a>
         <a href="/apps/">All Caps</a>
       </nav>
-      <p>Capricorn Systems · SteadyCap mini-site (skeleton)</p>
+      <p>Capricorn Systems · SteadyCap</p>
       <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
     </footer>
   </div>
