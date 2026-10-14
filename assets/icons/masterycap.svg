@@ -1,5 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-  <path d="M10 12 H22 C24 12 24 14 24 14 V38 C24 38 24 36 22 36 H10 V12 Z" stroke="#7CFFB2" stroke-width="2.6" stroke-linejoin="round"/>
-  <path d="M38 12 H26 C24 12 24 14 24 14 V38 C24 38 24 36 26 36 H38 V12 Z" stroke="#7CFFB2" stroke-width="2.6" stroke-linejoin="round"/>
-  <path d="M16 20 H20 M16 25 H20 M28 20 H32 M28 25 H32" stroke="#F4F0E8" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MasteryCap">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11301f"/>
+      <stop offset="100%" stop-color="#030906"/>
+    </linearGradient>
+    <linearGradient id="mint" gradientUnits="userSpaceOnUse" x1="96" y1="140" x2="416" y2="420">
+      <stop offset="0%" stop-color="#b6ffd5"/>
+      <stop offset="100%" stop-color="#3fd98a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M380 96 L420 108 L408 148" stroke="#c9a227" stroke-width="10" stroke-linecap="round" fill="none" opacity=".9"/>
+  <circle cx="408" cy="118" r="6" fill="#c9a227"/>
+  <path d="M134 168 H232 C250 168 256 182 256 182 V370 C256 370 250 358 232 358 H134 Z M378 168 H280 C262 168 256 182 256 182 V370 C256 370 262 358 280 358 H378 Z" fill="none" stroke="url(#mint)" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M170 228 H214 M170 270 H214 M298 228 H342 M298 270 H342" stroke="#f4f0e8" stroke-width="16" stroke-linecap="round" opacity=".8"/>
 </svg>

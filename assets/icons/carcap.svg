@@ -1,7 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-  <path d="M10 28 L14 18 H34 L38 28" stroke="#FF6B4A" stroke-width="2.8" stroke-linejoin="round"/>
-  <path d="M8 28 H40 V34 H8 Z" stroke="#FF6B4A" stroke-width="2.6" stroke-linejoin="round"/>
-  <circle cx="15" cy="34" r="3.2" stroke="#FF6B4A" stroke-width="2.4"/>
-  <circle cx="33" cy="34" r="3.2" stroke="#FF6B4A" stroke-width="2.4"/>
-  <path d="M18 18 L20 14 H28 L30 18" stroke="#F4F0E8" stroke-width="2" stroke-linejoin="round" opacity=".7"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CarCap">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a1a12"/>
+      <stop offset="100%" stop-color="#0b0605"/>
+    </linearGradient>
+    <linearGradient id="coral" gradientUnits="userSpaceOnUse" x1="96" y1="140" x2="416" y2="420">
+      <stop offset="0%" stop-color="#ff9a7e"/>
+      <stop offset="55%" stop-color="#ff6b4a"/>
+      <stop offset="100%" stop-color="#d4452a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M380 96 L420 108 L408 148" stroke="#c9a227" stroke-width="10" stroke-linecap="round" fill="none" opacity=".9"/>
+  <circle cx="408" cy="118" r="6" fill="#c9a227"/>
+  <path d="M138 276 L170 196 H342 L374 276" fill="none" stroke="url(#coral)" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M116 276 H396 V332 H116 Z" fill="none" stroke="url(#coral)" stroke-width="22" stroke-linejoin="round"/>
+  <circle cx="178" cy="336" r="28" fill="#0b0605" stroke="url(#coral)" stroke-width="20"/>
+  <circle cx="334" cy="336" r="28" fill="#0b0605" stroke="url(#coral)" stroke-width="20"/>
+  <path d="M206 196 L222 164 H290 L306 196" fill="none" stroke="#f4f0e8" stroke-width="14" stroke-linejoin="round" stroke-linecap="round" opacity=".75"/>
 </svg>
