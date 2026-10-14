@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DeePonyCap — Capricorn Systems</title>
+  <meta name="description" content="Track your collection, shelves and wishlist.">
+  <link rel="canonical" href="https://shamikhahmed.github.io/apps/deeponycap/">
+  <meta property="og:title" content="DeePonyCap">
+  <meta property="og:description" content="Track your collection, shelves and wishlist.">
+  <meta property="og:url" content="https://shamikhahmed.github.io/apps/deeponycap/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="/apps/assets/minisite.css">
+  <style>:root{--accent:#c4367a;--accent2:#8b5cf6;--bg:#d4a0b8;}</style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"DeePonyCap","description":"Track your collection, shelves and wishlist.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://shamikhahmed.github.io/apps/deeponycap/"}
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="/apps/"><img src="/assets/logo.svg" alt="" width="28" height="28">Capricorn</a>
+      <button type="button" class="scheme-toggle" id="schemeToggle" aria-label="Toggle colour scheme">Light / Dark</button>
+    </header>
+
+    <section class="hero" aria-labelledby="app-name">
+      <img class="hero__icon" src="/apps/deeponycap/assets/icon.svg" alt="" width="96" height="96">
+      <div>
+        <h1 id="app-name">DeePonyCap</h1>
+        <p class="hero__desc">Track your collection, shelves and wishlist.</p>
+        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/DeePonyCap/VERSION.json">v3.8.3</span>
+        <div class="ctas">
+        <a class="btn btn--primary" href="https://shamikhahmed.github.io/DeePonyCap/">Open DeePonyCap</a>
+        <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=deeponycap">Try it in Capricorn OS</a>
+        <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
+      </div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery" aria-labelledby="gallery-h">
+      <h2 id="gallery-h">Screen gallery</h2>
+      <p class="section__lead">Gallery manifest not present yet — placeholder until Gallery Engineer delivers.</p>
+      <div class="placeholder">Embedded gallery viewer (light/dark · device filter · lightbox) — Wave C/D.</div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-h">
+      <h2 id="features-h">What it does</h2>
+      <p class="section__lead">Honest features from the shipped set.</p>
+      <div class="grid"><article class="tile"><h3>User</h3><p>User-defined series</p></article><article class="tile"><h3>Photo shelves in IndexedDB</h3><p>Photo shelves in IndexedDB</p></article><article class="tile"><h3>Wishlist tiers</h3><p>Wishlist tiers</p></article><article class="tile"><h3>Independent</h3><p>Independent — not affiliated with any toy company</p></article></div>
+    </section>
+
+    <section class="section" id="privacy" aria-labelledby="privacy-h">
+      <h2 id="privacy-h">Privacy, plainly</h2>
+      <p class="section__lead">No analytics, no ads, no account required. What stays on device stays on device.</p>
+      <h3 style="font-size:1rem;margin:1rem 0 .4rem">Network destinations</h3>
+      <ul class="list"><li>github.com</li></ul>
+      <p style="margin-top:1rem"><a href="https://shamikhahmed.github.io/DeePonyCap/privacy.html">Full privacy page</a></p>
+    </section>
+
+    <section class="section" id="install" aria-labelledby="install-h">
+      <h2 id="install-h">How to install</h2>
+      <div class="placeholder">
+        <p><strong>iPhone / iPad (Safari):</strong> Open the app → Share → Add to Home Screen.</p>
+        <p><strong>Mac (Safari / Chrome):</strong> Open the app → browser install / Add to Dock when offered.</p>
+        <p><strong>Android (Chrome):</strong> Open the app → Install app / Add to Home screen.</p>
+        <p>Install screenshots from the gallery land in a later wave.</p>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq" aria-labelledby="faq-h">
+      <h2 id="faq-h">FAQ</h2>
+      <details><summary>Where is my data?</summary><p>On your device (localStorage / IndexedDB), except DeeFoodie private beta which syncs to its private server for invited users only.</p></details><details><summary>How do I erase everything?</summary><p>Open the app → Settings → erase / delete data (wording varies by Cap). Or clear site data for that Cap’s URL in your browser.</p></details><details><summary>DeeFoodie private beta</summary><p>DeeFoodie is invite-only. There is no public install link. If you are an invited tester and need help, open a DeeFoodie issue above.</p></details><details><summary>Privacy</summary><p>See privacy.html for the hub, and each Cap’s own privacy page from Settings → About.</p></details>
+      <details><summary>Important note</summary><p>DeePonyCap is an independent collection tracker and isn't affiliated with or endorsed by any toy company.</p></details>
+    </section>
+
+    <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
+      <h2 id="changelog-h">What's new</h2>
+      <article>
+          <h3>Unreleased</h3>
+          
+          <ul class="list"><li>DPY-V3-1: decorative star emoji ≥16px + `aria-hidden` (no sub-11px icon glyphs).</li><li>DPY-V3-2: haptics gated on `navigator.userActivation.hasBeenActive`; silent demo skips celebrate vibrate.</li><li>Perfection Wave B docs: `qa/perfection/{STATE,ITEMS,INVENTORY,MATRIX}.md` + device-qa JSON.</li></ul>
+        </article><article>
+          <h3>v3.8.3</h3>
+          <time datetime="2026-09-15">2026-09-15</time>
+          <ul class="list"><li>Tier 1 gate: DPBrand palette, CapConfirm/CapPrompt, SINKS + finish-loop evidence.</li><li>SW `deeponycap-v63`.</li><li>Automated `npm run tier1` PASS; VO remains BLOCKED-EXTERNAL.</li></ul>
+        </article><article>
+          <h3>v3.8.2</h3>
+          <time datetime="2026-09-15">2026-09-15</time>
+          <ul class="list"><li>C-16: Self-host Bubblegum Sans, Comic Neue, Nunito (Inter on pitch); remove Google Fonts + CSP font CDN entries.</li><li>C-20: Move `window.__APP_READY__` to after splash dismiss (not during splash).</li><li>SW `deeponycap-v62`.</li></ul>
+        </article><article>
+          <h3>v3.8.1</h3>
+          <time datetime="2026-09-15">2026-09-15</time>
+          <ul class="list"><li>SW `CACHE` fallback was stuck on `deeponycap-v55` while VERSION said `deeponycap-v60` — installed PWAs never picked up Tier 1 code</li><li>Aligned `sw.js` fallback, `VERSION.json`, `js/version.js`, and SW register query; SW `deeponycap-v61`</li><li>Added `scripts/check-sw-truth.js` (C-10.10) to `npm run verify`</li></ul>
+        </article><article>
+          <h3>v3.8.0</h3>
+          <time datetime="2026-09-15">2026-09-15</time>
+          <ul class="list"><li>**PONY-P0-01:** Removed bundled My Little Pony / Hasbro / official character catalogs; user-defined series; demo uses invented names; user-entered names never rewritten</li><li>**PONY-P1-01…08:** Inline sample banner · visual switches · dark page background · FAB only on Stable/Wishlist · 11px SVG tab labels · locale dates · removed `releases/` · non-affiliation + 13+ privacy copy</li><li>SW `deeponycap-v60`</li></ul>
+        </article>
+      <p><a href="https://github.com/shamikhahmed/DeePonyCap">Full changelog / source on GitHub</a></p>
+    </section>
+
+    <footer class="site-footer">
+      <nav aria-label="Site">
+        <a href="/">Capricorn OS</a>
+        <a href="/support.html">Support</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="https://github.com/shamikhahmed/DeePonyCap">GitHub</a>
+        <a href="/apps/">All Caps</a>
+      </nav>
+      <p>Capricorn Systems · DeePonyCap mini-site (skeleton)</p>
+      <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
+    </footer>
+  </div>
+  <script>
+(function () {
+  var root = document.documentElement;
+  var key = 'cap-minisite-scheme';
+  function apply(v) {
+    if (v === 'light' || v === 'dark') root.setAttribute('data-scheme', v);
+    else root.removeAttribute('data-scheme');
+  }
+  apply(localStorage.getItem(key));
+  document.getElementById('schemeToggle')?.addEventListener('click', function () {
+    var cur = root.getAttribute('data-scheme');
+    var next = cur === 'dark' ? 'light' : cur === 'light' ? '' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
+    if (next) localStorage.setItem(key, next); else localStorage.removeItem(key);
+    apply(next || null);
+  });
+  var badge = document.getElementById('liveVersion');
+  if (badge && badge.dataset.versionUrl) {
+    fetch(badge.dataset.versionUrl, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (j && (j.version || j.ver)) badge.textContent = 'v' + (j.version || j.ver);
+    }).catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
