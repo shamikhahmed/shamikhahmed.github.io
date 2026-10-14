@@ -1,3 +1,12 @@
+## 1.1.0 — 2026-10-14
+
+Perfection Loop v3 Wave D (G-8 next minor):
+
+- Screen gallery v3: shared viewer + 36 WebP shots (6 tabs × light/dark × iphone/ipad/mac), schema v2
+- `qa/perfection/` scaffold + baseline device-qa **7/7 hard-clean** (no open P0; CAR-V3-1/2 FIXED)
+- Hub rsync (CAR-V3-3) as part of Phase I release into `shamikhahmed.github.io/CarCap/`
+- SW cache **`carcap-v9`**
+
 ## 1.0.1 — 2026-09-15
 
 TIER1 automated gate close (C-10 / §14 #11):

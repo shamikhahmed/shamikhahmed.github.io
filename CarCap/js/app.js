@@ -1,11 +1,11 @@
 'use strict';
 
-window.APP_VERSION = '1.0.1';
+window.APP_VERSION = '1.1.0';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
-const SW_CACHE = 'carcap-v8';
+const SW_CACHE = 'carcap-v9';
 const CC = CCBrand;
 const PHOTO_MAX_LABEL = '2 MB';
 

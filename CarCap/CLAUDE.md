@@ -1,7 +1,7 @@
 # CarCap — agent notes
 
 ## Truth
-- Version: 1.0.1 · SW: `carcap-v8`
+- Version: 1.1.0 · SW: `carcap-v9`
 - Path: `/Users/shamikhahmed/Projects/Cap/Cap-Apps/CarCap`
 - Offline PWA only · vanilla JS · no bundler
 - Live: https://shamikhahmed.github.io/CarCap/ (rsync into hub)

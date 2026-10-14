@@ -1,0 +1,48 @@
+/* CarCap brand tokens — C-29 hex-exempt (brand.css). */
+:root,
+html[data-theme="dark"] {
+  --bg: #18181a;
+  --bg2: #1f1f22;
+  --surface: #262629;
+  --surface2: #2f2f33;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #ececec;
+  /* AA ≥4.5:1 on --surface2 */
+  --muted: #97979d;
+  --accent: #ff6b4a;
+  --accent-dim: rgba(255, 107, 74, 0.14);
+  --accent-strong: rgba(255, 107, 74, 0.28);
+  /* AA ≥4.5:1 on danger pill tint */
+  --danger: #ff9a90;
+  --danger-dim: rgba(255, 154, 144, 0.14);
+  --ok: #3d9b7a;
+  --ok-dim: rgba(61, 155, 122, 0.14);
+  --warn: #d4a04a;
+  --warn-dim: rgba(212, 160, 74, 0.14);
+  --on-accent: #ffffff;
+}
+
+html[data-theme="light"] {
+  --bg: #e8e8ea;
+  --bg2: #f0f0f2;
+  --surface: #f5f5f7;
+  --surface2: #dddde0;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.14);
+  --text: #1a1a1c;
+  --muted: #6a6a70;
+  /* AA ≥4.5:1 on --surface for bay labels + filled buttons */
+  --accent: #b82f10;
+  --accent-dim: rgba(184, 47, 16, 0.12);
+  --accent-strong: rgba(184, 47, 16, 0.22);
+  /* AA ≥4.5:1 on danger pill tint */
+  --danger: #b53529;
+  --danger-dim: rgba(181, 53, 41, 0.12);
+  --ok: #2f7a5c;
+  --ok-dim: rgba(47, 122, 92, 0.12);
+  /* AA ≥4.5:1 on warn pill tint */
+  --warn: #7f5f1f;
+  --warn-dim: rgba(127, 95, 31, 0.12);
+  --on-accent: #ffffff;
+}
