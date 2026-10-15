@@ -1,138 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Cap apps — Capricorn Systems</title>
-  <meta name="description" content="Mini-sites for every Capricorn Cap app.">
-  <link rel="canonical" href="https://shamikhahmed.github.io/apps/">
-  <link rel="stylesheet" href="/apps/assets/minisite.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cap apps — Capricorn Systems</title>
+<meta name="description" content="Fifteen Cap apps by Capricorn Systems. Each one looks different; none has ads or analytics, and each says plainly what stays on your device.">
+<link rel="canonical" href="https://shamikhahmed.github.io/apps/">
+<meta name="theme-color" content="#f9f6ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Capricorn Systems">
+<meta property="og:title" content="Cap apps — Capricorn Systems">
+<meta property="og:description" content="Fifteen Cap apps by Capricorn Systems. Each one looks different; none has ads or analytics, and each says plainly what stays on your device.">
+<meta property="og:url" content="https://shamikhahmed.github.io/apps/">
+<meta property="og:image" content="https://shamikhahmed.github.io/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="https://shamikhahmed.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/apps/assets/minisite.css">
+<style>:root{--bg:#f9f6ee;--surface:#ffffff;--surface2:#f1ede1;--line:#e2dccc;--ink:#16161a;--dim:#55555d;--accent:#816819;--fill:#b18f22;--on-fill:#111114;--glow:#c9a227;--glow2:#8a6a1a}
+html[data-theme="dark"]{--bg:#121110;--surface:#1e1d1c;--surface2:#272626;--line:#333231;--ink:#f6f4ef;--dim:#a8a7a3;--accent:#c9a227;--fill:#c9a227;--on-fill:#111114;color-scheme:dark}
+@media (prefers-color-scheme: dark){html:not([data-theme="light"]){--bg:#121110;--surface:#1e1d1c;--surface2:#272626;--line:#333231;--ink:#f6f4ef;--dim:#a8a7a3;--accent:#c9a227;--fill:#c9a227;--on-fill:#111114;color-scheme:dark}}</style>
+<script>try{var t=localStorage.getItem('cap-ms-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+
 </head>
 <body>
-  <div class="wrap">
-    <header class="site-header">
-      <a class="brand" href="/"><img src="/assets/logo.svg" alt="" width="28" height="28">Capricorn</a>
-      <button type="button" class="scheme-toggle" id="schemeToggle" aria-label="Toggle colour scheme">Light / Dark</button>
-    </header>
-    <h1 style="margin:1rem 0 .35rem;letter-spacing:-0.02em">Cap apps</h1>
-    <p style="color:var(--muted);margin:0 0 1rem;max-width:40rem">One mini-site per Cap. Open an app, try it in Capricorn OS, or read privacy and FAQ.</p>
-    <div class="index-grid"><a class="card-app" href="/apps/vaultcap/" style="--accent:#5b8dee">
-        <img src="/apps/vaultcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>VaultCap</strong>
-        <span>Everything you own, encrypted on your device.</span>
-        <span class="ver">v5.3.0</span>
-      </a>
-<a class="card-app" href="/apps/pulsecap/" style="--accent:#00f2ff">
-        <img src="/apps/pulsecap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>PulseCap</strong>
-        <span>Plan, log and track your training. Works offline.</span>
-        <span class="ver">v6.45.0</span>
-      </a>
-<a class="card-app" href="/apps/prismcap/" style="--accent:#c77dff">
-        <img src="/apps/prismcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>PrismCap</strong>
-        <span>Party games for one phone, passed around the room.</span>
-        <span class="ver">v4.6.0</span>
-      </a>
-<a class="card-app" href="/apps/steadycap/" style="--accent:#c9652b">
-        <img src="/apps/steadycap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>SteadyCap</strong>
-        <span>Routines, medicines and support for recovery.</span>
-        <span class="ver">v2.6.0</span>
-      </a>
-<a class="card-app" href="/apps/ledgercap/" style="--accent:#f59e0b">
-        <img src="/apps/ledgercap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>LedgerCap</strong>
-        <span>Track your PSX stocks and mutual funds in one place.</span>
-        <span class="ver">v3.58.0</span>
-      </a>
-<a class="card-app" href="/apps/deeponycap/" style="--accent:#c4367a">
-        <img src="/apps/deeponycap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>DeePonyCap</strong>
-        <span>Track your collection, shelves and wishlist.</span>
-        <span class="ver">v3.9.0</span>
-      </a>
-<a class="card-app" href="/apps/scentcap/" style="--accent:#c9a87c">
-        <img src="/apps/scentcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>ScentCap</strong>
-        <span>Your fragrance collection, and what to wear today.</span>
-        <span class="ver">v2.2.0</span>
-      </a>
-<a class="card-app" href="/apps/soulcap/" style="--accent:#7c6ff7">
-        <img src="/apps/soulcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>SoulCap</strong>
-        <span>Quiet tools to steady yourself. Not therapy.</span>
-        <span class="ver">v8.4.0</span>
-      </a>
-<a class="card-app" href="/apps/travelcap/" style="--accent:#007aff">
-        <img src="/apps/travelcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>TravelCap</strong>
-        <span>Trips, tickets and travel documents in one place.</span>
-        <span class="ver">v1.1.1</span>
-      </a>
-<a class="card-app" href="/apps/auracap/" style="--accent:#4f6ef7">
-        <img src="/apps/auracap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>AuraCap</strong>
-        <span>Organize your iPhone, iPad and Mac setup.</span>
-        <span class="ver">v5.5.0</span>
-      </a>
-<a class="card-app" href="/apps/masterycap/" style="--accent:#7cffb2">
-        <img src="/apps/masterycap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>MasteryCap</strong>
-        <span>Learn trading and software step by step, in English or Roman Urdu.</span>
-        <span class="ver">v51.10.0</span>
-      </a>
-<a class="card-app" href="/apps/ideacap/" style="--accent:#f5c542">
-        <img src="/apps/ideacap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>IdeaCap</strong>
-        <span>Capture ideas by voice or text. They stay on your device.</span>
-        <span class="ver">v2.1.0</span>
-      </a>
-<a class="card-app" href="/apps/carcap/" style="--accent:#ff6b4a">
-        <img src="/apps/carcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>CarCap</strong>
-        <span>Service, fuel and documents for your cars.</span>
-        <span class="ver">v1.1.0</span>
-      </a>
-<a class="card-app" href="/apps/cookcap/" style="--accent:#c4784a">
-        <img src="/apps/cookcap/assets/icon.svg" alt="" width="48" height="48">
-        <strong>CookCap</strong>
-        <span>Your family cookbook, kept like a real book.</span>
-        <span class="ver">v3.6.1</span>
-      </a>
-<a class="card-app" href="/apps/deefoodie/" style="--accent:#e8c27a">
-        <img src="/apps/deefoodie/assets/icon.svg" alt="" width="48" height="48">
-        <strong>DeeFoodie · Private beta</strong>
-        <span>A private journal of where you eat in Karachi.</span>
-        <span class="ver">v1.1.0+4</span>
-      </a></div>
-    <footer class="site-footer">
-      <nav><a href="/">Home</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a></nav>
-      <p>Capricorn Systems</p>
-    </footer>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/" aria-label="Capricorn OS home"><img src="/assets/logo.svg" alt="" width="22" height="22"><span>Capricorn</span></a>
+  <nav class="top__nav" aria-label="Site"><a href="/">Capricorn OS</a><a href="/support.html">Support</a></nav>
+  <div class="seg seg--theme" role="group" aria-label="Colour scheme">
+    <button type="button" data-scheme="auto" aria-pressed="true">Auto</button><button type="button" data-scheme="light" aria-pressed="false">Light</button><button type="button" data-scheme="dark" aria-pressed="false">Dark</button>
   </div>
-  <script>
-(function () {
-  var root = document.documentElement;
-  var key = 'cap-minisite-scheme';
-  function apply(v) {
-    if (v === 'light' || v === 'dark') root.setAttribute('data-scheme', v);
-    else root.removeAttribute('data-scheme');
-  }
-  apply(localStorage.getItem(key));
-  document.getElementById('schemeToggle')?.addEventListener('click', function () {
-    var cur = root.getAttribute('data-scheme');
-    var next = cur === 'dark' ? 'light' : cur === 'light' ? '' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
-    if (next) localStorage.setItem(key, next); else localStorage.removeItem(key);
-    apply(next || null);
-  });
-  var badge = document.getElementById('liveVersion');
-  if (badge && badge.dataset.versionUrl) {
-    fetch(badge.dataset.versionUrl, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-      if (j && (j.version || j.ver)) badge.textContent = 'v' + (j.version || j.ver);
-    }).catch(function () {});
-  }
-})();
-</script>
+  
+</header>
+<main id="main">
+  <section class="hero hero--index" aria-labelledby="h1">
+    <div class="hero__text">
+      <p class="eyebrow">Capricorn Systems</p>
+      <h1 id="h1">Fifteen Caps. One rule.</h1>
+      <p class="hero__lead">Every Cap looks and feels different. None of them has ads or analytics, and each page says plainly what stays on your device — and what, if anything, leaves it.</p>
+      <div class="hero__cta"><a class="btn btn--fill" href="/">Open Capricorn OS</a><a class="btn btn--ghost" href="/support.html">Support</a></div>
+    </div>
+  </section>
+  <section class="section" aria-label="All Caps"><ul class="capgrid"><li><a class="capcard" href="/apps/vaultcap/" style="--c:#5b8dee">
+    <img src="/apps/assets/icons/vaultcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">VaultCap</span>
+    <span class="capcard__desc">Everything you own, encrypted on your device.</span>
+    <span class="capcard__meta">Finance &amp; Identity · v5.3.0</span>
+  </a></li><li><a class="capcard" href="/apps/pulsecap/" style="--c:#00f2ff">
+    <img src="/apps/assets/icons/pulsecap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">PulseCap</span>
+    <span class="capcard__desc">Plan, log and track your training. Works offline.</span>
+    <span class="capcard__meta">Performance · v6.45.0</span>
+  </a></li><li><a class="capcard" href="/apps/prismcap/" style="--c:#c77dff">
+    <img src="/apps/assets/icons/prismcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">PrismCap</span>
+    <span class="capcard__desc">Party games for one phone, passed around the room.</span>
+    <span class="capcard__meta">Play · v4.6.0</span>
+  </a></li><li><a class="capcard" href="/apps/steadycap/" style="--c:#c9652b">
+    <img src="/apps/assets/icons/steadycap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">SteadyCap</span>
+    <span class="capcard__desc">Routines, medicines and support for recovery.</span>
+    <span class="capcard__meta">Recovery · v2.6.0</span>
+  </a></li><li><a class="capcard" href="/apps/ledgercap/" style="--c:#f59e0b">
+    <img src="/apps/assets/icons/ledgercap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">LedgerCap</span>
+    <span class="capcard__desc">Track your PSX stocks and mutual funds in one place.</span>
+    <span class="capcard__meta">Wealth · v3.58.0</span>
+  </a></li><li><a class="capcard" href="/apps/deeponycap/" style="--c:#c4367a">
+    <img src="/apps/assets/icons/deeponycap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">DeePonyCap</span>
+    <span class="capcard__desc">Track your collection, shelves and wishlist.</span>
+    <span class="capcard__meta">Collection · v3.9.0</span>
+  </a></li><li><a class="capcard" href="/apps/scentcap/" style="--c:#c9a87c">
+    <img src="/apps/assets/icons/scentcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">ScentCap</span>
+    <span class="capcard__desc">Your fragrance collection, and what to wear today.</span>
+    <span class="capcard__meta">Lifestyle · v2.2.0</span>
+  </a></li><li><a class="capcard" href="/apps/soulcap/" style="--c:#7c6ff7">
+    <img src="/apps/assets/icons/soulcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">SoulCap</span>
+    <span class="capcard__desc">Quiet tools to steady yourself. Not therapy.</span>
+    <span class="capcard__meta">Wellness · v8.4.0</span>
+  </a></li><li><a class="capcard" href="/apps/travelcap/" style="--c:#007aff">
+    <img src="/apps/assets/icons/travelcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">TravelCap</span>
+    <span class="capcard__desc">Trips, tickets and travel documents in one place.</span>
+    <span class="capcard__meta">Travel · v1.1.1</span>
+  </a></li><li><a class="capcard" href="/apps/auracap/" style="--c:#4f6ef7">
+    <img src="/apps/assets/icons/auracap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">AuraCap</span>
+    <span class="capcard__desc">Organize your iPhone, iPad and Mac setup.</span>
+    <span class="capcard__meta">Productivity · v5.5.0</span>
+  </a></li><li><a class="capcard" href="/apps/masterycap/" style="--c:#7cffb2">
+    <img src="/apps/assets/icons/masterycap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">MasteryCap</span>
+    <span class="capcard__desc">Learn trading and software step by step, in English or Roman Urdu.</span>
+    <span class="capcard__meta">Education · v51.10.0</span>
+  </a></li><li><a class="capcard" href="/apps/ideacap/" style="--c:#f5c542">
+    <img src="/apps/assets/icons/ideacap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">IdeaCap</span>
+    <span class="capcard__desc">Capture ideas by voice or text. They stay on your device.</span>
+    <span class="capcard__meta">Productivity · v2.1.0</span>
+  </a></li><li><a class="capcard" href="/apps/carcap/" style="--c:#ff6b4a">
+    <img src="/apps/assets/icons/carcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">CarCap</span>
+    <span class="capcard__desc">Service, fuel and documents for your cars.</span>
+    <span class="capcard__meta">Lifestyle · v1.1.0</span>
+  </a></li><li><a class="capcard" href="/apps/cookcap/" style="--c:#c4784a">
+    <img src="/apps/assets/icons/cookcap.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">CookCap</span>
+    <span class="capcard__desc">Your family cookbook, kept like a real book.</span>
+    <span class="capcard__meta">Home · v3.6.1</span>
+  </a></li><li><a class="capcard" href="/apps/deefoodie/" style="--c:#e8c27a">
+    <img src="/apps/assets/icons/deefoodie.svg" alt="" width="64" height="64" loading="lazy">
+    <span class="capcard__name">DeeFoodie <em>Private beta</em></span>
+    <span class="capcard__desc">A private journal of where you eat in Karachi.</span>
+    <span class="capcard__meta">Food · v1.1.0+4</span>
+  </a></li></ul></section>
+</main>
+<footer class="foot"><nav class="foot__links" aria-label="Footer"><a href="/">Capricorn OS</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="https://github.com/shamikhahmed">GitHub</a></nav><p class="foot__fine">© 2026 Capricorn Systems, Karachi.</p></footer>
+<script src="/apps/assets/minisite.js" defer></script>
 </body>
 </html>

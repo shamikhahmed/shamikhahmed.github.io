@@ -1,141 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AuraCap — Capricorn Systems</title>
-  <meta name="description" content="Organize your iPhone, iPad and Mac setup.">
-  <link rel="canonical" href="https://shamikhahmed.github.io/apps/auracap/">
-  <meta property="og:title" content="AuraCap">
-  <meta property="og:description" content="Organize your iPhone, iPad and Mac setup.">
-  <meta property="og:url" content="https://shamikhahmed.github.io/apps/auracap/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image" content="https://shamikhahmed.github.io/apps/auracap/assets/gallery/mobile-00-welcome.png">
-  <link rel="stylesheet" href="/apps/assets/minisite.css">
-  <style>:root{--accent:#4f6ef7;--accent2:#7b5ea7;--bg:#050507;}</style>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"AuraCap","description":"Organize your iPhone, iPad and Mac setup.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://shamikhahmed.github.io/apps/auracap/"}
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AuraCap — Organize your iPhone, iPad and Mac setup.</title>
+<meta name="description" content="Organize your iPhone, iPad and Mac setup. Import your app list, score your setup, and organize across devices — nothing uploaded.">
+<link rel="canonical" href="https://shamikhahmed.github.io/apps/auracap/">
+<meta name="theme-color" content="#f3f4f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#050507" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Capricorn Systems">
+<meta property="og:title" content="AuraCap — Organize your iPhone, iPad and Mac setup.">
+<meta property="og:description" content="Organize your iPhone, iPad and Mac setup. Import your app list, score your setup, and organize across devices — nothing uploaded.">
+<meta property="og:url" content="https://shamikhahmed.github.io/apps/auracap/">
+<meta property="og:image" content="https://shamikhahmed.github.io/apps/auracap/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="https://shamikhahmed.github.io/apps/auracap/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/apps/assets/minisite.css">
+<style>:root{--bg:#f3f4f7;--surface:#ffffff;--surface2:#eaeaee;--line:#d8d8dc;--ink:#16161a;--dim:#55555d;--accent:#4661d9;--fill:#5674f7;--on-fill:#111114;--glow:#4f6ef7;--glow2:#7b5ea7}
+html[data-theme="dark"]{--bg:#050507;--surface:#121213;--surface2:#1c1c1d;--line:#28282a;--ink:#f6f4ef;--dim:#a4a3a0;--accent:#4f6ef7;--fill:#5674f7;--on-fill:#111114;color-scheme:dark}
+@media (prefers-color-scheme: dark){html:not([data-theme="light"]){--bg:#050507;--surface:#121213;--surface2:#1c1c1d;--line:#28282a;--ink:#f6f4ef;--dim:#a4a3a0;--accent:#4f6ef7;--fill:#5674f7;--on-fill:#111114;color-scheme:dark}}</style>
+<script>try{var t=localStorage.getItem('cap-ms-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AuraCap","description":"Organize your iPhone, iPad and Mac setup.","applicationCategory":"Productivity","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"softwareVersion":"5.5.0","url":"https://shamikhahmed.github.io/AuraCap/","publisher":{"@type":"Organization","name":"Capricorn Systems"}}</script>
 </head>
-<body>
-  <div class="wrap">
-    <header class="site-header">
-      <a class="brand" href="/apps/"><img src="/assets/logo.svg" alt="" width="28" height="28">Capricorn</a>
-      <button type="button" class="scheme-toggle" id="schemeToggle" aria-label="Toggle colour scheme">Light / Dark</button>
-    </header>
-
-    <section class="hero" aria-labelledby="app-name">
-      <img class="hero__icon" src="/apps/auracap/assets/icon.svg" alt="" width="96" height="96">
-      <div>
-        <h1 id="app-name">AuraCap</h1>
-        <p class="hero__desc">Organize your iPhone, iPad and Mac setup.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/AuraCap/VERSION.json">v5.5.0</span>
-        <div class="ctas">
-        <a class="btn btn--primary" href="https://shamikhahmed.github.io/AuraCap/">Open AuraCap</a>
-        <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=auracap">Try it in Capricorn OS</a>
-        <a class="btn btn--ghost" href="/support.html">Support</a>
-        <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
-      </div>
-      </div>
-    </section>
-
-    <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screenshots</h2>
-      <p class="section__lead">A few screens from the shipped app (light/dark and device sizes in the full gallery).</p>
-    <div class="gallery-grid" role="list"><figure class="gallery-shot"><img src="/apps/auracap/assets/gallery/mobile-00-welcome.png" alt="Welcome" width="390" height="844" loading="lazy" decoding="async"><figcaption>Welcome</figcaption></figure><figure class="gallery-shot"><img src="/apps/auracap/assets/gallery/mobile-01-dashboard.png" alt="Overview" width="390" height="844" loading="lazy" decoding="async"><figcaption>Overview</figcaption></figure><figure class="gallery-shot"><img src="/apps/auracap/assets/gallery/mobile-02-dna.png" alt="Setup report" width="390" height="844" loading="lazy" decoding="async"><figcaption>Setup report</figcaption></figure><figure class="gallery-shot"><img src="/apps/auracap/assets/gallery/mobile-03-import.png" alt="Import Apps" width="390" height="844" loading="lazy" decoding="async"><figcaption>Import Apps</figcaption></figure><figure class="gallery-shot"><img src="/apps/auracap/assets/gallery/desktop-00-welcome.png" alt="Welcome" width="390" height="844" loading="lazy" decoding="async"><figcaption>Welcome</figcaption></figure><figure class="gallery-shot"><img src="/apps/auracap/assets/gallery/desktop-01-dashboard.png" alt="Overview" width="390" height="844" loading="lazy" decoding="async"><figcaption>Overview</figcaption></figure></div>
-    </section>
-
-    <section class="section" id="features" aria-labelledby="features-h">
-      <h2 id="features-h">What it does</h2>
-      <p class="section__lead">Honest features from the shipped set.</p>
-      <div class="grid"><article class="tile"><h3>16 modules</h3><p>16 modules · Digital DNA · Aura Score · import · design studio · Smart Assistant</p></article><article class="tile"><h3>Capricorn OS brand lock</h3><p>Capricorn OS brand lock · honest Smart Assistant naming · SW `auracap-v521`</p></article></div>
-    </section>
-
-    <section class="section" id="privacy" aria-labelledby="privacy-h">
-      <h2 id="privacy-h">Privacy, plainly</h2>
-      <p class="section__lead">No analytics, no ads, no account required. What stays on device stays on device.</p>
-      <h3 style="font-size:1rem;margin:1rem 0 .4rem">Network destinations</h3>
-      <ul class="list"><li>github.com</li></ul>
-      <p style="margin-top:1rem"><a href="https://shamikhahmed.github.io/AuraCap/privacy.html">Full privacy page</a></p>
-    </section>
-
-    <section class="section" id="install" aria-labelledby="install-h">
-      <h2 id="install-h">How to install</h2>
-      <div class="placeholder">
-        <p><strong>iPhone / iPad (Safari):</strong> Open the app → Share → Add to Home Screen.</p>
-        <p><strong>Mac (Safari / Chrome):</strong> Open the app → browser install / Add to Dock when offered.</p>
-        <p><strong>Android (Chrome):</strong> Open the app → Install app / Add to Home screen.</p>
-        <p>Install screenshots from the gallery land in a later wave.</p>
-      </div>
-    </section>
-
-    <section class="section faq" id="faq" aria-labelledby="faq-h">
-      <h2 id="faq-h">FAQ</h2>
-      <details><summary>Where is my data?</summary><p>On your device (localStorage / IndexedDB), except DeeFoodie private beta which syncs to its private server for invited users only.</p></details><details><summary>How do I erase everything?</summary><p>Open the app → Settings → erase / delete data (wording varies by Cap). Or clear site data for that Cap’s URL in your browser.</p></details><details><summary>DeeFoodie private beta</summary><p>DeeFoodie is invite-only. There is no public install link. If you are an invited tester and need help, open a DeeFoodie issue above.</p></details><details><summary>Privacy</summary><p>See privacy.html for the hub, and each Cap’s own privacy page from Settings → About.</p></details>
-      <details><summary>Important note</summary><p>Apple, iPhone, iPad and Mac are trademarks of Apple Inc. AuraCap isn't affiliated with Apple.</p></details>
-    </section>
-
-    <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
-      <h2 id="changelog-h">What's new</h2>
-      <article>
-          <h3>v5.5.0</h3>
-          <time datetime="2026-10-14">2026-10-14</time>
-          <ul class="list"><li>Perfection Loop v3 Wave C release: AUR-V3-1 tap targets ≥ 44px; AUR-V3-2 publish VERSION.json on Pages (CI ensure:version + matrix build); AUR-V3-3 WIP CSS motion / no cold-load notification prompt / `#main`.</li><li>SW cache `auracap-v550`. AUR-V3-4 gallery v3 remains L.</li></ul>
-        </article><article>
-          <h3>v5.4.2</h3>
-          <time datetime="2026-09-15">2026-09-15</time>
-          <ul class="list"><li>Tier 1 automated gate: ACBrand palette, tooling brandOk for Aura CSS/palettes, finish-loop SINKS + Lighthouse stub, suppressions/`any` CI fix. VO ⛔ BLOCKED-EXTERNAL.</li></ul>
-        </article><article>
-          <h3>v5.4.1</h3>
-          <time datetime="2026-09-15">2026-09-15</time>
-          <ul class="list"><li>C-16: Self-host Inter on pitch.html; remove Google Fonts.</li></ul>
-        </article><article>
-          <h3>v5.4.0</h3>
-          <time datetime="2026-09-15">2026-09-15</time>
-          <ul class="list"><li>**AUR-P0-01** Hide desktop rail below 700px; skip link focus-only; content padding above tab bar</li><li>**AUR-P0-02** Sample-data banner copy; Overview + Setup report naming; device name normalization; remove LIVE badge</li><li>**AUR-P1-01** Single-row header with overflow menu; theme only in Settings</li><li>**AUR-P1-02** One Aura Score with Focus / Clarity / Organization breakdown (P-AUR-1)</li></ul>
-        </article><article>
-          <h3>v5.3.3</h3>
-          <time datetime="2026-07-20">2026-07-20</time>
-          <ul class="list"><li>Home remint: Control Center 3-pane (device constellation / DNA scores / organizer tools). System-blue score rings; no purple. SW `auracap-v533`.</li></ul>
-        </article>
-      <p><a href="https://github.com/shamikhahmed/AuraCap">Full changelog / source on GitHub</a></p>
-    </section>
-
-    <footer class="site-footer">
-      <nav aria-label="Site">
-        <a href="/">Capricorn OS</a>
-        <a href="/support.html">Support</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="https://github.com/shamikhahmed/AuraCap">GitHub</a>
-        <a href="/apps/">All Caps</a>
-      </nav>
-      <p>Capricorn Systems · AuraCap</p>
-      <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
-    </footer>
+<body data-app="auracap" data-repo="AuraCap">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/" aria-label="Capricorn OS home"><img src="/assets/logo.svg" alt="" width="22" height="22"><span>Capricorn</span></a>
+  <nav class="top__nav" aria-label="Sections"><a href="#screens">Screens</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
+  <div class="seg seg--theme" role="group" aria-label="Colour scheme">
+    <button type="button" data-scheme="auto" aria-pressed="true">Auto</button><button type="button" data-scheme="light" aria-pressed="false">Light</button><button type="button" data-scheme="dark" aria-pressed="false">Dark</button>
   </div>
-  <script>
-(function () {
-  var root = document.documentElement;
-  var key = 'cap-minisite-scheme';
-  function apply(v) {
-    if (v === 'light' || v === 'dark') root.setAttribute('data-scheme', v);
-    else root.removeAttribute('data-scheme');
-  }
-  apply(localStorage.getItem(key));
-  document.getElementById('schemeToggle')?.addEventListener('click', function () {
-    var cur = root.getAttribute('data-scheme');
-    var next = cur === 'dark' ? 'light' : cur === 'light' ? '' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
-    if (next) localStorage.setItem(key, next); else localStorage.removeItem(key);
-    apply(next || null);
-  });
-  var badge = document.getElementById('liveVersion');
-  if (badge && badge.dataset.versionUrl) {
-    fetch(badge.dataset.versionUrl, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-      if (j && (j.version || j.ver)) badge.textContent = 'v' + (j.version || j.ver);
-    }).catch(function () {});
-  }
-})();
-</script>
+  <a class="btn btn--fill btn--sm top__cta" href="https://shamikhahmed.github.io/AuraCap/">Open</a>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero__text">
+      <img class="hero__icon" src="/apps/assets/icons/auracap.svg" alt="" width="88" height="88">
+      <p class="eyebrow">Productivity</p>
+      <h1 id="h1">AuraCap</h1>
+      <p class="hero__lead">Organize your iPhone, iPad and Mac setup.</p>
+      <p class="hero__pitch">Import your app list, score your setup, and organize across devices — nothing uploaded.</p>
+      <div class="hero__cta">
+        <a class="btn btn--fill" href="https://shamikhahmed.github.io/AuraCap/">Open AuraCap</a><a class="btn btn--ghost" href="/?app=auracap">Try it in Capricorn OS</a>
+      </div>
+      <p class="hero__meta"><span class="chip"><span class="dot" aria-hidden="true"></span><span data-live-version="5.5.0">v5.5.0</span></span><span>Free</span><span>No account</span><span>No ads or analytics</span></p>
+    </div>
+    <div class="hero__visual" data-shot-theme="light" aria-hidden="true">
+      <figure class="dev dev--mac hero__mac eager">
+    <span class="dev__bar" aria-hidden="true"><i></i><i></i><i></i></span>
+    <img src="shots/light/mac/overview-overview-demo.webp" alt="Overview screen" width="1200" height="750" decoding="async" fetchpriority="high">
+  </figure><figure class="dev dev--iphone hero__phone eager">
+    
+    <img src="shots/light/iphone/overview-overview-demo.webp" alt="Overview screen" width="600" height="1298" decoding="async" fetchpriority="high">
+  </figure>
+    </div><div class="hero__visual" data-shot-theme="dark" aria-hidden="true">
+      <figure class="dev dev--mac hero__mac eager">
+    <span class="dev__bar" aria-hidden="true"><i></i><i></i><i></i></span>
+    <img src="shots/dark/mac/overview-overview-demo.webp" alt="Overview screen" width="1200" height="750" decoding="async" fetchpriority="high">
+  </figure><figure class="dev dev--iphone hero__phone eager">
+    
+    <img src="shots/dark/iphone/overview-overview-demo.webp" alt="Overview screen" width="600" height="1298" decoding="async" fetchpriority="high">
+  </figure>
+    </div>
+  </section>
+
+  <section class="band" aria-label="Highlights">
+    <span>Overview</span><span>Setup report</span><span>Aura Score</span><span>Organize</span>
+  </section>
+
+  <section class="section" id="screens" aria-labelledby="screens-h">
+    <div class="section__head">
+      <div><h2 id="screens-h">Every screen</h2><p>15 screens from AuraCap 5.5.0, captured in light and dark on iPhone, iPad and Mac.</p></div>
+      <div class="gallery__tools">
+        <div class="seg" role="group" aria-label="Device" data-gal="device"><button type="button" data-v="iphone" aria-pressed="true">iPhone</button><button type="button" data-v="ipad" aria-pressed="false">iPad</button><button type="button" data-v="mac" aria-pressed="false">Mac</button></div>
+        <div class="seg" role="group" aria-label="Screenshot colours" data-gal="theme"><button type="button" data-v="light" aria-pressed="true">Light</button><button type="button" data-v="dark" aria-pressed="false">Dark</button></div>
+      </div>
+    </div>
+    <div class="groups" role="tablist" aria-label="Screen groups" id="galGroups"></div>
+    <div class="rail-wrap">
+      <button type="button" class="rail__btn rail__btn--prev" aria-label="Previous screens" data-rail="-1">‹</button>
+      <ol class="rail" id="galRail" aria-label="AuraCap screens"></ol>
+      <button type="button" class="rail__btn rail__btn--next" aria-label="Next screens" data-rail="1">›</button>
+    </div>
+    <noscript><p>Turn on JavaScript to browse the screens, or open <a href="https://shamikhahmed.github.io/AuraCap/">AuraCap</a>.</p></noscript>
+  </section>
+
+  <section class="section" id="features" aria-labelledby="features-h">
+    <div class="section__head"><div><h2 id="features-h">What it does</h2><p>Your Apple setup at a glance. Stored only on this device.</p></div></div>
+    <ul class="features"><li><span class="features__n" aria-hidden="true">01</span><span>Overview of your setup</span></li><li><span class="features__n" aria-hidden="true">02</span><span>Setup report from your app list</span></li><li><span class="features__n" aria-hidden="true">03</span><span>Aura Score with Focus · Clarity · Organization</span></li><li><span class="features__n" aria-hidden="true">04</span><span>Not affiliated with Apple</span></li></ul>
+    <div class="tour"><div class="tour__group"><h3>Overview</h3><ul><li><strong>Overview</strong><span>Your Aura Score — Focus, Clarity and Organization.</span></li><li><strong>Setup report</strong><span>A full report on your setup, from your app list.</span></li></ul></div><div class="tour__group"><h3>Library</h3><ul><li><strong>App library</strong><span>Every app you imported, searchable.</span></li><li><strong>Import</strong><span>Paste or upload your app list — nothing is uploaded.</span></li><li><strong>Import guide</strong><span>How to export your app list from each device.</span></li></ul></div><div class="tour__group"><h3>Organize</h3><ul><li><strong>Organizer</strong><span>Smart folders and home screen layout ideas.</span></li><li><strong>Smart Assistant</strong><span>Rule-based suggestions for a calmer setup.</span></li></ul></div><div class="tour__group"><h3>Design</h3><ul><li><strong>Wallpapers</strong><span>Wallpapers matched to your setup.</span></li><li><strong>Lock Screen</strong><span>Lock Screen layout ideas.</span></li><li><strong>Widgets</strong><span>Widget layouts worth trying.</span></li></ul></div><div class="tour__group"><h3>Habits</h3><ul><li><strong>Shortcuts</strong><span>Useful shortcuts for your devices.</span></li><li><strong>Daily routine</strong><span>A daily device routine.</span></li><li><strong>Digital cleanse</strong><span>Clear out what you don’t use.</span></li></ul></div><div class="tour__group"><h3>You</h3><ul><li><strong>Profiles</strong><span>Separate profiles for iPhone, iPad and Mac.</span></li><li><strong>Settings</strong><span>Region, appearance and data.</span></li></ul></div></div>
+  </section>
+
+  <section class="section" id="privacy" aria-labelledby="privacy-h">
+    <div class="section__head"><div><h2 id="privacy-h">Privacy, plainly</h2><p>Taken from AuraCap’s own privacy page.</p></div></div>
+    <div class="privacy">
+      <div class="card"><h3>Stays on your device</h3><p>Your imported app list, profiles, scores and layouts.</p></div>
+      <div class="card"><h3>May leave your device</h3><dl><dt>Nothing</dt><dd>AuraCap makes no network calls for your data.</dd></dl></div>
+      <div class="card"><h3>Never</h3><ul class="never"><li>Analytics or trackers</li><li>Ads</li><li>An account to use it</li><li>Selling or sharing your data</li></ul></div>
+    </div>
+    <p class="fine"><a href="https://shamikhahmed.github.io/AuraCap/privacy.html">Read the full privacy page</a></p>
+  </section>
+
+  <section class="section" id="install" aria-labelledby="install-h">
+    <div class="section__head"><div><h2 id="install-h">Put it on your Home Screen</h2><p>AuraCap is a web app — installing takes a few seconds and it opens full-screen, offline.</p></div></div>
+    <ol class="install">
+      <li class="card"><h3>iPhone &amp; iPad</h3><p>Open AuraCap in Safari, tap <b>Share</b>, then <b>Add to Home Screen</b>.</p></li>
+      <li class="card"><h3>Mac</h3><p>In Safari choose <b>File → Add to Dock</b>. In Chrome or Edge, click the install icon in the address bar.</p></li>
+      <li class="card"><h3>Android</h3><p>In Chrome, open the <b>⋮</b> menu and tap <b>Install app</b>.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-h">
+    <div class="section__head"><div><h2 id="faq-h">Questions</h2></div></div>
+    <div class="faq"><details><summary>Is it free?</summary><p>Yes. Every feature, no ads, no subscriptions, no account.</p></details><details><summary>Where is my data?</summary><p>Your imported app list, profiles, scores and layouts. It lives in this browser on this device — clearing site data erases it, so export a backup first.</p></details><details><summary>Does AuraCap read my iPhone?</summary><p>No. You import an app list yourself, and nothing is uploaded.</p></details><details><summary>Is AuraCap made by Apple?</summary><p>Apple, iPhone, iPad and Mac are trademarks of Apple Inc. AuraCap isn't affiliated with Apple.</p></details><details><summary>Does it work offline?</summary><p>Yes, after the first visit.</p></details></div>
+  </section>
+
+  <section class="section" id="new" aria-labelledby="new-h">
+    <div class="release card">
+      <div><h2 id="new-h">Latest release</h2><p><span class="chip"><span data-live-version="5.5.0">v5.5.0</span></span> <time datetime="2026-10-14">14 October 2026</time></p></div>
+      <a class="btn btn--ghost btn--sm" href="https://github.com/shamikhahmed/AuraCap/blob/main/CHANGELOG.md">Release history</a>
+    </div>
+  </section>
+
+  <p class="disclaimer">Apple, iPhone, iPad and Mac are trademarks of Apple Inc. AuraCap isn't affiliated with Apple.</p>
+</main>
+<footer class="foot">
+  <p class="foot__label">More Caps</p>
+  <ul class="foot__caps"><li><a href="/apps/vaultcap/"><img src="/apps/assets/icons/vaultcap.svg" alt="" width="40" height="40" loading="lazy"><span>VaultCap</span></a></li><li><a href="/apps/pulsecap/"><img src="/apps/assets/icons/pulsecap.svg" alt="" width="40" height="40" loading="lazy"><span>PulseCap</span></a></li><li><a href="/apps/prismcap/"><img src="/apps/assets/icons/prismcap.svg" alt="" width="40" height="40" loading="lazy"><span>PrismCap</span></a></li><li><a href="/apps/steadycap/"><img src="/apps/assets/icons/steadycap.svg" alt="" width="40" height="40" loading="lazy"><span>SteadyCap</span></a></li><li><a href="/apps/ledgercap/"><img src="/apps/assets/icons/ledgercap.svg" alt="" width="40" height="40" loading="lazy"><span>LedgerCap</span></a></li><li><a href="/apps/deeponycap/"><img src="/apps/assets/icons/deeponycap.svg" alt="" width="40" height="40" loading="lazy"><span>DeePonyCap</span></a></li><li><a href="/apps/scentcap/"><img src="/apps/assets/icons/scentcap.svg" alt="" width="40" height="40" loading="lazy"><span>ScentCap</span></a></li><li><a href="/apps/soulcap/"><img src="/apps/assets/icons/soulcap.svg" alt="" width="40" height="40" loading="lazy"><span>SoulCap</span></a></li><li><a href="/apps/travelcap/"><img src="/apps/assets/icons/travelcap.svg" alt="" width="40" height="40" loading="lazy"><span>TravelCap</span></a></li><li><a href="/apps/masterycap/"><img src="/apps/assets/icons/masterycap.svg" alt="" width="40" height="40" loading="lazy"><span>MasteryCap</span></a></li><li><a href="/apps/ideacap/"><img src="/apps/assets/icons/ideacap.svg" alt="" width="40" height="40" loading="lazy"><span>IdeaCap</span></a></li><li><a href="/apps/carcap/"><img src="/apps/assets/icons/carcap.svg" alt="" width="40" height="40" loading="lazy"><span>CarCap</span></a></li><li><a href="/apps/cookcap/"><img src="/apps/assets/icons/cookcap.svg" alt="" width="40" height="40" loading="lazy"><span>CookCap</span></a></li><li><a href="/apps/deefoodie/"><img src="/apps/assets/icons/deefoodie.svg" alt="" width="40" height="40" loading="lazy"><span>DeeFoodie</span></a></li></ul>
+  <nav class="foot__links" aria-label="Footer"><a href="/apps/">All Caps</a><a href="/">Capricorn OS</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="https://github.com/shamikhahmed">GitHub</a></nav>
+  <p class="foot__fine">© 2026 Capricorn Systems, Karachi.</p>
+</footer>
+<dialog class="lightbox" id="lightbox" aria-label="Screenshot">
+  <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
+</dialog>
+<script type="application/json" id="shots" data-schemes="light,dark">[{"id":"overview-overview-demo","group":"Overview","screen":"Overview","caption":"Your Aura Score — Focus, Clarity and Organization.","theme":"light","device":"iphone","src":"shots/light/iphone/overview-overview-demo.webp","w":600,"h":1298},{"id":"overview-setup-report-demo","group":"Overview","screen":"Setup report","caption":"A full report on your setup, from your app list.","theme":"light","device":"iphone","src":"shots/light/iphone/overview-setup-report-demo.webp","w":600,"h":1298},{"id":"library-app-library-demo","group":"Library","screen":"App library","caption":"Every app you imported, searchable.","theme":"light","device":"iphone","src":"shots/light/iphone/library-app-library-demo.webp","w":600,"h":1298},{"id":"library-import-demo","group":"Library","screen":"Import","caption":"Paste or upload your app list — nothing is uploaded.","theme":"light","device":"iphone","src":"shots/light/iphone/library-import-demo.webp","w":600,"h":1298},{"id":"library-import-guide-demo","group":"Library","screen":"Import guide","caption":"How to export your app list from each device.","theme":"light","device":"iphone","src":"shots/light/iphone/library-import-guide-demo.webp","w":600,"h":1298},{"id":"organize-organizer-demo","group":"Organize","screen":"Organizer","caption":"Smart folders and home screen layout ideas.","theme":"light","device":"iphone","src":"shots/light/iphone/organize-organizer-demo.webp","w":600,"h":1298},{"id":"organize-smart-assistant-demo","group":"Organize","screen":"Smart Assistant","caption":"Rule-based suggestions for a calmer setup.","theme":"light","device":"iphone","src":"shots/light/iphone/organize-smart-assistant-demo.webp","w":600,"h":1298},{"id":"design-wallpapers-demo","group":"Design","screen":"Wallpapers","caption":"Wallpapers matched to your setup.","theme":"light","device":"iphone","src":"shots/light/iphone/design-wallpapers-demo.webp","w":600,"h":1298},{"id":"design-lock-screen-demo","group":"Design","screen":"Lock Screen","caption":"Lock Screen layout ideas.","theme":"light","device":"iphone","src":"shots/light/iphone/design-lock-screen-demo.webp","w":600,"h":1298},{"id":"design-widgets-demo","group":"Design","screen":"Widgets","caption":"Widget layouts worth trying.","theme":"light","device":"iphone","src":"shots/light/iphone/design-widgets-demo.webp","w":600,"h":1298},{"id":"habits-shortcuts-demo","group":"Habits","screen":"Shortcuts","caption":"Useful shortcuts for your devices.","theme":"light","device":"iphone","src":"shots/light/iphone/habits-shortcuts-demo.webp","w":600,"h":1298},{"id":"habits-daily-routine-demo","group":"Habits","screen":"Daily routine","caption":"A daily device routine.","theme":"light","device":"iphone","src":"shots/light/iphone/habits-daily-routine-demo.webp","w":600,"h":1298},{"id":"habits-digital-cleanse-demo","group":"Habits","screen":"Digital cleanse","caption":"Clear out what you don’t use.","theme":"light","device":"iphone","src":"shots/light/iphone/habits-digital-cleanse-demo.webp","w":600,"h":1298},{"id":"you-profiles-demo","group":"You","screen":"Profiles","caption":"Separate profiles for iPhone, iPad and Mac.","theme":"light","device":"iphone","src":"shots/light/iphone/you-profiles-demo.webp","w":600,"h":1298},{"id":"you-settings-demo","group":"You","screen":"Settings","caption":"Region, appearance and data.","theme":"light","device":"iphone","src":"shots/light/iphone/you-settings-demo.webp","w":600,"h":1298},{"id":"overview-overview-demo","group":"Overview","screen":"Overview","caption":"Your Aura Score — Focus, Clarity and Organization.","theme":"dark","device":"iphone","src":"shots/dark/iphone/overview-overview-demo.webp","w":600,"h":1298},{"id":"overview-setup-report-demo","group":"Overview","screen":"Setup report","caption":"A full report on your setup, from your app list.","theme":"dark","device":"iphone","src":"shots/dark/iphone/overview-setup-report-demo.webp","w":600,"h":1298},{"id":"library-app-library-demo","group":"Library","screen":"App library","caption":"Every app you imported, searchable.","theme":"dark","device":"iphone","src":"shots/dark/iphone/library-app-library-demo.webp","w":600,"h":1298},{"id":"library-import-demo","group":"Library","screen":"Import","caption":"Paste or upload your app list — nothing is uploaded.","theme":"dark","device":"iphone","src":"shots/dark/iphone/library-import-demo.webp","w":600,"h":1298},{"id":"library-import-guide-demo","group":"Library","screen":"Import guide","caption":"How to export your app list from each device.","theme":"dark","device":"iphone","src":"shots/dark/iphone/library-import-guide-demo.webp","w":600,"h":1298},{"id":"organize-organizer-demo","group":"Organize","screen":"Organizer","caption":"Smart folders and home screen layout ideas.","theme":"dark","device":"iphone","src":"shots/dark/iphone/organize-organizer-demo.webp","w":600,"h":1298},{"id":"organize-smart-assistant-demo","group":"Organize","screen":"Smart Assistant","caption":"Rule-based suggestions for a calmer setup.","theme":"dark","device":"iphone","src":"shots/dark/iphone/organize-smart-assistant-demo.webp","w":600,"h":1298},{"id":"design-wallpapers-demo","group":"Design","screen":"Wallpapers","caption":"Wallpapers matched to your setup.","theme":"dark","device":"iphone","src":"shots/dark/iphone/design-wallpapers-demo.webp","w":600,"h":1298},{"id":"design-lock-screen-demo","group":"Design","screen":"Lock Screen","caption":"Lock Screen layout ideas.","theme":"dark","device":"iphone","src":"shots/dark/iphone/design-lock-screen-demo.webp","w":600,"h":1298},{"id":"design-widgets-demo","group":"Design","screen":"Widgets","caption":"Widget layouts worth trying.","theme":"dark","device":"iphone","src":"shots/dark/iphone/design-widgets-demo.webp","w":600,"h":1298},{"id":"habits-shortcuts-demo","group":"Habits","screen":"Shortcuts","caption":"Useful shortcuts for your devices.","theme":"dark","device":"iphone","src":"shots/dark/iphone/habits-shortcuts-demo.webp","w":600,"h":1298},{"id":"habits-daily-routine-demo","group":"Habits","screen":"Daily routine","caption":"A daily device routine.","theme":"dark","device":"iphone","src":"shots/dark/iphone/habits-daily-routine-demo.webp","w":600,"h":1298},{"id":"habits-digital-cleanse-demo","group":"Habits","screen":"Digital cleanse","caption":"Clear out what you don’t use.","theme":"dark","device":"iphone","src":"shots/dark/iphone/habits-digital-cleanse-demo.webp","w":600,"h":1298},{"id":"you-profiles-demo","group":"You","screen":"Profiles","caption":"Separate profiles for iPhone, iPad and Mac.","theme":"dark","device":"iphone","src":"shots/dark/iphone/you-profiles-demo.webp","w":600,"h":1298},{"id":"you-settings-demo","group":"You","screen":"Settings","caption":"Region, appearance and data.","theme":"dark","device":"iphone","src":"shots/dark/iphone/you-settings-demo.webp","w":600,"h":1298},{"id":"overview-overview-demo","group":"Overview","screen":"Overview","caption":"Your Aura Score — Focus, Clarity and Organization.","theme":"light","device":"ipad","src":"shots/light/ipad/overview-overview-demo.webp","w":1000,"h":695},{"id":"overview-setup-report-demo","group":"Overview","screen":"Setup report","caption":"A full report on your setup, from your app list.","theme":"light","device":"ipad","src":"shots/light/ipad/overview-setup-report-demo.webp","w":1000,"h":695},{"id":"library-app-library-demo","group":"Library","screen":"App library","caption":"Every app you imported, searchable.","theme":"light","device":"ipad","src":"shots/light/ipad/library-app-library-demo.webp","w":1000,"h":695},{"id":"library-import-demo","group":"Library","screen":"Import","caption":"Paste or upload your app list — nothing is uploaded.","theme":"light","device":"ipad","src":"shots/light/ipad/library-import-demo.webp","w":1000,"h":695},{"id":"library-import-guide-demo","group":"Library","screen":"Import guide","caption":"How to export your app list from each device.","theme":"light","device":"ipad","src":"shots/light/ipad/library-import-guide-demo.webp","w":1000,"h":695},{"id":"organize-organizer-demo","group":"Organize","screen":"Organizer","caption":"Smart folders and home screen layout ideas.","theme":"light","device":"ipad","src":"shots/light/ipad/organize-organizer-demo.webp","w":1000,"h":695},{"id":"organize-smart-assistant-demo","group":"Organize","screen":"Smart Assistant","caption":"Rule-based suggestions for a calmer setup.","theme":"light","device":"ipad","src":"shots/light/ipad/organize-smart-assistant-demo.webp","w":1000,"h":695},{"id":"design-wallpapers-demo","group":"Design","screen":"Wallpapers","caption":"Wallpapers matched to your setup.","theme":"light","device":"ipad","src":"shots/light/ipad/design-wallpapers-demo.webp","w":1000,"h":695},{"id":"design-lock-screen-demo","group":"Design","screen":"Lock Screen","caption":"Lock Screen layout ideas.","theme":"light","device":"ipad","src":"shots/light/ipad/design-lock-screen-demo.webp","w":1000,"h":695},{"id":"design-widgets-demo","group":"Design","screen":"Widgets","caption":"Widget layouts worth trying.","theme":"light","device":"ipad","src":"shots/light/ipad/design-widgets-demo.webp","w":1000,"h":695},{"id":"habits-shortcuts-demo","group":"Habits","screen":"Shortcuts","caption":"Useful shortcuts for your devices.","theme":"light","device":"ipad","src":"shots/light/ipad/habits-shortcuts-demo.webp","w":1000,"h":695},{"id":"habits-daily-routine-demo","group":"Habits","screen":"Daily routine","caption":"A daily device routine.","theme":"light","device":"ipad","src":"shots/light/ipad/habits-daily-routine-demo.webp","w":1000,"h":695},{"id":"habits-digital-cleanse-demo","group":"Habits","screen":"Digital cleanse","caption":"Clear out what you don’t use.","theme":"light","device":"ipad","src":"shots/light/ipad/habits-digital-cleanse-demo.webp","w":1000,"h":695},{"id":"you-profiles-demo","group":"You","screen":"Profiles","caption":"Separate profiles for iPhone, iPad and Mac.","theme":"light","device":"ipad","src":"shots/light/ipad/you-profiles-demo.webp","w":1000,"h":695},{"id":"you-settings-demo","group":"You","screen":"Settings","caption":"Region, appearance and data.","theme":"light","device":"ipad","src":"shots/light/ipad/you-settings-demo.webp","w":1000,"h":695},{"id":"overview-overview-demo","group":"Overview","screen":"Overview","caption":"Your Aura Score — Focus, Clarity and Organization.","theme":"dark","device":"ipad","src":"shots/dark/ipad/overview-overview-demo.webp","w":1000,"h":695},{"id":"overview-setup-report-demo","group":"Overview","screen":"Setup report","caption":"A full report on your setup, from your app list.","theme":"dark","device":"ipad","src":"shots/dark/ipad/overview-setup-report-demo.webp","w":1000,"h":695},{"id":"library-app-library-demo","group":"Library","screen":"App library","caption":"Every app you imported, searchable.","theme":"dark","device":"ipad","src":"shots/dark/ipad/library-app-library-demo.webp","w":1000,"h":695},{"id":"library-import-demo","group":"Library","screen":"Import","caption":"Paste or upload your app list — nothing is uploaded.","theme":"dark","device":"ipad","src":"shots/dark/ipad/library-import-demo.webp","w":1000,"h":695},{"id":"library-import-guide-demo","group":"Library","screen":"Import guide","caption":"How to export your app list from each device.","theme":"dark","device":"ipad","src":"shots/dark/ipad/library-import-guide-demo.webp","w":1000,"h":695},{"id":"organize-organizer-demo","group":"Organize","screen":"Organizer","caption":"Smart folders and home screen layout ideas.","theme":"dark","device":"ipad","src":"shots/dark/ipad/organize-organizer-demo.webp","w":1000,"h":695},{"id":"organize-smart-assistant-demo","group":"Organize","screen":"Smart Assistant","caption":"Rule-based suggestions for a calmer setup.","theme":"dark","device":"ipad","src":"shots/dark/ipad/organize-smart-assistant-demo.webp","w":1000,"h":695},{"id":"design-wallpapers-demo","group":"Design","screen":"Wallpapers","caption":"Wallpapers matched to your setup.","theme":"dark","device":"ipad","src":"shots/dark/ipad/design-wallpapers-demo.webp","w":1000,"h":695},{"id":"design-lock-screen-demo","group":"Design","screen":"Lock Screen","caption":"Lock Screen layout ideas.","theme":"dark","device":"ipad","src":"shots/dark/ipad/design-lock-screen-demo.webp","w":1000,"h":695},{"id":"design-widgets-demo","group":"Design","screen":"Widgets","caption":"Widget layouts worth trying.","theme":"dark","device":"ipad","src":"shots/dark/ipad/design-widgets-demo.webp","w":1000,"h":695},{"id":"habits-shortcuts-demo","group":"Habits","screen":"Shortcuts","caption":"Useful shortcuts for your devices.","theme":"dark","device":"ipad","src":"shots/dark/ipad/habits-shortcuts-demo.webp","w":1000,"h":695},{"id":"habits-daily-routine-demo","group":"Habits","screen":"Daily routine","caption":"A daily device routine.","theme":"dark","device":"ipad","src":"shots/dark/ipad/habits-daily-routine-demo.webp","w":1000,"h":695},{"id":"habits-digital-cleanse-demo","group":"Habits","screen":"Digital cleanse","caption":"Clear out what you don’t use.","theme":"dark","device":"ipad","src":"shots/dark/ipad/habits-digital-cleanse-demo.webp","w":1000,"h":695},{"id":"you-profiles-demo","group":"You","screen":"Profiles","caption":"Separate profiles for iPhone, iPad and Mac.","theme":"dark","device":"ipad","src":"shots/dark/ipad/you-profiles-demo.webp","w":1000,"h":695},{"id":"you-settings-demo","group":"You","screen":"Settings","caption":"Region, appearance and data.","theme":"dark","device":"ipad","src":"shots/dark/ipad/you-settings-demo.webp","w":1000,"h":695},{"id":"overview-overview-demo","group":"Overview","screen":"Overview","caption":"Your Aura Score — Focus, Clarity and Organization.","theme":"light","device":"mac","src":"shots/light/mac/overview-overview-demo.webp","w":1200,"h":750},{"id":"overview-setup-report-demo","group":"Overview","screen":"Setup report","caption":"A full report on your setup, from your app list.","theme":"light","device":"mac","src":"shots/light/mac/overview-setup-report-demo.webp","w":1200,"h":750},{"id":"library-app-library-demo","group":"Library","screen":"App library","caption":"Every app you imported, searchable.","theme":"light","device":"mac","src":"shots/light/mac/library-app-library-demo.webp","w":1200,"h":750},{"id":"library-import-demo","group":"Library","screen":"Import","caption":"Paste or upload your app list — nothing is uploaded.","theme":"light","device":"mac","src":"shots/light/mac/library-import-demo.webp","w":1200,"h":750},{"id":"library-import-guide-demo","group":"Library","screen":"Import guide","caption":"How to export your app list from each device.","theme":"light","device":"mac","src":"shots/light/mac/library-import-guide-demo.webp","w":1200,"h":750},{"id":"organize-organizer-demo","group":"Organize","screen":"Organizer","caption":"Smart folders and home screen layout ideas.","theme":"light","device":"mac","src":"shots/light/mac/organize-organizer-demo.webp","w":1200,"h":750},{"id":"organize-smart-assistant-demo","group":"Organize","screen":"Smart Assistant","caption":"Rule-based suggestions for a calmer setup.","theme":"light","device":"mac","src":"shots/light/mac/organize-smart-assistant-demo.webp","w":1200,"h":750},{"id":"design-wallpapers-demo","group":"Design","screen":"Wallpapers","caption":"Wallpapers matched to your setup.","theme":"light","device":"mac","src":"shots/light/mac/design-wallpapers-demo.webp","w":1200,"h":750},{"id":"design-lock-screen-demo","group":"Design","screen":"Lock Screen","caption":"Lock Screen layout ideas.","theme":"light","device":"mac","src":"shots/light/mac/design-lock-screen-demo.webp","w":1200,"h":750},{"id":"design-widgets-demo","group":"Design","screen":"Widgets","caption":"Widget layouts worth trying.","theme":"light","device":"mac","src":"shots/light/mac/design-widgets-demo.webp","w":1200,"h":750},{"id":"habits-shortcuts-demo","group":"Habits","screen":"Shortcuts","caption":"Useful shortcuts for your devices.","theme":"light","device":"mac","src":"shots/light/mac/habits-shortcuts-demo.webp","w":1200,"h":750},{"id":"habits-daily-routine-demo","group":"Habits","screen":"Daily routine","caption":"A daily device routine.","theme":"light","device":"mac","src":"shots/light/mac/habits-daily-routine-demo.webp","w":1200,"h":750},{"id":"habits-digital-cleanse-demo","group":"Habits","screen":"Digital cleanse","caption":"Clear out what you don’t use.","theme":"light","device":"mac","src":"shots/light/mac/habits-digital-cleanse-demo.webp","w":1200,"h":750},{"id":"you-profiles-demo","group":"You","screen":"Profiles","caption":"Separate profiles for iPhone, iPad and Mac.","theme":"light","device":"mac","src":"shots/light/mac/you-profiles-demo.webp","w":1200,"h":750},{"id":"you-settings-demo","group":"You","screen":"Settings","caption":"Region, appearance and data.","theme":"light","device":"mac","src":"shots/light/mac/you-settings-demo.webp","w":1200,"h":750},{"id":"overview-overview-demo","group":"Overview","screen":"Overview","caption":"Your Aura Score — Focus, Clarity and Organization.","theme":"dark","device":"mac","src":"shots/dark/mac/overview-overview-demo.webp","w":1200,"h":750},{"id":"overview-setup-report-demo","group":"Overview","screen":"Setup report","caption":"A full report on your setup, from your app list.","theme":"dark","device":"mac","src":"shots/dark/mac/overview-setup-report-demo.webp","w":1200,"h":750},{"id":"library-app-library-demo","group":"Library","screen":"App library","caption":"Every app you imported, searchable.","theme":"dark","device":"mac","src":"shots/dark/mac/library-app-library-demo.webp","w":1200,"h":750},{"id":"library-import-demo","group":"Library","screen":"Import","caption":"Paste or upload your app list — nothing is uploaded.","theme":"dark","device":"mac","src":"shots/dark/mac/library-import-demo.webp","w":1200,"h":750},{"id":"library-import-guide-demo","group":"Library","screen":"Import guide","caption":"How to export your app list from each device.","theme":"dark","device":"mac","src":"shots/dark/mac/library-import-guide-demo.webp","w":1200,"h":750},{"id":"organize-organizer-demo","group":"Organize","screen":"Organizer","caption":"Smart folders and home screen layout ideas.","theme":"dark","device":"mac","src":"shots/dark/mac/organize-organizer-demo.webp","w":1200,"h":750},{"id":"organize-smart-assistant-demo","group":"Organize","screen":"Smart Assistant","caption":"Rule-based suggestions for a calmer setup.","theme":"dark","device":"mac","src":"shots/dark/mac/organize-smart-assistant-demo.webp","w":1200,"h":750},{"id":"design-wallpapers-demo","group":"Design","screen":"Wallpapers","caption":"Wallpapers matched to your setup.","theme":"dark","device":"mac","src":"shots/dark/mac/design-wallpapers-demo.webp","w":1200,"h":750},{"id":"design-lock-screen-demo","group":"Design","screen":"Lock Screen","caption":"Lock Screen layout ideas.","theme":"dark","device":"mac","src":"shots/dark/mac/design-lock-screen-demo.webp","w":1200,"h":750},{"id":"design-widgets-demo","group":"Design","screen":"Widgets","caption":"Widget layouts worth trying.","theme":"dark","device":"mac","src":"shots/dark/mac/design-widgets-demo.webp","w":1200,"h":750},{"id":"habits-shortcuts-demo","group":"Habits","screen":"Shortcuts","caption":"Useful shortcuts for your devices.","theme":"dark","device":"mac","src":"shots/dark/mac/habits-shortcuts-demo.webp","w":1200,"h":750},{"id":"habits-daily-routine-demo","group":"Habits","screen":"Daily routine","caption":"A daily device routine.","theme":"dark","device":"mac","src":"shots/dark/mac/habits-daily-routine-demo.webp","w":1200,"h":750},{"id":"habits-digital-cleanse-demo","group":"Habits","screen":"Digital cleanse","caption":"Clear out what you don’t use.","theme":"dark","device":"mac","src":"shots/dark/mac/habits-digital-cleanse-demo.webp","w":1200,"h":750},{"id":"you-profiles-demo","group":"You","screen":"Profiles","caption":"Separate profiles for iPhone, iPad and Mac.","theme":"dark","device":"mac","src":"shots/dark/mac/you-profiles-demo.webp","w":1200,"h":750},{"id":"you-settings-demo","group":"You","screen":"Settings","caption":"Region, appearance and data.","theme":"dark","device":"mac","src":"shots/dark/mac/you-settings-demo.webp","w":1200,"h":750}]</script>
+<script src="/apps/assets/minisite.js" defer></script>
 </body>
 </html>

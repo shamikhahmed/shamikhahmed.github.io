@@ -24,7 +24,7 @@ const PRODUCTS = {
     slug: 'deefoodie',
     name: 'DeeFoodie',
     category: 'Food',
-    ver: '1.0.0+3',
+    ver: '1.1.0+4',
     symbol: '◎',
     tagline: 'A private journal of where you eat in Karachi.',
     pitch: 'Private beta — invite only. No public install link.',

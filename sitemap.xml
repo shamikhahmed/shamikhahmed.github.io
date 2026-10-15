@@ -35,4 +35,20 @@
   <url><loc>https://shamikhahmed.github.io/CarCap/</loc><priority>0.9</priority></url>
   <url><loc>https://shamikhahmed.github.io/MasteryCap/</loc><priority>0.9</priority></url>
   <url><loc>https://shamikhahmed.github.io/CookCap/</loc><priority>0.9</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/vaultcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/pulsecap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/prismcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/steadycap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/ledgercap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/deeponycap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/scentcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/soulcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/travelcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/auracap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/masterycap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/ideacap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/carcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/cookcap/</loc><priority>0.8</priority></url>
+  <url><loc>https://shamikhahmed.github.io/apps/deefoodie/</loc><priority>0.8</priority></url>
 </urlset>

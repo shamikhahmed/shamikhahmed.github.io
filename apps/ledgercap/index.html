@@ -1,141 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LedgerCap — Capricorn Systems</title>
-  <meta name="description" content="Track your PSX stocks and mutual funds in one place.">
-  <link rel="canonical" href="https://shamikhahmed.github.io/apps/ledgercap/">
-  <meta property="og:title" content="LedgerCap">
-  <meta property="og:description" content="Track your PSX stocks and mutual funds in one place.">
-  <meta property="og:url" content="https://shamikhahmed.github.io/apps/ledgercap/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  
-  <link rel="stylesheet" href="/apps/assets/minisite.css">
-  <style>:root{--accent:#f59e0b;--accent2:#0ecb81;--bg:#0b0e11;}</style>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"LedgerCap","description":"Track your PSX stocks and mutual funds in one place.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://shamikhahmed.github.io/apps/ledgercap/"}
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LedgerCap — Track your PSX stocks and mutual funds in one place.</title>
+<meta name="description" content="Track your PSX stocks and mutual funds in one place. PSX holdings, funds, and net worth in PKR — Worker-backed prices, private on your phone.">
+<link rel="canonical" href="https://shamikhahmed.github.io/apps/ledgercap/">
+<meta name="theme-color" content="#fbf6ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0e11" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Capricorn Systems">
+<meta property="og:title" content="LedgerCap — Track your PSX stocks and mutual funds in one place.">
+<meta property="og:description" content="Track your PSX stocks and mutual funds in one place. PSX holdings, funds, and net worth in PKR — Worker-backed prices, private on your phone.">
+<meta property="og:url" content="https://shamikhahmed.github.io/apps/ledgercap/">
+<meta property="og:image" content="https://shamikhahmed.github.io/apps/ledgercap/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="https://shamikhahmed.github.io/apps/ledgercap/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/apps/assets/minisite.css">
+<style>:root{--bg:#fbf6ec;--surface:#ffffff;--surface2:#f4eddf;--line:#e5dcc9;--ink:#16161a;--dim:#55555d;--accent:#935f07;--fill:#ce8509;--on-fill:#111114;--glow:#f59e0b;--glow2:#0ecb81}
+html[data-theme="dark"]{--bg:#0b0e11;--surface:#171a1d;--surface2:#212426;--line:#2d3032;--ink:#f6f4ef;--dim:#a6a6a4;--accent:#f59e0b;--fill:#f59e0b;--on-fill:#111114;color-scheme:dark}
+@media (prefers-color-scheme: dark){html:not([data-theme="light"]){--bg:#0b0e11;--surface:#171a1d;--surface2:#212426;--line:#2d3032;--ink:#f6f4ef;--dim:#a6a6a4;--accent:#f59e0b;--fill:#f59e0b;--on-fill:#111114;color-scheme:dark}}</style>
+<script>try{var t=localStorage.getItem('cap-ms-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LedgerCap","description":"Track your PSX stocks and mutual funds in one place.","applicationCategory":"Wealth","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"softwareVersion":"3.58.0","url":"https://shamikhahmed.github.io/LedgerCap/","publisher":{"@type":"Organization","name":"Capricorn Systems"}}</script>
 </head>
-<body>
-  <div class="wrap">
-    <header class="site-header">
-      <a class="brand" href="/apps/"><img src="/assets/logo.svg" alt="" width="28" height="28">Capricorn</a>
-      <button type="button" class="scheme-toggle" id="schemeToggle" aria-label="Toggle colour scheme">Light / Dark</button>
-    </header>
-
-    <section class="hero" aria-labelledby="app-name">
-      <img class="hero__icon" src="/apps/ledgercap/assets/icon.svg" alt="" width="96" height="96">
-      <div>
-        <h1 id="app-name">LedgerCap</h1>
-        <p class="hero__desc">Track your PSX stocks and mutual funds in one place.</p>
-        <span class="badge" id="liveVersion" data-version-url="https://shamikhahmed.github.io/LedgerCap/VERSION.json">v3.58.0</span>
-        <div class="ctas">
-        <a class="btn btn--primary" href="https://shamikhahmed.github.io/LedgerCap/">Open LedgerCap</a>
-        <a class="btn btn--secondary" href="https://shamikhahmed.github.io/?nolock=1&amp;app=ledgercap">Try it in Capricorn OS</a>
-        <a class="btn btn--ghost" href="/support.html">Support</a>
-        <a class="btn btn--ghost" href="#install">Add to Home Screen</a>
-      </div>
-      </div>
-    </section>
-
-    <section class="section" id="gallery" aria-labelledby="gallery-h">
-      <h2 id="gallery-h">Screenshots</h2>
-      <p class="section__lead">Screenshots from the v3 gallery land here as they are published.</p>
-      <div class="placeholder">Open the live app to explore every screen.</div>
-    </section>
-
-    <section class="section" id="features" aria-labelledby="features-h">
-      <h2 id="features-h">What it does</h2>
-      <p class="section__lead">Honest features from the shipped set.</p>
-      <div class="grid"><article class="tile"><h3>Hub/NW</h3><p>Hub/NW · PSX · Meezan · portfolio · research/screener · Zakat/IPO · CF Worker pulse</p></article></div>
-    </section>
-
-    <section class="section" id="privacy" aria-labelledby="privacy-h">
-      <h2 id="privacy-h">Privacy, plainly</h2>
-      <p class="section__lead">No analytics, no ads, no account required. What stays on device stays on device.</p>
-      <h3 style="font-size:1rem;margin:1rem 0 .4rem">Network destinations</h3>
-      <ul class="list"><li>github.com</li><li>Cloudflare Worker (opt-in / prices)</li></ul>
-      <p style="margin-top:1rem"><a href="https://shamikhahmed.github.io/LedgerCap/privacy.html">Full privacy page</a></p>
-    </section>
-
-    <section class="section" id="install" aria-labelledby="install-h">
-      <h2 id="install-h">How to install</h2>
-      <div class="placeholder">
-        <p><strong>iPhone / iPad (Safari):</strong> Open the app → Share → Add to Home Screen.</p>
-        <p><strong>Mac (Safari / Chrome):</strong> Open the app → browser install / Add to Dock when offered.</p>
-        <p><strong>Android (Chrome):</strong> Open the app → Install app / Add to Home screen.</p>
-        <p>Install screenshots from the gallery land in a later wave.</p>
-      </div>
-    </section>
-
-    <section class="section faq" id="faq" aria-labelledby="faq-h">
-      <h2 id="faq-h">FAQ</h2>
-      <details><summary>Where is my data?</summary><p>On your device (localStorage / IndexedDB), except DeeFoodie private beta which syncs to its private server for invited users only.</p></details><details><summary>How do I erase everything?</summary><p>Open the app → Settings → erase / delete data (wording varies by Cap). Or clear site data for that Cap’s URL in your browser.</p></details><details><summary>DeeFoodie private beta</summary><p>DeeFoodie is invite-only. There is no public install link. If you are an invited tester and need help, open a DeeFoodie issue above.</p></details><details><summary>Privacy</summary><p>See privacy.html for the hub, and each Cap’s own privacy page from Settings → About.</p></details>
-      <details><summary>Important note</summary><p>LedgerCap is for tracking and education. Prices may be delayed or indicative. Nothing here is investment advice.</p></details>
-    </section>
-
-    <section class="section changelog" id="changelog" aria-labelledby="changelog-h">
-      <h2 id="changelog-h">What's new</h2>
-      <article>
-          <h3>v3.58.0</h3>
-          <time datetime="2026-10-14">2026-10-14</time>
-          <ul class="list"><li>Perfection Loop v3 Phase I: LDG-V3-1/2/3/4 ✅ VERIFIED (tab/KSE type ≥12px, 44px targets, no KSE100 Worker 404 on load).</li><li>Docs (§11): README §4.1; HANDOVER; privacy network honesty (Worker + optional Telegram).</li><li>SW `ledgercap-v141` · register `sw.js?v=141`.</li><li>L later: LDG-V3-5 Lighthouse · LDG-V3-6 Urdu/RTL.</li></ul>
-        </article><article>
-          <h3>v3.57.2</h3>
-          <time datetime="2026-09-15">2026-09-15</time>
-          <ul class="list"><li>Tier 1: LCBrand palette; glance CSS; tooling brandOk for ledger CSS.</li><li>SW `ledgercap-v140`.</li></ul>
-        </article><article>
-          <h3>v3.57.1</h3>
-          <time datetime="2026-09-15">2026-09-15</time>
-          <ul class="list"><li>C-16: Self-host Cinzel, Source Sans 3, Noto Nastaliq Urdu (and Inter on pitch); remove Google Fonts + CSP font CDN entries.</li><li>C-20: Set `window.__APP_READY__` after splash dismiss.</li><li>SW `ledgercap-v139`.</li></ul>
-        </article><article>
-          <h3>v3.57.0</h3>
-          <time datetime="2026-09-14">2026-09-14</time>
-          <ul class="list"><li>Tier 1 finish (LDG-P0/P1): header “Your wealth” + ⋯ menu; tab labels Home·Watchlist·Funds·Performance·Research.</li><li>Freshness line with LedgerCap server attribution; pull-to-refresh; totals without paisa + ▲/▼.</li><li>CapConfirm/CapPrompt replace native dialogs; Telegram token removable/masked; §4.2 disclaimer on About/Research/Signals.</li><li>Price validation ±20% of last close with last-good fallback; sink inventory + esc() on journal/watchlist/import/research.</li></ul>
-        </article><article>
-          <h3>v3.56.4</h3>
-          <time datetime="2026-09-14">2026-09-14</time>
-          <ul class="list"><li>Release (C-01): version + SW cache bump so installed PWAs receive Phase 0 security (Worker-only prices). SW `ledgercap-v137`.</li></ul>
-        </article>
-      <p><a href="https://github.com/shamikhahmed/LedgerCap">Full changelog / source on GitHub</a></p>
-    </section>
-
-    <footer class="site-footer">
-      <nav aria-label="Site">
-        <a href="/">Capricorn OS</a>
-        <a href="/support.html">Support</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="https://github.com/shamikhahmed/LedgerCap">GitHub</a>
-        <a href="/apps/">All Caps</a>
-      </nav>
-      <p>Capricorn Systems · LedgerCap</p>
-      <div class="rail" aria-label="Other Caps" id="otherCaps"></div>
-    </footer>
+<body data-app="ledgercap" data-repo="LedgerCap">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/" aria-label="Capricorn OS home"><img src="/assets/logo.svg" alt="" width="22" height="22"><span>Capricorn</span></a>
+  <nav class="top__nav" aria-label="Sections"><a href="#screens">Screens</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
+  <div class="seg seg--theme" role="group" aria-label="Colour scheme">
+    <button type="button" data-scheme="auto" aria-pressed="true">Auto</button><button type="button" data-scheme="light" aria-pressed="false">Light</button><button type="button" data-scheme="dark" aria-pressed="false">Dark</button>
   </div>
-  <script>
-(function () {
-  var root = document.documentElement;
-  var key = 'cap-minisite-scheme';
-  function apply(v) {
-    if (v === 'light' || v === 'dark') root.setAttribute('data-scheme', v);
-    else root.removeAttribute('data-scheme');
-  }
-  apply(localStorage.getItem(key));
-  document.getElementById('schemeToggle')?.addEventListener('click', function () {
-    var cur = root.getAttribute('data-scheme');
-    var next = cur === 'dark' ? 'light' : cur === 'light' ? '' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
-    if (next) localStorage.setItem(key, next); else localStorage.removeItem(key);
-    apply(next || null);
-  });
-  var badge = document.getElementById('liveVersion');
-  if (badge && badge.dataset.versionUrl) {
-    fetch(badge.dataset.versionUrl, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-      if (j && (j.version || j.ver)) badge.textContent = 'v' + (j.version || j.ver);
-    }).catch(function () {});
-  }
-})();
-</script>
+  <a class="btn btn--fill btn--sm top__cta" href="https://shamikhahmed.github.io/LedgerCap/">Open</a>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero__text">
+      <img class="hero__icon" src="/apps/assets/icons/ledgercap.svg" alt="" width="88" height="88">
+      <p class="eyebrow">Wealth</p>
+      <h1 id="h1">LedgerCap</h1>
+      <p class="hero__lead">Track your PSX stocks and mutual funds in one place.</p>
+      <p class="hero__pitch">PSX holdings, funds, and net worth in PKR — Worker-backed prices, private on your phone.</p>
+      <div class="hero__cta">
+        <a class="btn btn--fill" href="https://shamikhahmed.github.io/LedgerCap/">Open LedgerCap</a><a class="btn btn--ghost" href="/?app=ledgercap">Try it in Capricorn OS</a>
+      </div>
+      <p class="hero__meta"><span class="chip"><span class="dot" aria-hidden="true"></span><span data-live-version="3.58.0">v3.58.0</span></span><span>Free</span><span>No account</span><span>No ads or analytics</span></p>
+    </div>
+    <div class="hero__visual" data-shot-theme="light" aria-hidden="true">
+      <figure class="dev dev--mac hero__mac eager">
+    <span class="dev__bar" aria-hidden="true"><i></i><i></i><i></i></span>
+    <img src="shots/light/mac/wealth-home-demo.webp" alt="Home screen" width="1200" height="750" decoding="async" fetchpriority="high">
+  </figure><figure class="dev dev--iphone hero__phone eager">
+    
+    <img src="shots/light/iphone/wealth-home-demo.webp" alt="Home screen" width="600" height="1298" decoding="async" fetchpriority="high">
+  </figure>
+    </div><div class="hero__visual" data-shot-theme="dark" aria-hidden="true">
+      <figure class="dev dev--mac hero__mac eager">
+    <span class="dev__bar" aria-hidden="true"><i></i><i></i><i></i></span>
+    <img src="shots/dark/mac/wealth-home-demo.webp" alt="Home screen" width="1200" height="750" decoding="async" fetchpriority="high">
+  </figure><figure class="dev dev--iphone hero__phone eager">
+    
+    <img src="shots/dark/iphone/wealth-home-demo.webp" alt="Home screen" width="600" height="1298" decoding="async" fetchpriority="high">
+  </figure>
+    </div>
+  </section>
+
+  <section class="band" aria-label="Highlights">
+    <span>PSX</span><span>Funds</span><span>PKR</span><span>Research</span>
+  </section>
+
+  <section class="section" id="screens" aria-labelledby="screens-h">
+    <div class="section__head">
+      <div><h2 id="screens-h">Every screen</h2><p>23 screens from LedgerCap 3.58.0, captured in light and dark on iPhone, iPad and Mac.</p></div>
+      <div class="gallery__tools">
+        <div class="seg" role="group" aria-label="Device" data-gal="device"><button type="button" data-v="iphone" aria-pressed="true">iPhone</button><button type="button" data-v="ipad" aria-pressed="false">iPad</button><button type="button" data-v="mac" aria-pressed="false">Mac</button></div>
+        <div class="seg" role="group" aria-label="Screenshot colours" data-gal="theme"><button type="button" data-v="light" aria-pressed="true">Light</button><button type="button" data-v="dark" aria-pressed="false">Dark</button></div>
+      </div>
+    </div>
+    <div class="groups" role="tablist" aria-label="Screen groups" id="galGroups"></div>
+    <div class="rail-wrap">
+      <button type="button" class="rail__btn rail__btn--prev" aria-label="Previous screens" data-rail="-1">‹</button>
+      <ol class="rail" id="galRail" aria-label="LedgerCap screens"></ol>
+      <button type="button" class="rail__btn rail__btn--next" aria-label="Next screens" data-rail="1">›</button>
+    </div>
+    <noscript><p>Turn on JavaScript to browse the screens, or open <a href="https://shamikhahmed.github.io/LedgerCap/">LedgerCap</a>.</p></noscript>
+  </section>
+
+  <section class="section" id="features" aria-labelledby="features-h">
+    <div class="section__head"><div><h2 id="features-h">What it does</h2><p>PSX, funds, net worth — phone-native, private.</p></div></div>
+    <ul class="features"><li><span class="features__n" aria-hidden="true">01</span><span>PSX holdings and transaction log</span></li><li><span class="features__n" aria-hidden="true">02</span><span>Mutual fund positions</span></li><li><span class="features__n" aria-hidden="true">03</span><span>Net worth in PKR</span></li><li><span class="features__n" aria-hidden="true">04</span><span>Research tools — not investment advice</span></li></ul>
+    <div class="tour"><div class="tour__group"><h3>Wealth</h3><ul><li><strong>Home</strong><span>Net worth in PKR and the morning brief.</span></li><li><strong>Portfolio</strong><span>Holdings, cost basis and gains.</span></li><li><strong>Performance</strong><span>Returns over time.</span></li><li><strong>Transactions</strong><span>Every buy, sell, dividend and deposit.</span></li><li><strong>Dividends</strong><span>Dividend income and history.</span></li><li><strong>Calendar</strong><span>Upcoming dividends and events.</span></li><li><strong>Zakat</strong><span>Zakat on your investments.</span></li></ul></div><div class="tour__group"><h3>Markets</h3><ul><li><strong>Market</strong><span>KSE-100 and market movers (indicative, may be delayed).</span></li><li><strong>Watchlist</strong><span>Symbols you follow.</span></li><li><strong>Funds</strong><span>Mutual funds, including Islamic funds.</span></li><li><strong>Global</strong><span>Global markets snapshot (indicative).</span></li><li><strong>Announcements</strong><span>Company announcements.</span></li></ul></div><div class="tour__group"><h3>Research</h3><ul><li><strong>Research</strong><span>Research tools — for education, not investment advice.</span></li><li><strong>Screener</strong><span>Filter PSX stocks by your criteria.</span></li><li><strong>Signals</strong><span>Rule-based signals — not investment advice.</span></li><li><strong>Insights</strong><span>Patterns in your own portfolio.</span></li><li><strong>Compare</strong><span>Compare stocks side by side.</span></li><li><strong>Risk audit</strong><span>Concentration and risk in your holdings.</span></li><li><strong>Paper trading</strong><span>Practise trades without real money.</span></li><li><strong>Journal</strong><span>Your trading notes.</span></li></ul></div><div class="tour__group"><h3>Tools</h3><ul><li><strong>Import</strong><span>Import trades from a CSV.</span></li><li><strong>More</strong><span>Everything else in LedgerCap.</span></li><li><strong>Settings</strong><span>Language (English · اردو · Roman Urdu), currency and theme.</span></li></ul></div></div>
+  </section>
+
+  <section class="section" id="privacy" aria-labelledby="privacy-h">
+    <div class="section__head"><div><h2 id="privacy-h">Privacy, plainly</h2><p>Taken from LedgerCap’s own privacy page.</p></div></div>
+    <div class="privacy">
+      <div class="card"><h3>Stays on your device</h3><p>Holdings, transactions, watchlists, notes and settings.</p></div>
+      <div class="card"><h3>May leave your device</h3><dl><dt>Capricorn price Worker</dt><dd>Ticker queries for indicative PSX, fund, FX and news data when you open market screens. Your portfolio is never sent.</dd></dl></div>
+      <div class="card"><h3>Never</h3><ul class="never"><li>Analytics or trackers</li><li>Ads</li><li>An account to use it</li><li>Selling or sharing your data</li></ul></div>
+    </div>
+    <p class="fine"><a href="https://shamikhahmed.github.io/LedgerCap/privacy.html">Read the full privacy page</a></p>
+  </section>
+
+  <section class="section" id="install" aria-labelledby="install-h">
+    <div class="section__head"><div><h2 id="install-h">Put it on your Home Screen</h2><p>LedgerCap is a web app — installing takes a few seconds and it opens full-screen, offline.</p></div></div>
+    <ol class="install">
+      <li class="card"><h3>iPhone &amp; iPad</h3><p>Open LedgerCap in Safari, tap <b>Share</b>, then <b>Add to Home Screen</b>.</p></li>
+      <li class="card"><h3>Mac</h3><p>In Safari choose <b>File → Add to Dock</b>. In Chrome or Edge, click the install icon in the address bar.</p></li>
+      <li class="card"><h3>Android</h3><p>In Chrome, open the <b>⋮</b> menu and tap <b>Install app</b>.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-h">
+    <div class="section__head"><div><h2 id="faq-h">Questions</h2></div></div>
+    <div class="faq"><details><summary>Is it free?</summary><p>Yes. Every feature, no ads, no subscriptions, no account.</p></details><details><summary>Where is my data?</summary><p>Holdings, transactions, watchlists, notes and settings. It lives in this browser on this device — clearing site data erases it, so export a backup first.</p></details><details><summary>Are prices live?</summary><p>Prices are indicative and may be delayed. LedgerCap is for tracking and education. Prices may be delayed or indicative. Nothing here is investment advice.</p></details><details><summary>Does it support Urdu?</summary><p>Yes — English, اردو and Roman Urdu, in Settings → General.</p></details><details><summary>Does it work offline?</summary><p>Your portfolio does. Market prices need a connection.</p></details></div>
+  </section>
+
+  <section class="section" id="new" aria-labelledby="new-h">
+    <div class="release card">
+      <div><h2 id="new-h">Latest release</h2><p><span class="chip"><span data-live-version="3.58.0">v3.58.0</span></span> <time datetime="2026-10-14">14 October 2026</time></p></div>
+      <a class="btn btn--ghost btn--sm" href="https://github.com/shamikhahmed/LedgerCap/blob/main/CHANGELOG.md">Release history</a>
+    </div>
+  </section>
+
+  <p class="disclaimer">LedgerCap is for tracking and education. Prices may be delayed or indicative. Nothing here is investment advice.</p>
+</main>
+<footer class="foot">
+  <p class="foot__label">More Caps</p>
+  <ul class="foot__caps"><li><a href="/apps/vaultcap/"><img src="/apps/assets/icons/vaultcap.svg" alt="" width="40" height="40" loading="lazy"><span>VaultCap</span></a></li><li><a href="/apps/pulsecap/"><img src="/apps/assets/icons/pulsecap.svg" alt="" width="40" height="40" loading="lazy"><span>PulseCap</span></a></li><li><a href="/apps/prismcap/"><img src="/apps/assets/icons/prismcap.svg" alt="" width="40" height="40" loading="lazy"><span>PrismCap</span></a></li><li><a href="/apps/steadycap/"><img src="/apps/assets/icons/steadycap.svg" alt="" width="40" height="40" loading="lazy"><span>SteadyCap</span></a></li><li><a href="/apps/deeponycap/"><img src="/apps/assets/icons/deeponycap.svg" alt="" width="40" height="40" loading="lazy"><span>DeePonyCap</span></a></li><li><a href="/apps/scentcap/"><img src="/apps/assets/icons/scentcap.svg" alt="" width="40" height="40" loading="lazy"><span>ScentCap</span></a></li><li><a href="/apps/soulcap/"><img src="/apps/assets/icons/soulcap.svg" alt="" width="40" height="40" loading="lazy"><span>SoulCap</span></a></li><li><a href="/apps/travelcap/"><img src="/apps/assets/icons/travelcap.svg" alt="" width="40" height="40" loading="lazy"><span>TravelCap</span></a></li><li><a href="/apps/auracap/"><img src="/apps/assets/icons/auracap.svg" alt="" width="40" height="40" loading="lazy"><span>AuraCap</span></a></li><li><a href="/apps/masterycap/"><img src="/apps/assets/icons/masterycap.svg" alt="" width="40" height="40" loading="lazy"><span>MasteryCap</span></a></li><li><a href="/apps/ideacap/"><img src="/apps/assets/icons/ideacap.svg" alt="" width="40" height="40" loading="lazy"><span>IdeaCap</span></a></li><li><a href="/apps/carcap/"><img src="/apps/assets/icons/carcap.svg" alt="" width="40" height="40" loading="lazy"><span>CarCap</span></a></li><li><a href="/apps/cookcap/"><img src="/apps/assets/icons/cookcap.svg" alt="" width="40" height="40" loading="lazy"><span>CookCap</span></a></li><li><a href="/apps/deefoodie/"><img src="/apps/assets/icons/deefoodie.svg" alt="" width="40" height="40" loading="lazy"><span>DeeFoodie</span></a></li></ul>
+  <nav class="foot__links" aria-label="Footer"><a href="/apps/">All Caps</a><a href="/">Capricorn OS</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="https://github.com/shamikhahmed">GitHub</a></nav>
+  <p class="foot__fine">© 2026 Capricorn Systems, Karachi.</p>
+</footer>
+<dialog class="lightbox" id="lightbox" aria-label="Screenshot">
+  <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
+</dialog>
+<script type="application/json" id="shots" data-schemes="light,dark">[{"id":"wealth-home-demo","group":"Wealth","screen":"Home","caption":"Net worth in PKR and the morning brief.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-home-demo.webp","w":600,"h":1298},{"id":"wealth-portfolio-demo","group":"Wealth","screen":"Portfolio","caption":"Holdings, cost basis and gains.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-portfolio-demo.webp","w":600,"h":1298},{"id":"wealth-performance-demo","group":"Wealth","screen":"Performance","caption":"Returns over time.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-performance-demo.webp","w":600,"h":1298},{"id":"wealth-transactions-demo","group":"Wealth","screen":"Transactions","caption":"Every buy, sell, dividend and deposit.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-transactions-demo.webp","w":600,"h":1298},{"id":"wealth-dividends-demo","group":"Wealth","screen":"Dividends","caption":"Dividend income and history.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-dividends-demo.webp","w":600,"h":1298},{"id":"wealth-calendar-demo","group":"Wealth","screen":"Calendar","caption":"Upcoming dividends and events.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-calendar-demo.webp","w":600,"h":1298},{"id":"wealth-zakat-demo","group":"Wealth","screen":"Zakat","caption":"Zakat on your investments.","theme":"light","device":"iphone","src":"shots/light/iphone/wealth-zakat-demo.webp","w":600,"h":1298},{"id":"markets-market-demo","group":"Markets","screen":"Market","caption":"KSE-100 and market movers (indicative, may be delayed).","theme":"light","device":"iphone","src":"shots/light/iphone/markets-market-demo.webp","w":600,"h":1298},{"id":"markets-watchlist-demo","group":"Markets","screen":"Watchlist","caption":"Symbols you follow.","theme":"light","device":"iphone","src":"shots/light/iphone/markets-watchlist-demo.webp","w":600,"h":1298},{"id":"markets-funds-demo","group":"Markets","screen":"Funds","caption":"Mutual funds, including Islamic funds.","theme":"light","device":"iphone","src":"shots/light/iphone/markets-funds-demo.webp","w":600,"h":1298},{"id":"markets-global-demo","group":"Markets","screen":"Global","caption":"Global markets snapshot (indicative).","theme":"light","device":"iphone","src":"shots/light/iphone/markets-global-demo.webp","w":600,"h":1298},{"id":"markets-announcements-demo","group":"Markets","screen":"Announcements","caption":"Company announcements.","theme":"light","device":"iphone","src":"shots/light/iphone/markets-announcements-demo.webp","w":600,"h":1298},{"id":"research-research-demo","group":"Research","screen":"Research","caption":"Research tools — for education, not investment advice.","theme":"light","device":"iphone","src":"shots/light/iphone/research-research-demo.webp","w":600,"h":1298},{"id":"research-screener-demo","group":"Research","screen":"Screener","caption":"Filter PSX stocks by your criteria.","theme":"light","device":"iphone","src":"shots/light/iphone/research-screener-demo.webp","w":600,"h":1298},{"id":"research-signals-demo","group":"Research","screen":"Signals","caption":"Rule-based signals — not investment advice.","theme":"light","device":"iphone","src":"shots/light/iphone/research-signals-demo.webp","w":600,"h":1298},{"id":"research-insights-demo","group":"Research","screen":"Insights","caption":"Patterns in your own portfolio.","theme":"light","device":"iphone","src":"shots/light/iphone/research-insights-demo.webp","w":600,"h":1298},{"id":"research-compare-demo","group":"Research","screen":"Compare","caption":"Compare stocks side by side.","theme":"light","device":"iphone","src":"shots/light/iphone/research-compare-demo.webp","w":600,"h":1298},{"id":"research-risk-audit-demo","group":"Research","screen":"Risk audit","caption":"Concentration and risk in your holdings.","theme":"light","device":"iphone","src":"shots/light/iphone/research-risk-audit-demo.webp","w":600,"h":1298},{"id":"research-paper-trading-demo","group":"Research","screen":"Paper trading","caption":"Practise trades without real money.","theme":"light","device":"iphone","src":"shots/light/iphone/research-paper-trading-demo.webp","w":600,"h":1298},{"id":"research-journal-demo","group":"Research","screen":"Journal","caption":"Your trading notes.","theme":"light","device":"iphone","src":"shots/light/iphone/research-journal-demo.webp","w":600,"h":1298},{"id":"tools-import-demo","group":"Tools","screen":"Import","caption":"Import trades from a CSV.","theme":"light","device":"iphone","src":"shots/light/iphone/tools-import-demo.webp","w":600,"h":1298},{"id":"tools-more-demo","group":"Tools","screen":"More","caption":"Everything else in LedgerCap.","theme":"light","device":"iphone","src":"shots/light/iphone/tools-more-demo.webp","w":600,"h":1298},{"id":"tools-settings-demo","group":"Tools","screen":"Settings","caption":"Language (English · اردو · Roman Urdu), currency and theme.","theme":"light","device":"iphone","src":"shots/light/iphone/tools-settings-demo.webp","w":600,"h":1298},{"id":"wealth-home-demo","group":"Wealth","screen":"Home","caption":"Net worth in PKR and the morning brief.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-home-demo.webp","w":600,"h":1298},{"id":"wealth-portfolio-demo","group":"Wealth","screen":"Portfolio","caption":"Holdings, cost basis and gains.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-portfolio-demo.webp","w":600,"h":1298},{"id":"wealth-performance-demo","group":"Wealth","screen":"Performance","caption":"Returns over time.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-performance-demo.webp","w":600,"h":1298},{"id":"wealth-transactions-demo","group":"Wealth","screen":"Transactions","caption":"Every buy, sell, dividend and deposit.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-transactions-demo.webp","w":600,"h":1298},{"id":"wealth-dividends-demo","group":"Wealth","screen":"Dividends","caption":"Dividend income and history.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-dividends-demo.webp","w":600,"h":1298},{"id":"wealth-calendar-demo","group":"Wealth","screen":"Calendar","caption":"Upcoming dividends and events.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-calendar-demo.webp","w":600,"h":1298},{"id":"wealth-zakat-demo","group":"Wealth","screen":"Zakat","caption":"Zakat on your investments.","theme":"dark","device":"iphone","src":"shots/dark/iphone/wealth-zakat-demo.webp","w":600,"h":1298},{"id":"markets-market-demo","group":"Markets","screen":"Market","caption":"KSE-100 and market movers (indicative, may be delayed).","theme":"dark","device":"iphone","src":"shots/dark/iphone/markets-market-demo.webp","w":600,"h":1298},{"id":"markets-watchlist-demo","group":"Markets","screen":"Watchlist","caption":"Symbols you follow.","theme":"dark","device":"iphone","src":"shots/dark/iphone/markets-watchlist-demo.webp","w":600,"h":1298},{"id":"markets-funds-demo","group":"Markets","screen":"Funds","caption":"Mutual funds, including Islamic funds.","theme":"dark","device":"iphone","src":"shots/dark/iphone/markets-funds-demo.webp","w":600,"h":1298},{"id":"markets-global-demo","group":"Markets","screen":"Global","caption":"Global markets snapshot (indicative).","theme":"dark","device":"iphone","src":"shots/dark/iphone/markets-global-demo.webp","w":600,"h":1298},{"id":"markets-announcements-demo","group":"Markets","screen":"Announcements","caption":"Company announcements.","theme":"dark","device":"iphone","src":"shots/dark/iphone/markets-announcements-demo.webp","w":600,"h":1298},{"id":"research-research-demo","group":"Research","screen":"Research","caption":"Research tools — for education, not investment advice.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-research-demo.webp","w":600,"h":1298},{"id":"research-screener-demo","group":"Research","screen":"Screener","caption":"Filter PSX stocks by your criteria.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-screener-demo.webp","w":600,"h":1298},{"id":"research-signals-demo","group":"Research","screen":"Signals","caption":"Rule-based signals — not investment advice.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-signals-demo.webp","w":600,"h":1298},{"id":"research-insights-demo","group":"Research","screen":"Insights","caption":"Patterns in your own portfolio.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-insights-demo.webp","w":600,"h":1298},{"id":"research-compare-demo","group":"Research","screen":"Compare","caption":"Compare stocks side by side.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-compare-demo.webp","w":600,"h":1298},{"id":"research-risk-audit-demo","group":"Research","screen":"Risk audit","caption":"Concentration and risk in your holdings.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-risk-audit-demo.webp","w":600,"h":1298},{"id":"research-paper-trading-demo","group":"Research","screen":"Paper trading","caption":"Practise trades without real money.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-paper-trading-demo.webp","w":600,"h":1298},{"id":"research-journal-demo","group":"Research","screen":"Journal","caption":"Your trading notes.","theme":"dark","device":"iphone","src":"shots/dark/iphone/research-journal-demo.webp","w":600,"h":1298},{"id":"tools-import-demo","group":"Tools","screen":"Import","caption":"Import trades from a CSV.","theme":"dark","device":"iphone","src":"shots/dark/iphone/tools-import-demo.webp","w":600,"h":1298},{"id":"tools-more-demo","group":"Tools","screen":"More","caption":"Everything else in LedgerCap.","theme":"dark","device":"iphone","src":"shots/dark/iphone/tools-more-demo.webp","w":600,"h":1298},{"id":"tools-settings-demo","group":"Tools","screen":"Settings","caption":"Language (English · اردو · Roman Urdu), currency and theme.","theme":"dark","device":"iphone","src":"shots/dark/iphone/tools-settings-demo.webp","w":600,"h":1298},{"id":"wealth-home-demo","group":"Wealth","screen":"Home","caption":"Net worth in PKR and the morning brief.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-home-demo.webp","w":1000,"h":695},{"id":"wealth-portfolio-demo","group":"Wealth","screen":"Portfolio","caption":"Holdings, cost basis and gains.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-portfolio-demo.webp","w":1000,"h":695},{"id":"wealth-performance-demo","group":"Wealth","screen":"Performance","caption":"Returns over time.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-performance-demo.webp","w":1000,"h":695},{"id":"wealth-transactions-demo","group":"Wealth","screen":"Transactions","caption":"Every buy, sell, dividend and deposit.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-transactions-demo.webp","w":1000,"h":695},{"id":"wealth-dividends-demo","group":"Wealth","screen":"Dividends","caption":"Dividend income and history.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-dividends-demo.webp","w":1000,"h":695},{"id":"wealth-calendar-demo","group":"Wealth","screen":"Calendar","caption":"Upcoming dividends and events.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-calendar-demo.webp","w":1000,"h":695},{"id":"wealth-zakat-demo","group":"Wealth","screen":"Zakat","caption":"Zakat on your investments.","theme":"light","device":"ipad","src":"shots/light/ipad/wealth-zakat-demo.webp","w":1000,"h":695},{"id":"markets-market-demo","group":"Markets","screen":"Market","caption":"KSE-100 and market movers (indicative, may be delayed).","theme":"light","device":"ipad","src":"shots/light/ipad/markets-market-demo.webp","w":1000,"h":695},{"id":"markets-watchlist-demo","group":"Markets","screen":"Watchlist","caption":"Symbols you follow.","theme":"light","device":"ipad","src":"shots/light/ipad/markets-watchlist-demo.webp","w":1000,"h":695},{"id":"markets-funds-demo","group":"Markets","screen":"Funds","caption":"Mutual funds, including Islamic funds.","theme":"light","device":"ipad","src":"shots/light/ipad/markets-funds-demo.webp","w":1000,"h":695},{"id":"markets-global-demo","group":"Markets","screen":"Global","caption":"Global markets snapshot (indicative).","theme":"light","device":"ipad","src":"shots/light/ipad/markets-global-demo.webp","w":1000,"h":695},{"id":"markets-announcements-demo","group":"Markets","screen":"Announcements","caption":"Company announcements.","theme":"light","device":"ipad","src":"shots/light/ipad/markets-announcements-demo.webp","w":1000,"h":695},{"id":"research-research-demo","group":"Research","screen":"Research","caption":"Research tools — for education, not investment advice.","theme":"light","device":"ipad","src":"shots/light/ipad/research-research-demo.webp","w":1000,"h":695},{"id":"research-screener-demo","group":"Research","screen":"Screener","caption":"Filter PSX stocks by your criteria.","theme":"light","device":"ipad","src":"shots/light/ipad/research-screener-demo.webp","w":1000,"h":695},{"id":"research-signals-demo","group":"Research","screen":"Signals","caption":"Rule-based signals — not investment advice.","theme":"light","device":"ipad","src":"shots/light/ipad/research-signals-demo.webp","w":1000,"h":695},{"id":"research-insights-demo","group":"Research","screen":"Insights","caption":"Patterns in your own portfolio.","theme":"light","device":"ipad","src":"shots/light/ipad/research-insights-demo.webp","w":1000,"h":695},{"id":"research-compare-demo","group":"Research","screen":"Compare","caption":"Compare stocks side by side.","theme":"light","device":"ipad","src":"shots/light/ipad/research-compare-demo.webp","w":1000,"h":695},{"id":"research-risk-audit-demo","group":"Research","screen":"Risk audit","caption":"Concentration and risk in your holdings.","theme":"light","device":"ipad","src":"shots/light/ipad/research-risk-audit-demo.webp","w":1000,"h":695},{"id":"research-paper-trading-demo","group":"Research","screen":"Paper trading","caption":"Practise trades without real money.","theme":"light","device":"ipad","src":"shots/light/ipad/research-paper-trading-demo.webp","w":1000,"h":695},{"id":"research-journal-demo","group":"Research","screen":"Journal","caption":"Your trading notes.","theme":"light","device":"ipad","src":"shots/light/ipad/research-journal-demo.webp","w":1000,"h":695},{"id":"tools-import-demo","group":"Tools","screen":"Import","caption":"Import trades from a CSV.","theme":"light","device":"ipad","src":"shots/light/ipad/tools-import-demo.webp","w":1000,"h":695},{"id":"tools-more-demo","group":"Tools","screen":"More","caption":"Everything else in LedgerCap.","theme":"light","device":"ipad","src":"shots/light/ipad/tools-more-demo.webp","w":1000,"h":695},{"id":"tools-settings-demo","group":"Tools","screen":"Settings","caption":"Language (English · اردو · Roman Urdu), currency and theme.","theme":"light","device":"ipad","src":"shots/light/ipad/tools-settings-demo.webp","w":1000,"h":695},{"id":"wealth-home-demo","group":"Wealth","screen":"Home","caption":"Net worth in PKR and the morning brief.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-home-demo.webp","w":1000,"h":695},{"id":"wealth-portfolio-demo","group":"Wealth","screen":"Portfolio","caption":"Holdings, cost basis and gains.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-portfolio-demo.webp","w":1000,"h":695},{"id":"wealth-performance-demo","group":"Wealth","screen":"Performance","caption":"Returns over time.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-performance-demo.webp","w":1000,"h":695},{"id":"wealth-transactions-demo","group":"Wealth","screen":"Transactions","caption":"Every buy, sell, dividend and deposit.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-transactions-demo.webp","w":1000,"h":695},{"id":"wealth-dividends-demo","group":"Wealth","screen":"Dividends","caption":"Dividend income and history.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-dividends-demo.webp","w":1000,"h":695},{"id":"wealth-calendar-demo","group":"Wealth","screen":"Calendar","caption":"Upcoming dividends and events.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-calendar-demo.webp","w":1000,"h":695},{"id":"wealth-zakat-demo","group":"Wealth","screen":"Zakat","caption":"Zakat on your investments.","theme":"dark","device":"ipad","src":"shots/dark/ipad/wealth-zakat-demo.webp","w":1000,"h":695},{"id":"markets-market-demo","group":"Markets","screen":"Market","caption":"KSE-100 and market movers (indicative, may be delayed).","theme":"dark","device":"ipad","src":"shots/dark/ipad/markets-market-demo.webp","w":1000,"h":695},{"id":"markets-watchlist-demo","group":"Markets","screen":"Watchlist","caption":"Symbols you follow.","theme":"dark","device":"ipad","src":"shots/dark/ipad/markets-watchlist-demo.webp","w":1000,"h":695},{"id":"markets-funds-demo","group":"Markets","screen":"Funds","caption":"Mutual funds, including Islamic funds.","theme":"dark","device":"ipad","src":"shots/dark/ipad/markets-funds-demo.webp","w":1000,"h":695},{"id":"markets-global-demo","group":"Markets","screen":"Global","caption":"Global markets snapshot (indicative).","theme":"dark","device":"ipad","src":"shots/dark/ipad/markets-global-demo.webp","w":1000,"h":695},{"id":"markets-announcements-demo","group":"Markets","screen":"Announcements","caption":"Company announcements.","theme":"dark","device":"ipad","src":"shots/dark/ipad/markets-announcements-demo.webp","w":1000,"h":695},{"id":"research-research-demo","group":"Research","screen":"Research","caption":"Research tools — for education, not investment advice.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-research-demo.webp","w":1000,"h":695},{"id":"research-screener-demo","group":"Research","screen":"Screener","caption":"Filter PSX stocks by your criteria.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-screener-demo.webp","w":1000,"h":695},{"id":"research-signals-demo","group":"Research","screen":"Signals","caption":"Rule-based signals — not investment advice.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-signals-demo.webp","w":1000,"h":695},{"id":"research-insights-demo","group":"Research","screen":"Insights","caption":"Patterns in your own portfolio.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-insights-demo.webp","w":1000,"h":695},{"id":"research-compare-demo","group":"Research","screen":"Compare","caption":"Compare stocks side by side.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-compare-demo.webp","w":1000,"h":695},{"id":"research-risk-audit-demo","group":"Research","screen":"Risk audit","caption":"Concentration and risk in your holdings.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-risk-audit-demo.webp","w":1000,"h":695},{"id":"research-paper-trading-demo","group":"Research","screen":"Paper trading","caption":"Practise trades without real money.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-paper-trading-demo.webp","w":1000,"h":695},{"id":"research-journal-demo","group":"Research","screen":"Journal","caption":"Your trading notes.","theme":"dark","device":"ipad","src":"shots/dark/ipad/research-journal-demo.webp","w":1000,"h":695},{"id":"tools-import-demo","group":"Tools","screen":"Import","caption":"Import trades from a CSV.","theme":"dark","device":"ipad","src":"shots/dark/ipad/tools-import-demo.webp","w":1000,"h":695},{"id":"tools-more-demo","group":"Tools","screen":"More","caption":"Everything else in LedgerCap.","theme":"dark","device":"ipad","src":"shots/dark/ipad/tools-more-demo.webp","w":1000,"h":695},{"id":"tools-settings-demo","group":"Tools","screen":"Settings","caption":"Language (English · اردو · Roman Urdu), currency and theme.","theme":"dark","device":"ipad","src":"shots/dark/ipad/tools-settings-demo.webp","w":1000,"h":695},{"id":"wealth-home-demo","group":"Wealth","screen":"Home","caption":"Net worth in PKR and the morning brief.","theme":"light","device":"mac","src":"shots/light/mac/wealth-home-demo.webp","w":1200,"h":750},{"id":"wealth-portfolio-demo","group":"Wealth","screen":"Portfolio","caption":"Holdings, cost basis and gains.","theme":"light","device":"mac","src":"shots/light/mac/wealth-portfolio-demo.webp","w":1200,"h":750},{"id":"wealth-performance-demo","group":"Wealth","screen":"Performance","caption":"Returns over time.","theme":"light","device":"mac","src":"shots/light/mac/wealth-performance-demo.webp","w":1200,"h":750},{"id":"wealth-transactions-demo","group":"Wealth","screen":"Transactions","caption":"Every buy, sell, dividend and deposit.","theme":"light","device":"mac","src":"shots/light/mac/wealth-transactions-demo.webp","w":1200,"h":750},{"id":"wealth-dividends-demo","group":"Wealth","screen":"Dividends","caption":"Dividend income and history.","theme":"light","device":"mac","src":"shots/light/mac/wealth-dividends-demo.webp","w":1200,"h":750},{"id":"wealth-calendar-demo","group":"Wealth","screen":"Calendar","caption":"Upcoming dividends and events.","theme":"light","device":"mac","src":"shots/light/mac/wealth-calendar-demo.webp","w":1200,"h":750},{"id":"wealth-zakat-demo","group":"Wealth","screen":"Zakat","caption":"Zakat on your investments.","theme":"light","device":"mac","src":"shots/light/mac/wealth-zakat-demo.webp","w":1200,"h":750},{"id":"markets-market-demo","group":"Markets","screen":"Market","caption":"KSE-100 and market movers (indicative, may be delayed).","theme":"light","device":"mac","src":"shots/light/mac/markets-market-demo.webp","w":1200,"h":750},{"id":"markets-watchlist-demo","group":"Markets","screen":"Watchlist","caption":"Symbols you follow.","theme":"light","device":"mac","src":"shots/light/mac/markets-watchlist-demo.webp","w":1200,"h":750},{"id":"markets-funds-demo","group":"Markets","screen":"Funds","caption":"Mutual funds, including Islamic funds.","theme":"light","device":"mac","src":"shots/light/mac/markets-funds-demo.webp","w":1200,"h":750},{"id":"markets-global-demo","group":"Markets","screen":"Global","caption":"Global markets snapshot (indicative).","theme":"light","device":"mac","src":"shots/light/mac/markets-global-demo.webp","w":1200,"h":750},{"id":"markets-announcements-demo","group":"Markets","screen":"Announcements","caption":"Company announcements.","theme":"light","device":"mac","src":"shots/light/mac/markets-announcements-demo.webp","w":1200,"h":750},{"id":"research-research-demo","group":"Research","screen":"Research","caption":"Research tools — for education, not investment advice.","theme":"light","device":"mac","src":"shots/light/mac/research-research-demo.webp","w":1200,"h":750},{"id":"research-screener-demo","group":"Research","screen":"Screener","caption":"Filter PSX stocks by your criteria.","theme":"light","device":"mac","src":"shots/light/mac/research-screener-demo.webp","w":1200,"h":750},{"id":"research-signals-demo","group":"Research","screen":"Signals","caption":"Rule-based signals — not investment advice.","theme":"light","device":"mac","src":"shots/light/mac/research-signals-demo.webp","w":1200,"h":750},{"id":"research-insights-demo","group":"Research","screen":"Insights","caption":"Patterns in your own portfolio.","theme":"light","device":"mac","src":"shots/light/mac/research-insights-demo.webp","w":1200,"h":750},{"id":"research-compare-demo","group":"Research","screen":"Compare","caption":"Compare stocks side by side.","theme":"light","device":"mac","src":"shots/light/mac/research-compare-demo.webp","w":1200,"h":750},{"id":"research-risk-audit-demo","group":"Research","screen":"Risk audit","caption":"Concentration and risk in your holdings.","theme":"light","device":"mac","src":"shots/light/mac/research-risk-audit-demo.webp","w":1200,"h":750},{"id":"research-paper-trading-demo","group":"Research","screen":"Paper trading","caption":"Practise trades without real money.","theme":"light","device":"mac","src":"shots/light/mac/research-paper-trading-demo.webp","w":1200,"h":750},{"id":"research-journal-demo","group":"Research","screen":"Journal","caption":"Your trading notes.","theme":"light","device":"mac","src":"shots/light/mac/research-journal-demo.webp","w":1200,"h":750},{"id":"tools-import-demo","group":"Tools","screen":"Import","caption":"Import trades from a CSV.","theme":"light","device":"mac","src":"shots/light/mac/tools-import-demo.webp","w":1200,"h":750},{"id":"tools-more-demo","group":"Tools","screen":"More","caption":"Everything else in LedgerCap.","theme":"light","device":"mac","src":"shots/light/mac/tools-more-demo.webp","w":1200,"h":750},{"id":"tools-settings-demo","group":"Tools","screen":"Settings","caption":"Language (English · اردو · Roman Urdu), currency and theme.","theme":"light","device":"mac","src":"shots/light/mac/tools-settings-demo.webp","w":1200,"h":750},{"id":"wealth-home-demo","group":"Wealth","screen":"Home","caption":"Net worth in PKR and the morning brief.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-home-demo.webp","w":1200,"h":750},{"id":"wealth-portfolio-demo","group":"Wealth","screen":"Portfolio","caption":"Holdings, cost basis and gains.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-portfolio-demo.webp","w":1200,"h":750},{"id":"wealth-performance-demo","group":"Wealth","screen":"Performance","caption":"Returns over time.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-performance-demo.webp","w":1200,"h":750},{"id":"wealth-transactions-demo","group":"Wealth","screen":"Transactions","caption":"Every buy, sell, dividend and deposit.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-transactions-demo.webp","w":1200,"h":750},{"id":"wealth-dividends-demo","group":"Wealth","screen":"Dividends","caption":"Dividend income and history.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-dividends-demo.webp","w":1200,"h":750},{"id":"wealth-calendar-demo","group":"Wealth","screen":"Calendar","caption":"Upcoming dividends and events.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-calendar-demo.webp","w":1200,"h":750},{"id":"wealth-zakat-demo","group":"Wealth","screen":"Zakat","caption":"Zakat on your investments.","theme":"dark","device":"mac","src":"shots/dark/mac/wealth-zakat-demo.webp","w":1200,"h":750},{"id":"markets-market-demo","group":"Markets","screen":"Market","caption":"KSE-100 and market movers (indicative, may be delayed).","theme":"dark","device":"mac","src":"shots/dark/mac/markets-market-demo.webp","w":1200,"h":750},{"id":"markets-watchlist-demo","group":"Markets","screen":"Watchlist","caption":"Symbols you follow.","theme":"dark","device":"mac","src":"shots/dark/mac/markets-watchlist-demo.webp","w":1200,"h":750},{"id":"markets-funds-demo","group":"Markets","screen":"Funds","caption":"Mutual funds, including Islamic funds.","theme":"dark","device":"mac","src":"shots/dark/mac/markets-funds-demo.webp","w":1200,"h":750},{"id":"markets-global-demo","group":"Markets","screen":"Global","caption":"Global markets snapshot (indicative).","theme":"dark","device":"mac","src":"shots/dark/mac/markets-global-demo.webp","w":1200,"h":750},{"id":"markets-announcements-demo","group":"Markets","screen":"Announcements","caption":"Company announcements.","theme":"dark","device":"mac","src":"shots/dark/mac/markets-announcements-demo.webp","w":1200,"h":750},{"id":"research-research-demo","group":"Research","screen":"Research","caption":"Research tools — for education, not investment advice.","theme":"dark","device":"mac","src":"shots/dark/mac/research-research-demo.webp","w":1200,"h":750},{"id":"research-screener-demo","group":"Research","screen":"Screener","caption":"Filter PSX stocks by your criteria.","theme":"dark","device":"mac","src":"shots/dark/mac/research-screener-demo.webp","w":1200,"h":750},{"id":"research-signals-demo","group":"Research","screen":"Signals","caption":"Rule-based signals — not investment advice.","theme":"dark","device":"mac","src":"shots/dark/mac/research-signals-demo.webp","w":1200,"h":750},{"id":"research-insights-demo","group":"Research","screen":"Insights","caption":"Patterns in your own portfolio.","theme":"dark","device":"mac","src":"shots/dark/mac/research-insights-demo.webp","w":1200,"h":750},{"id":"research-compare-demo","group":"Research","screen":"Compare","caption":"Compare stocks side by side.","theme":"dark","device":"mac","src":"shots/dark/mac/research-compare-demo.webp","w":1200,"h":750},{"id":"research-risk-audit-demo","group":"Research","screen":"Risk audit","caption":"Concentration and risk in your holdings.","theme":"dark","device":"mac","src":"shots/dark/mac/research-risk-audit-demo.webp","w":1200,"h":750},{"id":"research-paper-trading-demo","group":"Research","screen":"Paper trading","caption":"Practise trades without real money.","theme":"dark","device":"mac","src":"shots/dark/mac/research-paper-trading-demo.webp","w":1200,"h":750},{"id":"research-journal-demo","group":"Research","screen":"Journal","caption":"Your trading notes.","theme":"dark","device":"mac","src":"shots/dark/mac/research-journal-demo.webp","w":1200,"h":750},{"id":"tools-import-demo","group":"Tools","screen":"Import","caption":"Import trades from a CSV.","theme":"dark","device":"mac","src":"shots/dark/mac/tools-import-demo.webp","w":1200,"h":750},{"id":"tools-more-demo","group":"Tools","screen":"More","caption":"Everything else in LedgerCap.","theme":"dark","device":"mac","src":"shots/dark/mac/tools-more-demo.webp","w":1200,"h":750},{"id":"tools-settings-demo","group":"Tools","screen":"Settings","caption":"Language (English · اردو · Roman Urdu), currency and theme.","theme":"dark","device":"mac","src":"shots/dark/mac/tools-settings-demo.webp","w":1200,"h":750}]</script>
+<script src="/apps/assets/minisite.js" defer></script>
 </body>
 </html>

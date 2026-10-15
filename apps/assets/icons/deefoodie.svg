@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="DeeFoodie">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#23452f"/>
+      <stop offset="100%" stop-color="#08120c"/>
+    </linearGradient>
+    <linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="96" y1="140" x2="416" y2="420">
+      <stop offset="0%" stop-color="#f7e2ad"/>
+      <stop offset="50%" stop-color="#e8c27a"/>
+      <stop offset="100%" stop-color="#b48a3c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M380 96 L420 108 L408 148" stroke="#c9a227" stroke-width="10" stroke-linecap="round" fill="none" opacity=".9"/>
+  <circle cx="408" cy="118" r="6" fill="#c9a227"/>
+  <circle cx="256" cy="282" r="88" fill="none" stroke="url(#gold)" stroke-width="20"/>
+  <circle cx="256" cy="282" r="54" fill="none" stroke="#f4f0e8" stroke-width="8" opacity=".55"/>
+  <path d="M98 190 V236 C98 252 108 262 120 262 C132 262 142 252 142 236 V190 M120 190 V238 M120 262 V386" fill="none" stroke="url(#gold)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M384 190 C418 214 422 270 398 292 L384 292 Z" fill="url(#gold)"/>
+  <path d="M391 292 V386" stroke="url(#gold)" stroke-width="16" stroke-linecap="round"/>
+</svg>
