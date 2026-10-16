@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.1",
-  "updated": "2026-10-14",
-  "swCache": "travelcap-v311",
-  "notes": "CI typecheck fix — finish-matrix failures typing + vendored gallery helpers"
+  "version": "1.1.3",
+  "updated": "2026-10-16",
+  "swCache": "travelcap-v313",
+  "notes": "V5 §3: contentful hero paragraph (no FadeIn opacity:0 on WelcomeHero)"
 }
