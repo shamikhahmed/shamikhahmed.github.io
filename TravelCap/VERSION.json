@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "updated": "2026-10-16",
-  "swCache": "travelcap-v316",
-  "notes": "V5 §3c: no splash; one webfont; dynamic shell chrome"
+  "swCache": "travelcap-v317",
+  "notes": "V5 \u00a73d: restore SSR shell chrome (dynamic ssr:false regressed LCP)"
 }
