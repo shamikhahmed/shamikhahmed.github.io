@@ -1,7 +1,7 @@
 {
-  "app": "TravelCap",
-  "version": "1.1.7",
+  "name": "TravelCap",
+  "version": "1.1.8",
+  "swCache": "travelcap-v318",
   "updated": "2026-10-16",
-  "swCache": "travelcap-v317",
-  "notes": "V5 \u00a73d: restore SSR shell chrome (dynamic ssr:false regressed LCP)"
+  "notes": "V5 \u00a73d: Dexie/hydrate idle timeout 12s \u2014 off LH TBT window"
 }
