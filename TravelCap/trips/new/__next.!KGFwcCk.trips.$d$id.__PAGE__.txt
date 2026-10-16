@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
-2:I[37221,["7490","static/chunks/7490-e18adf731975d5e5.js","5684","static/chunks/5684-c85200fd0a098cf3.js","4064","static/chunks/4064-dee457894f426ed5.js","8500","static/chunks/8500-f62a38ff68ab7f42.js","8186","static/chunks/8186-40e5a8c408218909.js","8211","static/chunks/8211-0a2add29749de2ea.js","9052","static/chunks/9052-bf8766841ea6c361.js","5830","static/chunks/app/(app)/trips/%5Bid%5D/page-ff597304493da866.js"],"TripDetailClient"]
+2:I[37221,["7490","static/chunks/7490-e18adf731975d5e5.js","5684","static/chunks/5684-c85200fd0a098cf3.js","4878","static/chunks/4878-980ea6a16643a73d.js","4064","static/chunks/4064-dee457894f426ed5.js","8500","static/chunks/8500-f62a38ff68ab7f42.js","6653","static/chunks/6653-4259c8c35fecc49e.js","9052","static/chunks/9052-bf8766841ea6c361.js","5830","static/chunks/app/(app)/trips/%5Bid%5D/page-0c3cc5e033f2a027.js"],"TripDetailClient"]
 3:I[90484,[],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"tripId":"new"}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"umogEdCn6Oj4qhhHv8eaM"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"tripId":"new"}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ek4zG2eolcKW63g1zGR6f"}
 5:null
