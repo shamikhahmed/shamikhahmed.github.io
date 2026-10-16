@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "updated": "2026-10-16",
-  "swCache": "travelcap-v315",
-  "notes": "V5 §3b: lazy Dexie + lint-safe splash; CI green"
+  "swCache": "travelcap-v316",
+  "notes": "V5 §3c: no splash; one webfont; dynamic shell chrome"
 }
