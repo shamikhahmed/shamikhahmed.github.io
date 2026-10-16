@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "updated": "2026-10-16",
-  "swCache": "travelcap-v314",
-  "notes": "V5 §3b: drop framer from splash/tabs/FadeIn; defer Dexie hydrate for mobile TBT"
+  "swCache": "travelcap-v315",
+  "notes": "V5 §3b: lazy Dexie + lint-safe splash; CI green"
 }

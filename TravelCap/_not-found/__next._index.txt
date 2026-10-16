@@ -1,13 +1,13 @@
 1:"$Sreact.fragment"
-2:I[44664,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"ThemeProvider"]
-3:I[51243,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"AppProviders"]
-4:I[64767,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"SplashScreen"]
-5:I[64083,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"DatabaseInitializer"]
-6:I[15123,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"TravelStoreHydrator"]
-7:I[10621,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"PwaRegister"]
-8:I[50145,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-86ac405c524d4953.js"],"PreferencesApplier"]
+2:I[44664,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"ThemeProvider"]
+3:I[51243,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"AppProviders"]
+4:I[64767,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"SplashScreen"]
+5:I[64083,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"DatabaseInitializer"]
+6:I[15123,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"TravelStoreHydrator"]
+7:I[10621,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"PwaRegister"]
+8:I[50145,["5571","static/chunks/5571-ef7704a4f30d10b2.js","5783","static/chunks/5783-a32456db7a2c41ce.js","7177","static/chunks/app/layout-1671fbc55fcf3fe9.js"],"PreferencesApplier"]
 9:I[57121,[],""]
 a:I[74581,[],""]
 :HL["/TravelCap/_next/static/css/b7a1740bb649d31d.css","style"]
-:HL["/TravelCap/_next/static/css/45383419d6cc1683.css","style"]
-0:{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/TravelCap/_next/static/css/b7a1740bb649d31d.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/TravelCap/_next/static/css/45383419d6cc1683.css","precedence":"next"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"className":"__variable_6abe70 __variable_80e0e5 h-full","children":["$","body",null,{"className":"min-h-dvh antialiased","data-cap-app":"1","children":["$","$L2",null,{"children":["$","$L3",null,{"children":[["$","$L4",null,{}],["$","$L5",null,{}],["$","$L6",null,{}],["$","$L7",null,{}],["$","$L8",null,{}],["$","$L9",null,{"parallelRouterKey":"children","template":["$","$La",null,{}]}]]}]}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"LqfU2_IOfsoT3Xf-qtF9H"}
+:HL["/TravelCap/_next/static/css/3d55804f896f25c5.css","style"]
+0:{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/TravelCap/_next/static/css/b7a1740bb649d31d.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/TravelCap/_next/static/css/3d55804f896f25c5.css","precedence":"next"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"className":"__variable_6abe70 __variable_80e0e5 h-full","children":["$","body",null,{"className":"min-h-dvh antialiased","data-cap-app":"1","children":["$","$L2",null,{"children":["$","$L3",null,{"children":[["$","$L4",null,{}],["$","$L5",null,{}],["$","$L6",null,{}],["$","$L7",null,{}],["$","$L8",null,{}],["$","$L9",null,{"parallelRouterKey":"children","template":["$","$La",null,{}]}]]}]}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"QH2EVdGUa2xJ3RAsuJUry"}
