@@ -611,7 +611,7 @@ const PRODUCTS = {
     slug: 'ideacap',
     name: 'IdeaCap',
     category: 'Productivity',
-    ver: '2.1.1',
+    ver: '2.1.2',
     symbol: '✦',
     tagline: 'Capture ideas by voice or text. They stay on your device.',
     pitch: 'Voice and text idea capture with Smart Assistant analysis offline. Optional cloud LLM only when you add your own API keys.',
