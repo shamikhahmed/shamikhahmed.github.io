@@ -1,3 +1,19 @@
+## 1.1.2 — 2026-10-19
+
+Perfection Loop v5 §2 a11y (honest Lighthouse contrast → hub):
+
+- Keep coral `--accent` `#ff6b4a` with dark `--on-accent` `#18181a` on primary buttons (~6.3:1; white was ~2.8:1). Do not darken accent — it is also used as text on dark surfaces.
+- Hub publish of light `--muted`/`--accent` AA tokens (live was still 1.1.0)
+- SW → `carcap-v11`
+
+## 1.1.1 — 2026-10-16
+
+Perfection Loop v5 §2 a11y:
+
+- Dark `.btn-primary`: `--on-accent` → `#18181a` on coral (white was ~2.8:1)
+- Light: darker `--muted` / `--accent` for card-meta + active tab AA
+- SW → `carcap-v10`
+
 ## 1.1.0 — 2026-10-14
 
 Perfection Loop v3 Wave D (G-8 next minor):

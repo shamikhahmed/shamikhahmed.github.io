@@ -1,11 +1,11 @@
 'use strict';
 
-window.APP_VERSION = '1.1.0';
+window.APP_VERSION = '1.1.2';
 
 const TABS = ['today', 'garage', 'service', 'fuel', 'docs', 'settings'];
 let currentTab = 'today';
 let toastTimer = null;
-const SW_CACHE = 'carcap-v9';
+const SW_CACHE = 'carcap-v11';
 const CC = CCBrand;
 const PHOTO_MAX_LABEL = '2 MB';
 
@@ -60,14 +60,22 @@ function toast(msg) {
   toastTimer = setTimeout(() => el.remove(), 4000);
 }
 
+let _modalOpener = null;
+
 function closeModal() {
   const root = document.getElementById('modal-root');
   root.innerHTML = '';
+  const opener = _modalOpener;
+  _modalOpener = null;
+  if (opener && typeof opener.focus === 'function') {
+    try { opener.focus(); } catch (_) {}
+  }
 }
 
 function openModal(title, bodyHtml, onMount, opts) {
   const root = document.getElementById('modal-root');
   const dismissible = !(opts && opts.noDismiss);
+  _modalOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   root.innerHTML =
     '<div class="modal-backdrop" id="modal-backdrop">' +
       '<div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title">' +

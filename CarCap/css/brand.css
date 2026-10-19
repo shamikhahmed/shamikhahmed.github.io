@@ -20,7 +20,8 @@ html[data-theme="dark"] {
   --ok-dim: rgba(61, 155, 122, 0.14);
   --warn: #d4a04a;
   --warn-dim: rgba(212, 160, 74, 0.14);
-  --on-accent: #ffffff;
+  /* Dark ink on bright coral — white on #ff6b4a is only ~2.8:1 */
+  --on-accent: #18181a;
 }
 
 html[data-theme="light"] {
@@ -31,9 +32,10 @@ html[data-theme="light"] {
   --border: rgba(0, 0, 0, 0.08);
   --border-strong: rgba(0, 0, 0, 0.14);
   --text: #1a1a1c;
-  --muted: #6a6a70;
-  /* AA ≥4.5:1 on --surface for bay labels + filled buttons */
-  --accent: #b82f10;
+  /* AA ≥4.5:1 on --surface2 (#dddde0) card-meta */
+  --muted: #55555c;
+  /* AA ≥4.5:1 on active tab tint (#e9d9d7) + filled buttons */
+  --accent: #a8280e;
   --accent-dim: rgba(184, 47, 16, 0.12);
   --accent-strong: rgba(184, 47, 16, 0.22);
   /* AA ≥4.5:1 on danger pill tint */

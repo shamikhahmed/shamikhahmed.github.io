@@ -2,7 +2,7 @@
 
 Service, fuel and documents for your cars.
 
-**Version:** 1.1.0 · **SW cache:** `carcap-v9` · Capricorn Systems
+**Version:** 1.1.2 · **SW cache:** `carcap-v11` · Capricorn Systems
 
 ## Features
 

@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+  <a href="#content" class="cap-skip-link">Skip to content</a>
   <div id="car-splash" class="car-splash" role="status" aria-label="CarCap loading">
     <div class="car-splash__scene" aria-hidden="true">
       <div class="car-splash__dash">
@@ -58,7 +59,7 @@
       </div>
       <span class="pill muted" id="header-pill" hidden>Demo</span>
     </header>
-    <main id="content" role="main"></main>
+    <main id="content" role="main" tabindex="-1"></main>
     <nav class="tab-bar" role="tablist" aria-label="Main">
       <button type="button" class="tab-btn active" data-tab="today" role="tab" aria-selected="true">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/></svg>
