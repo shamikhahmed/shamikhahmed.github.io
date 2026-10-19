@@ -155,7 +155,7 @@ const PRODUCTS = {
     legacySlug: 'fitnessos',
     name: 'PulseCap',
     category: 'Performance',
-    ver: '6.46.4',
+    ver: '6.46.9',
     symbol: '◇',
     tagline: 'Plan, log and track your training. Works offline.',
     pitch: 'PulseCap is a training log for lifters — Smart Coach, 290+ exercises, body intelligence, recovery readiness, and gym-floor tools that read your history offline. No subscription. No wearable required.',
