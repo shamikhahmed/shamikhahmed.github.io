@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.9",
-  "swCache": "travelcap-v319",
-  "updated": "2026-10-19",
-  "notes": "V5 \u00a73d: SSR home=trips (no NEXT_REDIRECT) + WelcomeHero before hydrate \u2014 mobile LCP"
+  "version": "1.1.10",
+  "swCache": "travelcap-v320",
+  "updated": "2026-10-20",
+  "notes": "V5 \u00a73d: idle SW register + lean WelcomeHero \u2014 mobile TBT/LCP"
 }

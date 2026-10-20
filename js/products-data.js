@@ -576,7 +576,7 @@ const PRODUCTS = {
     slug: 'travelcap',
     name: 'TravelCap',
     category: 'Lifestyle',
-    ver: '1.1.9',
+    ver: '1.1.10',
     symbol: '⬡',
     tagline: 'Trips, tickets and travel documents in one place.',
     pitch: 'TravelCap for itineraries, packing, documents, and budgets — with a rules-based Smart Assistant. Static Pages: manual flights; optional AviationStack when a key is available.',

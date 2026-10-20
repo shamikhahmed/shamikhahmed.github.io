@@ -2,5 +2,5 @@
 2:I[64122,["5571","static/chunks/5571-ef7704a4f30d10b2.js","7490","static/chunks/7490-e18adf731975d5e5.js","5684","static/chunks/5684-c85200fd0a098cf3.js","4064","static/chunks/4064-dee457894f426ed5.js","8186","static/chunks/8186-40e5a8c408218909.js","9052","static/chunks/9052-3d5f0628e1652f16.js","8945","static/chunks/app/(app)/emergency/page-6c554a127cce5778.js"],"EmergencyHubClient"]
 3:I[90484,[],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"W9lY-iOQZiODD_ZZ-07f6"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ryumBiWbPiBlPnEdsw0Cg"}
 5:null
