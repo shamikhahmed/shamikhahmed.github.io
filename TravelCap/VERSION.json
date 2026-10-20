@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.8",
-  "swCache": "travelcap-v318",
-  "updated": "2026-10-16",
-  "notes": "V5 \u00a73d: Dexie/hydrate idle timeout 12s \u2014 off LH TBT window"
+  "version": "1.1.9",
+  "swCache": "travelcap-v319",
+  "updated": "2026-10-19",
+  "notes": "V5 \u00a73d: SSR home=trips (no NEXT_REDIRECT) + WelcomeHero before hydrate \u2014 mobile LCP"
 }
