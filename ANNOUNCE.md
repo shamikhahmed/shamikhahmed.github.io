@@ -9,7 +9,7 @@
 
 Fifteen Caps (fourteen live, DeeFoodie in private beta). Offline-first PWAs. Your phone, your data. Built by Capricorn Systems (Shamikh Ahmed).
 
-Every live Cap can be tried **inside** the hub — open it and tap **Run here** / **Try it here**.
+Open any Cap for its pitch and screenshots, or **Launch** the installable PWA in a new tab. Browse **Example stories** for fictional walkthroughs of real app UI.
 
 ---
 

@@ -43,5 +43,5 @@ The hub itself (Capricorn OS) is the one place a single UI frames them all — a
 
 1. **Lock screen** — time, Cap marks orbit, measured privacy line, Unlock
 2. **Desktop / iPad / phone home** — widgets per Cap, dock, Spotlight (⌘K), Appearance
-3. **Cap window / sheet** — pitch, features, screenshot → **Run here** (real app in place) or **Launch** (new tab, installable PWA)
+3. **Cap window / sheet** — pitch, features, screenshot → **Launch** (new tab, installable PWA) or **Example stories**
 4. **Classic site** — about / sovereignty / pitch / investor pages for people who want a plain web page

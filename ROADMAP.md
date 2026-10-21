@@ -4,7 +4,7 @@
 
 ## Now — hub 1.4.0 / Capricorn OS 1.1.0
 
-Ten themes, iPad mode, phone dock + app sheets, Run here, live catalog, Privacy Monitor, honest copy, no third-party requests on any page. See `CHANGELOG.md`.
+Ten themes, iPad mode, phone dock + app sheets, live catalog, Privacy Monitor, honest copy, no third-party requests on any page. See `CHANGELOG.md`.
 
 ## Next (ordered)
 
