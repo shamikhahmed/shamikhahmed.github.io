@@ -82,6 +82,7 @@ main { overflow-x: clip; }
 @media (max-width: 520px) { .hero__cta .btn { flex: 1 1 100%; } }
 .hero__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 22px 0 0; color: var(--dim); font-size: 15px; }
 .chip { display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 12px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--line); color: var(--ink); font-variant-numeric: tabular-nums; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+.chip--sm { min-height: 22px; padding: 0 8px; font-size: 11px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--dim); }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: #2fb35f; box-shadow: 0 0 0 3px color-mix(in srgb, #2fb35f 22%, transparent); }
 .hero__visual { position: relative; min-height: 460px; }
 .hero--index { grid-template-columns: 1fr; padding-bottom: 8px; }
