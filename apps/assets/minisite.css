@@ -259,9 +259,15 @@ html[data-theme="dark"] .hero__visual[data-shot-theme="dark"] { display: block; 
 .metric__lbl { display: block; margin-top: 4px; color: var(--dim); font-size: 15px; }
 .story-timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; max-width: 52rem; }
 .story-step { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 16px 20px; align-items: start; }
-.story-step time { font: 600 15px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 4px; }
+.story-step time { font: 600 15px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 4px; display: flex; flex-direction: column; gap: 6px; }
+.story-step__device { font: 600 11px/1.2 system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: var(--dim); }
 .story-step__body h3 { font-size: 20px; margin-bottom: 8px; }
 .story-step__body p { color: var(--dim); margin: 0 0 14px; max-width: 42rem; }
+.story-step .dev--iphone { max-width: 280px; }
+.story-step .dev--ipad { max-width: 360px; }
+.story-step .dev--mac { max-width: min(100%, 560px); }
+.story-step--mac .story-step__body .dev,
+.story-step--ipad .story-step__body .dev { margin-inline: 0; }
 @media (min-width: 768px) {
   .story-step--alt .story-step__body { order: 0; }
   .story-step--alt { grid-template-columns: minmax(0, 1fr) 72px; }
