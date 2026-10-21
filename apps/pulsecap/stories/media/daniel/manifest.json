@@ -1,0 +1,22 @@
+{
+  "personaId": "pulsecap-daniel",
+  "app": "pulsecap",
+  "gitSha": "a8f6da8804d27cd4b69b36fb65f75b27c762b568",
+  "capturedAt": "2026-10-21T11:44:50.553Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

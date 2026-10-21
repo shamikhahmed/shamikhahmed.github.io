@@ -1,0 +1,22 @@
+{
+  "personaId": "cookcap-rohan",
+  "app": "cookcap",
+  "gitSha": "6bd9df6373de1f9910701750500cfd4c45dc07ae",
+  "capturedAt": "2026-10-21T11:46:21.020Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

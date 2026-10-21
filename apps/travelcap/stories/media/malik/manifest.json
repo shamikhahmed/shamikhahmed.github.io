@@ -1,0 +1,22 @@
+{
+  "personaId": "travelcap-malik",
+  "app": "travelcap",
+  "gitSha": "434fe792b07cfaac612190ab855062da854ec791",
+  "capturedAt": "2026-10-21T11:46:14.873Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

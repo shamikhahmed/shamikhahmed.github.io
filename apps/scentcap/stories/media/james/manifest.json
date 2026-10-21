@@ -1,0 +1,22 @@
+{
+  "personaId": "scentcap-james",
+  "app": "scentcap",
+  "gitSha": "13070ef586e0945f80db5133b6c410b6216967b1",
+  "capturedAt": "2026-10-21T11:45:39.491Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

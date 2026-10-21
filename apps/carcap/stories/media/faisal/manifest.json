@@ -1,0 +1,22 @@
+{
+  "personaId": "carcap-faisal",
+  "app": "carcap",
+  "gitSha": "f48007f1555d71baa5735794ad15b7f3d9aecc2e",
+  "capturedAt": "2026-10-21T11:45:45.441Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

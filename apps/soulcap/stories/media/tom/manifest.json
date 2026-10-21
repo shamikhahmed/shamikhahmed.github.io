@@ -1,0 +1,22 @@
+{
+  "personaId": "soulcap-tom",
+  "app": "soulcap",
+  "gitSha": "5250a0f1cf9d871a4207249af9633aec2d7b4791",
+  "capturedAt": "2026-10-21T11:45:02.036Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

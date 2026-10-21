@@ -1,0 +1,22 @@
+{
+  "personaId": "masterycap-ahmed",
+  "app": "masterycap",
+  "gitSha": "3c4c32912e3caa5891697237cff809f62c411dfc",
+  "capturedAt": "2026-10-21T11:45:58.479Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

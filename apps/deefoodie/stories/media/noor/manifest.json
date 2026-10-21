@@ -1,0 +1,22 @@
+{
+  "personaId": "deefoodie-noor",
+  "app": "deefoodie",
+  "gitSha": "1cfce77961a5a1de9592f2018dfdab161a8b9abe",
+  "capturedAt": "2026-10-21T11:46:42.894Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "personaId": "deeponycap-george",
+  "app": "deeponycap",
+  "gitSha": "33992f56d5adfd8f713a4d077c9f16d96b32502f",
+  "capturedAt": "2026-10-21T11:45:19.395Z",
+  "files": [
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-iphone-16-pro-light.png",
+      "webp": "01-home-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-task-iphone-16-pro-light.png",
+      "webp": "02-task-iphone-16-pro-light.webp"
+    }
+  ]
+}
