@@ -1,8 +1,9 @@
 {
   "personaId": "travelcap-sana",
+  "personaName": "Sana & Kamran",
   "app": "travelcap",
-  "gitSha": "434fe792b07cfaac612190ab855062da854ec791",
-  "capturedAt": "2026-10-21T11:46:09.075Z",
+  "gitSha": "a621ab85d6c9061181a4fd315aa30d4952dace08",
+  "capturedAt": "2026-10-21T13:29:18.450Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }

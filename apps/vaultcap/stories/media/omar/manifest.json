@@ -1,22 +1,23 @@
 {
   "personaId": "vaultcap-omar",
+  "personaName": "Omar Rahman",
   "app": "vaultcap",
-  "gitSha": "88f2e98d3d9f2a2f44e76fe23d0d515902d941e0",
-  "capturedAt": "2026-10-21T10:55:56.171Z",
+  "gitSha": "ddd8dea8de7f9f2f233bec6a84e61b015d04aa71",
+  "capturedAt": "2026-10-21T13:26:21.596Z",
   "files": [
     {
-      "step": "01-banks",
+      "step": "01-dashboard",
       "device": "iphone-16-pro",
       "theme": "light",
-      "png": "01-banks-iphone-16-pro-light.png",
-      "webp": "01-banks-iphone-16-pro-light.webp"
+      "png": "01-dashboard-iphone-16-pro-light.png",
+      "webp": "01-dashboard-iphone-16-pro-light.webp"
     },
     {
-      "step": "02-dashboard",
+      "step": "02-cards",
       "device": "iphone-16-pro",
       "theme": "light",
-      "png": "02-dashboard-iphone-16-pro-light.png",
-      "webp": "02-dashboard-iphone-16-pro-light.webp"
+      "png": "02-cards-iphone-16-pro-light.png",
+      "webp": "02-cards-iphone-16-pro-light.webp"
     },
     {
       "step": "03-backup",
@@ -33,18 +34,25 @@
       "webp": "04-security-iphone-16-pro-light.webp"
     },
     {
-      "step": "01-banks",
-      "device": "ipad-air",
+      "step": "05-home",
+      "device": "iphone-16-pro",
       "theme": "light",
-      "png": "01-banks-ipad-air-light.png",
-      "webp": "01-banks-ipad-air-light.webp"
+      "png": "05-home-iphone-16-pro-light.png",
+      "webp": "05-home-iphone-16-pro-light.webp"
     },
     {
-      "step": "02-dashboard",
+      "step": "01-dashboard",
       "device": "ipad-air",
       "theme": "light",
-      "png": "02-dashboard-ipad-air-light.png",
-      "webp": "02-dashboard-ipad-air-light.webp"
+      "png": "01-dashboard-ipad-air-light.png",
+      "webp": "01-dashboard-ipad-air-light.webp"
+    },
+    {
+      "step": "02-cards",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-cards-ipad-air-light.png",
+      "webp": "02-cards-ipad-air-light.webp"
     },
     {
       "step": "03-backup",
@@ -61,18 +69,25 @@
       "webp": "04-security-ipad-air-light.webp"
     },
     {
-      "step": "01-banks",
-      "device": "macbook-14",
+      "step": "05-home",
+      "device": "ipad-air",
       "theme": "light",
-      "png": "01-banks-macbook-14-light.png",
-      "webp": "01-banks-macbook-14-light.webp"
+      "png": "05-home-ipad-air-light.png",
+      "webp": "05-home-ipad-air-light.webp"
     },
     {
-      "step": "02-dashboard",
+      "step": "01-dashboard",
       "device": "macbook-14",
       "theme": "light",
-      "png": "02-dashboard-macbook-14-light.png",
-      "webp": "02-dashboard-macbook-14-light.webp"
+      "png": "01-dashboard-macbook-14-light.png",
+      "webp": "01-dashboard-macbook-14-light.webp"
+    },
+    {
+      "step": "02-cards",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-cards-macbook-14-light.png",
+      "webp": "02-cards-macbook-14-light.webp"
     },
     {
       "step": "03-backup",
@@ -89,88 +104,11 @@
       "webp": "04-security-macbook-14-light.webp"
     },
     {
-      "step": "01-banks",
-      "device": "iphone-16-pro",
-      "theme": "dark",
-      "png": "01-banks-iphone-16-pro-dark.png",
-      "webp": "01-banks-iphone-16-pro-dark.webp"
-    },
-    {
-      "step": "02-dashboard",
-      "device": "iphone-16-pro",
-      "theme": "dark",
-      "png": "02-dashboard-iphone-16-pro-dark.png",
-      "webp": "02-dashboard-iphone-16-pro-dark.webp"
-    },
-    {
-      "step": "03-backup",
-      "device": "iphone-16-pro",
-      "theme": "dark",
-      "png": "03-backup-iphone-16-pro-dark.png",
-      "webp": "03-backup-iphone-16-pro-dark.webp"
-    },
-    {
-      "step": "04-security",
-      "device": "iphone-16-pro",
-      "theme": "dark",
-      "png": "04-security-iphone-16-pro-dark.png",
-      "webp": "04-security-iphone-16-pro-dark.webp"
-    },
-    {
-      "step": "01-banks",
-      "device": "ipad-air",
-      "theme": "dark",
-      "png": "01-banks-ipad-air-dark.png",
-      "webp": "01-banks-ipad-air-dark.webp"
-    },
-    {
-      "step": "02-dashboard",
-      "device": "ipad-air",
-      "theme": "dark",
-      "png": "02-dashboard-ipad-air-dark.png",
-      "webp": "02-dashboard-ipad-air-dark.webp"
-    },
-    {
-      "step": "03-backup",
-      "device": "ipad-air",
-      "theme": "dark",
-      "png": "03-backup-ipad-air-dark.png",
-      "webp": "03-backup-ipad-air-dark.webp"
-    },
-    {
-      "step": "04-security",
-      "device": "ipad-air",
-      "theme": "dark",
-      "png": "04-security-ipad-air-dark.png",
-      "webp": "04-security-ipad-air-dark.webp"
-    },
-    {
-      "step": "01-banks",
+      "step": "05-home",
       "device": "macbook-14",
-      "theme": "dark",
-      "png": "01-banks-macbook-14-dark.png",
-      "webp": "01-banks-macbook-14-dark.webp"
-    },
-    {
-      "step": "02-dashboard",
-      "device": "macbook-14",
-      "theme": "dark",
-      "png": "02-dashboard-macbook-14-dark.png",
-      "webp": "02-dashboard-macbook-14-dark.webp"
-    },
-    {
-      "step": "03-backup",
-      "device": "macbook-14",
-      "theme": "dark",
-      "png": "03-backup-macbook-14-dark.png",
-      "webp": "03-backup-macbook-14-dark.webp"
-    },
-    {
-      "step": "04-security",
-      "device": "macbook-14",
-      "theme": "dark",
-      "png": "04-security-macbook-14-dark.png",
-      "webp": "04-security-macbook-14-dark.webp"
+      "theme": "light",
+      "png": "05-home-macbook-14-light.png",
+      "webp": "05-home-macbook-14-light.webp"
     }
   ]
 }

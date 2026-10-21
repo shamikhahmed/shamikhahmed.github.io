@@ -1,8 +1,9 @@
 {
   "personaId": "deefoodie-dee",
+  "personaName": "Dee Rahman",
   "app": "deefoodie",
-  "gitSha": "1cfce77961a5a1de9592f2018dfdab161a8b9abe",
-  "capturedAt": "2026-10-21T11:46:36.673Z",
+  "gitSha": "fdd7017f0e5a894b9a8dec06ec8249b421690d80",
+  "capturedAt": "2026-10-21T13:30:24.030Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }

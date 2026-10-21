@@ -1,8 +1,9 @@
 {
   "personaId": "deeponycap-ali",
+  "personaName": "Ali Raza",
   "app": "deeponycap",
-  "gitSha": "33992f56d5adfd8f713a4d077c9f16d96b32502f",
-  "capturedAt": "2026-10-21T11:45:08.224Z",
+  "gitSha": "714af284f9d7abe63b165543b8c93988536c4ed1",
+  "capturedAt": "2026-10-21T13:27:36.093Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }

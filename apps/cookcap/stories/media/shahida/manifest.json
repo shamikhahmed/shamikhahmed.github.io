@@ -1,8 +1,9 @@
 {
   "personaId": "cookcap-shahida",
+  "personaName": "Shahida Begum",
   "app": "cookcap",
-  "gitSha": "6bd9df6373de1f9910701750500cfd4c45dc07ae",
-  "capturedAt": "2026-10-21T11:46:17.752Z",
+  "gitSha": "82c5fc7abf3a04d1c995174f464d5da6579bdf4d",
+  "capturedAt": "2026-10-21T13:29:35.975Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }

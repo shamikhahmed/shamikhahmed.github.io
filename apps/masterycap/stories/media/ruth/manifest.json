@@ -1,8 +1,9 @@
 {
   "personaId": "masterycap-ruth",
+  "personaName": "Ruth Wanjiku",
   "app": "masterycap",
-  "gitSha": "3c4c32912e3caa5891697237cff809f62c411dfc",
-  "capturedAt": "2026-10-21T11:46:01.926Z",
+  "gitSha": "507b707deca3fa61a5042d066e02d47cdb2cf44f",
+  "capturedAt": "2026-10-21T13:28:57.517Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }

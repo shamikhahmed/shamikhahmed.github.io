@@ -1,8 +1,9 @@
 {
   "personaId": "carcap-rashid",
+  "personaName": "Rashid Nasser",
   "app": "carcap",
-  "gitSha": "f48007f1555d71baa5735794ad15b7f3d9aecc2e",
-  "capturedAt": "2026-10-21T11:45:54.219Z",
+  "gitSha": "f9ad6558ab998bc2ec7986e84accfaaceb0357f1",
+  "capturedAt": "2026-10-21T13:28:39.789Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }

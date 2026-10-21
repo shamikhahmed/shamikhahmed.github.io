@@ -1,8 +1,9 @@
 {
   "personaId": "pulsecap-sara",
+  "personaName": "Sara Ahmed",
   "app": "pulsecap",
-  "gitSha": "a8f6da8804d27cd4b69b36fb65f75b27c762b568",
-  "capturedAt": "2026-10-21T11:44:46.539Z",
+  "gitSha": "f5f54edbb63d81caec30023f2c78ab6a24fedb2a",
+  "capturedAt": "2026-10-21T13:26:53.375Z",
   "files": [
     {
       "step": "01-home",
@@ -17,6 +18,34 @@
       "theme": "light",
       "png": "02-task-iphone-16-pro-light.png",
       "webp": "02-task-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-ipad-air-light.png",
+      "webp": "01-home-ipad-air-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-task-ipad-air-light.png",
+      "webp": "02-task-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-macbook-14-light.png",
+      "webp": "01-home-macbook-14-light.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-task-macbook-14-light.png",
+      "webp": "02-task-macbook-14-light.webp"
     }
   ]
 }
