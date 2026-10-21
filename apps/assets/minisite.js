@@ -188,6 +188,11 @@
         if (show) visible += 1;
       });
       if (empty) empty.hidden = visible > 0;
+      const countEl = document.getElementById('storyCount');
+      if (countEl) {
+        const noun = visible === 1 ? 'example' : 'examples';
+        countEl.textContent = `${visible} ${noun} shown · filter by need or app`;
+      }
     };
     document.querySelectorAll('.story-filter[data-filter-need]').forEach((b) => b.addEventListener('click', () => {
       need = b.dataset.filterNeed;
