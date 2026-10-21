@@ -127,4 +127,63 @@
     mq.addEventListener?.('change', () => gallery.followScheme());
     render();
   }
+
+  /* ── story page lightbox ── */
+  const storyDataEl = document.getElementById('story-shots');
+  const storyLb = document.getElementById('lightbox');
+  if (storyDataEl && storyLb?.showModal) {
+    const shots = JSON.parse(storyDataEl.textContent).filter((s) => s.src);
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCap');
+    let at = 0;
+    const show = (i) => {
+      at = (i + shots.length) % shots.length;
+      const s = shots[at];
+      lbImg.src = s.src;
+      lbImg.alt = s.alt || s.title;
+      lbCap.innerHTML = `<strong>${s.title}</strong>`;
+    };
+    document.querySelectorAll('.story-shot[data-story-i]').forEach((btn) => {
+      btn.addEventListener('click', () => { show(Number(btn.dataset.storyI)); storyLb.showModal(); });
+    });
+    storyLb.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-lb]');
+      if (b) { if (b.dataset.lb === 'close') storyLb.close(); else show(at + Number(b.dataset.lb)); return; }
+      if (e.target === storyLb) storyLb.close();
+    });
+  }
+
+  /* ── stories index filter + search ── */
+  if (document.body.dataset.storiesIndex === '1') {
+    const list = document.getElementById('storyList');
+    const search = document.getElementById('storySearch');
+    const empty = document.getElementById('storyEmpty');
+    let need = 'all';
+    let app = 'all';
+    const items = list ? [...list.querySelectorAll('.story-index__item')] : [];
+    const apply = () => {
+      const q = (search?.value || '').trim().toLowerCase();
+      let visible = 0;
+      items.forEach((li) => {
+        const okNeed = need === 'all' || (li.dataset.needs || '').split(/\s+/).includes(need);
+        const okApp = app === 'all' || li.dataset.app === app;
+        const okSearch = !q || (li.dataset.search || '').includes(q);
+        const show = okNeed && okApp && okSearch;
+        li.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (empty) empty.hidden = visible > 0;
+    };
+    document.querySelectorAll('.story-filter[data-filter-need]').forEach((b) => b.addEventListener('click', () => {
+      need = b.dataset.filterNeed;
+      document.querySelectorAll('[data-filter-need]').forEach((x) => x.classList.toggle('is-on', x.dataset.filterNeed === need));
+      apply();
+    }));
+    document.querySelectorAll('.story-filter[data-filter-app]').forEach((b) => b.addEventListener('click', () => {
+      app = b.dataset.filterApp;
+      document.querySelectorAll('[data-filter-app]').forEach((x) => x.classList.toggle('is-on', x.dataset.filterApp === app));
+      apply();
+    }));
+    search?.addEventListener('input', apply);
+  }
 })();

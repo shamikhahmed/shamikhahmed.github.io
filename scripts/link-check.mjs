@@ -22,7 +22,7 @@ const bundleRef = index.match(/src="\/?(assets\/index-[\w-]+\.js)"/)?.[1];
 const bundle = bundleRef && existsSync(join(HUB, bundleRef)) ? readFileSync(join(HUB, bundleRef), 'utf8') : '';
 if (!bundle) { console.error('missing OS bundle', bundleRef); fail++; }
 const osVer = Object.fromEntries([...bundle.matchAll(/slug:"([a-z]+)"[\s\S]{0,200}?ver:"([^"]+)"/g)].map((m) => [m[1], m[2]]));
-const SLUGS = ['vaultcap', 'pulsecap', 'prismcap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'soulcap', 'travelcap', 'auracap', 'masterycap', 'ideacap', 'carcap', 'cookcap', 'deefoodie'];
+const SLUGS = ['vaultcap', 'pulsecap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'soulcap', 'travelcap', 'masterycap', 'ideacap', 'carcap', 'cookcap', 'deefoodie'];
 for (const slug of SLUGS) {
   const re = new RegExp(`${slug}:[\\s\\S]*?ver:\\s*'([^']+)'`);
   const legacy = catalog.match(re)?.[1];
@@ -37,7 +37,7 @@ if (!/deefoodie:[\s\S]*privateBeta:\s*true/.test(catalog)) {
   console.error('DeeFoodie privateBeta missing'); fail++;
 } else console.log('ok deefoodie private beta');
 
-const redirects = ['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','soulcap','travelcap','ideacap','carcap','masterycap','cookcap'];
+const redirects = ['vaultcap','pulsecap','steadycap','ledgercap','deeponycap','scentcap','soulcap','travelcap','ideacap','carcap','masterycap','cookcap'];
 for (const s of redirects) {
   const html = readFileSync(join(HUB, `${s}.html`), 'utf8');
   if (!html.includes('http-equiv="refresh"')) { console.error('not redirect', s); fail++; }

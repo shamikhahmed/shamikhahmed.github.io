@@ -21,13 +21,13 @@
 html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line:#2a2d35;--ink:#f6f4ef;--dim:#a5a5a5;--accent:#d4a017;--fill:#d4a017;--on-fill:#111114;color-scheme:dark}
 @media (prefers-color-scheme: dark){html:not([data-theme="light"]){--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line:#2a2d35;--ink:#f6f4ef;--dim:#a5a5a5;--accent:#d4a017;--fill:#d4a017;--on-fill:#111114;color-scheme:dark}}</style>
 <script>try{var t=localStorage.getItem('cap-ms-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"VaultCap","description":"Everything you own, encrypted on your device.","applicationCategory":"Finance & Identity","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"softwareVersion":"5.3.1","url":"https://shamikhahmed.github.io/VaultCap/","publisher":{"@type":"Organization","name":"Capricorn Systems"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"VaultCap","description":"Everything you own, encrypted on your device.","applicationCategory":"Finance & Identity","operatingSystem":"Web, iOS, iPadOS, macOS, Android (PWA)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"softwareVersion":"5.4.0","url":"https://shamikhahmed.github.io/VaultCap/","publisher":{"@type":"Organization","name":"Capricorn Systems"}}</script>
 </head>
 <body data-app="vaultcap" data-repo="VaultCap">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <a class="brand" href="/" aria-label="Capricorn OS home"><img src="/assets/logo.svg" alt="" width="22" height="22"><span>Capricorn</span></a>
-  <nav class="top__nav" aria-label="Sections"><a href="#screens">Screens</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
+  <nav class="top__nav" aria-label="Sections"><a href="#stories">Stories</a><a href="#screens">Screens</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
   <div class="seg seg--theme" role="group" aria-label="Colour scheme">
     <button type="button" data-scheme="auto" aria-pressed="true">Auto</button><button type="button" data-scheme="light" aria-pressed="false">Light</button><button type="button" data-scheme="dark" aria-pressed="false">Dark</button>
   </div>
@@ -44,7 +44,7 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
       <div class="hero__cta">
         <a class="btn btn--fill" href="https://shamikhahmed.github.io/VaultCap/">Open VaultCap</a><a class="btn btn--ghost" href="/?app=vaultcap">Try it in Capricorn OS</a>
       </div>
-      <p class="hero__meta"><span class="chip"><span class="dot" aria-hidden="true"></span><span data-live-version="5.3.1">v5.3.1</span></span><span>Free</span><span>No account</span><span>No ads or analytics</span></p>
+      <p class="hero__meta"><span class="chip"><span class="dot" aria-hidden="true"></span><span data-live-version="5.4.0">v5.4.0</span></span><span>Free</span><span>No account</span><span>No ads or analytics</span></p>
     </div>
     <div class="hero__visual" data-shot-theme="light" aria-hidden="true">
       <figure class="dev dev--mac hero__mac eager">
@@ -65,13 +65,39 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
     </div>
   </section>
 
+  <section class="section" id="stories" aria-labelledby="who-h">
+    <div class="section__head"><div><h2 id="who-h">Who uses VaultCap</h2><p>Illustrative stories — people and numbers are fictional.</p></div><a class="btn btn--ghost btn--sm" href="/stories/?app=vaultcap">All stories</a></div>
+    <div class="persona-grid"><a class="persona-teaser card" href="/apps/vaultcap/stories/vaultcap-ayesha/">
+      <span class="persona-teaser__av" aria-hidden="true">AS</span>
+      <span class="persona-teaser__body">
+        <strong>Ayesha Siddiqui</strong><span class="persona-teaser__meta">41 · Lahore, Pakistan</span>
+        <span class="persona-teaser__goal">Keep the family's passports, bank accounts and school documents in one safe place</span>
+        <span class="persona-teaser__quote">“I stopped digging through drawers.”</span>
+      </span>
+    </a><a class="persona-teaser card" href="/apps/vaultcap/stories/vaultcap-omar/">
+      <span class="persona-teaser__av" aria-hidden="true">OF</span>
+      <span class="persona-teaser__body">
+        <strong>Omar Farooq</strong><span class="persona-teaser__meta">29 · Dubai, UAE</span>
+        <span class="persona-teaser__goal">Track multi-currency accounts and take an encrypted backup before changing phones</span>
+        <span class="persona-teaser__quote">“Backup first. New phone second.”</span>
+      </span>
+    </a><a class="persona-teaser card" href="/apps/vaultcap/stories/vaultcap-margaret/">
+      <span class="persona-teaser__av" aria-hidden="true">ME</span>
+      <span class="persona-teaser__body">
+        <strong>Margaret Ellis</strong><span class="persona-teaser__meta">68 · Manchester, UK</span>
+        <span class="persona-teaser__goal">One place for pension and insurance documents her son can help with</span>
+        <span class="persona-teaser__quote">“The writing is big enough. My son can find it too.”</span>
+      </span>
+    </a></div>
+  </section>
+
   <section class="band" aria-label="Highlights">
     <span>AES-256-GCM</span><span>Banks</span><span>Family vault</span><span>Zakat</span>
   </section>
 
   <section class="section" id="screens" aria-labelledby="screens-h">
     <div class="section__head">
-      <div><h2 id="screens-h">Every screen</h2><p>34 screens from VaultCap 5.3.1, captured in light and dark on iPhone, iPad and Mac.</p></div>
+      <div><h2 id="screens-h">Every screen</h2><p>34 screens from VaultCap 5.4.0, captured in light and dark on iPhone, iPad and Mac.</p></div>
       <div class="gallery__tools">
         <div class="seg" role="group" aria-label="Device" data-gal="device"><button type="button" data-v="iphone" aria-pressed="true">iPhone</button><button type="button" data-v="ipad" aria-pressed="false">iPad</button><button type="button" data-v="mac" aria-pressed="false">Mac</button></div>
         <div class="seg" role="group" aria-label="Screenshot colours" data-gal="theme"><button type="button" data-v="light" aria-pressed="true">Light</button><button type="button" data-v="dark" aria-pressed="false">Dark</button></div>
@@ -88,7 +114,7 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
 
   <section class="section" id="features" aria-labelledby="features-h">
     <div class="section__head"><div><h2 id="features-h">What it does</h2><p>Bank-grade encryption. No account. No server. Just your vault.</p></div></div>
-    <ul class="features"><li><span class="features__n" aria-hidden="true">01</span><span>AES-256-GCM vault with local PIN</span></li><li><span class="features__n" aria-hidden="true">02</span><span>Bank import on device</span></li><li><span class="features__n" aria-hidden="true">03</span><span>Family profiles — each encrypted</span></li><li><span class="features__n" aria-hidden="true">04</span><span>Zakat from real holdings</span></li></ul>
+    <ul class="features"><li id="feat-aes-gcm-vault"><span class="features__n" aria-hidden="true">01</span><span>AES-256-GCM vault with local PIN</span></li><li id="feat-bank-import"><span class="features__n" aria-hidden="true">02</span><span>Bank import on device</span></li><li id="feat-family-profiles"><span class="features__n" aria-hidden="true">03</span><span>Family profiles — each encrypted</span></li><li id="feat-zakat"><span class="features__n" aria-hidden="true">04</span><span>Zakat from real holdings</span></li></ul>
     <div class="tour"><div class="tour__group"><h3>Finance</h3><ul><li><strong>Dashboard</strong><span>Net worth at a glance — everything you own, encrypted on this device.</span></li><li><strong>Money</strong><span>Every money module in one place.</span></li><li><strong>Banks</strong><span>Bank accounts across 120+ banks, stored only on your device.</span></li><li><strong>Cards</strong><span>Cards with masked numbers and expiry reminders.</span></li><li><strong>Cash</strong><span>Cash in hand, tracked simply.</span></li><li><strong>Investments</strong><span>Stocks, funds and holdings with running totals.</span></li><li><strong>Bonds</strong><span>Bonds and certificates with maturity dates.</span></li><li><strong>Digital assets</strong><span>Wallets and digital assets — never connected online.</span></li><li><strong>Currency</strong><span>Foreign currency holdings.</span></li><li><strong>Loans</strong><span>Loans you owe and are owed, with schedules.</span></li><li><strong>Credit</strong><span>Credit lines and utilisation.</span></li><li><strong>Committees</strong><span>Committees (BC) — members, rounds and payouts.</span></li><li><strong>Expenses</strong><span>Spending by category, month by month.</span></li><li><strong>Tax</strong><span>A tax summary built from your own records.</span></li><li><strong>Zakat</strong><span>Zakat calculated from your actual holdings.</span></li></ul></div><div class="tour__group"><h3>Vault</h3><ul><li><strong>Vault</strong><span>Documents, identities and family — the private side.</span></li><li><strong>Documents</strong><span>Passports, IDs and papers, encrypted.</span></li><li><strong>Email accounts</strong><span>Email accounts and recovery details.</span></li><li><strong>SIM cards</strong><span>SIM cards and numbers.</span></li><li><strong>Family</strong><span>Family vault profiles, each encrypted.</span></li><li><strong>Friends</strong><span>Trusted contacts.</span></li></ul></div><div class="tour__group"><h3>Assets</h3><ul><li><strong>Assets</strong><span>Property, vehicles and valuables.</span></li><li><strong>All assets</strong><span>Every asset with its value and papers.</span></li></ul></div><div class="tour__group"><h3>Life</h3><ul><li><strong>Reminders</strong><span>Renewals and due dates.</span></li><li><strong>Alerts</strong><span>What needs your attention.</span></li><li><strong>Timeline</strong><span>Your records on a timeline.</span></li><li><strong>Emergency</strong><span>Emergency details, ready when it matters.</span></li><li><strong>Recovery center</strong><span>What to do if a device is lost.</span></li></ul></div><div class="tour__group"><h3>System</h3><ul><li><strong>Smart Import</strong><span>Smart Import from statements and files — on device.</span></li><li><strong>Backup</strong><span>Encrypted .vos backups you keep.</span></li><li><strong>Security</strong><span>PIN, passkey and auto-lock.</span></li><li><strong>Trash</strong><span>Deleted items, recoverable for a while.</span></li><li><strong>Help</strong><span>Guides and answers.</span></li><li><strong>Settings</strong><span>Profile, appearance and modules.</span></li></ul></div></div>
   </section>
 
@@ -118,7 +144,7 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
 
   <section class="section" id="new" aria-labelledby="new-h">
     <div class="release card">
-      <div><h2 id="new-h">Latest release</h2><p><span class="chip"><span data-live-version="5.3.1">v5.3.1</span></span> <time datetime="2026-10-16">16 October 2026</time></p></div>
+      <div><h2 id="new-h">Latest release</h2><p><span class="chip"><span data-live-version="5.4.0">v5.4.0</span></span> <time datetime="2026-10-21">21 October 2026</time></p></div>
       <a class="btn btn--ghost btn--sm" href="https://github.com/shamikhahmed/VaultCap/blob/main/CHANGELOG.md">Release history</a>
     </div>
   </section>
@@ -127,8 +153,8 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
 </main>
 <footer class="foot">
   <p class="foot__label">More Caps</p>
-  <ul class="foot__caps"><li><a href="/apps/pulsecap/"><img src="/apps/assets/icons/pulsecap.svg" alt="" width="40" height="40" loading="lazy"><span>PulseCap</span></a></li><li><a href="/apps/prismcap/"><img src="/apps/assets/icons/prismcap.svg" alt="" width="40" height="40" loading="lazy"><span>PrismCap</span></a></li><li><a href="/apps/steadycap/"><img src="/apps/assets/icons/steadycap.svg" alt="" width="40" height="40" loading="lazy"><span>SteadyCap</span></a></li><li><a href="/apps/ledgercap/"><img src="/apps/assets/icons/ledgercap.svg" alt="" width="40" height="40" loading="lazy"><span>LedgerCap</span></a></li><li><a href="/apps/deeponycap/"><img src="/apps/assets/icons/deeponycap.svg" alt="" width="40" height="40" loading="lazy"><span>DeePonyCap</span></a></li><li><a href="/apps/scentcap/"><img src="/apps/assets/icons/scentcap.svg" alt="" width="40" height="40" loading="lazy"><span>ScentCap</span></a></li><li><a href="/apps/soulcap/"><img src="/apps/assets/icons/soulcap.svg" alt="" width="40" height="40" loading="lazy"><span>SoulCap</span></a></li><li><a href="/apps/travelcap/"><img src="/apps/assets/icons/travelcap.svg" alt="" width="40" height="40" loading="lazy"><span>TravelCap</span></a></li><li><a href="/apps/auracap/"><img src="/apps/assets/icons/auracap.svg" alt="" width="40" height="40" loading="lazy"><span>AuraCap</span></a></li><li><a href="/apps/masterycap/"><img src="/apps/assets/icons/masterycap.svg" alt="" width="40" height="40" loading="lazy"><span>MasteryCap</span></a></li><li><a href="/apps/ideacap/"><img src="/apps/assets/icons/ideacap.svg" alt="" width="40" height="40" loading="lazy"><span>IdeaCap</span></a></li><li><a href="/apps/carcap/"><img src="/apps/assets/icons/carcap.svg" alt="" width="40" height="40" loading="lazy"><span>CarCap</span></a></li><li><a href="/apps/cookcap/"><img src="/apps/assets/icons/cookcap.svg" alt="" width="40" height="40" loading="lazy"><span>CookCap</span></a></li><li><a href="/apps/deefoodie/"><img src="/apps/assets/icons/deefoodie.svg" alt="" width="40" height="40" loading="lazy"><span>DeeFoodie</span></a></li></ul>
-  <nav class="foot__links" aria-label="Footer"><a href="/apps/">All Caps</a><a href="/">Capricorn OS</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="https://github.com/shamikhahmed">GitHub</a></nav>
+  <ul class="foot__caps"><li><a href="/apps/pulsecap/"><img src="/apps/assets/icons/pulsecap.svg" alt="" width="40" height="40" loading="lazy"><span>PulseCap</span></a></li><li><a href="/apps/steadycap/"><img src="/apps/assets/icons/steadycap.svg" alt="" width="40" height="40" loading="lazy"><span>SteadyCap</span></a></li><li><a href="/apps/ledgercap/"><img src="/apps/assets/icons/ledgercap.svg" alt="" width="40" height="40" loading="lazy"><span>LedgerCap</span></a></li><li><a href="/apps/deeponycap/"><img src="/apps/assets/icons/deeponycap.svg" alt="" width="40" height="40" loading="lazy"><span>DeePonyCap</span></a></li><li><a href="/apps/scentcap/"><img src="/apps/assets/icons/scentcap.svg" alt="" width="40" height="40" loading="lazy"><span>ScentCap</span></a></li><li><a href="/apps/soulcap/"><img src="/apps/assets/icons/soulcap.svg" alt="" width="40" height="40" loading="lazy"><span>SoulCap</span></a></li><li><a href="/apps/travelcap/"><img src="/apps/assets/icons/travelcap.svg" alt="" width="40" height="40" loading="lazy"><span>TravelCap</span></a></li><li><a href="/apps/masterycap/"><img src="/apps/assets/icons/masterycap.svg" alt="" width="40" height="40" loading="lazy"><span>MasteryCap</span></a></li><li><a href="/apps/ideacap/"><img src="/apps/assets/icons/ideacap.svg" alt="" width="40" height="40" loading="lazy"><span>IdeaCap</span></a></li><li><a href="/apps/carcap/"><img src="/apps/assets/icons/carcap.svg" alt="" width="40" height="40" loading="lazy"><span>CarCap</span></a></li><li><a href="/apps/cookcap/"><img src="/apps/assets/icons/cookcap.svg" alt="" width="40" height="40" loading="lazy"><span>CookCap</span></a></li><li><a href="/apps/deefoodie/"><img src="/apps/assets/icons/deefoodie.svg" alt="" width="40" height="40" loading="lazy"><span>DeeFoodie</span></a></li></ul>
+  <nav class="foot__links" aria-label="Footer"><a href="/apps/">All Caps</a><a href="/stories/">Stories</a><a href="/">Capricorn OS</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="https://github.com/shamikhahmed">GitHub</a></nav>
   <p class="foot__fine">© 2026 Capricorn Systems, Karachi.</p>
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">

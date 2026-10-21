@@ -17,8 +17,8 @@ const SKIP = new Set(['index.html', 'app.html']);
 
 const PAGES = [
   'about.html', 'solutions.html', 'sovereignty.html', 'enterprise.html', 'product.html',
-  'vaultcap.html', 'pulsecap.html', 'prismcap.html', 'steadycap.html',
-  'ledgercap.html', 'deeponycap.html', 'scentcap.html', 'auracap.html',
+  'vaultcap.html', 'pulsecap.html', 'steadycap.html',
+  'ledgercap.html', 'deeponycap.html', 'scentcap.html',
 ];
 
 const get = (html, re) => { const m = html.match(re); return m ? m[1].trim() : null; };
