@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#051a33;--surface:#12253d;--surface2:#1c2f45;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Trip home","alt":"Trip on phone","src":"../media/sana/01-iphone.webp"},{"title":"Flights","alt":"Flights","src":"../media/sana/02-iphone.webp"},{"title":"iPad itinerary","alt":"Itinerary","src":"../media/sana/03-ipad.webp"},{"title":"Docs laptop","alt":"Documents","src":"../media/sana/04-mac.webp"},{"title":"Budget","alt":"Budget","src":"../media/sana/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

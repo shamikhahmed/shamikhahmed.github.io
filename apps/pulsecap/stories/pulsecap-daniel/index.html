@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#0a0a0f;--surface:#16161b;--surface2:#202025;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Track intervals","alt":"Cardio log on iPhone","src":"../media/daniel/01-iphone.webp"},{"title":"Desk mobility","alt":"Mobility on iPad","src":"../media/daniel/02-ipad.webp"},{"title":"Strength session","alt":"Strength log on phone","src":"../media/daniel/03-iphone.webp"},{"title":"Week review","alt":"Charts on laptop","src":"../media/daniel/04-mac.webp"},{"title":"Coach tip","alt":"Smart Coach on laptop","src":"../media/daniel/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

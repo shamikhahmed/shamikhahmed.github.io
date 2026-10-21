@@ -132,24 +132,39 @@
   const storyDataEl = document.getElementById('story-shots');
   const storyLb = document.getElementById('lightbox');
   if (storyDataEl && storyLb?.showModal) {
-    const shots = JSON.parse(storyDataEl.textContent).filter((s) => s.src);
+    let shots = [];
+    try { shots = JSON.parse(storyDataEl.textContent).filter((s) => s.src); } catch { shots = []; }
     const lbImg = document.getElementById('lbImg');
     const lbCap = document.getElementById('lbCap');
     let at = 0;
     const show = (i) => {
-      at = (i + shots.length) % shots.length;
+      if (!shots.length || !lbImg) return;
+      at = ((i % shots.length) + shots.length) % shots.length;
       const s = shots[at];
       lbImg.src = s.src;
-      lbImg.alt = s.alt || s.title;
-      lbCap.innerHTML = `<strong>${s.title}</strong>`;
+      lbImg.alt = s.alt || s.title || '';
+      if (lbCap) lbCap.innerHTML = `<strong>${s.title || ''}</strong>`;
     };
     document.querySelectorAll('.story-shot[data-story-i]').forEach((btn) => {
-      btn.addEventListener('click', () => { show(Number(btn.dataset.storyI)); storyLb.showModal(); });
+      btn.addEventListener('click', () => {
+        const i = Number(btn.dataset.storyI);
+        const thumb = btn.querySelector('img');
+        /* Prefer the visible thumbnail URL so zoom never opens an empty frame */
+        if (thumb && shots[i]) {
+          shots[i] = { ...shots[i], src: thumb.currentSrc || thumb.getAttribute('src') || shots[i].src };
+        }
+        show(Number.isFinite(i) ? i : 0);
+        storyLb.showModal();
+      });
     });
     storyLb.addEventListener('click', (e) => {
       const b = e.target.closest('[data-lb]');
       if (b) { if (b.dataset.lb === 'close') storyLb.close(); else show(at + Number(b.dataset.lb)); return; }
       if (e.target === storyLb) storyLb.close();
+    });
+    storyLb.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(at + 1);
+      if (e.key === 'ArrowLeft') show(at - 1);
     });
   }
 

@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#070a08;--surface:#131614;--surface2:#1d201e;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Before school","alt":"Campus","src":"../media/bilqees/01-iphone.webp"},{"title":"iPad review","alt":"Review","src":"../media/bilqees/02-ipad.webp"},{"title":"Laptop practice","alt":"Practice","src":"../media/bilqees/03-mac.webp"},{"title":"Records","alt":"Records","src":"../media/bilqees/04-mac.webp"},{"title":"Phone","alt":"Phone","src":"../media/bilqees/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

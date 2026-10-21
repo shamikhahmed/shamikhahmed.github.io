@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#070b1a;--surface:#131725;--surface2:#1d212f;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Quick capture","alt":"Capture","src":"../media/kevin/01-iphone.webp"},{"title":"iPad sort","alt":"Sort","src":"../media/kevin/02-ipad.webp"},{"title":"Laptop decide","alt":"Decide","src":"../media/kevin/03-mac.webp"},{"title":"Settings","alt":"Settings","src":"../media/kevin/04-mac.webp"},{"title":"Phone","alt":"Clear","src":"../media/kevin/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#1a1614;--surface:#252220;--surface2:#2f2b29;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Today pick","alt":"Today on phone","src":"../media/hira/01-iphone.webp"},{"title":"Bottle confirm","alt":"Bottle detail","src":"../media/hira/02-iphone.webp"},{"title":"iPad collection","alt":"Collection on iPad","src":"../media/hira/03-ipad.webp"},{"title":"Laptop notes","alt":"Notes on laptop","src":"../media/hira/04-mac.webp"},{"title":"Calendar","alt":"Calendar","src":"../media/hira/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

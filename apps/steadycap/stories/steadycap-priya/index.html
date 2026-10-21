@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#1a110e;--surface:#251d1a;--surface2:#2f2624;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Morning ticks","alt":"Priya’s medicine list on iPhone","src":"../media/priya/01-iphone.webp"},{"title":"Clinic preview","alt":"Full schedule on iPad","src":"../media/priya/02-ipad.webp"},{"title":"Notes after the visit","alt":"Journal on laptop","src":"../media/priya/03-mac.webp"},{"title":"Evening meds","alt":"Evening meds on phone","src":"../media/priya/04-iphone.webp"},{"title":"Tomorrow’s plan","alt":"Tomorrow plan on laptop","src":"../media/priya/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

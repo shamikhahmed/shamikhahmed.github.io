@@ -161,7 +161,9 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Morning vault","alt":"Vault home on iPhone","src":"../media/ayesha/01-iphone.webp"},{"title":"Documents find","alt":"Documents on phone","src":"../media/ayesha/02-iphone.webp"},{"title":"Family on iPad","alt":"Family profiles on iPad","src":"../media/ayesha/03-ipad.webp"},{"title":"Banks glance","alt":"Banks on laptop","src":"../media/ayesha/04-mac.webp"},{"title":"Zakat summary","alt":"Zakat on laptop","src":"../media/ayesha/05-mac.webp"},{"title":"Reminders set","alt":"Reminders on phone","src":"../media/ayesha/06-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

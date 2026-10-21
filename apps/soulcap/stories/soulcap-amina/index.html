@@ -139,7 +139,9 @@ html[data-theme="dark"]{--bg:#0f0f1a;--surface:#1b1b25;--surface2:#25252f;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Grounding","alt":"Grounding on phone","src":"../media/amina/01-iphone.webp"},{"title":"Library laptop","alt":"Journal on laptop","src":"../media/amina/02-mac.webp"},{"title":"Home tablet","alt":"Calm on tablet","src":"../media/amina/03-ipad.webp"},{"title":"Help is there","alt":"Crisis info as locked","src":"../media/amina/04-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

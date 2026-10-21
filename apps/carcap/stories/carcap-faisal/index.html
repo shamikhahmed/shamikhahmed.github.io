@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#0c0908;--surface:#181514;--surface2:#221f1e;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Today","alt":"Today on phone","src":"../media/faisal/01-iphone.webp"},{"title":"Fuel tick","alt":"Fuel log","src":"../media/faisal/02-iphone.webp"},{"title":"Service on iPad","alt":"Service on iPad","src":"../media/faisal/03-ipad.webp"},{"title":"Docs laptop","alt":"Docs on laptop","src":"../media/faisal/04-mac.webp"},{"title":"Garage overview","alt":"Garage","src":"../media/faisal/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Large-text home","alt":"Large text home","src":"../media/margaret/01-iphone.webp"},{"title":"Documents","alt":"Documents large text","src":"../media/margaret/02-iphone.webp"},{"title":"Son on iPad","alt":"Documents on iPad","src":"../media/margaret/03-ipad.webp"},{"title":"Reminders","alt":"Reminders on laptop","src":"../media/margaret/04-mac.webp"},{"title":"Settings check","alt":"Settings on laptop","src":"../media/margaret/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

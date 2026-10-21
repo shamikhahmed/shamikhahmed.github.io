@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#070b14;--surface:#131720;--surface2:#1d2129;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Currency glance","alt":"Dashboard on phone","src":"../media/omar/01-iphone.webp"},{"title":"Cards check","alt":"Cards on iPad","src":"../media/omar/02-ipad.webp"},{"title":"Export on laptop","alt":"Backup on laptop","src":"../media/omar/03-mac.webp"},{"title":"Security review","alt":"Security on laptop","src":"../media/omar/04-mac.webp"},{"title":"Phone ready","alt":"Restored vault on phone","src":"../media/omar/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

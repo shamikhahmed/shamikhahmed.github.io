@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#1a0c15;--surface:#251821;--surface2:#2f222a;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Scan a spine","alt":"Add book on phone","src":"../media/fatima/01-iphone.webp"},{"title":"Kids on iPad","alt":"Shelf with kids","src":"../media/fatima/02-ipad.webp"},{"title":"Donation list","alt":"Donation plan","src":"../media/fatima/03-mac.webp"},{"title":"Wishlist trim","alt":"Wishlist","src":"../media/fatima/04-mac.webp"},{"title":"Phone lock","alt":"Confirm on phone","src":"../media/fatima/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

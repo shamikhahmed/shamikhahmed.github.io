@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#0a0a0f;--surface:#16161b;--surface2:#202025;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Plan on the bus","alt":"My Plan on iPad","src":"../media/sara/01-ipad.webp"},{"title":"First warm-up set","alt":"Workout logger on iPhone","src":"../media/sara/02-iphone.webp"},{"title":"Superset done","alt":"Rest timer on phone","src":"../media/sara/03-iphone.webp"},{"title":"Sunday charts","alt":"Progress on laptop","src":"../media/sara/04-mac.webp"},{"title":"Next week tweak","alt":"Plan edit on laptop","src":"../media/sara/05-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

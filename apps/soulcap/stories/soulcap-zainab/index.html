@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#0f0f1a;--surface:#1b1b25;--surface2:#25252f;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Breath first","alt":"Breathing on iPhone","src":"../media/zainab/01-iphone.webp"},{"title":"Feeling check","alt":"Check-in on phone","src":"../media/zainab/02-iphone.webp"},{"title":"Tablet calm","alt":"Calm on tablet","src":"../media/zainab/03-ipad.webp"},{"title":"Friday laptop journal","alt":"Journal on laptop","src":"../media/zainab/04-mac.webp"},{"title":"Close kindly","alt":"Help nearby on phone","src":"../media/zainab/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

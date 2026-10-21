@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#0f1a14;--surface:#1b2520;--surface2:#252f29;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Log a visit","alt":"Add visit","src":"../media/dee/01-iphone.webp"},{"title":"Rate it","alt":"Rating","src":"../media/dee/02-iphone.webp"},{"title":"Map","alt":"Map","src":"../media/dee/03-iphone.webp"},{"title":"Taste profile","alt":"Taste","src":"../media/dee/04-iphone.webp"},{"title":"Wishlist","alt":"Wishlist","src":"../media/dee/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

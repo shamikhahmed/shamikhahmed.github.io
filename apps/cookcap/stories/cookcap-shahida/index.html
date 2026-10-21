@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#1a120e;--surface:#251e1a;--surface2:#2f2724;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Add a recipe","alt":"Add recipe","src":"../media/shahida/01-iphone.webp"},{"title":"Book on iPad","alt":"Cookbook","src":"../media/shahida/02-ipad.webp"},{"title":"Laptop edit","alt":"Edit","src":"../media/shahida/03-mac.webp"},{"title":"Family profiles","alt":"Family","src":"../media/shahida/04-mac.webp"},{"title":"Phone","alt":"Tonight","src":"../media/shahida/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

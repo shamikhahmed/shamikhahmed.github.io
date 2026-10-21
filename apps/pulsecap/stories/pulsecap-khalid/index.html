@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#0a0a0f;--surface:#16161b;--surface2:#202025;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Morning walk log","alt":"Walk log large text","src":"../media/khalid/01-iphone.webp"},{"title":"Light session plan","alt":"Plan on iPad","src":"../media/khalid/02-ipad.webp"},{"title":"Sets done","alt":"Light sets on phone","src":"../media/khalid/03-iphone.webp"},{"title":"Son checks in","alt":"Week on laptop","src":"../media/khalid/04-mac.webp"},{"title":"Tomorrow ready","alt":"Reminder on phone","src":"../media/khalid/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

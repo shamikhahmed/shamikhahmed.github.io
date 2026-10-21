@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#1a120e;--surface:#251e1a;--surface2:#2f2724;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Sunday plan","alt":"Meal plan","src":"../media/rohan/01-mac.webp"},{"title":"Phone cook","alt":"Recipe","src":"../media/rohan/02-iphone.webp"},{"title":"iPad shop","alt":"Shopping","src":"../media/rohan/03-ipad.webp"},{"title":"Laptop tweak","alt":"Tweak","src":"../media/rohan/04-mac.webp"},{"title":"Phone","alt":"Tomorrow","src":"../media/rohan/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

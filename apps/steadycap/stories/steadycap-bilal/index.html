@@ -161,7 +161,9 @@ html[data-theme="dark"]{--bg:#1a110e;--surface:#251d1a;--surface2:#2f2624;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Wake check-in","alt":"Bilal’s Today screen on iPhone at dawn","src":"../media/bilal/01-iphone.webp"},{"title":"Medicine list","alt":"Medicine tracker on Bilal’s phone","src":"../media/bilal/02-iphone.webp"},{"title":"Craving forecast","alt":"Craving forecast on iPad","src":"../media/bilal/03-ipad.webp"},{"title":"Journal on the laptop","alt":"Journal entry on laptop","src":"../media/bilal/04-mac.webp"},{"title":"SOS contacts","alt":"SOS contacts on phone","src":"../media/bilal/05-iphone.webp"},{"title":"Quiet close","alt":"SteadyCap on laptop evening","src":"../media/bilal/06-mac.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>

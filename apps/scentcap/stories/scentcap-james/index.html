@@ -150,7 +150,9 @@ html[data-theme="dark"]{--bg:#1a1614;--surface:#252220;--surface2:#2f2b29;--line
 </footer>
 <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
   <button type="button" class="lightbox__close" data-lb="close" aria-label="Close">✕</button>
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Previous">‹</button>
+  <figure><img id="lbImg" alt="" decoding="async"><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Next">›</button>
 </dialog>
 <script type="application/json" id="story-shots">[{"title":"Add decant","alt":"Add on phone","src":"../media/james/01-iphone.webp"},{"title":"Collection iPad","alt":"Collection","src":"../media/james/02-ipad.webp"},{"title":"Analytics laptop","alt":"Analytics","src":"../media/james/03-mac.webp"},{"title":"Advisor","alt":"Advisor","src":"../media/james/04-mac.webp"},{"title":"Phone check","alt":"Today","src":"../media/james/05-iphone.webp"}]</script>
 <script src="/apps/assets/minisite.js" defer></script>
