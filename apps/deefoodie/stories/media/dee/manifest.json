@@ -2,9 +2,9 @@
   "personaId": "deefoodie-dee",
   "personaName": "Dee Rahman",
   "app": "deefoodie",
-  "gitSha": "61312e46ce91b831e71b9fbfcf36e3b3d28e283e",
-  "capturedAt": "2026-10-21T18:58:28.808Z",
-  "baseUrl": "http://127.0.0.1:51383",
+  "gitSha": "eab7dc94e5299fe69a44b836dc8de0f9eb63fac0",
+  "capturedAt": "2026-10-21T21:32:17.105Z",
+  "baseUrl": "http://127.0.0.1:61122",
   "files": [
     {
       "step": "01-iphone",

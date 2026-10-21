@@ -2,9 +2,9 @@
   "personaId": "deefoodie-noor",
   "personaName": "Noor Fatima",
   "app": "deefoodie",
-  "gitSha": "61312e46ce91b831e71b9fbfcf36e3b3d28e283e",
-  "capturedAt": "2026-10-21T19:02:23.702Z",
-  "baseUrl": "http://127.0.0.1:55312",
+  "gitSha": "39feb450b358c8abb08a8b06b653fcecdf149bf3",
+  "capturedAt": "2026-10-21T21:44:57.036Z",
+  "baseUrl": "http://127.0.0.1:57927",
   "files": [
     {
       "step": "01-iphone",

@@ -2,9 +2,9 @@
   "personaId": "deefoodie-arsalan",
   "personaName": "Arsalan Khan",
   "app": "deefoodie",
-  "gitSha": "61312e46ce91b831e71b9fbfcf36e3b3d28e283e",
-  "capturedAt": "2026-10-21T18:56:23.104Z",
-  "baseUrl": "http://127.0.0.1:50506",
+  "gitSha": "eab7dc94e5299fe69a44b836dc8de0f9eb63fac0",
+  "capturedAt": "2026-10-21T21:16:38.216Z",
+  "baseUrl": "http://127.0.0.1:52045",
   "files": [
     {
       "step": "01-iphone",
