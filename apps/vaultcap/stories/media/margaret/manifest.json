@@ -1,0 +1,176 @@
+{
+  "personaId": "vaultcap-margaret",
+  "app": "vaultcap",
+  "gitSha": "88f2e98d3d9f2a2f44e76fe23d0d515902d941e0",
+  "capturedAt": "2026-10-21T10:56:55.493Z",
+  "files": [
+    {
+      "step": "01-home-large",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "01-home-large-iphone-16-pro-light.png",
+      "webp": "01-home-large-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "02-documents",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "02-documents-iphone-16-pro-light.png",
+      "webp": "02-documents-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "03-reminders",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "03-reminders-iphone-16-pro-light.png",
+      "webp": "03-reminders-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "04-settings",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "04-settings-iphone-16-pro-light.png",
+      "webp": "04-settings-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-home-large",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "01-home-large-ipad-air-light.png",
+      "webp": "01-home-large-ipad-air-light.webp"
+    },
+    {
+      "step": "02-documents",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "02-documents-ipad-air-light.png",
+      "webp": "02-documents-ipad-air-light.webp"
+    },
+    {
+      "step": "03-reminders",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "03-reminders-ipad-air-light.png",
+      "webp": "03-reminders-ipad-air-light.webp"
+    },
+    {
+      "step": "04-settings",
+      "device": "ipad-air",
+      "theme": "light",
+      "png": "04-settings-ipad-air-light.png",
+      "webp": "04-settings-ipad-air-light.webp"
+    },
+    {
+      "step": "01-home-large",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "01-home-large-macbook-14-light.png",
+      "webp": "01-home-large-macbook-14-light.webp"
+    },
+    {
+      "step": "02-documents",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-documents-macbook-14-light.png",
+      "webp": "02-documents-macbook-14-light.webp"
+    },
+    {
+      "step": "03-reminders",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "03-reminders-macbook-14-light.png",
+      "webp": "03-reminders-macbook-14-light.webp"
+    },
+    {
+      "step": "04-settings",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "04-settings-macbook-14-light.png",
+      "webp": "04-settings-macbook-14-light.webp"
+    },
+    {
+      "step": "01-home-large",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-home-large-iphone-16-pro-dark.png",
+      "webp": "01-home-large-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-documents",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-documents-iphone-16-pro-dark.png",
+      "webp": "02-documents-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "03-reminders",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "03-reminders-iphone-16-pro-dark.png",
+      "webp": "03-reminders-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "04-settings",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "04-settings-iphone-16-pro-dark.png",
+      "webp": "04-settings-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-home-large",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-home-large-ipad-air-dark.png",
+      "webp": "01-home-large-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-documents",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-documents-ipad-air-dark.png",
+      "webp": "02-documents-ipad-air-dark.webp"
+    },
+    {
+      "step": "03-reminders",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "03-reminders-ipad-air-dark.png",
+      "webp": "03-reminders-ipad-air-dark.webp"
+    },
+    {
+      "step": "04-settings",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "04-settings-ipad-air-dark.png",
+      "webp": "04-settings-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-home-large",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-home-large-macbook-14-dark.png",
+      "webp": "01-home-large-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-documents",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-documents-macbook-14-dark.png",
+      "webp": "02-documents-macbook-14-dark.webp"
+    },
+    {
+      "step": "03-reminders",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "03-reminders-macbook-14-dark.png",
+      "webp": "03-reminders-macbook-14-dark.webp"
+    },
+    {
+      "step": "04-settings",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "04-settings-macbook-14-dark.png",
+      "webp": "04-settings-macbook-14-dark.webp"
+    }
+  ]
+}
