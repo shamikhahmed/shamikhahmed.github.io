@@ -2,9 +2,9 @@
   "personaId": "ideacap-zara",
   "personaName": "Zara Malik",
   "app": "ideacap",
-  "gitSha": "b5b93a9452fac0bd9f1301289acfc194b23a8791",
-  "capturedAt": "2026-10-21T18:54:17.967Z",
-  "baseUrl": "http://127.0.0.1:62760",
+  "gitSha": "2419314610ba93cc686b4d1d091c0b2f710caf00",
+  "capturedAt": "2026-10-22T00:09:19.194Z",
+  "baseUrl": "http://127.0.0.1:54039",
   "files": [
     {
       "step": "01-iphone",

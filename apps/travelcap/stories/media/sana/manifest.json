@@ -2,9 +2,9 @@
   "personaId": "travelcap-sana",
   "personaName": "Sana & Kamran",
   "app": "travelcap",
-  "gitSha": "d48ac2d76c22870ba89e88765e09499d88f5a4d5",
-  "capturedAt": "2026-10-21T18:20:37.777Z",
-  "baseUrl": "http://127.0.0.1:63286/TravelCap",
+  "gitSha": "89f6ecd3fa4e9573d1de630a83eaf7ea60a83fca",
+  "capturedAt": "2026-10-21T23:18:25.443Z",
+  "baseUrl": "http://127.0.0.1:59792/TravelCap",
   "files": [
     {
       "step": "01-iphone",

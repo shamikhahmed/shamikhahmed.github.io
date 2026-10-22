@@ -2,9 +2,9 @@
   "personaId": "travelcap-malik",
   "personaName": "The Malik family",
   "app": "travelcap",
-  "gitSha": "a45936d0fec00e443d73454a944ed4902cc8b377",
-  "capturedAt": "2026-10-21T18:19:19.867Z",
-  "baseUrl": "http://127.0.0.1:62388/TravelCap",
+  "gitSha": "89f6ecd3fa4e9573d1de630a83eaf7ea60a83fca",
+  "capturedAt": "2026-10-21T23:17:09.356Z",
+  "baseUrl": "http://127.0.0.1:59509/TravelCap",
   "files": [
     {
       "step": "01-iphone",

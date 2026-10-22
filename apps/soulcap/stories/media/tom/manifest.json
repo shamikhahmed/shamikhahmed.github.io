@@ -2,9 +2,9 @@
   "personaId": "soulcap-tom",
   "personaName": "Tom Weber",
   "app": "soulcap",
-  "gitSha": "c4c33e6ae5ca5248b039c199e78d7b3af3cf89a7",
-  "capturedAt": "2026-10-21T21:57:22.067Z",
-  "baseUrl": "http://127.0.0.1:49730",
+  "gitSha": "179b38ecd67ee4129cebaf5a6eda37d5f45c062b",
+  "capturedAt": "2026-10-22T00:50:58.836Z",
+  "baseUrl": "http://127.0.0.1:62948",
   "files": [
     {
       "step": "01-iphone",

@@ -2,9 +2,9 @@
   "personaId": "cookcap-rohan",
   "personaName": "Rohan Mehta",
   "app": "cookcap",
-  "gitSha": "9328ea9b34711b29cab0322c62d966941c7e1063",
-  "capturedAt": "2026-10-21T18:30:26.931Z",
-  "baseUrl": "http://127.0.0.1:56006/CookCap",
+  "gitSha": "6b496b0d81007edcdead3813ccfeaebd2b10633b",
+  "capturedAt": "2026-10-21T23:21:35.642Z",
+  "baseUrl": "http://127.0.0.1:60521/CookCap",
   "files": [
     {
       "step": "01-mac",
