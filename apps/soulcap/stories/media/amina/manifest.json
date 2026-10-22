@@ -2,9 +2,9 @@
   "personaId": "soulcap-amina",
   "personaName": "Amina Otieno",
   "app": "soulcap",
-  "gitSha": "179b38ecd67ee4129cebaf5a6eda37d5f45c062b",
-  "capturedAt": "2026-10-22T00:49:52.619Z",
-  "baseUrl": "http://127.0.0.1:62679",
+  "gitSha": "354a48e94a6f0596cd8eb1660d240e83da64842c",
+  "capturedAt": "2026-10-22T02:30:05.927Z",
+  "baseUrl": "http://127.0.0.1:53275",
   "files": [
     {
       "step": "01-iphone",
