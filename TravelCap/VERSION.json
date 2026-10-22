@@ -1,7 +1,7 @@
 {
   "app": "TravelCap",
-  "version": "1.1.10",
-  "swCache": "travelcap-v320",
-  "updated": "2026-10-20",
-  "notes": "V5 \u00a73d: idle SW register + lean WelcomeHero \u2014 mobile TBT/LCP"
+  "version": "1.1.11",
+  "swCache": "travelcap-v1111",
+  "updated": "2026-10-21",
+  "notes": "V5 \u00a73d: idle SW register + lean WelcomeHero \u2014 mobile TBT/LCP \u00b7 v7 HIG ios-tokens scaffold"
 }

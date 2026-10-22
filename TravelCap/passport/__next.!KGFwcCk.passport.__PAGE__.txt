@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
-2:I[87922,["5571","static/chunks/5571-ef7704a4f30d10b2.js","7490","static/chunks/7490-e18adf731975d5e5.js","5684","static/chunks/5684-c85200fd0a098cf3.js","6191","static/chunks/6191-16c1a60650302bb4.js","3746","static/chunks/3746-3dc0c1608dcb914d.js","4141","static/chunks/4141-767f759ba160262a.js","6122","static/chunks/app/(app)/passport/page-a6283e0182d9da10.js"],"PassportPageClient"]
+2:I[87922,["5571","static/chunks/5571-ef7704a4f30d10b2.js","7490","static/chunks/7490-e18adf731975d5e5.js","5684","static/chunks/5684-c85200fd0a098cf3.js","6191","static/chunks/6191-16c1a60650302bb4.js","3746","static/chunks/3746-3dc0c1608dcb914d.js","4141","static/chunks/4141-ef4323d6f46b3ce8.js","6122","static/chunks/app/(app)/passport/page-a6283e0182d9da10.js"],"PassportPageClient"]
 3:I[90484,[],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ryumBiWbPiBlPnEdsw0Cg"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"jnvxibrqBk3CBE55PksjN"}
 5:null
