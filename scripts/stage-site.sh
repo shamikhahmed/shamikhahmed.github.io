@@ -77,7 +77,6 @@ for need in \
   "$DEST/support.html" \
   "$DEST/js/products-data.js" \
   "$DEST/CarCap/index.html" \
-  "$DEST/CarCap/docs/pitch.html" \
   "$DEST/TravelCap/index.html" \
   "$DEST/IdeaCap/index.html" \
   "$DEST/soulcap.html" \

@@ -397,7 +397,7 @@ const PRODUCTS = {
     slug: 'scentcap',
     name: 'ScentCap',
     category: 'Lifestyle',
-    ver: '3.0.0',
+    ver: '3.0.1',
     symbol: '◌',
     tagline: 'Your fragrance wardrobe, beautifully kept.',
     pitch: 'ScentCap 3.0 turns a shelf of bottles into a wardrobe you actually use — add what you own from 1,300+ real fragrances with real bottle photos, get a daily pick for the weather and your plans, and keep a wear diary. Apple-grade design, private, offline.',

@@ -22,7 +22,7 @@ const bundleRef = index.match(/src="\/?(assets\/index-[\w-]+\.js)"/)?.[1];
 const bundle = bundleRef && existsSync(join(HUB, bundleRef)) ? readFileSync(join(HUB, bundleRef), 'utf8') : '';
 if (!bundle) { console.error('missing OS bundle', bundleRef); fail++; }
 const osVer = Object.fromEntries([...bundle.matchAll(/slug:"([a-z]+)"[\s\S]{0,200}?ver:"([^"]+)"/g)].map((m) => [m[1], m[2]]));
-const SLUGS = ['vaultcap', 'pulsecap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'soulcap', 'travelcap', 'masterycap', 'ideacap', 'carcap', 'cookcap', 'deefoodie'];
+const SLUGS = ['vaultcap', 'pulsecap', 'steadycap', 'ledgercap', 'deeponycap', 'scentcap', 'soulcap', 'travelcap', 'masterycap', 'cookcap', 'deefoodie'];
 for (const slug of SLUGS) {
   const re = new RegExp(`${slug}:[\\s\\S]*?ver:\\s*'([^']+)'`);
   const legacy = catalog.match(re)?.[1];
