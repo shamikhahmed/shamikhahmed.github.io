@@ -1,44 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>IdeaCap</title>
-    <meta
-      name="description"
-      content="IdeaCap — capture voice and text ideas on this device. Offline-first cork-board notes by Capricorn Systems."
-    />
-    <meta name="theme-color" content="#1F1A14" />
-    <meta name="color-scheme" content="dark light" />
-
-    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
-    <style id="expo-reset">
-      /* These styles make the body full-height */
-      html,
-      body {
-        height: 100%;
-      }
-      /* These styles disable body scrolling if you are using <ScrollView> */
-      body {
-        overflow: hidden;
-      }
-      /* These styles make the root element full-height */
-      #root {
-        display: flex;
-        height: 100%;
-        flex: 1;
-      }
-    </style>
-  <link rel="icon" href="/IdeaCap/favicon.ico"/></head>
-
-  <body>
-    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <!-- The root element for your Expo app. -->
-    <div id="root"></div>
-  <script src="/IdeaCap/_expo/static/js/web/index-2cff85afe73621cb7bc2c3a7c8287bd6.js" defer></script>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>IdeaCap has been retired — Capricorn Systems</title>
+<style>
+  :root { color-scheme: light dark; --bg:#f5f5f7; --fg:#1d1d1f; --mute:rgba(29,29,31,.64); --tint:#9a6a2f; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#000; --fg:#f5f5f7; --mute:rgba(245,245,247,.64); --tint:#e0a75e; } }
+  body { margin:0; min-height:100dvh; display:grid; place-items:center; background:var(--bg); color:var(--fg);
+         font:17px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; text-align:center; padding:24px; }
+  h1 { font-size:2rem; letter-spacing:-.02em; margin:0 0 12px; }
+  p { color:var(--mute); max-width:34ch; margin:0 auto 24px; }
+  a { display:inline-flex; min-height:44px; align-items:center; padding:0 22px; border-radius:999px; background:var(--tint); color:#fff; text-decoration:none; font-weight:600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>IdeaCap has been retired</h1>
+  <p>Thanks for trying it. IdeaCap is no longer maintained. Explore the other Cap apps from Capricorn Systems.</p>
+  <a href="/">See all apps</a>
+</main>
+<script>
+  // Remove any installed service worker + caches left by the old app.
+  if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { if (r.scope.indexOf('/IdeaCap/') !== -1) r.unregister(); }); });
+  if (window.caches) caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); });
+</script>
 </body>
 </html>

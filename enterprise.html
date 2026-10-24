@@ -91,7 +91,7 @@
   <div class="faq-item"><strong>Is data encrypted?</strong><p>VaultCap: AES-256-GCM. Others: on-device storage — protect with device passcode.</p></div>
   <div class="faq-item"><strong>Telemetry?</strong><p>No analytics SDKs. Zero product telemetry by design.</p></div>
   <div class="faq-item"><strong>Medical / advice?</strong><p>SoulCap ≠ medical device. Steady SOS ≠ care. Ledger ≠ investment advice.</p></div>
-  <div class="faq-item"><strong>AI?</strong><p>Pulse Smart Coach is rules-based. Optional LLM only with user keys (Vault import / IdeaCap STT).</p></div>
+  <div class="faq-item"><strong>AI?</strong><p>Pulse Smart Coach is rules-based. Optional LLM only with user keys (Vault import).</p></div>
   <div class="faq-item"><strong>Offline?</strong><p>PWAs after first load. Travel live flight lookup may need key/CORS — manual entry always works.</p></div>
 
   <div class="ent-footer">
@@ -102,8 +102,8 @@
 <script src="js/products-data.js?v=2"></script>
 <script>
 (function () {
-  var order = ['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','ideacap','soulcap','carcap'];
-  var demos = { vaultcap:1, pulsecap:1, prismcap:1, steadycap:1, ledgercap:1, deeponycap:1, scentcap:1, auracap:1, soulcap:1, carcap:1 };
+  var order = ['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','soulcap'];
+  var demos = { vaultcap:1, pulsecap:1, prismcap:1, steadycap:1, ledgercap:1, deeponycap:1, scentcap:1, auracap:1, soulcap:1 };
   var infoPages = { vaultcap:1, pulsecap:1, prismcap:1, steadycap:1, ledgercap:1, deeponycap:1, scentcap:1, auracap:1 };
   var el = document.getElementById('entApps');
   if (!el || typeof PRODUCTS === 'undefined') return;

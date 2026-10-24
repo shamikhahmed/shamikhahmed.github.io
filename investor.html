@@ -101,9 +101,7 @@
     <figure><img src="assets/investor/aura.png" alt="AuraCap demo" loading="lazy"><figcaption>AuraCap</figcaption></figure>
     <figure><img src="assets/investor/mastery.png" alt="MasteryCap" loading="lazy"><figcaption>MasteryCap</figcaption></figure>
     <figure><img src="assets/investor/travel.png" alt="TravelCap demo" loading="lazy"><figcaption>TravelCap</figcaption></figure>
-    <figure><img src="assets/investor/idea.png" alt="IdeaCap demo" loading="lazy"><figcaption>IdeaCap</figcaption></figure>
     <figure><img src="assets/investor/soul.png" alt="SoulCap demo" loading="lazy"><figcaption>SoulCap</figcaption></figure>
-    <figure><img src="assets/investor/car.png" alt="CarCap demo" loading="lazy"><figcaption>CarCap</figcaption></figure>
   </div>
 
   <h2>QR kit</h2>
@@ -119,9 +117,7 @@
     <figure><img src="assets/investor/qr-auracap.png" alt="AuraCap QR" loading="lazy"><figcaption>Aura</figcaption></figure>
     <figure><img src="assets/investor/qr-masterycap.png" alt="MasteryCap QR" loading="lazy"><figcaption>Mastery</figcaption></figure>
     <figure><img src="assets/investor/qr-travelcap.png" alt="TravelCap QR" loading="lazy"><figcaption>Travel</figcaption></figure>
-    <figure><img src="assets/investor/qr-ideacap.png" alt="IdeaCap QR" loading="lazy"><figcaption>Idea</figcaption></figure>
     <figure><img src="assets/investor/qr-soulcap.png" alt="SoulCap QR" loading="lazy"><figcaption>Soul</figcaption></figure>
-    <figure><img src="assets/investor/qr-carcap.png" alt="CarCap QR" loading="lazy"><figcaption>Car</figcaption></figure>
     <figure><img src="assets/investor/qr-hub.png" alt="Hub QR" loading="lazy"><figcaption>Hub</figcaption></figure>
     <figure><img src="assets/investor/qr-investor.png" alt="Investor QR" loading="lazy"><figcaption>Investor</figcaption></figure>
   </div>
@@ -141,8 +137,8 @@
 (function(){
   var grid=document.getElementById('invGrid');
   if(!grid||typeof PRODUCTS==='undefined')return;
-  var order=['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','ideacap','soulcap','carcap','cookcap','deefoodie'];
-  var demoSlugs={vaultcap:1,pulsecap:1,prismcap:1,steadycap:1,ledgercap:1,deeponycap:1,scentcap:1,auracap:1,soulcap:1,carcap:1};
+  var order=['vaultcap','pulsecap','prismcap','steadycap','ledgercap','deeponycap','scentcap','auracap','masterycap','travelcap','soulcap','cookcap','deefoodie'];
+  var demoSlugs={vaultcap:1,pulsecap:1,prismcap:1,steadycap:1,ledgercap:1,deeponycap:1,scentcap:1,auracap:1,soulcap:1};
   grid.innerHTML=order.map(function(slug){
     var p=PRODUCTS[slug]; if(!p)return'';
     if(p.privateBeta || slug==='deefoodie'){

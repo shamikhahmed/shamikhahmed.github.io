@@ -15,7 +15,7 @@ Try: [`?theme=synthwave`](https://shamikhahmed.github.io/?theme=synthwave) · [`
 | `pitch.html` · `investor.html` · `enterprise.html` | Investor / demo pack (`assets/investor/`) |
 | `support.html` · `privacy.html` · `terms.html` | Support (GitHub Issues), privacy, terms |
 | `<cap>.html` | Lightweight redirects to each live Cap (old links keep working) |
-| `CarCap/` · `IdeaCap/` · `PrismCap/` · `SoulCap/` · `TravelCap/` | Cap builds hosted from this repo (others deploy from their own repos to `/<Cap>/`) |
+| `PrismCap/` · `SoulCap/` · `TravelCap/` | Cap builds hosted from this repo (`CarCap/`, `IdeaCap/` = retired notices) (others deploy from their own repos to `/<Cap>/`) |
 | `js/products-data.js` | Catalog for the classic pages — must match the OS bundle (`npm test` enforces) |
 
 ## Test & deploy
