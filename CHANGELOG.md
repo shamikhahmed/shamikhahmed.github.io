@@ -1,6 +1,6 @@
 ## 1.4.1 — 2026-11-26
 
-- **Motion craft:** classic pages bridge `.reveal` ↔ `.cap-reveal`; CapricornMotion fail-open (2.8s) + skip heavy intro when `#cap-scene` is missing; CapCinematic reveals classic `.reveal` too; `prefers-reduced-motion` respected; page-rise + optional View Transitions on classic CSS only (not Capricorn OS shell).
+- **Motion craft:** classic pages bridge `.reveal` ↔ `.cap-reveal`; CapricornMotion `bindSplash` (skippable / no-op if missing) + fail-open (2.8s) + skip heavy intro when `#cap-scene` is missing; CapCinematic reveals classic `.reveal` too; `prefers-reduced-motion` respected; page-rise + optional View Transitions on classic CSS only (not Capricorn OS shell).
 - **Mini-sites:** auto scroll-reveals + hero rise in `apps/assets/minisite.css` / `minisite.js`; sticky mobile Open/Install dock retained.
 - **Redirect stubs** (`vaultcap.html` etc.): Cap-gold interstitial with reduced-motion-safe rise before `location.replace`.
 - Catalog / media already staged locally: ScentCap gallery refresh, CarCap/IdeaCap retired minisites, OS bundle asset hash swap, honesty copy on about/solutions/sovereignty/support.

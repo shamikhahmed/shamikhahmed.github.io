@@ -154,6 +154,34 @@
     updateParallax();
   }
 
+  /* Skippable splash — storageKey default cap.splash.v1; autoMs default 3100 */
+  function bindSplash(opts) {
+    opts = opts || {};
+    var el = document.querySelector(opts.selector || '.cap-splash, #cap-splash');
+    if (!el) return;
+    var key = opts.storageKey || 'cap.splash.v1';
+    var autoMs = typeof opts.autoMs === 'number' ? opts.autoMs : 3100;
+    try {
+      if (!opts.force && sessionStorage.getItem(key) === '1') {
+        el.classList.add('is-done');
+        el.setAttribute('aria-hidden', 'true');
+        return;
+      }
+    } catch (_) {}
+    function dismiss() {
+      if (el.classList.contains('is-done')) return;
+      el.classList.add('is-done');
+      el.setAttribute('aria-hidden', 'true');
+      try { sessionStorage.setItem(key, '1'); } catch (_) {}
+      document.dispatchEvent(new CustomEvent('cap:splash-done'));
+    }
+    ['keydown', 'pointerdown', 'wheel', 'touchstart'].forEach(function (evt) {
+      window.addEventListener(evt, dismiss, { once: true, passive: true });
+    });
+    if (!reduced && autoMs > 0) setTimeout(dismiss, autoMs);
+    else if (reduced) dismiss();
+  }
+
   /* Fail-open: never leave content stuck invisible if IO/GSAP/intro missing. */
   function armFailOpen() {
     if (isAppShell() || window.__capMotionFailOpen) return;
@@ -166,7 +194,7 @@
     }, 2800);
   }
 
-  /* If cinematic canvas is absent, skip heavy intro — keep first paint readable. */
+  /* No cinematic canvas → keep first paint readable (splash bindSplash already no-ops if missing). */
   function skipIntroIfMissing() {
     var wantsScene = document.querySelector('#cap-scene, .cap-scene-canvas, #mist-canvas');
     if (wantsScene) return false;
@@ -179,6 +207,7 @@
   }
 
   function init() {
+    bindSplash();
     if (isAppShell()) {
       revealInstant('.cap-reveal, .cap-reveal-scale, .cap-reveal-lines, .cap-kinetic, .cap-stagger, .cap-stagger > *');
       return;
@@ -210,6 +239,7 @@
 
   window.CapricornMotion = {
     init: init,
+    bindSplash: bindSplash,
     skipIntro: function () {
       revealInstant('.cap-reveal, .cap-reveal-scale, .cap-reveal-lines, .cap-kinetic, .cap-stagger');
       document.querySelectorAll('.reveal').forEach(function (el) {
