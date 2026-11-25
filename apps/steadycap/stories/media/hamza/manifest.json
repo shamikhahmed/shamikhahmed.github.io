@@ -2,8 +2,9 @@
   "personaId": "steadycap-hamza",
   "personaName": "Hamza Ali",
   "app": "steadycap",
-  "gitSha": "011ad05ae4e75d9d65c14a2fa7facfc7f2c0eba5",
-  "capturedAt": "2026-10-21T13:26:28.788Z",
+  "gitSha": "3abdc3c95d2b11582a1a0394652bb667fb378412",
+  "capturedAt": "2026-11-25T20:11:03.361Z",
+  "baseUrl": "http://127.0.0.1:59545",
   "files": [
     {
       "step": "01-home",
@@ -46,6 +47,48 @@
       "theme": "light",
       "png": "02-task-macbook-14-light.png",
       "webp": "02-task-macbook-14-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-home-iphone-16-pro-dark.png",
+      "webp": "01-home-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-task-iphone-16-pro-dark.png",
+      "webp": "02-task-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-home-ipad-air-dark.png",
+      "webp": "01-home-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-task-ipad-air-dark.png",
+      "webp": "02-task-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-home-macbook-14-dark.png",
+      "webp": "01-home-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-task-macbook-14-dark.png",
+      "webp": "02-task-macbook-14-dark.webp"
     }
   ]
 }

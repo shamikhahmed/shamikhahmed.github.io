@@ -2,8 +2,9 @@
   "personaId": "pulsecap-sara",
   "personaName": "Sara Ahmed",
   "app": "pulsecap",
-  "gitSha": "f5f54edbb63d81caec30023f2c78ab6a24fedb2a",
-  "capturedAt": "2026-10-21T13:26:53.375Z",
+  "gitSha": "7f3616679d2d6145eccb1a7d18686bd90fd94fae",
+  "capturedAt": "2026-11-25T20:03:14.950Z",
+  "baseUrl": "http://127.0.0.1:60645",
   "files": [
     {
       "step": "01-home",
@@ -46,6 +47,48 @@
       "theme": "light",
       "png": "02-task-macbook-14-light.png",
       "webp": "02-task-macbook-14-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-home-iphone-16-pro-dark.png",
+      "webp": "01-home-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-task-iphone-16-pro-dark.png",
+      "webp": "02-task-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-home-ipad-air-dark.png",
+      "webp": "01-home-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-task-ipad-air-dark.png",
+      "webp": "02-task-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-home-macbook-14-dark.png",
+      "webp": "01-home-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-task-macbook-14-dark.png",
+      "webp": "02-task-macbook-14-dark.webp"
     }
   ]
 }
