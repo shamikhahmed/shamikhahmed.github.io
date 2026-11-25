@@ -2,9 +2,9 @@
   "personaId": "cookcap-shahida",
   "personaName": "Shahida Begum",
   "app": "cookcap",
-  "gitSha": "6b496b0d81007edcdead3813ccfeaebd2b10633b",
-  "capturedAt": "2026-10-21T23:23:23.899Z",
-  "baseUrl": "http://127.0.0.1:60888/CookCap",
+  "gitSha": "65dadef47b56a1ba000a1bd452d420ab8a24fef9",
+  "capturedAt": "2026-11-25T21:01:44.257Z",
+  "baseUrl": "http://127.0.0.1:59432/CookCap",
   "files": [
     {
       "step": "01-iphone",
