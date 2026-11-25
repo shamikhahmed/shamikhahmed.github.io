@@ -2,9 +2,9 @@
   "personaId": "cookcap-mariam",
   "personaName": "Mariam Syed",
   "app": "cookcap",
-  "gitSha": "6b496b0d81007edcdead3813ccfeaebd2b10633b",
-  "capturedAt": "2026-10-21T23:19:45.345Z",
-  "baseUrl": "http://127.0.0.1:60098/CookCap",
+  "gitSha": "65dadef47b56a1ba000a1bd452d420ab8a24fef9",
+  "capturedAt": "2026-11-25T20:37:45.636Z",
+  "baseUrl": "http://127.0.0.1:50384/CookCap",
   "files": [
     {
       "step": "01-iphone",

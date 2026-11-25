@@ -220,31 +220,4 @@
       `<a class="btn btn--ghost" href="#install">Install</a>`;
     document.body.appendChild(dock);
   }
-
-  /* ── scroll reveals on Cap mini-sites (auto-wire; no overnight gallery regen) ── */
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealNodes = [...document.querySelectorAll('main > .section, .persona-grid, .faq, .install')];
-  if (revealNodes.length) {
-    revealNodes.forEach((el, i) => {
-      el.classList.add('cap-reveal');
-      if (!el.style.getPropertyValue('--cap-stagger-i')) {
-        el.style.setProperty('--cap-stagger-i', String(i % 6));
-      }
-    });
-    const show = (el) => el.classList.add('is-visible');
-    if (reducedMotion || !('IntersectionObserver' in window)) {
-      revealNodes.forEach(show);
-    } else {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          show(e.target);
-          io.unobserve(e.target);
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
-      revealNodes.forEach((el) => io.observe(el));
-      /* Fail-open if observer never fires (odd layout / print). */
-      setTimeout(() => revealNodes.forEach(show), 2800);
-    }
-  }
 })();

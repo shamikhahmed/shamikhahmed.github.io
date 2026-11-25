@@ -2,9 +2,9 @@
   "personaId": "soulcap-zainab",
   "personaName": "Zainab Farooq",
   "app": "soulcap",
-  "gitSha": "179b38ecd67ee4129cebaf5a6eda37d5f45c062b",
-  "capturedAt": "2026-10-22T00:52:06.030Z",
-  "baseUrl": "http://127.0.0.1:63192",
+  "gitSha": "329c2bc920d65df2d6e9b58428fd3c77407e0b2f",
+  "capturedAt": "2026-11-25T20:43:58.001Z",
+  "baseUrl": "http://127.0.0.1:53782",
   "files": [
     {
       "step": "01-iphone",

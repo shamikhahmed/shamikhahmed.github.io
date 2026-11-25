@@ -2,8 +2,9 @@
   "personaId": "carcap-sophie",
   "personaName": "Sophie Bennett",
   "app": "carcap",
-  "gitSha": "f9ad6558ab998bc2ec7986e84accfaaceb0357f1",
-  "capturedAt": "2026-10-21T13:28:39.789Z",
+  "gitSha": "3a85e6f33f3bde06f28b83f17d545fa982650a1f",
+  "capturedAt": "2026-11-25T20:40:50.411Z",
+  "baseUrl": "http://127.0.0.1:52115",
   "files": [
     {
       "step": "01-home",
@@ -46,6 +47,48 @@
       "theme": "light",
       "png": "02-task-macbook-14-light.png",
       "webp": "02-task-macbook-14-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-home-iphone-16-pro-dark.png",
+      "webp": "01-home-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-task-iphone-16-pro-dark.png",
+      "webp": "02-task-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-home-ipad-air-dark.png",
+      "webp": "01-home-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-task-ipad-air-dark.png",
+      "webp": "02-task-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-home-macbook-14-dark.png",
+      "webp": "01-home-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-task-macbook-14-dark.png",
+      "webp": "02-task-macbook-14-dark.webp"
     }
   ]
 }
