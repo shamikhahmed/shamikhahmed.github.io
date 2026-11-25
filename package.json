@@ -1,6 +1,6 @@
 {
   "name": "shamikhahmed.github.io",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Capricorn Systems hub — Capricorn OS (themes, iPad/phone/desktop) + classic pages + Cap redirects (D-13)",
   "main": "sw.js",
   "scripts": {

@@ -206,4 +206,45 @@
     }));
     search?.addEventListener('input', apply);
   }
+
+  /* ── sticky Open / Install CTA (mobile) ── */
+  const openBtn = document.querySelector('.hero__cta .btn--fill') || document.querySelector('.top__cta');
+  if (document.body.dataset.app && openBtn?.href && !document.querySelector('.cta-dock')) {
+    const dock = document.createElement('div');
+    dock.className = 'cta-dock';
+    dock.setAttribute('role', 'region');
+    dock.setAttribute('aria-label', 'Open Cap');
+    const name = document.querySelector('h1')?.textContent?.trim() || 'Cap';
+    dock.innerHTML =
+      `<a class="btn btn--fill" href="${openBtn.getAttribute('href')}">Open ${name}</a>` +
+      `<a class="btn btn--ghost" href="#install">Install</a>`;
+    document.body.appendChild(dock);
+  }
+
+  /* ── scroll reveals on Cap mini-sites (auto-wire; no overnight gallery regen) ── */
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealNodes = [...document.querySelectorAll('main > .section, .persona-grid, .faq, .install')];
+  if (revealNodes.length) {
+    revealNodes.forEach((el, i) => {
+      el.classList.add('cap-reveal');
+      if (!el.style.getPropertyValue('--cap-stagger-i')) {
+        el.style.setProperty('--cap-stagger-i', String(i % 6));
+      }
+    });
+    const show = (el) => el.classList.add('is-visible');
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      revealNodes.forEach(show);
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          show(e.target);
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+      revealNodes.forEach((el) => io.observe(el));
+      /* Fail-open if observer never fires (odd layout / print). */
+      setTimeout(() => revealNodes.forEach(show), 2800);
+    }
+  }
 })();

@@ -97,7 +97,7 @@
     nameStory: () =>
       p.nameStory ? (
         `<section class="section section-alt" id="name" ${accent}>` +
-          `<div class="wrap reveal">` +
+          `<div class="wrap reveal cap-reveal">` +
             `<p class="eyebrow">Why this name</p>` +
             `<h2>Why ${p.name}?</h2>` +
             `<p class="lead name-story">${p.nameStory}</p>` +
@@ -107,7 +107,7 @@
 
     pitch: () =>
       `<section class="section section-alt" id="pitch" ${accent}>` +
-        `<div class="wrap reveal">` +
+        `<div class="wrap reveal cap-reveal">` +
           `<p class="eyebrow">Investor pitch</p>` +
           `<h2>The ${p.name} deck</h2>` +
           `<p class="lead" style="margin-top:12px">${p.presentationUrl ? 'Scroll the investor presentation inline — pitch deck for quick reads, full presentation for boardroom walkthrough.' : 'Scroll the current product pitch inline or open it fullscreen.'}</p>` +
@@ -125,7 +125,7 @@
 
     mock: () =>
       `<section class="section product-strip" id="preview" ${accent}>` +
-        `<div class="wrap reveal">` +
+        `<div class="wrap reveal cap-reveal">` +
           `<p class="eyebrow" style="text-align:center">In the app</p>` +
           `<h2 style="text-align:center;margin-bottom:8px">See ${p.name} in action</h2>` +
           `<p class="lead" style="margin:0 auto 24px;text-align:center;max-width:560px">Eight distinct screens from the live PWA — no duplicates.</p>` +
@@ -137,21 +137,21 @@
     experience: () => uxTimeline(p),
 
     problems: () =>
-      `<section class="section" id="problem"><div class="wrap prose reveal">` +
+      `<section class="section" id="problem"><div class="wrap prose reveal cap-reveal">` +
         `<p class="eyebrow">The problem</p>` +
         `<h2>Why ${p.name} exists</h2>` +
         p.problems.map(x => `<p>• ${x}</p>`).join('') +
       `</div></section>`,
 
     promise: () =>
-      `<section class="section section-alt" id="promise"><div class="wrap reveal">` +
+      `<section class="section section-alt" id="promise"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">The promise</p>` +
         `<h2>What changes after install</h2>` +
         `<p class="lead">${p.promise}</p>` +
       `</div></section>`,
 
     featuresGrid: () =>
-      `<section class="section" id="features"><div class="wrap reveal">` +
+      `<section class="section" id="features"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">Features</p>` +
         `<h2>Built to tempt install.</h2>` +
         `<p class="lead" style="margin-top:12px">Every capability runs on your device. No account wall. No sync tax.</p>` +
@@ -159,7 +159,7 @@
       `</div></section>`,
 
     featuresTable: () =>
-      `<section class="section ledger-features" id="features"><div class="wrap reveal">` +
+      `<section class="section ledger-features" id="features"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">Features</p>` +
         `<h2>Built to tempt install.</h2>` +
         `<p class="lead" style="margin-top:12px">Every capability runs on your device. No account wall. No sync tax.</p>` +
@@ -171,7 +171,7 @@
       `</div></section>`,
 
     vs: () =>
-      `<section class="section section-alt" id="compare"><div class="wrap reveal">` +
+      `<section class="section section-alt" id="compare"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">Differentiation</p>` +
         `<h2>Not another template app.</h2>` +
         `<div class="table-wrap">` +
@@ -180,7 +180,7 @@
       `</div></section>`,
 
     vsDense: () =>
-      `<section class="section section-alt ledger-tables" id="compare"><div class="wrap reveal">` +
+      `<section class="section section-alt ledger-tables" id="compare"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">Differentiation</p>` +
         `<h2>Not another template app.</h2>` +
         `<div class="ledger-table-wrap">` +
@@ -189,28 +189,28 @@
       `</div></section>`,
 
     audience: () =>
-      `<section class="section" id="audience"><div class="wrap reveal">` +
+      `<section class="section" id="audience"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">Audience</p>` +
         `<h2>Who it's for</h2>` +
         `<div class="personas">${personas}</div>` +
       `</div></section>`,
 
     faq: () =>
-      `<section class="section section-alt" id="faq"><div class="wrap reveal faq">` +
+      `<section class="section section-alt" id="faq"><div class="wrap reveal cap-reveal faq">` +
         `<p class="eyebrow">FAQ</p>` +
         `<h2>Before you install</h2>` +
         faq +
       `</div></section>`,
 
     related: () =>
-      `<section class="section" id="related"><div class="wrap reveal">` +
+      `<section class="section" id="related"><div class="wrap reveal cap-reveal">` +
         `<p class="eyebrow">Also in the constellation</p>` +
         `<h2>Explore more Capricorn products</h2>` +
         `<div class="related-grid">${related}</div>` +
       `</div></section>`,
 
     cta: () =>
-      `<section class="section cta-section" id="install" ${accent}><div class="wrap reveal" style="text-align:center">` +
+      `<section class="section cta-section" id="install" ${accent}><div class="wrap reveal cap-reveal" style="text-align:center">` +
         `<h2>Ready to install ${p.name}?</h2>` +
         `<p class="lead" style="margin:16px auto 28px">Open the app, add it to your home screen, and own your data.</p>` +
         `<a href="${p.url}" class="btn btn-product">Launch ${p.name} →</a>` +

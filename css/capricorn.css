@@ -340,7 +340,32 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; }
 .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
 
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-.reveal.visible { opacity: 1; transform: none; }
+.reveal.visible,
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Bridge classic .reveal ↔ design-system .cap-reveal (motion kit). */
+.cap-reveal.visible { opacity: 1; transform: none; }
+
+/* Classic-page entrance (Cap gold only — not loaded by Capricorn OS shell). */
+@keyframes cap-page-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+main.page {
+  animation: cap-page-rise 0.55s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+@supports (view-transition-name: none) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) {
+    animation: 220ms ease-in both cap-page-lift;
+  }
+  ::view-transition-new(root) {
+    animation: 380ms cubic-bezier(0.22, 1, 0.36, 1) both cap-page-rise;
+  }
+  @keyframes cap-page-lift {
+    to { opacity: 0; transform: translateY(-8px) scale(0.992); }
+  }
+}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -1580,7 +1605,10 @@ html:has(body.layout-prismcap) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal, .cap-reveal { opacity: 1; transform: none; transition: none; }
+  main.page { animation: none; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none !important; }
   .hero-logo, .hero h1, .hero .lead, .hero-actions, .constellation { animation: none; }
   .layout-pulsecap .section.reveal.visible { animation: none; }
   .layout-steadycap .reveal.visible { animation: none; }

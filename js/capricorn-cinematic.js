@@ -87,7 +87,7 @@ const CapCinematic = (() => {
       window.CapricornMotion.init();
     }
 
-    const reveals = document.querySelectorAll('.cap-reveal:not(.is-visible)');
+    const reveals = document.querySelectorAll('.cap-reveal:not(.is-visible), .reveal:not(.visible)');
 
     if (!reveals.length) {
       staggerContent(root);
@@ -96,6 +96,9 @@ const CapCinematic = (() => {
 
     if (reduced() || !g()) {
       revealFallback(reveals);
+      reveals.forEach((el) => {
+        el.classList.add('is-visible', 'visible');
+      });
       staggerContent(root);
       return;
     }
@@ -110,7 +113,9 @@ const CapCinematic = (() => {
         duration: 0.62,
         stagger: 0.07,
         ease: 'power3.out',
-        onComplete: () => reveals.forEach((el) => el.classList.add('is-visible')),
+        onComplete: () => reveals.forEach((el) => {
+          el.classList.add('is-visible', 'visible');
+        }),
       },
     );
     staggerContent(root);

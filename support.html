@@ -6,12 +6,12 @@
   <meta name="theme-color" content="#0a0e17">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/capricorn-core.css?v=1">
-  <link rel="stylesheet" href="css/capricorn.css?v=18">
+  <link rel="stylesheet" href="css/capricorn.css?v=19">
   <title>Support — Capricorn Systems</title>
-  <meta name="description" content="Support for Capricorn Cap apps. Report a problem via GitHub Issues. No personal email or phone.">
+  <meta name="description" content="Install Caps, recover from common issues, and report bugs via GitHub Issues. No personal email or phone.">
   <link rel="canonical" href="https://shamikhahmed.github.io/support.html">
   <meta property="og:title" content="Support — Capricorn Systems">
-  <meta property="og:description" content="Help for Cap apps. Report problems on GitHub Issues.">
+  <meta property="og:description" content="Install Caps, fix common issues, report bugs on GitHub Issues.">
   <meta property="og:image" content="https://shamikhahmed.github.io/assets/og.png">
 </head>
 <body>
@@ -22,7 +22,8 @@
       Capricorn <em>Systems</em>
     </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
+      <a href="index.html">Open Caps</a>
+      <a href="apps/">All Caps</a>
       <a href="about.html">About</a>
       <a href="privacy.html">Privacy</a>
       <a href="support.html" aria-current="page">Support</a>
@@ -31,18 +32,27 @@
 
   <main class="page">
     <section class="section" style="padding-top:calc(120px + var(--safe-t))">
-      <div class="wrap">
+      <div class="wrap reveal visible cap-reveal is-visible">
         <p class="eyebrow">Help</p>
         <h1 style="font-size:clamp(2rem,4vw,3rem)">Support</h1>
-        <p class="lead" style="margin:16px 0 28px;max-width:680px">Cap apps run on your device. Most issues are fixed by refreshing or clearing site data for that app. For bugs, open a GitHub issue — we do not publish personal email or phone numbers.</p>
-        <p>
-          <a class="btn btn-primary" href="https://github.com/shamikhahmed/shamikhahmed.github.io/issues/new?title=%5BCap%5D%20">Report a problem</a>
-        </p>
+        <p class="lead" style="margin:16px 0 28px;max-width:680px">Caps run on your device. Most issues clear with a refresh or clearing site data for that Cap. To install: open the Cap, then use Add to Home Screen / Install app (~30 seconds). Bugs go to GitHub Issues — we don’t publish personal email or phone.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-primary" href="apps/">Browse Caps</a>
+          <a class="btn btn-ghost" href="https://github.com/shamikhahmed/shamikhahmed.github.io/issues/new?title=%5BCap%5D%20">Report a problem</a>
+        </div>
       </div>
     </section>
 
-    <section class="section section-alt">
+    <section class="section section-alt reveal cap-reveal">
       <div class="wrap prose">
+        <h2 id="how-to-install">How to install a Cap</h2>
+        <ul>
+          <li><strong>iPhone &amp; iPad</strong> — Open the Cap in Safari → Share → Add to Home Screen.</li>
+          <li><strong>Mac</strong> — Safari: File → Add to Dock. Chrome/Edge: install icon in the address bar.</li>
+          <li><strong>Android</strong> — Chrome ⋮ → Install app.</li>
+        </ul>
+        <p>Each Cap website has an Install section with the same steps.</p>
+
         <h2>Publisher</h2>
         <p>Capricorn Systems, Karachi, Pakistan.</p>
 
@@ -66,8 +76,10 @@
         <h2>Common questions</h2>
         <h3>Where is my data?</h3>
         <p>On your device (localStorage / IndexedDB), except DeeFoodie private beta which syncs to its private server for invited users only.</p>
+        <h3>Do I need an account?</h3>
+        <p>No. Caps are free to open with no signup wall.</p>
         <h3>How do I erase everything?</h3>
-        <p>Open the app → Settings → erase / delete data (wording varies by Cap). Or clear site data for that Cap’s URL in your browser.</p>
+        <p>Open the Cap → Settings → erase / delete data (wording varies). Or clear site data for that Cap’s URL in your browser. Export a backup first if the Cap offers one.</p>
         <h3>I forgot my VaultCap PIN</h3>
         <p>The vault cannot be recovered without the PIN. Use a backup export if you made one.</p>
         <h3>DeeFoodie private beta</h3>
@@ -81,5 +93,7 @@
   <footer class="site-footer" style="padding:40px 24px;text-align:center;opacity:.7;font-size:13px">
     <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="about.html">About</a> · <a href="index.html">Home</a>
   </footer>
+  <script src="js/capricorn.js"></script>
+  <script src="js/capricorn-motion.js" defer></script>
 </body>
 </html>

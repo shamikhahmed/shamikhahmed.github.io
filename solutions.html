@@ -6,19 +6,19 @@
   <meta name="theme-color" content="#0a0e17">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/capricorn-core.css?v=1">
-  <link rel="stylesheet" href="css/capricorn.css?v=18">
+  <link rel="stylesheet" href="css/capricorn.css?v=19">
   <title>Solutions — Capricorn Systems</title>
-  <meta name="description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta name="description" content="Open live Cap PWAs, walk Device Sovereignty with measured privacy, and use investor demos when you need proof — not promises.">
   <link rel="canonical" href="https://shamikhahmed.github.io/solutions.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Capricorn Systems">
   <meta property="og:title" content="Solutions — Capricorn Systems">
-  <meta property="og:description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta property="og:description" content="Open live Cap PWAs and Device Sovereignty demos — proof, not promises.">
   <meta property="og:url" content="https://shamikhahmed.github.io/solutions.html">
   <meta property="og:image" content="https://shamikhahmed.github.io/icon-1024.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Solutions — Capricorn Systems">
-  <meta name="twitter:description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta name="twitter:description" content="Open live Cap PWAs and Device Sovereignty demos — proof, not promises.">
   <meta name="twitter:image" content="https://shamikhahmed.github.io/icon-1024.png">
 </head>
 <body>
@@ -29,42 +29,45 @@
       Capricorn <em>Systems</em>
     </a>
     <div class="nav-links">
-      <a href="index.html">Cap Store</a>
-      <a href="investor.html">Investor</a>
+      <a href="index.html">Open Caps</a>
+      <a href="apps/">All Caps</a>
       <a href="about.html">About</a>
       <a href="sovereignty.html">Sovereignty</a>
+      <a href="investor.html">Investor</a>
     </div>
     <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><svg width="18" height="13" viewBox="0 0 18 13" fill="none" aria-hidden="true"><rect width="18" height="1.5" rx="1" fill="currentColor"/><rect x="2" y="5.75" width="16" height="1.5" rx="1" fill="currentColor"/><rect x="4" y="11.5" width="14" height="1.5" rx="1" fill="currentColor"/></svg></button>
   </nav>
 
   <main class="page">
     <section class="section" style="padding-top:calc(120px + var(--safe-t))">
-      <div class="wrap reveal visible">
+      <div class="wrap reveal visible cap-reveal is-visible">
         <p class="eyebrow">Solutions</p>
-        <h1>Enterprise & investor demos</h1>
-        <p class="lead" style="margin:20px 0 40px">Capricorn products ship with demo profiles, investor decks, security documentation, and TestFlight-ready Capacitor scaffolds — for conversations that need proof, not promises.</p>
-        <div class="feature-grid">
-          <div class="feature-card"><h4>Live demos</h4><p>Each app includes seed data loaders and presentation flows for stakeholder walkthroughs.</p></div>
-          <div class="feature-card"><h4>Security truth</h4><p>SECURITY.md and privacy pages document real cryptography — not marketing adjectives.</p></div>
-          <div class="feature-card"><h4>iOS path</h4><p>Capacitor scaffolds and App Store documentation for native distribution when you're ready.</p></div>
-          <div class="feature-card"><h4>Device Sovereignty</h4><p>A differentiated architecture story: zero-knowledge, offline-first, no mandatory backend.</p></div>
+        <h1>Open the Caps. Then talk proof.</h1>
+        <p class="lead" style="margin:20px 0 28px;max-width:680px">Start with a live Cap — installable PWA, on-device data, plain privacy. Use decks and security docs when a stakeholder needs the architecture story.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px">
+          <a href="index.html" class="btn btn-primary">Enter Capricorn OS</a>
+          <a href="apps/" class="btn btn-ghost">Browse Caps</a>
+          <a href="investor.html" class="btn btn-ghost">Investor pack</a>
         </div>
-        <p class="prose" style="margin-top:40px;color:var(--dim)">For partnership or demo requests, reach out via <a href="https://github.com/shamikhahmed" style="color:var(--gold)">GitHub</a>.</p>
-        <a href="index.html" class="btn btn-primary" style="margin-top:32px">Open Cap Store →</a>
+        <div class="feature-grid">
+          <div class="feature-card"><h4>Live Caps</h4><p>Launch real PWAs from Capricorn OS or each Cap website. Seed demos and example stories for walkthroughs.</p></div>
+          <div class="feature-card"><h4>Measured privacy</h4><p>Capricorn OS Privacy Monitor counts third-party requests this visit. Cap privacy pages say what stays local.</p></div>
+          <div class="feature-card"><h4>Install in ~30s</h4><p>Add to Home Screen / Install app — full-screen, offline after first load. Steps on every Cap’s Install section.</p></div>
+          <div class="feature-card"><h4>Device Sovereignty</h4><p>Offline-first, no mandatory account, export you control — the architecture story investors can verify in a browser.</p></div>
+        </div>
+        <p class="prose" style="margin-top:40px;color:var(--dim)">Partnership or demo requests: open an issue on <a href="https://github.com/shamikhahmed" style="color:var(--gold)">GitHub</a> or use <a href="support.html" style="color:var(--gold)">Support</a>.</p>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <a href="index.html">← Home</a>
+    <a href="index.html">← Capricorn OS</a>
     <p style="margin-top:12px">© 2026 Capricorn Systems</p>
   </footer>
   <script src="js/product-media.js"></script>
   <script src="js/capricorn.js"></script>
   <script src="js/capricorn-motion.js" defer></script>
-
   <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
-
   <script src="js/vendor/gsap.min.js"></script>
   <script src="js/vendor/ScrollTrigger.min.js"></script>
   <script src="js/capricorn-scene.js"></script>

@@ -1,3 +1,11 @@
+## 1.4.1 — 2026-11-26
+
+- **Motion craft:** classic pages bridge `.reveal` ↔ `.cap-reveal`; CapricornMotion fail-open (2.8s) + skip heavy intro when `#cap-scene` is missing; CapCinematic reveals classic `.reveal` too; `prefers-reduced-motion` respected; page-rise + optional View Transitions on classic CSS only (not Capricorn OS shell).
+- **Mini-sites:** auto scroll-reveals + hero rise in `apps/assets/minisite.css` / `minisite.js`; sticky mobile Open/Install dock retained.
+- **Redirect stubs** (`vaultcap.html` etc.): Cap-gold interstitial with reduced-motion-safe rise before `location.replace`.
+- Catalog / media already staged locally: ScentCap gallery refresh, CarCap/IdeaCap retired minisites, OS bundle asset hash swap, honesty copy on about/solutions/sovereignty/support.
+- **Gallery regen:** overnight full fleet regen not run this pass — use capricorn-lab `npm run build:minisites` + `scripts/sync-screenshots.mjs` when refreshing all Caps.
+
 ## 1.4.0 — 2026-10-14
 
 - **Capricorn OS 1.1.0** deployed from capricorn-lab: ten themes (Capricorn, Capricorn Night, Aurora, Synthwave, Terminal, Truck Art, Mughal, Paper, Pixel 95, Brutal), iPad mode, phone dock/app sheets, Run here, live catalog from each Cap's VERSION.json, Privacy Monitor, honest copy. Lighthouse (prod build, local): Performance 100 · Accessibility 100 · Best Practices 100, mobile + desktop.

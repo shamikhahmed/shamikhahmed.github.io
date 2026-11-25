@@ -1,17 +1,18 @@
 # shamikhahmed.github.io — Handover
 
 > Read with `ROADMAP.md` and `~/Capricorn-Brain/01 Projects/shamikhahmed.github.io.md`.
-> Updated 2026-10-14 · hub **1.4.0** · Capricorn OS **1.1.0** · fleet standard: `capricorn-tooling/shared/CAP-STANDARD.md`
+> Updated 2026-11-26 · hub **1.4.1** · Capricorn OS via deploy:hub · fleet standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
 
-The public face of Capricorn Systems. Root = Capricorn OS (source: `../capricorn-lab`, deployed with `npm run deploy:hub`). Classic pages, investor pack, support/privacy and Cap redirects live beside it, plus five Cap builds hosted from this repo.
+The public face of Capricorn Systems. Root = Capricorn OS (source: `../capricorn-lab`, deployed with `npm run deploy:hub`). Classic pages, investor pack, support/privacy, Cap redirects, and `apps/` mini-sites live beside it.
 
 ## Facts
 
 - **Live:** https://shamikhahmed.github.io/ (GitHub Pages via Actions — Hub CI `links` → `deploy-pages`, artifact = `scripts/stage-site.sh` output)
 - **Stack:** static HTML/CSS/JS. No build step in this repo (the OS bundle arrives prebuilt from capricorn-lab).
 - **Data:** none. No cookies, analytics, ads, fonts or CDNs.
+- **Motion:** classic pages use `css/capricorn.css` page-rise + `js/capricorn-motion.js`; mini-sites auto-wire `.cap-reveal` in `apps/assets/minisite.js`. OS shell CSS is separate — do not paste View Transitions into the OS bundle.
 
 ## Run & verify
 
@@ -29,6 +30,7 @@ Browser QA for the OS lives in capricorn-lab (`npm run qa:matrix`, `npm run qa:f
 - `stage-site.sh` derives required assets from `index.html` — no more hardcoded bundle hashes.
 - This repo is the public face: test every Cap link after renames (`check-links.mjs`).
 - `.cursor/` stays in git but is never published (allowlisted `_site`).
+- Full gallery regen = capricorn-lab `build:minisites` / `sync-screenshots.mjs` (overnight); hub can ship CSS/JS motion without regenerating every webp.
 
 ## Where decisions live
 

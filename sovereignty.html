@@ -6,19 +6,19 @@
   <meta name="theme-color" content="#0a0e17">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/capricorn-core.css?v=1">
-  <link rel="stylesheet" href="css/capricorn.css?v=18">
+  <link rel="stylesheet" href="css/capricorn.css?v=19">
   <title>Device Sovereignty — Capricorn Systems</title>
-  <meta name="description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta name="description" content="Device Sovereignty: your Cap data stays on your device. No mandatory account. Offline after first load. Measured privacy on Capricorn OS.">
   <link rel="canonical" href="https://shamikhahmed.github.io/sovereignty.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Capricorn Systems">
   <meta property="og:title" content="Device Sovereignty — Capricorn Systems">
-  <meta property="og:description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta property="og:description" content="Your Cap data stays on your device. No mandatory account. Offline after first load.">
   <meta property="og:url" content="https://shamikhahmed.github.io/sovereignty.html">
   <meta property="og:image" content="https://shamikhahmed.github.io/icon-1024.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Device Sovereignty — Capricorn Systems">
-  <meta name="twitter:description" content="Capricorn Systems builds premium offline-first personal software. Your device, your data, your call.">
+  <meta name="twitter:description" content="Your Cap data stays on your device. No mandatory account. Offline after first load.">
   <meta name="twitter:image" content="https://shamikhahmed.github.io/icon-1024.png">
 </head>
 <body>
@@ -29,41 +29,49 @@
       Capricorn <em>Systems</em>
     </a>
     <div class="nav-links">
-      <a href="index.html">Cap Store</a>
+      <a href="index.html">Open Caps</a>
+      <a href="apps/">All Caps</a>
       <a href="about.html">About</a>
+      <a href="support.html">Support</a>
       <a href="investor.html">Investor</a>
     </div>
   </nav>
 
   <main class="page">
     <section class="section" style="padding-top:calc(120px + var(--safe-t))">
-      <div class="wrap reveal visible">
-        <p class="eyebrow">Manifesto</p>
+      <div class="wrap reveal visible cap-reveal is-visible">
+        <p class="eyebrow">The one rule</p>
         <h1>Device Sovereignty</h1>
-        <p class="lead" style="margin:20px 0 40px">The one rule every Capricorn product shares. Everything else is intentionally different.</p>
+        <p class="lead" style="margin:20px 0 28px;max-width:640px">Your Cap data stays on your device. No mandatory account. Works offline after first load. Everything else about each Cap is intentionally different.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px">
+          <a href="index.html" class="btn btn-primary">Enter Capricorn OS</a>
+          <a href="apps/" class="btn btn-ghost">Browse Caps</a>
+        </div>
         <div class="sov-grid">
-          <div class="sov-card"><strong>On your device</strong><span>Data is stored locally — encrypted where it matters. We don't operate sync servers for your vault, workouts, games, or ledgers.</span></div>
-          <div class="sov-card"><strong>Offline capable</strong><span>After first load, Capricorn apps work without connectivity. Airplane mode is a feature, not a bug.</span></div>
-          <div class="sov-card"><strong>No mandatory account</strong><span>Install and use. No email wall, no OAuth gate, no "sign in to continue."</span></div>
-          <div class="sov-card"><strong>You own the files</strong><span>Export, backup, delete — your device, your rules. We don't hold your data hostage.</span></div>
+          <div class="sov-card"><strong>On your device</strong><span>Data is stored locally — encrypted where it matters. We don’t run a sync cloud for your vault, workouts, games, or ledgers.</span></div>
+          <div class="sov-card"><strong>Offline capable</strong><span>After first load, Caps keep working without connectivity. Airplane mode is a feature.</span></div>
+          <div class="sov-card"><strong>No mandatory account</strong><span>Install and use. No email wall, no OAuth gate, no “sign in to continue.”</span></div>
+          <div class="sov-card"><strong>You own the files</strong><span>Export, backup, delete — your device, your rules. We don’t hold your data hostage.</span></div>
         </div>
         <div class="prose" style="margin-top:48px">
-          <p>Device Sovereignty isn't anti-cloud dogma — it's a design choice. When your finances, recovery journal, or child's collection lives on hardware you control, the threat model changes. Capricorn Systems builds for that model by default.</p>
+          <p>Device Sovereignty isn’t anti-cloud dogma — it’s a design default. When your finances, recovery journal, or collection lives on hardware you control, the threat model changes. Capricorn OS’s Privacy Monitor counts third-party requests on this visit so privacy claims stay measured, not invented.</p>
+          <p>Some Caps optionally talk to first-party workers (prices, flights, Smart Import) when you choose — each Cap’s privacy section says what leaves the device.</p>
         </div>
-        <a href="index.html" class="btn btn-primary" style="margin-top:32px">Open Cap Store →</a>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+          <a href="index.html" class="btn btn-primary">See it in Capricorn OS</a>
+          <a href="privacy.html" class="btn btn-ghost">Hub privacy</a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <a href="index.html">← Home</a>
+    <a href="index.html">← Capricorn OS</a>
     <p style="margin-top:12px">© 2026 Capricorn Systems</p>
   </footer>
   <script src="js/capricorn.js"></script>
   <script src="js/capricorn-motion.js" defer></script>
-
   <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
-
   <script src="js/vendor/gsap.min.js"></script>
   <script src="js/vendor/ScrollTrigger.min.js"></script>
   <script src="js/capricorn-scene.js"></script>
