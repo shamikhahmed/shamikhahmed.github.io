@@ -2,8 +2,9 @@
   "personaId": "deeponycap-ali",
   "personaName": "Ali Raza",
   "app": "deeponycap",
-  "gitSha": "714af284f9d7abe63b165543b8c93988536c4ed1",
-  "capturedAt": "2026-10-21T13:27:36.093Z",
+  "gitSha": "3f696a9d4a7cf6a0607ad0dec1ebd00d4208b5dc",
+  "capturedAt": "2026-11-25T21:07:22.237Z",
+  "baseUrl": "http://127.0.0.1:49447",
   "files": [
     {
       "step": "01-home",
@@ -46,6 +47,48 @@
       "theme": "light",
       "png": "02-task-macbook-14-light.png",
       "webp": "02-task-macbook-14-light.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-home-iphone-16-pro-dark.png",
+      "webp": "01-home-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-task-iphone-16-pro-dark.png",
+      "webp": "02-task-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-home-ipad-air-dark.png",
+      "webp": "01-home-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-task-ipad-air-dark.png",
+      "webp": "02-task-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-home",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-home-macbook-14-dark.png",
+      "webp": "01-home-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-task",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-task-macbook-14-dark.png",
+      "webp": "02-task-macbook-14-dark.webp"
     }
   ]
 }
