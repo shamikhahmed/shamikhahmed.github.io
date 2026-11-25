@@ -2,9 +2,9 @@
   "personaId": "ideacap-hamid",
   "personaName": "Hamid Siddiqui",
   "app": "ideacap",
-  "gitSha": "2419314610ba93cc686b4d1d091c0b2f710caf00",
-  "capturedAt": "2026-10-22T01:04:19.646Z",
-  "baseUrl": "http://127.0.0.1:8081",
+  "gitSha": "f1b01fdf632a89af10e313562d45423225372e51",
+  "capturedAt": "2026-11-25T21:00:30.531Z",
+  "baseUrl": "http://127.0.0.1:59076/IdeaCap",
   "files": [
     {
       "step": "01-iphone",
