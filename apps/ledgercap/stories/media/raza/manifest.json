@@ -3,8 +3,8 @@
   "personaName": "Raza Ahmed",
   "app": "ledgercap",
   "gitSha": "9fde5112a9975db0d8bf58088f1fac192c0314a3",
-  "capturedAt": "2026-11-25T20:16:10.183Z",
-  "baseUrl": "http://127.0.0.1:49632",
+  "capturedAt": "2026-11-25T20:23:30.888Z",
+  "baseUrl": "http://127.0.0.1:63047",
   "files": [
     {
       "step": "01-home",
