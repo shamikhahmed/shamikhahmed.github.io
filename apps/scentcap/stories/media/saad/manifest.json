@@ -2,50 +2,135 @@
   "personaId": "scentcap-saad",
   "personaName": "Saad Alami",
   "app": "scentcap",
-  "gitSha": "d6499197c6364f61abb5e7b6a793fdf17f72e5a7",
-  "capturedAt": "2026-10-21T13:28:22.404Z",
+  "gitSha": "64a1be61bc47be3fc7b4a1c3fd7524c1839ed782",
+  "capturedAt": "2026-11-25T21:02:11.154Z",
+  "baseUrl": "http://127.0.0.1:59554/ScentCap",
   "files": [
     {
-      "step": "01-home",
+      "step": "01-layering",
       "device": "iphone-16-pro",
       "theme": "light",
-      "png": "01-home-iphone-16-pro-light.png",
-      "webp": "01-home-iphone-16-pro-light.webp"
+      "png": "01-layering-iphone-16-pro-light.png",
+      "webp": "01-layering-iphone-16-pro-light.webp"
     },
     {
-      "step": "02-task",
+      "step": "02-travel",
       "device": "iphone-16-pro",
       "theme": "light",
-      "png": "02-task-iphone-16-pro-light.png",
-      "webp": "02-task-iphone-16-pro-light.webp"
+      "png": "02-travel-iphone-16-pro-light.png",
+      "webp": "02-travel-iphone-16-pro-light.webp"
     },
     {
-      "step": "01-home",
+      "step": "03-advisor",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "03-advisor-iphone-16-pro-light.png",
+      "webp": "03-advisor-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-layering",
       "device": "ipad-air",
       "theme": "light",
-      "png": "01-home-ipad-air-light.png",
-      "webp": "01-home-ipad-air-light.webp"
+      "png": "01-layering-ipad-air-light.png",
+      "webp": "01-layering-ipad-air-light.webp"
     },
     {
-      "step": "02-task",
+      "step": "02-travel",
       "device": "ipad-air",
       "theme": "light",
-      "png": "02-task-ipad-air-light.png",
-      "webp": "02-task-ipad-air-light.webp"
+      "png": "02-travel-ipad-air-light.png",
+      "webp": "02-travel-ipad-air-light.webp"
     },
     {
-      "step": "01-home",
-      "device": "macbook-14",
+      "step": "03-advisor",
+      "device": "ipad-air",
       "theme": "light",
-      "png": "01-home-macbook-14-light.png",
-      "webp": "01-home-macbook-14-light.webp"
+      "png": "03-advisor-ipad-air-light.png",
+      "webp": "03-advisor-ipad-air-light.webp"
     },
     {
-      "step": "02-task",
+      "step": "01-layering",
       "device": "macbook-14",
       "theme": "light",
-      "png": "02-task-macbook-14-light.png",
-      "webp": "02-task-macbook-14-light.webp"
+      "png": "01-layering-macbook-14-light.png",
+      "webp": "01-layering-macbook-14-light.webp"
+    },
+    {
+      "step": "02-travel",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-travel-macbook-14-light.png",
+      "webp": "02-travel-macbook-14-light.webp"
+    },
+    {
+      "step": "03-advisor",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "03-advisor-macbook-14-light.png",
+      "webp": "03-advisor-macbook-14-light.webp"
+    },
+    {
+      "step": "01-layering",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-layering-iphone-16-pro-dark.png",
+      "webp": "01-layering-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-travel",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-travel-iphone-16-pro-dark.png",
+      "webp": "02-travel-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "03-advisor",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "03-advisor-iphone-16-pro-dark.png",
+      "webp": "03-advisor-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-layering",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-layering-ipad-air-dark.png",
+      "webp": "01-layering-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-travel",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-travel-ipad-air-dark.png",
+      "webp": "02-travel-ipad-air-dark.webp"
+    },
+    {
+      "step": "03-advisor",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "03-advisor-ipad-air-dark.png",
+      "webp": "03-advisor-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-layering",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-layering-macbook-14-dark.png",
+      "webp": "01-layering-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-travel",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-travel-macbook-14-dark.png",
+      "webp": "02-travel-macbook-14-dark.webp"
+    },
+    {
+      "step": "03-advisor",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "03-advisor-macbook-14-dark.png",
+      "webp": "03-advisor-macbook-14-dark.webp"
     }
   ]
 }

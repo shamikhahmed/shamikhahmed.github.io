@@ -2,50 +2,135 @@
   "personaId": "scentcap-james",
   "personaName": "James Cole",
   "app": "scentcap",
-  "gitSha": "d6499197c6364f61abb5e7b6a793fdf17f72e5a7",
-  "capturedAt": "2026-10-21T13:28:21.865Z",
+  "gitSha": "64a1be61bc47be3fc7b4a1c3fd7524c1839ed782",
+  "capturedAt": "2026-11-25T20:53:31.404Z",
+  "baseUrl": "http://127.0.0.1:56831/ScentCap",
   "files": [
     {
-      "step": "01-home",
+      "step": "01-add",
       "device": "iphone-16-pro",
       "theme": "light",
-      "png": "01-home-iphone-16-pro-light.png",
-      "webp": "01-home-iphone-16-pro-light.webp"
+      "png": "01-add-iphone-16-pro-light.png",
+      "webp": "01-add-iphone-16-pro-light.webp"
     },
     {
-      "step": "02-task",
+      "step": "02-collection",
       "device": "iphone-16-pro",
       "theme": "light",
-      "png": "02-task-iphone-16-pro-light.png",
-      "webp": "02-task-iphone-16-pro-light.webp"
+      "png": "02-collection-iphone-16-pro-light.png",
+      "webp": "02-collection-iphone-16-pro-light.webp"
     },
     {
-      "step": "01-home",
+      "step": "03-insights",
+      "device": "iphone-16-pro",
+      "theme": "light",
+      "png": "03-insights-iphone-16-pro-light.png",
+      "webp": "03-insights-iphone-16-pro-light.webp"
+    },
+    {
+      "step": "01-add",
       "device": "ipad-air",
       "theme": "light",
-      "png": "01-home-ipad-air-light.png",
-      "webp": "01-home-ipad-air-light.webp"
+      "png": "01-add-ipad-air-light.png",
+      "webp": "01-add-ipad-air-light.webp"
     },
     {
-      "step": "02-task",
+      "step": "02-collection",
       "device": "ipad-air",
       "theme": "light",
-      "png": "02-task-ipad-air-light.png",
-      "webp": "02-task-ipad-air-light.webp"
+      "png": "02-collection-ipad-air-light.png",
+      "webp": "02-collection-ipad-air-light.webp"
     },
     {
-      "step": "01-home",
-      "device": "macbook-14",
+      "step": "03-insights",
+      "device": "ipad-air",
       "theme": "light",
-      "png": "01-home-macbook-14-light.png",
-      "webp": "01-home-macbook-14-light.webp"
+      "png": "03-insights-ipad-air-light.png",
+      "webp": "03-insights-ipad-air-light.webp"
     },
     {
-      "step": "02-task",
+      "step": "01-add",
       "device": "macbook-14",
       "theme": "light",
-      "png": "02-task-macbook-14-light.png",
-      "webp": "02-task-macbook-14-light.webp"
+      "png": "01-add-macbook-14-light.png",
+      "webp": "01-add-macbook-14-light.webp"
+    },
+    {
+      "step": "02-collection",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "02-collection-macbook-14-light.png",
+      "webp": "02-collection-macbook-14-light.webp"
+    },
+    {
+      "step": "03-insights",
+      "device": "macbook-14",
+      "theme": "light",
+      "png": "03-insights-macbook-14-light.png",
+      "webp": "03-insights-macbook-14-light.webp"
+    },
+    {
+      "step": "01-add",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "01-add-iphone-16-pro-dark.png",
+      "webp": "01-add-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "02-collection",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "02-collection-iphone-16-pro-dark.png",
+      "webp": "02-collection-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "03-insights",
+      "device": "iphone-16-pro",
+      "theme": "dark",
+      "png": "03-insights-iphone-16-pro-dark.png",
+      "webp": "03-insights-iphone-16-pro-dark.webp"
+    },
+    {
+      "step": "01-add",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "01-add-ipad-air-dark.png",
+      "webp": "01-add-ipad-air-dark.webp"
+    },
+    {
+      "step": "02-collection",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "02-collection-ipad-air-dark.png",
+      "webp": "02-collection-ipad-air-dark.webp"
+    },
+    {
+      "step": "03-insights",
+      "device": "ipad-air",
+      "theme": "dark",
+      "png": "03-insights-ipad-air-dark.png",
+      "webp": "03-insights-ipad-air-dark.webp"
+    },
+    {
+      "step": "01-add",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "01-add-macbook-14-dark.png",
+      "webp": "01-add-macbook-14-dark.webp"
+    },
+    {
+      "step": "02-collection",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "02-collection-macbook-14-dark.png",
+      "webp": "02-collection-macbook-14-dark.webp"
+    },
+    {
+      "step": "03-insights",
+      "device": "macbook-14",
+      "theme": "dark",
+      "png": "03-insights-macbook-14-dark.png",
+      "webp": "03-insights-macbook-14-dark.webp"
     }
   ]
 }
